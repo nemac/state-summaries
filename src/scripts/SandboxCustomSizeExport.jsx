@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
@@ -86,6 +87,7 @@ const darkGrey = "#E6E6E6";
 
 export default function SandboxCustomSizeExport(props) {
   const classes = {};
+  const theme = useTheme();
   const { open } = props;
   const { handleCustomSizeClose } = props;
   const { exportFunc } = props;
@@ -233,51 +235,99 @@ export default function SandboxCustomSizeExport(props) {
     <Modal
       disableBackdropClick
       disableEscapeKeyDown
-      className={classes.exportModal}
       classes={{ focused: classes.exportModal }}
       open={open}
       onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
+      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
-      <div className={classes.exportModalDiv}>
-        <h2 id="simple-modal-title" className={classes.exportHeaderText}>
-          <SaveAltIcon className={classes.exportHeaderIcon} /> {exportHeading}
+      <div
+        style={{
+          width: "400px",
+          [theme.breakpoints.down("sm")]: {
+            width: "80%",
+          },
+          backgroundColor: theme.palette.background.paper,
+          border: "0px solid transparent",
+          outline: "unset",
+          borderRadius: "4px",
+          padding: theme.spacing(2, 4, 3),
+        }}
+      >
+        <h2
+          id="simple-modal-title"
+          style={{
+            paddingBottom: theme.spacing(1),
+            borderBottom: `1px solid ${darkGrey}`,
+          }}
+        >
+          <SaveAltIcon
+            sx={{ fontSize: "1.65rem", marginBottom: theme.spacing(-0.3) }}
+          />{" "}
+          {exportHeading}
         </h2>
-        <div className={classes.exportDescriptionText}>
+        <div
+          style={{
+            marginBottom: theme.spacing(2),
+            [theme.breakpoints.down("sm")]: {
+              fontSize: ".75em",
+            },
+          }}
+        >
           Change the dimensions of the exported chart
         </div>
         <Button
-          className={classes.exportButtons}
+          sx={{
+            marginLeft: theme.spacing(1),
+            marginRight: theme.spacing(1),
+            marginTop: theme.spacing(1),
+          }}
           onClick={handlePresetDimensionsClick}
           variant={swithDimensionActive("Default")}
           color="primary"
           value="Default"
         >
           Default Current Screen Size
-          <small className={classes.exportSmallButtonText}>
+          <small style={{ marginLeft: theme.spacing(1) }}>
             ({wysiwygWidth} x {wysiwygHeight})
           </small>
         </Button>
         {sandboxDefaultExportSizes.map((dimension) => (
           <Button
             key={dimension.name}
-            className={classes.exportButtons}
+            sx={{
+              marginLeft: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginTop: theme.spacing(1),
+            }}
             onClick={handlePresetDimensionsClick}
             variant={swithDimensionActive(dimension.name)}
             color="primary"
             value={dimension.name}
           >
             {getLabels(dimension.name)}
-            <small className={classes.exportSmallButtonText}>
+            <small style={{ marginLeft: theme.spacing(1) }}>
               ({getDimensions(dimension.name).width} x{" "}
               {getDimensions(dimension.name).height})
             </small>
           </Button>
         ))}
-        <FormControl className={classes.exportForm}>
+        <FormControl
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            [theme.breakpoints.down("sm")]: {
+              flexDirection: "column",
+            },
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+          }}
+        >
           <TextField
-            className={classes.exportInput}
             onChange={handlePresetDimensionsWidthChange}
             id="outlined-number-width"
             variant="outlined"
@@ -289,9 +339,16 @@ export default function SandboxCustomSizeExport(props) {
               endAdornment: <InputAdornment position="end">PX</InputAdornment>,
               inputProps: { min: 250, max: 5000 },
             }}
+            sx={{
+              marginTop: theme.spacing(3),
+              marginRight: theme.spacing(2),
+              width: "45%",
+              [theme.breakpoints.down("sm")]: {
+                width: "100%",
+              },
+            }}
           />
           <TextField
-            className={classes.exportInput}
             onChange={handlePresetDimensionsHeightChange}
             id="outlined-number-height"
             variant="outlined"
@@ -303,12 +360,30 @@ export default function SandboxCustomSizeExport(props) {
               endAdornment: <InputAdornment position="end">PX</InputAdornment>,
               inputProps: { min: 250, max: 5000 },
             }}
+            sx={{
+              marginTop: theme.spacing(3),
+              marginRight: theme.spacing(2),
+              width: "45%",
+              [theme.breakpoints.down("sm")]: {
+                width: "100%",
+              },
+            }}
           />
         </FormControl>
-        <div className={classes.exportContainer}>
-          <div className={classes.exportStart}>
+        <div
+          style={{
+            paddingTop: theme.spacing(2),
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <div style={{ display: "flex", marginRight: "auto" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+                marginTop: theme.spacing(1),
+              }}
               onClick={handleExportClick}
               color="primary"
               variant="contained"
@@ -317,9 +392,13 @@ export default function SandboxCustomSizeExport(props) {
               Export {exportType}
             </Button>
           </div>
-          <div className={classes.exportEnd}>
+          <div style={{ display: "flex" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+                marginTop: theme.spacing(1),
+              }}
               onClick={handleClose}
               color="default"
               variant="contained"

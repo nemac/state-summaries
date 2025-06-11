@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
@@ -51,7 +52,7 @@ import SandoxPeriodsHumanReadable from "../configs/SandoxPeriodsHumanReadable";
 // }));
 
 export default function Selector(props) {
-  const classes = {};
+  const theme = useTheme();
   let { items } = props;
   const { controlName } = props;
   const { value } = props;
@@ -78,7 +79,15 @@ export default function Selector(props) {
       : (name) => name;
   const selectorError = missing && !disabled;
   const errorLabel = selectorError ? (
-    <FormHelperText className={classes.sandboxErrorText}>
+    <FormHelperText
+      sx={{
+        backgroundColor: "#FBFCFE",
+        margin: "0px",
+        [theme.breakpoints.up("md")]: {
+          paddingTop: "3px",
+        },
+      }}
+    >
       * Required
     </FormHelperText>
   ) : (
@@ -138,14 +147,18 @@ export default function Selector(props) {
     <Box p={0} display="flex" width={"100%"}>
       <FormControl
         variant="outlined"
-        className={classes.formControl}
         fullWidth={true}
         disabled={disabled}
         error={selectorError}
+        sx={{
+          margin: theme.spacing(0),
+          minWidth: 120,
+          backgroundColor: "#E6E6E6",
+        }}
       >
         <InputLabel
           id="demo-simple-select-outlined-label"
-          className={classes.sandboxInputLabel}
+          sx={{ color: "#5C5C5C" }}
         >
           {controlName}
         </InputLabel>
@@ -155,17 +168,17 @@ export default function Selector(props) {
           value={value}
           onChange={handleChange}
           label={controlName}
-          className={classes.menuItem}
+          sx={{ textAlign: "left" }}
         >
           {items.map((name) => (
-            <MenuItem key={name} value={name} className={classes.menuItem}>
+            <MenuItem key={name} value={name} sx={{ textAlign: "left" }}>
               {replaceWithHumanReadable(controlName, name, season)}
             </MenuItem>
           ))}
         </Select>
         {errorLabel}
       </FormControl>
-      <Box p={0} m={0} className={classes.pulldownInfoHolder}>
+      <Box p={0} m={0} sx={{ position: "relative" }}>
         <Tooltip
           title={TooltipText}
           aria-label={TooltipText}
@@ -174,9 +187,20 @@ export default function Selector(props) {
           enterNextDelay={750}
           arrow
           interactive
-          classes={{ tooltip: classes.toolTip }}
+          sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
         >
-          <InfoIcon className={classes.infoButton} />
+          <InfoIcon
+            sx={{
+              color: "#5C5C5C",
+              fontSize: "1.25rem",
+              marginLeft: theme.spacing(0.1),
+              position: "absolute",
+              top: "-0.66rem",
+              left: "-1.75rem",
+              backgroundColor: "#ffffff",
+              borderRadius: "30px",
+            }}
+          />
         </Tooltip>
       </Box>
     </Box>

@@ -25,6 +25,7 @@
     "plotly.js-basic-dist": "^1.58.5",
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1",
+    "sass": "^1.89.2",
     "vite": "^6.3.5"
   },
   "dependencies": {

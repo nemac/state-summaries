@@ -120,7 +120,6 @@ export default function SandboxSumbitFigure(props) {
   const { open } = props;
   const { handleCloseFigure } = props;
   const theme = useTheme();
-  const classes = {};
 
   const heading = "Send to TSU";
   const [name, setName] = useState("");
@@ -147,7 +146,12 @@ export default function SandboxSumbitFigure(props) {
   const emailErrorLabel = !emailValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Email address is not valid
     </FormHelperText>
@@ -157,7 +161,12 @@ export default function SandboxSumbitFigure(props) {
   const NameErrorLabel = !nameValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Required
     </FormHelperText>
@@ -167,7 +176,12 @@ export default function SandboxSumbitFigure(props) {
   const ChapterErrorLabel = !chapterValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Required
     </FormHelperText>
@@ -286,10 +300,27 @@ export default function SandboxSumbitFigure(props) {
           },
         }}
       >
-        <h2 id="simple-modal-title" className={classes.exportHeaderText}>
-          <MailOutlineIcon className={classes.exportHeaderIcon} /> {heading}
+        <h2
+          id="simple-modal-title"
+          style={{
+            paddingBottom: theme.spacing(1),
+            borderBottom: `1px solid ${darkGrey}`,
+          }}
+        >
+          <MailOutlineIcon
+            sx={{ fontSize: "1.65rem", marginBottom: theme.spacing(-0.3) }}
+          />{" "}
+          {heading}
         </h2>
-        <div className={classes.exportDescriptionText}>
+        <div
+          style={{
+            marginBottom: theme.spacing(2),
+            fontSize: ".9em",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: ".75em",
+            },
+          }}
+        >
           To submit the current figure, please include your email, name, and any
           details about the figure.
         </div>
@@ -297,29 +328,50 @@ export default function SandboxSumbitFigure(props) {
         <Collapse in={messageSent}>
           <Box display="flex" alignContent="center">
             <CheckCircleOutlineIcon
-              className={classes.messageCheckCircleOutlineIcon}
+              sx={{
+                color: messageSentBgColor,
+                marginLeft: theme.spacing(3),
+                marginTop: theme.spacing(-1),
+                fontSize: "5rem",
+              }}
             />
-            <h2 id="simple-modal-title" className={classes.messageSentText}>
-              Figure sumbitted successfully!
+            <h2 id="simple-modal-title" style={{ color: messageSentBgColor }}>
+              Figure submitted successfully!
             </h2>
           </Box>
         </Collapse>
 
         <Collapse in={messageFailed}>
           <Box display="flex" alignContent="center">
-            <HighlightOffIcon className={classes.messageHighlightOffIcon} />
-            <h2
-              id="simple-modal-title"
-              className={classes.messageSentFailedText}
-            >
-              Figure sumbitted failed, please try again!
+            <HighlightOffIcon
+              sx={{
+                color: errorBgColor,
+                marginLeft: theme.spacing(3),
+                marginTop: theme.spacing(-1),
+                fontSize: "5rem",
+              }}
+            />
+            <h2 id="simple-modal-title" style={{ color: errorBgColor }}>
+              Figure submitted failed, please try again!
             </h2>
           </Box>
         </Collapse>
         <Collapse in={!keyDisabled}>
-          <FormControl className={classes.exportForm}>
+          <FormControl
+            sx={{
+              display: "flex",
+              [theme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+              },
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              width: "100%",
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(2),
+            }}
+          >
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-name"
               size="small"
               required
@@ -334,7 +386,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {NameErrorLabel}
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-email"
               size="small"
               required
@@ -349,7 +401,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {emailErrorLabel}
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-chapter"
               size="small"
               required
@@ -364,7 +416,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {ChapterErrorLabel}
             <TextField
-              className={classes.exportMessage}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-message"
               size="small"
               variant="outlined"
@@ -380,10 +432,19 @@ export default function SandboxSumbitFigure(props) {
           </FormControl>
         </Collapse>
 
-        <div className={classes.exportContainer}>
-          <div className={classes.exportStart}>
+        <div
+          style={{
+            paddingTop: theme.spacing(2),
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <div style={{ display: "flex", marginRight: "auto" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+              }}
               onClick={submitFigure}
               color="primary"
               variant="contained"
@@ -393,9 +454,12 @@ export default function SandboxSumbitFigure(props) {
               Submit Figure
             </Button>
           </div>
-          <div className={classes.exportEnd}>
+          <div style={{ display: "flex" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+              }}
               onClick={handleClose}
               color="default"
               variant="contained"

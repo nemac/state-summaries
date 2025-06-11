@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import FileSaver from "file-saver";
+import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
@@ -33,7 +34,7 @@ import SandboxLocationStateItems from "../configs/SandboxLocationStateItems";
 import axios from "axios";
 
 // css
-// import "../css/Sandbox.scss";
+import "../css/Sandbox.scss";
 
 const RegionItems = SandboxRegionItems();
 const PeriodsFull = SandboxPeriods();
@@ -87,15 +88,6 @@ const sandboxChartRegionSmallScreenHeight = 575;
 //     height: "calc(100vh - 16px)",
 //     [theme.breakpoints.down("xs")]: {
 //       overflow: "scroll",
-//     },
-//   },
-//   sandboxHeader: {
-//     height: `${headerTitleHeight}px`,
-//     maxHeight: `${headerTitleHeight}px`,
-//     color: fontColor,
-//     [theme.breakpoints.down("xs")]: {
-//       height: `${headerTitleSmallScreenHeight}px`,
-//       maxHeight: `${headerTitleSmallScreenHeight}px`,
 //     },
 //   },
 //   sandboxDescription: {
@@ -203,7 +195,9 @@ const sandboxChartRegionSmallScreenHeight = 575;
 // }));
 
 export default function SandboxControls() {
-  // check url parameters frist for values
+  const theme = useTheme();
+
+  // check url parameters first for values
   const urlParams = new URLSearchParams(window.location.search);
 
   // check url parameters for the region if none make it blank
@@ -332,8 +326,6 @@ export default function SandboxControls() {
   // if no region selected period pulldown - helps manage user error
   const [periodDisabled, setPeriodDisabled] = useState(URLPeriodDisabled);
   const [seasonDisabled, setSeasonDisabled] = useState(URLSeasonDisabled);
-
-  const classes = {};
 
   // sets climate variable type for precip or temp, this will likely change latter...
   const getClimatevariableType = (switchClimatevariable) => {
@@ -1360,22 +1352,65 @@ export default function SandboxControls() {
         spacing={0}
         justify="flex-start"
         direction={"row"}
-        className={classes.sandboxRoot}
+        sx={{
+          backgroundColor: white,
+          color: fontColor,
+          height: "calc(100vh - 16px)",
+          [theme.breakpoints.down("xs")]: {
+            overflow: "scroll",
+          },
+        }}
       >
         <Grid
-          item
-          xs={12}
+          size={{ xs: 12 }}
           width="100%"
-          className={classes.sandboxSelectionAreaHolder}
+          sx={{
+            display: (chartOnly) =>
+              chartOnly.chartOnly === "yes" ? "none" : "inherit",
+            margin: "6px",
+            [theme.breakpoints.down("sm")]: {
+              height: `${actionAreaMediumScreenHeight}px`,
+              maxHeight: `${actionAreaMediumScreenHeight}px`,
+            },
+            [theme.breakpoints.down("xs")]: {
+              height: `${actionAreaSmallScreenHeight}px`,
+              maxHeight: `${actionAreaSmallScreenHeight}px`,
+            },
+          }}
         >
           <Grid
             container
             spacing={0}
             justify="flex-start"
             direction={"row"}
-            className={classes.sandboxSelectionArea}
+            sx={{
+              maxHeight: "375px",
+              backgroundColor: pullDownBackground,
+              border: `1px solid ${darkGrey}`,
+              borderRadius: "4px",
+              [theme.breakpoints.down("sm")]: {
+                height: `${actionAreaMediumScreenHeight}px`,
+                maxHeight: `${actionAreaMediumScreenHeight}px`,
+              },
+              [theme.breakpoints.down("xs")]: {
+                height: `${actionAreaSmallScreenHeight}px`,
+                minHeight: `${actionAreaSmallScreenHeight}px`,
+              },
+            }}
           >
-            <Grid item xs={12} className={classes.sandboxHeader} width="100%">
+            <Grid
+              size={{ xs: 12 }}
+              width="100%"
+              sx={{
+                height: `${headerTitleHeight}px`,
+                maxHeight: `${headerTitleHeight}px`,
+                color: fontColor,
+                [theme.breakpoints.down("xs")]: {
+                  height: `${headerTitleSmallScreenHeight}px`,
+                  maxHeight: `${headerTitleSmallScreenHeight}px`,
+                },
+              }}
+            >
               <Box
                 fontWeight="fontWeightBold"
                 mt={1}
@@ -1401,11 +1436,19 @@ export default function SandboxControls() {
                     enterNextDelay={750}
                     arrow
                     interactive
-                    classes={{ tooltip: classes.toolTip }}
+                    sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
                   >
                     <InsertChartOutlinedIcon
                       fontSize="large"
-                      className={"InfoIcon"}
+                      sx={{
+                        color: "#5C5C5C",
+                        fontSize: "1.5rem",
+                        marginLeft: theme.spacing(0.1),
+                        position: "absolute",
+                        backgroundColor: "#ffffff",
+                        borderRadius: "30px",
+                        top: "-0.66rem",
+                      }}
                     />
                   </Tooltip>
                 </Box>
@@ -1415,10 +1458,20 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              className={classes.sandboxDescription}
+              size={{ xs: 12 }}
               width="100%"
+              sx={{
+                border: "0px solid transparent",
+                height: `${headerDescriptionHeight}px`,
+                maxHeight: `${headerDescriptionHeight}px`,
+                color: fontColor,
+                marginBottom: theme.spacing(1.25),
+                zIndex: 900,
+                [theme.breakpoints.down("xs")]: {
+                  height: `${headerDescriptionSmallScreenHeight}px`,
+                  maxHeight: `${headerDescriptionSmallScreenHeight}px`,
+                },
+              }}
             >
               <Box
                 p={0}
@@ -1430,15 +1483,30 @@ export default function SandboxControls() {
                   px={1}
                   fontWeight={400}
                   fontSize="caption"
-                  className={classes.pulldownInfoHolder}
+                  sx={{
+                    "& .MuiPaper-elevation1.Mui-expanded": {
+                      boxShadow:
+                        "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
+                      backgroundColor: darkGrey,
+                    },
+                    "& .MuiAccordionSummary-root.Mui-expanded": {
+                      backgroundColor: white,
+                    },
+                    "& .MuiPaper-elevation1": {
+                      boxShadow: "unset",
+                    },
+                  }}
                 >
-                  <Accordion square className={classes.moreAboutData}>
+                  <Accordion
+                    square
+                    sx={{ backgroundColor: pullDownBackground }}
+                  >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="data-description-header"
                       id="data-description-header"
                     >
-                      <Typography className={classes.aboutTheDataHeading}>
+                      <Typography>
                         Access climate data to create a proposed figure
                         supporting your NCA chapter.&nbsp;
                         <a href="#">
@@ -1463,11 +1531,8 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={3}
-              md={2}
-              className={"sandbox-varriable-selectors"}
+              size={{ xs: 12, sm: 3, md: 2 }}
+              sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
                 fontWeight="fontWeightBold"
@@ -1494,11 +1559,8 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={3}
-              md={2}
-              className={"sandbox-varriable-selectors"}
+              size={{ xs: 12, sm: 3, md: 2 }}
+              sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
                 fontWeight="fontWeightBold"
@@ -1528,11 +1590,8 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={3}
-              md={2}
-              className={"sandbox-varriable-selectors"}
+              size={{ xs: 12, sm: 3, md: 2 }}
+              sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
                 fontWeight="fontWeightBold"
@@ -1562,11 +1621,8 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              className={"sandbox-varriable-selectors"}
+              size={{ xs: 12, sm: 6, md: 4 }}
+              sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
                 fontWeight="fontWeightBold"
@@ -1595,11 +1651,8 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={3}
-              md={2}
-              className={"sandbox-varriable-selectors"}
+              size={{ xs: 12, sm: 3, md: 2 }}
+              sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
                 fontWeight="fontWeightBold"
@@ -1633,7 +1686,22 @@ export default function SandboxControls() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={12} className={classes.sandboxExports}>
+            <Grid
+              size={{ xs: 12 }}
+              sx={{
+                height: `${exportAreaHeight}px`,
+                maxHeight: `${exportAreaHeight}px`,
+                paddingTop: "12px",
+                [theme.breakpoints.down("sm")]: {
+                  height: `${exportAreaHeight * 2}px`,
+                  maxHeight: `${exportAreaHeight * 2}px`,
+                },
+                [theme.breakpoints.down("xs")]: {
+                  height: `${exportButtonsSmallScreenHeight}px`,
+                  maxHeight: `${exportButtonsSmallScreenHeight}px`,
+                },
+              }}
+            >
               <SandboxActionMenu
                 handleDownloadChartAsCSVa={handleDownloadChartAsCSV}
                 handleDownloadChartAsPNGa={handleDownloadChartAsPNG}
@@ -1651,11 +1719,20 @@ export default function SandboxControls() {
         </Grid>
 
         <Grid
-          item
-          xs={12}
+          size={{ xs: 12 }}
           display="flex"
           flex={1}
-          className={classes.sandboxChartRegion}
+          sx={{
+            height: (chartOnly) =>
+              chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250px)",
+            maxHeight: (chartOnly) =>
+              chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250x)",
+            minHeight: `${chartRegionMinHeight}px`,
+            [theme.breakpoints.down("sm")]: {
+              height: `${sandboxChartRegionSmallScreenHeight}px !important`,
+              maxHeight: `${sandboxChartRegionSmallScreenHeight}px !important`,
+            },
+          }}
         >
           <Box
             display="flex"
@@ -1681,7 +1758,12 @@ export default function SandboxControls() {
             justifyContent="center"
             flex={1}
             flexGrow={3}
-            className={classes.sandboxChartRegionBox}
+            sx={{
+              height: "calc(100% - 10px)",
+              [theme.breakpoints.down("sm")]: {
+                height: "575px",
+              },
+            }}
           >
             <SandboxPlotRegion
               plotlyData={chartData}

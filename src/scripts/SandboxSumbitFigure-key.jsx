@@ -1,6 +1,7 @@
 // import React, { useEffect, useState, useRef } from 'react';
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
@@ -19,106 +20,107 @@ const darkGrey = "#E6E6E6";
 const errorBgColor = red[500];
 const messageSentBgColor = green[700];
 
-// const useStyles = makeStyles((theme) => ({
-//   exportModal: {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   exportModalDiv: {
-//     width: "500px",
-//     [theme.breakpoints.down("sm")]: {
-//       width: "80%",
-//     },
-//     backgroundColor: theme.palette.background.paper,
-//     border: "0px solid transparent",
-//     outline: "unset",
-//     borderRadius: "4px",
-//     padding: theme.spacing(2, 4, 3),
-//   },
-//   exportHeaderText: {
-//     paddingBottom: theme.spacing(1),
-//     borderBottom: `1px solid ${darkGrey}`,
-//   },
-//   exportContainer: {
-//     paddingTop: theme.spacing(2),
-//     display: "flex",
-//     justifyContent: "flex-end",
-//   },
-//   exportStart: {
-//     display: "flex",
-//     marginRight: "auto",
-//   },
-//   exportEnd: {
-//     display: "flex",
-//   },
-//   exportDescriptionText: {
-//     marginBottom: theme.spacing(2),
-//     fontSize: ".9em",
-//     [theme.breakpoints.down("sm")]: {
-//       fontSize: ".75em",
-//     },
-//   },
-//   exportButtons: {
-//     marginLeft: theme.spacing(1),
-//     marginRight: theme.spacing(1),
-//   },
-//   exportForm: {
-//     display: "flex",
-//     [theme.breakpoints.down("sm")]: {
-//       flexDirection: "column",
-//     },
-//     alignItems: "flex-start",
-//     justifyContent: "flex-start",
-//     width: "100%",
-//     marginTop: theme.spacing(2),
-//     marginBottom: theme.spacing(2),
-//   },
-//   exportInputVerify: {
-//     margin: theme.spacing(1),
-//     marginBottom: theme.spacing(2),
-//     width: "100%",
-//   },
-//   exportInput: {
-//     margin: theme.spacing(1),
-//     width: "100%",
-//   },
-//   exportHeaderIcon: {
-//     fontSize: "1.65rem",
-//     marginBottom: theme.spacing(-0.3),
-//   },
-//   exportMessage: {
-//     margin: theme.spacing(1),
-//     width: "100%",
-//   },
-//   figureErrorText: {
-//     color: errorBgColor,
-//     marginLeft: theme.spacing(2),
-//     marginTop: theme.spacing(0),
-//     paddingTop: theme.spacing(0),
-//   },
-//   messageSentText: {
-//     color: messageSentBgColor,
-//   },
-//   messageSentFailedText: {
-//     color: errorBgColor,
-//   },
-//   messageCheckCircleOutlineIcon: {
-//     color: messageSentBgColor,
-//     marginLeft: theme.spacing(3),
-//     marginTop: theme.spacing(-1),
-//     fontSize: "5rem",
-//   },
-//   messageHighlightOffIcon: {
-//     color: errorBgColor,
-//     marginLeft: theme.spacing(3),
-//     marginTop: theme.spacing(-1),
-//     fontSize: "5rem",
-//   },
-// }));
+const useStyles = makeStyles((theme) => ({
+  exportModal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  exportModalDiv: {
+    width: "500px",
+    [theme.breakpoints.down("sm")]: {
+      width: "80%",
+    },
+    backgroundColor: theme.palette.background.paper,
+    border: "0px solid transparent",
+    outline: "unset",
+    borderRadius: "4px",
+    padding: theme.spacing(2, 4, 3),
+  },
+  exportHeaderText: {
+    paddingBottom: theme.spacing(1),
+    borderBottom: `1px solid ${darkGrey}`,
+  },
+  exportContainer: {
+    paddingTop: theme.spacing(2),
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  exportStart: {
+    display: "flex",
+    marginRight: "auto",
+  },
+  exportEnd: {
+    display: "flex",
+  },
+  exportDescriptionText: {
+    marginBottom: theme.spacing(2),
+    fontSize: ".9em",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".75em",
+    },
+  },
+  exportButtons: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  exportForm: {
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    width: "100%",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  exportInputVerify: {
+    margin: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    width: "100%",
+  },
+  exportInput: {
+    margin: theme.spacing(1),
+    width: "100%",
+  },
+  exportHeaderIcon: {
+    fontSize: "1.65rem",
+    marginBottom: theme.spacing(-0.3),
+  },
+  exportMessage: {
+    margin: theme.spacing(1),
+    width: "100%",
+  },
+  figureErrorText: {
+    color: errorBgColor,
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(0),
+    paddingTop: theme.spacing(0),
+  },
+  messageSentText: {
+    color: messageSentBgColor,
+  },
+  messageSentFailedText: {
+    color: errorBgColor,
+  },
+  messageCheckCircleOutlineIcon: {
+    color: messageSentBgColor,
+    marginLeft: theme.spacing(3),
+    marginTop: theme.spacing(-1),
+    fontSize: "5rem",
+  },
+  messageHighlightOffIcon: {
+    color: errorBgColor,
+    marginLeft: theme.spacing(3),
+    marginTop: theme.spacing(-1),
+    fontSize: "5rem",
+  },
+}));
 
 export default function SandboxSumbitFigure(props) {
   const classes = {};
+  const theme = useTheme();
   const { open } = props;
   const { handleCloseFigure } = props;
 
@@ -147,7 +149,12 @@ export default function SandboxSumbitFigure(props) {
   const emailErrorLabel = !emailValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Email address is not valid
     </FormHelperText>
@@ -157,7 +164,12 @@ export default function SandboxSumbitFigure(props) {
   const NameErrorLabel = !nameValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Required
     </FormHelperText>
@@ -167,7 +179,12 @@ export default function SandboxSumbitFigure(props) {
   const ChapterErrorLabel = !chapterValid ? (
     <FormHelperText
       style={{ display: keyDisabled ? "flex" : "flex" }}
-      className={classes.figureErrorText}
+      sx={{
+        color: errorBgColor,
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(0),
+        paddingTop: theme.spacing(0),
+      }}
     >
       Required
     </FormHelperText>
@@ -317,28 +334,69 @@ export default function SandboxSumbitFigure(props) {
     <Modal
       disableBackdropClick
       disableEscapeKeyDown
-      className={classes.exportModal}
       classes={{ focused: classes.exportModal }}
       open={open}
       onClose={handleClose}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
+      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
-      <div className={classes.exportModalDiv}>
-        <h2 id="simple-modal-title" className={classes.exportHeaderText}>
-          <MailOutlineIcon className={classes.exportHeaderIcon} /> {heading}
+      <div
+        style={{
+          width: "500px",
+          [theme.breakpoints.down("sm")]: {
+            width: "80%",
+          },
+          backgroundColor: theme.palette.background.paper,
+          border: "0px solid transparent",
+          outline: "unset",
+          borderRadius: "4px",
+          padding: theme.spacing(2, 4, 3),
+        }}
+      >
+        <h2
+          id="simple-modal-title"
+          style={{
+            paddingBottom: theme.spacing(1),
+            borderBottom: `1px solid ${darkGrey}`,
+          }}
+        >
+          <MailOutlineIcon
+            sx={{ fontSize: "1.65rem", marginBottom: theme.spacing(-0.3) }}
+          />{" "}
+          {heading}
         </h2>
-        <div className={classes.exportDescriptionText}>
+        <div
+          style={{
+            marginBottom: theme.spacing(2),
+            fontSize: ".9em",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: ".75em",
+            },
+          }}
+        >
           You must have an Author Key to sumbit the figure. Author keys cannot
           be requested and are only provied to selected NCA authors, by TSU.
         </div>
-        <div className={classes.exportDescriptionText}>
+        <div
+          style={{
+            marginBottom: theme.spacing(2),
+            fontSize: ".9em",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: ".75em",
+            },
+          }}
+        >
           Once a valid Author key is entered, you can submit the current figure
           to TSU. Please note that you must include your email, name and any
           details about figure.
         </div>
         <TextField
-          className={classes.exportInputVerify}
+          sx={{
+            margin: theme.spacing(1),
+            marginBottom: theme.spacing(2),
+            width: "100%",
+          }}
           size="small"
           id="outlined-text-authorKey"
           required
@@ -354,29 +412,50 @@ export default function SandboxSumbitFigure(props) {
         <Collapse in={messageSent}>
           <Box display="flex" alignContent="center">
             <CheckCircleOutlineIcon
-              className={classes.messageCheckCircleOutlineIcon}
+              sx={{
+                color: messageSentBgColor,
+                marginLeft: theme.spacing(3),
+                marginTop: theme.spacing(-1),
+                fontSize: "5rem",
+              }}
             />
-            <h2 id="simple-modal-title" className={classes.messageSentText}>
-              Figure sumbitted successfully!
+            <h2 id="simple-modal-title" style={{ color: messageSentBgColor }}>
+              Figure submitted successfully!
             </h2>
           </Box>
         </Collapse>
 
         <Collapse in={messageFailed}>
           <Box display="flex" alignContent="center">
-            <HighlightOffIcon className={classes.messageHighlightOffIcon} />
-            <h2
-              id="simple-modal-title"
-              className={classes.messageSentFailedText}
-            >
-              Figure sumbitted failed, please try again!
+            <HighlightOffIcon
+              sx={{
+                color: errorBgColor,
+                marginLeft: theme.spacing(3),
+                marginTop: theme.spacing(-1),
+                fontSize: "5rem",
+              }}
+            />
+            <h2 id="simple-modal-title" style={{ color: errorBgColor }}>
+              Figure submitted failed, please try again!
             </h2>
           </Box>
         </Collapse>
         <Collapse in={!keyDisabled}>
-          <FormControl className={classes.exportForm}>
+          <FormControl
+            sx={{
+              display: "flex",
+              [theme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+              },
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              width: "100%",
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(2),
+            }}
+          >
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-name"
               size="small"
               required
@@ -391,7 +470,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {NameErrorLabel}
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-email"
               size="small"
               required
@@ -406,7 +485,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {emailErrorLabel}
             <TextField
-              className={classes.exportInput}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-chapter"
               size="small"
               required
@@ -421,7 +500,7 @@ export default function SandboxSumbitFigure(props) {
             />
             {ChapterErrorLabel}
             <TextField
-              className={classes.exportMessage}
+              sx={{ margin: theme.spacing(1), width: "100%" }}
               id="outlined-text-message"
               size="small"
               variant="outlined"
@@ -437,10 +516,19 @@ export default function SandboxSumbitFigure(props) {
           </FormControl>
         </Collapse>
 
-        <div className={classes.exportContainer}>
-          <div className={classes.exportStart}>
+        <div
+          style={{
+            paddingTop: theme.spacing(2),
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <div style={{ display: "flex", marginRight: "auto" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+              }}
               onClick={submitFigure}
               color="primary"
               variant="contained"
@@ -450,9 +538,12 @@ export default function SandboxSumbitFigure(props) {
               Submit Figure
             </Button>
           </div>
-          <div className={classes.exportEnd}>
+          <div style={{ display: "flex" }}>
             <Button
-              className={classes.exportButtons}
+              sx={{
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+              }}
               onClick={handleClose}
               color="default"
               variant="contained"

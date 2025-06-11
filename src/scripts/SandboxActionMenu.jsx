@@ -1,6 +1,7 @@
 // floating action buttons for downloading and switching bar and averages.
 import React from "react";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -131,7 +132,7 @@ import SandboxSumbitFigure from "./SandboxSumbitFigure.jsx";
 // }));
 
 export default function Selector(props) {
-  const classes = {};
+  const theme = useTheme();
   const { handleSwtichYearlyToLinea } = props;
   const { handleSwtichAverageAndYearlya } = props;
   const { handleSwtichMovingAverageAndYearlya } = props;
@@ -231,9 +232,15 @@ export default function Selector(props) {
 
   return (
     <Grid container spacing={0} justify="flex-end" direction={"row"}>
-      <Grid item xs={12} sm={12} md={6} width="100%">
+      <Grid size={{ xs: 12, sm: 12, md: 6 }} width="100%">
         <Box
-          className={classes.sandboxExportsButtonBox}
+          sx={{
+            justifyContent: "flex-end",
+            [theme.breakpoints.down("xs")]: {
+              margin: theme.spacing(1),
+              justifyContent: "unset",
+            },
+          }}
           fontWeight="fontWeightBold"
           mt={1}
           display="flex"
@@ -243,11 +250,24 @@ export default function Selector(props) {
           <FormControl
             component="fieldset"
             variant="outlined"
-            className={classes.sandboxExportsButtonBoxForm}
+            sx={{
+              flexDirection: "inherit",
+              justifyContent: "flex-end",
+              [theme.breakpoints.down("xs")]: {
+                flexDirection: "column",
+                width: "100%",
+              },
+            }}
           >
             <FormLabel
               component="legend"
-              className={classes.sandboxExportsButtonBoxFormLabel}
+              sx={{
+                position: "absolute",
+                left: "45%",
+                top: theme.spacing(-1.25),
+                fontSize: "0.75rem",
+                color: "#5C5C5C",
+              }}
             >
               Data Display
             </FormLabel>
@@ -263,15 +283,35 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleSwtichYearlyToLine}
                 classes={{ root: `${setSelected(lineChart, "year")}` }}
-                className={classes.fabsvgLeft}
                 variant="contained"
                 color="default"
                 startIcon={<TimelineIcon />}
+                sx={{
+                  minWidth: "150px",
+                  marginTop: theme.spacing(1),
+                  marginBottom: theme.spacing(1),
+                  marginLeft: theme.spacing(1),
+                  marginRight: theme.spacing(0),
+                  borderTopRightRadius: "0px",
+                  borderBottomRightRadius: "0px",
+                  [theme.breakpoints.down("md")]: {
+                    minWidth: "135px",
+                    fontSize: ".85rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    minWidth: "unset",
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(0),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(1),
+                    width: "100%",
+                  },
+                }}
               >
                 Yearly
               </Button>
@@ -288,12 +328,31 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleSwtichAverageAndYearly}
                 classes={{ root: `${setSelected(lineChart, "avg")}` }}
-                className={classes.fabsvgCenter}
+                sx={{
+                  minWidth: "150px",
+                  marginTop: theme.spacing(1),
+                  marginBottom: theme.spacing(1),
+                  marginLeft: theme.spacing(0),
+                  marginRight: theme.spacing(0),
+                  borderRadius: "0px",
+                  [theme.breakpoints.down("md")]: {
+                    minWidth: "135px",
+                    fontSize: ".85rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    minWidth: "unset",
+                    marginTop: theme.spacing(0),
+                    marginBottom: theme.spacing(0),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(1),
+                    width: "100%",
+                  },
+                }}
                 variant="contained"
                 color="default"
                 startIcon={<TimelineIcon />}
@@ -313,15 +372,35 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleSwtichMovingAverageAndYearly}
                 classes={{ root: `${setSelected(lineChart, "mavg")}` }}
-                className={classes.fabsvgRight}
                 variant="contained"
                 color="default"
                 startIcon={<TimelineIcon />}
+                sx={{
+                  minWidth: "150px",
+                  marginTop: theme.spacing(1),
+                  marginBottom: theme.spacing(1),
+                  marginLeft: theme.spacing(0),
+                  marginRight: theme.spacing(1),
+                  borderTopLeftRadius: "0px",
+                  borderBottomLeftRadius: "0px",
+                  [theme.breakpoints.down("md")]: {
+                    minWidth: "135px",
+                    fontSize: ".85rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    minWidth: "unset",
+                    marginTop: theme.spacing(0),
+                    marginBottom: theme.spacing(1),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(1),
+                    width: "100%",
+                  },
+                }}
               >
                 Moving Average
               </Button>
@@ -329,9 +408,15 @@ export default function Selector(props) {
           </FormControl>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={12} md={6} width="100%">
+      <Grid size={{ xs: 12, sm: 12, md: 6 }} width="100%">
         <Box
-          className={classes.sandboxExportsButtonBox}
+          sx={{
+            justifyContent: "flex-end",
+            [theme.breakpoints.down("xs")]: {
+              margin: theme.spacing(1),
+              justifyContent: "unset",
+            },
+          }}
           fontWeight="fontWeightBold"
           mt={1}
           display="flex"
@@ -341,11 +426,24 @@ export default function Selector(props) {
           <FormControl
             component="fieldset"
             variant="outlined"
-            className={classes.sandboxExportsButtonBoxForm}
+            sx={{
+              flexDirection: "inherit",
+              justifyContent: "flex-end",
+              [theme.breakpoints.down("xs")]: {
+                flexDirection: "column",
+                width: "100%",
+              },
+            }}
           >
             <FormLabel
               component="legend"
-              className={classes.sandboxExportsButtonBoxFormLabel}
+              sx={{
+                position: "absolute",
+                left: "45%",
+                top: theme.spacing(-1.25),
+                fontSize: "0.75rem",
+                color: "#5C5C5C",
+              }}
             >
               Export
             </FormLabel>
@@ -359,11 +457,24 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleDownloadChartAsCSV}
-                className={classes.fabsvg}
+                sx={{
+                  minWidth: "75px",
+                  margin: theme.spacing(1),
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: ".80rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(0),
+                    width: "100%",
+                  },
+                }}
                 variant="contained"
                 color="default"
                 startIcon={<SaveAltIcon />}
@@ -383,11 +494,24 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleCustomSizeOpenPNG}
-                className={classes.fabsvg}
+                sx={{
+                  minWidth: "75px",
+                  margin: theme.spacing(1),
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: ".80rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(0),
+                    width: "100%",
+                  },
+                }}
                 variant="contained"
                 color="default"
                 startIcon={<SaveAltIcon />}
@@ -414,11 +538,24 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleCustomSizeOpenSVG}
-                className={classes.fabsvg}
+                sx={{
+                  minWidth: "75px",
+                  margin: theme.spacing(1),
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: ".80rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(0),
+                    width: "100%",
+                  },
+                }}
                 variant="contained"
                 color="default"
                 startIcon={<SaveAltIcon />}
@@ -441,11 +578,24 @@ export default function Selector(props) {
               enterNextDelay={750}
               arrow
               interactive
-              classes={{ tooltip: classes.toolTip }}
+              sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
                 onClick={handleOpenSubmitFigure}
-                className={classes.fabsvg}
+                sx={{
+                  minWidth: "75px",
+                  margin: theme.spacing(1),
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: ".80rem",
+                  },
+                  [theme.breakpoints.down("xs")]: {
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
+                    marginLeft: theme.spacing(0),
+                    marginRight: theme.spacing(0),
+                    width: "100%",
+                  },
+                }}
                 variant="contained"
                 color="default"
                 startIcon={<MailOutlineIcon />}

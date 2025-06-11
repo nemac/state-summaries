@@ -20,7 +20,6 @@ import { orange, red } from "@mui/material/colors";
 // }));
 
 export default function Alert(props) {
-  const classes = {};
   const { chartErrorTitle } = props;
   const { chartErrorMessage } = props;
   const { errorType } = props;
@@ -56,9 +55,21 @@ export default function Alert(props) {
   };
 
   return (
-    <Collapse className={classes.sandboxAlertCollapse} in={shouldOpenAlert}>
+    <Collapse
+      in={shouldOpenAlert}
+      sx={{
+        position: "relative",
+        width: "calc(100% - 30px)",
+        marginLeft: "-39px",
+      }}
+    >
       <Box
-        className={classes.sandboxAlertBox}
+        sx={{
+          color: "#000000",
+          position: "absolute",
+          zIndex: "1000",
+          width: "100%",
+        }}
         bgcolor={backgroundColor(errorType)}
         color="text.primary"
         p={1}
@@ -68,10 +79,17 @@ export default function Alert(props) {
         borderColor={borderColor(errorType)}
       >
         <Box fontWeight="fontWeightBold" py={1} display="flex">
-          <div className={"sandbox-alert-icon"}>
+          <div
+            style={{
+              display: "flex",
+              padding: "7px 0",
+              fontSize: "22px",
+              marginRight: "12px",
+            }}
+          >
             <ErrorOutlineIcon />
           </div>
-          <div className={"sandbox-alert-header"}>{chartErrorTitle}</div>
+          <div style={{ padding: "10px 0" }}>{chartErrorTitle}</div>
         </Box>
         {chartErrorMessage}
       </Box>
