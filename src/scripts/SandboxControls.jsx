@@ -1389,25 +1389,25 @@ export default function SandboxControls() {
                   px={1}
                   fontSize="h4.fontSize"
                 >
-                  {/*<Tooltip*/}
-                  {/*  title={*/}
-                  {/*    "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X."*/}
-                  {/*  }*/}
-                  {/*  aria-label={*/}
-                  {/*    "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X"*/}
-                  {/*  }*/}
-                  {/*  placement="bottom-end"*/}
-                  {/*  TransitionComponent={Fade}*/}
-                  {/*  enterNextDelay={750}*/}
-                  {/*  arrow*/}
-                  {/*  interactive*/}
-                  {/*  classes={{ tooltip: classes.toolTip }}*/}
-                  {/*>*/}
-                  {/*  <InsertChartOutlinedIcon*/}
-                  {/*    fontSize="large"*/}
-                  {/*    className={"InfoIcon"}*/}
-                  {/*  />*/}
-                  {/*</Tooltip>*/}
+                  <Tooltip
+                    title={
+                      "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X."
+                    }
+                    aria-label={
+                      "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X"
+                    }
+                    placement="bottom-end"
+                    TransitionComponent={Fade}
+                    enterNextDelay={750}
+                    arrow
+                    interactive
+                    classes={{ tooltip: classes.toolTip }}
+                  >
+                    <InsertChartOutlinedIcon
+                      fontSize="large"
+                      className={"InfoIcon"}
+                    />
+                  </Tooltip>
                 </Box>
                 <Box px={1} fontSize="h5.fontSize">
                   NCA Figure and Climate Data Generator
@@ -1480,17 +1480,17 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                {/*<SandboxSelector*/}
-                {/*  items={RegionItems}*/}
-                {/*  controlName={"Select a Geographic Scale"}*/}
-                {/*  onChange={handleRegionChange}*/}
-                {/*  value={region}*/}
-                {/*  disabled={false}*/}
-                {/*  season={season}*/}
-                {/*  missing={!region}*/}
-                {/*  replaceClimatevariableType={replaceClimatevariableType}*/}
-                {/*  TooltipText={"Select a scale: national, NCA region, or state"}*/}
-                {/*/>*/}
+                <SandboxSelector
+                  items={RegionItems}
+                  controlName={"Select a Geographic Scale"}
+                  onChange={handleRegionChange}
+                  value={region}
+                  disabled={false}
+                  season={season}
+                  missing={!region}
+                  replaceClimatevariableType={replaceClimatevariableType}
+                  TooltipText={"Select a scale: national, NCA region, or state"}
+                />
               </Box>
             </Grid>
             <Grid
@@ -1511,20 +1511,20 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                {/*<SandboxSelector*/}
-                {/*  items={locationItems}*/}
-                {/*  controlName={"Select a Location"}*/}
-                {/*  onChange={handleLocationChange}*/}
-                {/*  value={location}*/}
-                {/*  season={season}*/}
-                {/*  disabled={locationDisabled}*/}
-                {/*  missing={region !== "National" && !location}*/}
-                {/*  replaceClimatevariableType={replaceClimatevariableType}*/}
-                {/*  replaceLocationAbbreviation={replaceLocationAbbreviation}*/}
-                {/*  TooltipText={*/}
-                {/*    "Select the applicable NCA region or state based on your scale selection. Not applicable for national-scale figures"*/}
-                {/*  }*/}
-                {/*/>*/}
+                <SandboxSelector
+                  items={locationItems}
+                  controlName={"Select a Location"}
+                  onChange={handleLocationChange}
+                  value={location}
+                  season={season}
+                  disabled={locationDisabled}
+                  missing={region !== "National" && !location}
+                  replaceClimatevariableType={replaceClimatevariableType}
+                  replaceLocationAbbreviation={replaceLocationAbbreviation}
+                  TooltipText={
+                    "Select the applicable NCA region or state based on your scale selection. Not applicable for national-scale figures"
+                  }
+                />
               </Box>
             </Grid>
             <Grid
@@ -1545,20 +1545,20 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                {/*<SandboxSelector*/}
-                {/*  items={Seasons}*/}
-                {/*  controlName={"Select the Time Scale"}*/}
-                {/*  onChange={handleSeasonChange}*/}
-                {/*  value={season}*/}
-                {/*  disabled={seasonDisabled}*/}
-                {/*  missing={!season}*/}
-                {/*  season={season}*/}
-                {/*  replaceClimatevariableType={replaceClimatevariableType}*/}
-                {/*  replaceSeasonType={replaceSeasonType}*/}
-                {/*  TooltipText={*/}
-                {/*    "Select from among two annual scales or the four meteorological seasons. Your selection will drive the what is available in the climate variables."*/}
-                {/*  }*/}
-                {/*/>*/}
+                <SandboxSelector
+                  items={Seasons}
+                  controlName={"Select the Time Scale"}
+                  onChange={handleSeasonChange}
+                  value={season}
+                  disabled={seasonDisabled}
+                  missing={!season}
+                  season={season}
+                  replaceClimatevariableType={replaceClimatevariableType}
+                  replaceSeasonType={replaceSeasonType}
+                  TooltipText={
+                    "Select from among two annual scales or the four meteorological seasons. Your selection will drive the what is available in the climate variables."
+                  }
+                />
               </Box>
             </Grid>
             <Grid
@@ -1579,19 +1579,19 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                {/*<SandboxSelector*/}
-                {/*  items={climatevariableItems}*/}
-                {/*  controlName={"Select a Climate Variable"}*/}
-                {/*  onChange={handleClimatevariableChange}*/}
-                {/*  value={climatevariable}*/}
-                {/*  season={season}*/}
-                {/*  disabled={climatevariableDisabled}*/}
-                {/*  missing={!climatevariable}*/}
-                {/*  replaceClimatevariableType={replaceClimatevariableType}*/}
-                {/*  TooltipText={*/}
-                {/*    "Select an applicable climate variable. Your available choices are based on your time scale selection. Your choice here will drive the time period(s) available. "*/}
-                {/*  }*/}
-                {/*/>*/}
+                <SandboxSelector
+                  items={climatevariableItems}
+                  controlName={"Select a Climate Variable"}
+                  onChange={handleClimatevariableChange}
+                  value={climatevariable}
+                  season={season}
+                  disabled={climatevariableDisabled}
+                  missing={!climatevariable}
+                  replaceClimatevariableType={replaceClimatevariableType}
+                  TooltipText={
+                    "Select an applicable climate variable. Your available choices are based on your time scale selection. Your choice here will drive the time period(s) available. "
+                  }
+                />
               </Box>
             </Grid>
             <Grid
@@ -1612,40 +1612,40 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                {/*<SandboxSelector*/}
-                {/*  items={PeriodsFull}*/}
-                {/*  controlName={"Select a Time Period"}*/}
-                {/*  onChange={handlePeriodChange}*/}
-                {/*  value={period}*/}
-                {/*  disabled={periodDisabled}*/}
-                {/*  missing={!period}*/}
-                {/*  season={season}*/}
-                {/*  replaceClimatevariableType={replaceClimatevariableType}*/}
-                {/*  replacePeriodType={replacePeriodType}*/}
-                {/*  TooltipText={*/}
-                {/*    "For mean temperature and precipitation, the entire available period of 1895-2020 should be displayed and it is thus the only option. " +*/}
-                {/*    "For annual threshold graphics, the longest period of 1900-2020 should generally be chosen if available to represent a fuller range of observed variability. " +*/}
-                {/*    "However, for some states, there are few or no stations that satisfy the missing data criterion (less than 10% missing daily data) and the shorter " +*/}
-                {/*    "period of 1950-2020 is the only option. This shorter period is offered as an option for all of the regions and states for the threshold graphs. " +*/}
-                {/*    "It may be a better option in some cases if the major features of variability occur after 1950; in that case, the greater number of stations that are " +*/}
-                {/*    "used in the calculations provide for more robust statistics"*/}
-                {/*  }*/}
-                {/*/>*/}
+                <SandboxSelector
+                  items={PeriodsFull}
+                  controlName={"Select a Time Period"}
+                  onChange={handlePeriodChange}
+                  value={period}
+                  disabled={periodDisabled}
+                  missing={!period}
+                  season={season}
+                  replaceClimatevariableType={replaceClimatevariableType}
+                  replacePeriodType={replacePeriodType}
+                  TooltipText={
+                    "For mean temperature and precipitation, the entire available period of 1895-2020 should be displayed and it is thus the only option. " +
+                    "For annual threshold graphics, the longest period of 1900-2020 should generally be chosen if available to represent a fuller range of observed variability. " +
+                    "However, for some states, there are few or no stations that satisfy the missing data criterion (less than 10% missing daily data) and the shorter " +
+                    "period of 1950-2020 is the only option. This shorter period is offered as an option for all of the regions and states for the threshold graphs. " +
+                    "It may be a better option in some cases if the major features of variability occur after 1950; in that case, the greater number of stations that are " +
+                    "used in the calculations provide for more robust statistics"
+                  }
+                />
               </Box>
             </Grid>
             <Grid item xs={12} className={classes.sandboxExports}>
-              {/*<SandboxActionMenu*/}
-              {/*  handleDownloadChartAsCSVa={handleDownloadChartAsCSV}*/}
-              {/*  handleDownloadChartAsPNGa={handleDownloadChartAsPNG}*/}
-              {/*  handleDownloadChartAsSVGa={handleDownloadChartAsSVG}*/}
-              {/*  handleSwtichAverageAndYearlya={handleSwtichAverageAndYearly}*/}
-              {/*  handleSwtichMovingAverageAndYearlya={*/}
-              {/*    handleSwtichMovingAverageAndYearly*/}
-              {/*  }*/}
-              {/*  handleSwtichYearlyToLinea={handleSwtichYearlyToLine}*/}
-              {/*  handleMailToTSUa={handleMailToTSU}*/}
-              {/*  lineChart={lineChart}*/}
-              {/*/>*/}
+              <SandboxActionMenu
+                handleDownloadChartAsCSVa={handleDownloadChartAsCSV}
+                handleDownloadChartAsPNGa={handleDownloadChartAsPNG}
+                handleDownloadChartAsSVGa={handleDownloadChartAsSVG}
+                handleSwtichAverageAndYearlya={handleSwtichAverageAndYearly}
+                handleSwtichMovingAverageAndYearlya={
+                  handleSwtichMovingAverageAndYearly
+                }
+                handleSwtichYearlyToLinea={handleSwtichYearlyToLine}
+                handleMailToTSUa={handleMailToTSU}
+                lineChart={lineChart}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -1666,28 +1666,28 @@ export default function SandboxControls() {
             flex={1}
             flexGrow={3}
           >
-            {/*<SandboxAlert*/}
-            {/*  shouldOpenAlert={openError}*/}
-            {/*  errorType={errorType}*/}
-            {/*  chartErrorTitle={chartErrorTitle}*/}
-            {/*  chartErrorMessage={chartErrorMessage}*/}
-            {/*/>*/}
+            <SandboxAlert
+              shouldOpenAlert={openError}
+              errorType={errorType}
+              chartErrorTitle={chartErrorTitle}
+              chartErrorMessage={chartErrorMessage}
+            />
           </Box>
 
-          {/*<Box*/}
-          {/*  display="flex"*/}
-          {/*  flexDirection="row"*/}
-          {/*  m={1}*/}
-          {/*  justifyContent="center"*/}
-          {/*  flex={1}*/}
-          {/*  flexGrow={3}*/}
-          {/*  className={classes.sandboxChartRegionBox}*/}
-          {/*>*/}
-          {/*  <SandboxPlotRegion*/}
-          {/*    plotlyData={chartData}*/}
-          {/*    plotlyLayout={chartLayout}*/}
-          {/*  />*/}
-          {/*</Box>*/}
+          <Box
+            display="flex"
+            flexDirection="row"
+            m={1}
+            justifyContent="center"
+            flex={1}
+            flexGrow={3}
+            className={classes.sandboxChartRegionBox}
+          >
+            <SandboxPlotRegion
+              plotlyData={chartData}
+              plotlyLayout={chartLayout}
+            />
+          </Box>
         </Grid>
       </Grid>
     </div>

@@ -1,9 +1,7 @@
 import React from "react";
 import Plotly from "plotly.js-dist";
-import createPlotlyComponent from "react-plotly.js/factory";
+import Plot from "react-plotly.js";
 import PropTypes from "prop-types";
-
-const Plot = createPlotlyComponent(Plotly);
 
 export default function SandboxPlotRegion(props) {
   const { plotlyData } = props;
@@ -94,7 +92,7 @@ export default function SandboxPlotRegion(props) {
 
     // returned function will be called on component unmount
     return () => {
-      window.removeEventListener(resizeChart);
+      window.removeEventListener("resize", resizeChart);
     };
   }, []);
 

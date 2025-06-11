@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { useTheme } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
@@ -118,6 +119,7 @@ const messageSentBgColor = green[700];
 export default function SandboxSumbitFigure(props) {
   const { open } = props;
   const { handleCloseFigure } = props;
+  const theme = useTheme();
   const classes = {};
 
   const heading = "Send to TSU";
