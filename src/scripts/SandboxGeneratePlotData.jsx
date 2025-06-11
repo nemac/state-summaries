@@ -1,4 +1,4 @@
-import SandboxHumanReadable from './SandboxHumanReadable';
+import SandboxHumanReadable from "./SandboxHumanReadable.jsx";
 
 class SandboxGeneratePlotData {
   constructor(props) {
@@ -6,36 +6,36 @@ class SandboxGeneratePlotData {
     //  https://docs.google.com/document/d/1_zO39hdlGL9uY0Y0Vf57ncYNYXuACUAIM0fKCUo3spc/edit?ts=5fa547dd#
     this.smallScreen = 768;
     this.verySmallScreen = 500;
-    this.blue = '4, 90, 141';
-    this.red = '189, 0, 38';
-    this.green = '127, 188, 65';
-    this.brown = '153, 52, 4';
-    this.chartBackgroundColor = '#FBFCFE';
-    this.annualLineColor = '#000000';
-    this.precipitationColor = '#5AB4AC';
-    this.temperatureColor = '#FEB24C';
-    this.heatingDegreeColor = '#DB1E1C';
-    this.coolingDegreeColor = '#2276B4';
+    this.blue = "4, 90, 141";
+    this.red = "189, 0, 38";
+    this.green = "127, 188, 65";
+    this.brown = "153, 52, 4";
+    this.chartBackgroundColor = "#FBFCFE";
+    this.annualLineColor = "#000000";
+    this.precipitationColor = "#5AB4AC";
+    this.temperatureColor = "#FEB24C";
+    this.heatingDegreeColor = "#DB1E1C";
+    this.coolingDegreeColor = "#2276B4";
     this.bargap = 0.15;
     this.showLegend = true;
     this.legendBarLineX = window.innerWidth <= this.smallScreen ? 0 : 0.65;
     this.legendBarLineY = window.innerWidth <= this.smallScreen ? -0.15 : 1.125;
-    this.font = 'Arial';
-    this.zeroLineColor = '#000000';
-    this.zerolinewidth = '1.25';
-    this.gridColor = '#BFBFBF';
-    this.SourceFontColor = '#000000';
-    this.AverageAllFontColor = '#858585';
-    this.AverageAllColor = '#858585';
-    this.AverageMovingColor = '#858585';
-    this.AverageAllWidth = '6';
-    this.AverageAllFontSize = '14pt';
-    this.AverageWidth = '3';
-    this.AverageColor = '#000000';
-    this.gridWidth = '1';
-    this.fontSizePrimary = '14pt';
-    this.fontSizeLabels = '12pt';
-    this.fontSizeLabelsSecondary = '12pt';
+    this.font = "Arial";
+    this.zeroLineColor = "#000000";
+    this.zerolinewidth = "1.25";
+    this.gridColor = "#BFBFBF";
+    this.SourceFontColor = "#000000";
+    this.AverageAllFontColor = "#858585";
+    this.AverageAllColor = "#858585";
+    this.AverageMovingColor = "#858585";
+    this.AverageAllWidth = "6";
+    this.AverageAllFontSize = "14pt";
+    this.AverageWidth = "3";
+    this.AverageColor = "#000000";
+    this.gridWidth = "1";
+    this.fontSizePrimary = "14pt";
+    this.fontSizeLabels = "12pt";
+    this.fontSizeLabelsSecondary = "12pt";
     this.xmin = props.xmin;
     this.xmax = props.xmax;
     this.xvals = props.xvals;
@@ -45,8 +45,11 @@ class SandboxGeneratePlotData {
     this.maxVal = Math.max(...this.yvals);
     this.minVal = Math.min(...this.yvals);
     this.shortTitle = SandboxGeneratePlotData.splitTitle(props.chartTitle);
-    this.chartTitle = window.innerWidth <= this.smallScreen ? this.shortTitle : props.chartTitle;
-    this.SmallScreenBreak = window.innerWidth <= this.smallScreen ? '<br>' : '';
+    this.chartTitle =
+      window.innerWidth <= this.smallScreen
+        ? this.shortTitle
+        : props.chartTitle;
+    this.SmallScreenBreak = window.innerWidth <= this.smallScreen ? "<br>" : "";
     this.chartTitleX = window.innerWidth <= this.smallScreen ? 0.5 : 0.4;
     this.legnedText = props.legnedText;
     this.chartType = props.chartType;
@@ -68,7 +71,10 @@ class SandboxGeneratePlotData {
     this.yValsAvgAll = avgAll <= -50 ? 0 : avgAll;
     const min = this.minVal < 0 ? 0 : this.minVal;
     this.prettyRange = SandboxGeneratePlotData.pretty([min, this.maxVal]);
-    this.yRange = [this.prettyRange[0], this.prettyRange[this.prettyRange.length - 1]];
+    this.yRange = [
+      this.prettyRange[0],
+      this.prettyRange[this.prettyRange.length - 1],
+    ];
     this.yAxisText = this.createYAxisText();
     this.legendPerText = this.createlegendPerText();
     this.legendEllapsedText = this.legendEllapsedText();
@@ -78,13 +84,13 @@ class SandboxGeneratePlotData {
   // set color for chart based on climate variable or chartType
   setChartColor(chartType) {
     switch (chartType) {
-      case 'Precipitation':
+      case "Precipitation":
         return this.precipitationColor;
-      case 'Temperature':
+      case "Temperature":
         return this.temperatureColor;
-      case 'CoolingDays':
+      case "CoolingDays":
         return this.coolingDegreeColor;
-      case 'HeatingDays':
+      case "HeatingDays":
         return this.heatingDegreeColor;
       default:
         return this.temperatureColor;
@@ -94,21 +100,25 @@ class SandboxGeneratePlotData {
   // default season text
   hoverTemplateSeasonText() {
     const sandboxHumanReadable = new SandboxHumanReadable();
-    const seasonHumanReadable = sandboxHumanReadable.getSeasonPullDownText(this.season);
-    if (this.season !== 'yearly') {
-      if (this.season === 'ann') return 'annually';
-      return seasonHumanReadable.toLowerCase().split(' ')[0].replace(':', '');
+    const seasonHumanReadable = sandboxHumanReadable.getSeasonPullDownText(
+      this.season,
+    );
+    if (this.season !== "yearly") {
+      if (this.season === "ann") return "annually";
+      return seasonHumanReadable.toLowerCase().split(" ")[0].replace(":", "");
     }
-    return 'year';
+    return "year";
   }
 
   // default climate variable text
   hoverTemplateClimateVariableText() {
     // changes threshold wording to make more sense
-    if (this.season !== 'yearly') return this.climatevariable.toLowerCase();
-    return this.climatevariable.toLowerCase().replace('precipitation', 'precipitation')
-      .replace('minimum', 'the minimum')
-      .replace('maximum', 'the maximum');
+    if (this.season !== "yearly") return this.climatevariable.toLowerCase();
+    return this.climatevariable
+      .toLowerCase()
+      .replace("precipitation", "precipitation")
+      .replace("minimum", "the minimum")
+      .replace("maximum", "the maximum");
   }
 
   // creaete prefix for hover text to deal with seasonal data
@@ -116,53 +126,63 @@ class SandboxGeneratePlotData {
   //  and one word to work for it all was not working
   hoverTemplateSeasonTextPrefix() {
     // seasonal data
-    if (this.season !== 'yearly') {
+    if (this.season !== "yearly") {
       // annual season data
-      if (this.season === 'ann') return '';
-      return 'during the';
+      if (this.season === "ann") return "";
+      return "during the";
     }
     // default
-    return 'for the';
+    return "for the";
   }
 
   // creates units days, °F, " for annotation on Average line
   textUnitsWords() {
     // seasonal units for inches of precip and degrees farhnheit
-    if (this.season !== 'yearly') {
-      return this.chartType === 'Precipitation' ? 'inches' : '°F';
+    if (this.season !== "yearly") {
+      return this.chartType === "Precipitation" ? "inches" : "°F";
     }
     // threshold which is days in the regions locatipon
-    if (this.season === 'yearly') {
-      return 'days';
+    if (this.season === "yearly") {
+      return "days";
     }
     // deault to days
-    return 'days';
+    return "days";
   }
 
   // creates units days, °F, " for annotation on Average line
   averageTextUnits() {
     // seasonal units for inches of precip and degrees farhnheit
-    if (this.season !== 'yearly') {
-      return this.chartType === 'Precipitation' ? '"' : '°F';
+    if (this.season !== "yearly") {
+      return this.chartType === "Precipitation" ? '"' : "°F";
     }
     // threshold which is days in the regions locatipon
-    if (this.season === 'yearly') {
-      return 'days';
+    if (this.season === "yearly") {
+      return "days";
     }
     // deault to days
-    return 'days';
+    return "days";
   }
 
   // hover text for the yearly line
   yearLineText(x, y) {
     const seasonTextPrefix = this.hoverTemplateSeasonTextPrefix();
     const seasonText = this.hoverTemplateSeasonText();
-    const climateVariableText = this.hoverTemplateClimateVariableText().replace('°f', '°F');
+    const climateVariableText = this.hoverTemplateClimateVariableText().replace(
+      "°f",
+      "°F",
+    );
     const unitText = this.averageTextUnits;
     // season sentence
-    if (this.season !== 'yearly') return ` In %{x} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f} ${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
+    if (this.season !== "yearly")
+      return ` In %{x} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f} ${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+        / {2}/g,
+        " ",
+      );
     // threshold and default sentence
-    return ` In %{x} there was an average of %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(/ {2}/g, ' ');
+    return ` In %{x} there was an average of %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(
+      / {2}/g,
+      " ",
+    );
   }
 
   // hover text for year bar
@@ -172,21 +192,38 @@ class SandboxGeneratePlotData {
     const climateVariableText = this.hoverTemplateClimateVariableText();
     const unitText = this.averageTextUnits;
     // season sentence
-    if (this.season !== 'yearly') return ` In %{x} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText}   <extra></extra>`.replace(/ {2}/g, ' ');
+    if (this.season !== "yearly")
+      return ` In %{x} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText}   <extra></extra>`.replace(
+        / {2}/g,
+        " ",
+      );
     // threshold and default sentence
-    return ` In %{x} there were an average of %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(/ {2}/g, ' ');
+    return ` In %{x} there were an average of %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(
+      / {2}/g,
+      " ",
+    );
   }
 
   // hover text for average bar
   averageBarText(x, y, customdata) {
     const seasonTextPrefix = this.hoverTemplateSeasonTextPrefix();
     const seasonText = this.hoverTemplateSeasonText();
-    const climateVariableText = this.hoverTemplateClimateVariableText().replace('°f', '°F');
+    const climateVariableText = this.hoverTemplateClimateVariableText().replace(
+      "°f",
+      "°F",
+    );
     const unitText = this.averageTextUnits;
     // season sentence
-    if (this.season !== 'yearly') return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
+    if (this.season !== "yearly")
+      return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+        / {2}/g,
+        " ",
+      );
     // threshold and default sentence
-    return ` Between the years %{customdata} there were %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(/ {2}/g, ' ');
+    return ` Between the years %{customdata} there were %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(
+      / {2}/g,
+      " ",
+    );
   }
 
   // hover text for average line
@@ -196,8 +233,15 @@ class SandboxGeneratePlotData {
     const climateVariableText = this.hoverTemplateClimateVariableText();
     const unitText = this.averageTextUnits;
     // season sentence
-    if (this.season !== 'yearly') return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
-    return ` Between %{customdata} there were %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
+    if (this.season !== "yearly")
+      return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+        / {2}/g,
+        " ",
+      );
+    return ` Between %{customdata} there were %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+      / {2}/g,
+      " ",
+    );
   }
 
   // hover text for moving average line
@@ -207,77 +251,89 @@ class SandboxGeneratePlotData {
     const climateVariableText = this.hoverTemplateClimateVariableText();
     const unitText = this.averageTextUnits;
     // season sentence
-    if (this.season !== 'yearly') return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
-    return ` Between %{customdata} there were %{y:0.2f}${this.SmallScreenBreak}${climateVariableText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(/ {2}/g, ' ');
+    if (this.season !== "yearly")
+      return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+        / {2}/g,
+        " ",
+      );
+    return ` Between %{customdata} there were %{y:0.2f}${this.SmallScreenBreak}${climateVariableText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
+      / {2}/g,
+      " ",
+    );
   }
 
   // creates legend text in parentheses
   legendEllapsedText() {
     // seasonal legend text
-    if (this.season !== 'yearly') {
+    if (this.season !== "yearly") {
       const seasonText = this.hoverTemplateSeasonText();
       const unitText = this.textUnitsWords();
-      const legendPerText = `${unitText} ${seasonText.split(' ')[0].toLowerCase()}`;
+      const legendPerText = `${unitText} ${seasonText.split(" ")[0].toLowerCase()}`;
       return legendPerText;
     }
     // threshold legend text
-    if (this.season === 'yearly') {
-      const legendPerText = 'days';
+    if (this.season === "yearly") {
+      const legendPerText = "days";
       return legendPerText;
     }
     // default legend text
-    return 'days';
+    return "days";
   }
 
   // creates legend per text
   //  this is the per year or per season
   createlegendPerText() {
-    if (this.season !== 'yearly') {
+    if (this.season !== "yearly") {
       const seasonText = this.hoverTemplateSeasonText();
       // seasonal prefix legend text
-      let fortext = 'for ';
+      let fortext = "for ";
       // seasonal when annual prefix legend text
-      if (this.season === 'ann') {
-        fortext = '';
+      if (this.season === "ann") {
+        fortext = "";
       }
-      const legendPerText = `${fortext}${seasonText.split(' ')[0].toLowerCase()}`;
+      const legendPerText = `${fortext}${seasonText.split(" ")[0].toLowerCase()}`;
       return legendPerText;
     }
     // threshold prefix legend text
-    if (this.season === 'yearly') {
-      const legendPerText = 'per year';
+    if (this.season === "yearly") {
+      const legendPerText = "per year";
       return legendPerText;
     }
     // default prefix legend text
-    return 'per year';
+    return "per year";
   }
 
   // creates y axis text
   createYAxisText() {
     // seasonal y axis text
-    if (this.season !== 'yearly') {
-      const axisText = this.chartType === 'Precipitation' ? 'Inches' : 'Temperature (°F)';
+    if (this.season !== "yearly") {
+      const axisText =
+        this.chartType === "Precipitation" ? "Inches" : "Temperature (°F)";
       return axisText;
     }
     // threshold y axis text
-    if (this.season === 'yearly') {
-      const axisText = 'Days';
+    if (this.season === "yearly") {
+      const axisText = "Days";
       return axisText;
     }
     // default y axis text
-    return 'Days';
+    return "Days";
   }
 
   // splits chart title string into parts so its truncated
   // on small screens
   static splitTitle(title) {
-    if (!title) return '';
+    if (!title) return "";
     const longestLength = 25;
     const titleLength = title.length;
 
     let newTitle = title;
-    for (let pos = longestLength; pos < titleLength; pos = (pos + 5) + longestLength) {
-      const sepPos = newTitle.indexOf(' ', pos);
+    for (
+      let pos = longestLength;
+      pos < titleLength;
+      pos = pos + 5 + longestLength
+    ) {
+      const sepPos = newTitle.indexOf(" ", pos);
       if (sepPos > 0) {
         newTitle = `${newTitle.substring(0, sepPos)}<br>${newTitle.substring(sepPos + 1)}`;
       }
@@ -298,9 +354,12 @@ class SandboxGeneratePlotData {
   // to check if the region or location has data and is so return false
   // so we can pass an message to user
   hasData() {
-    if ((Number.isNaN(this.maxVal) || Number.isNaN(this.minVal)) ||
-         (this.maxVal === -999 && this.minVal === -999) ||
-         (this.maxVal === 0 && this.minVal === -999)) {
+    if (
+      Number.isNaN(this.maxVal) ||
+      Number.isNaN(this.minVal) ||
+      (this.maxVal === -999 && this.minVal === -999) ||
+      (this.maxVal === 0 && this.minVal === -999)
+    ) {
       return false;
     }
     return true;
@@ -316,7 +375,7 @@ class SandboxGeneratePlotData {
     const u5Bias = 0.5 + 1.5 * highUBias;
     const d = Math.abs(range[0] - range[1]);
     let c = d / n;
-    if ((Math.log(d) / Math.LN10) < -2) {
+    if (Math.log(d) / Math.LN10 < -2) {
       c = (Math.max(Math.abs(d)) * shrinkSml) / minN;
     }
 
@@ -327,11 +386,11 @@ class SandboxGeneratePlotData {
     }
 
     let unit = base;
-    if (((2 * base) - c) < (highUBias * (c - unit))) {
+    if (2 * base - c < highUBias * (c - unit)) {
       unit = 2 * base;
-      if (((5 * base) - c) < (u5Bias * (c - unit))) {
+      if (5 * base - c < u5Bias * (c - unit)) {
         unit = 5 * base;
-        if (((10 * base) - c) < (highUBias * (c - unit))) {
+        if (10 * base - c < highUBias * (c - unit)) {
           unit = 10 * base;
         }
       }
@@ -355,8 +414,12 @@ class SandboxGeneratePlotData {
     ticks.push(i);
 
     if (internalOnly) {
-      if (ticks[0] < range[0]) { ticks = ticks.slice(1); }
-      if (ticks[ticks.length - 1] > range[1]) { ticks.pop(); }
+      if (ticks[0] < range[0]) {
+        ticks = ticks.slice(1);
+      }
+      if (ticks[ticks.length - 1] > range[1]) {
+        ticks.pop();
+      }
     }
 
     return ticks;
@@ -366,7 +429,8 @@ class SandboxGeneratePlotData {
   computeMovingAverage() {
     const data = this.yvals;
     const period = this.AverageMovingPeriod;
-    const getAverage = (avgArr) => avgArr.reduce((a, b) => a + b, 0) / avgArr.length;
+    const getAverage = (avgArr) =>
+      avgArr.reduce((a, b) => a + b, 0) / avgArr.length;
     const movingAverages = [];
 
     // if the period is greater than the length of the dataset
@@ -387,7 +451,11 @@ class SandboxGeneratePlotData {
     const halfPeriod = Math.floor(this.periodGroups / 2);
     const movingAveragesX = [];
 
-    for (let x = (period - halfPeriod) - 1; x - period - 1 < data.length; x += 1) {
+    for (
+      let x = period - halfPeriod - 1;
+      x - period - 1 < data.length;
+      x += 1
+    ) {
       movingAveragesX.push(data[x]);
     }
     return movingAveragesX;
@@ -396,7 +464,8 @@ class SandboxGeneratePlotData {
   // creates the x values for each period for the custom hover template
   xValsAverageBarHoverText() {
     let count = 0;
-    const yValsPeriodAll = this.xvals.map((value, index) => { // eslint-disable-line
+    const yValsPeriodAll = this.xvals.map((value, index) => {
+      // eslint-disable-line
       // return value
       if (index === 0) {
         const plus = value + (this.periodGroups - 1);
@@ -404,7 +473,7 @@ class SandboxGeneratePlotData {
         count += 1;
         return tickText;
       }
-      if (count === (this.periodGroups)) {
+      if (count === this.periodGroups) {
         count = 0;
         const plus = value + (this.periodGroups - 1);
         const tickText = `${value}—${plus.toString().slice(0)}`;
@@ -420,12 +489,13 @@ class SandboxGeneratePlotData {
   xValsPeriod() {
     let count = 0;
     const halfPeriod = Math.floor(this.periodGroups / 2);
-    const yValsPeriodAll = this.xvals.map((value, index) => { // eslint-disable-line
+    const yValsPeriodAll = this.xvals.map((value, index) => {
+      // eslint-disable-line
       // return value
       if (index === 0) {
         return value <= -50 ? undefined : value + halfPeriod;
       }
-      if (count === (this.periodGroups - 1)) {
+      if (count === this.periodGroups - 1) {
         count = 0;
         return value <= -50 ? undefined : value + halfPeriod;
       }
@@ -445,14 +515,16 @@ class SandboxGeneratePlotData {
     let peroidSum = 0;
     let returnSum = 0;
     const yvalsCount = this.yvals.length - 1;
-    const sumXvalsAll = this.yvals.map((value, index) => { // eslint-disable-line
-      if (count === (this.periodGroups - 1)) {
+    const sumXvalsAll = this.yvals.map((value, index) => {
+      // eslint-disable-line
+      if (count === this.periodGroups - 1) {
         peroidSum += value <= -50 ? undefined : value;
         returnSum = peroidSum;
         count = 0;
         peroidSum = 0;
         return Number(Number(returnSum).toFixed(4));
-      } else { // eslint-disable-line no-else-return
+      } else {
+        // eslint-disable-line no-else-return
         peroidSum += value <= -50 ? undefined : value;
         count += 1;
       }
@@ -478,14 +550,16 @@ class SandboxGeneratePlotData {
     let peroidSum = 0;
     let returnAvg = 0;
     const yvalsCount = this.yvals.length - 1;
-    const avgXvalsAll = this.yvals.map((value, index) => { // eslint-disable-line
-      if (count === (this.periodGroups - 1)) {
+    const avgXvalsAll = this.yvals.map((value, index) => {
+      // eslint-disable-line
+      if (count === this.periodGroups - 1) {
         peroidSum += value <= -50 ? undefined : value;
         returnAvg = peroidSum / this.periodGroups;
         count = 0;
         peroidSum = 0;
         return Number(Number(returnAvg).toFixed(4));
-      } else { // eslint-disable-line no-else-return
+      } else {
+        // eslint-disable-line no-else-return
         peroidSum += value <= -50 ? undefined : value;
         count += 1;
       }
@@ -528,19 +602,22 @@ class SandboxGeneratePlotData {
       }
       return newVal;
     });
-    while (xIndex < parseInt(this.xvals[0], 10)) { // requested range below data range
+    while (xIndex < parseInt(this.xvals[0], 10)) {
+      // requested range below data range
       xIndex += 1;
-      ret.push('0'); // should this be undef/NaN? How does plotly handle it?
+      ret.push("0"); // should this be undef/NaN? How does plotly handle it?
     }
     let yvalsIndex = 0;
-    while (xIndex <= parseInt(this.xvals[this.xvals.length - 1], 10)) { // data
+    while (xIndex <= parseInt(this.xvals[this.xvals.length - 1], 10)) {
+      // data
       ret.push(this.yvals[yvalsIndex]);
       yvalsIndex += 1;
       xIndex += 1;
     }
-    while (xIndex <= this.xmax) { // requested range above data range
+    while (xIndex <= this.xmax) {
+      // requested range above data range
       xIndex += 1;
-      ret.push('0');
+      ret.push("0");
     }
     return ret;
   }
@@ -568,13 +645,13 @@ class SandboxGeneratePlotData {
     // for now its yearly, period average (defaults to 5), or
     // period moving average (defaults to 5).
     switch (this.lineChart) {
-      case 'year':
+      case "year":
         // yearly the line chart average is the bar chart
         return [this.traceAverageBar(), this.traceYearlyLine()];
-      case 'avg':
+      case "avg":
         // average the line chart yearly is the bar chart
         return [this.traceYearlyBar(), this.traceAverageLine()];
-      case 'mavg':
+      case "mavg":
         // moving average the line chart yearly is the bar chart
         return [this.traceYearlyBar(), this.traceMovingAverageLine()];
       default:
@@ -589,13 +666,13 @@ class SandboxGeneratePlotData {
     // for now its yearly, period average (defaults to 5), or
     // period moving average (defaults to 5).
     switch (this.lineChart) {
-      case 'year':
+      case "year":
         // yearly the line chart average is the bar chart
         return this.layoutAverageBar();
-      case 'avg':
+      case "avg":
         // average the line chart yearly is the bar chart
         return this.layoutYearBar();
-      case 'mavg':
+      case "mavg":
         // moving average the line chart yearly is the bar chart
         return this.layoutYearBar();
       default:
@@ -605,9 +682,9 @@ class SandboxGeneratePlotData {
   }
 
   static uuidv() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = Math.random() * 16 | 0; // eslint-disable-line
-      const v = c === 'x' ? r : (r & 0x3 | 0x8); // eslint-disable-line
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0; // eslint-disable-line
+      const v = c === "x" ? r : (r & 0x3) | 0x8; // eslint-disable-line
       return v.toString(16);
     });
   }
@@ -616,14 +693,14 @@ class SandboxGeneratePlotData {
   traceAverageBar() {
     return {
       uid: SandboxGeneratePlotData.uuidv(),
-      mode: 'lines',
+      mode: "lines",
       name: `5—Year Average (${this.legendEllapsedText})`,
-      type: 'histogram',
-      histfunc: 'avg',
+      type: "histogram",
+      histfunc: "avg",
       xbins: {
         start: this.xmin,
         end: this.xmax,
-        size: 5
+        size: 5,
       },
       nbinsx: 0,
       x: this.xvals,
@@ -632,15 +709,15 @@ class SandboxGeneratePlotData {
       marker: {
         line: {
           color: this.barColor,
-          width: 1
+          width: 1,
         },
-        color: this.barColor
+        color: this.barColor,
       },
-      hoverinfo: 'x+y',
+      hoverinfo: "x+y",
       customdata: this.xValsAverageBarHoverText(),
       hovertemplate: this.averageBarText(),
       legendgroup: 1,
-      orientation: 'v'
+      orientation: "v",
     };
   }
 
@@ -648,25 +725,25 @@ class SandboxGeneratePlotData {
   traceYearlyLine() {
     return {
       uid: SandboxGeneratePlotData.uuidv(),
-      mode: 'lines',
+      mode: "lines",
       name: `Average ${this.textUnitsWords()} ${this.legendPerText}`,
-      type: 'scatter',
+      type: "scatter",
       // visible: this.chartShowLine,
       x: this.xvals,
       y: this.getYvalues(),
       marker: {
-        color: this.annualLineColor
+        color: this.annualLineColor,
       },
       line: {
         color: this.AverageColor,
         width: this.AverageWidth,
-        dash: 'solid',
-        shape: 'linear',
-        simplify: true
+        dash: "solid",
+        shape: "linear",
+        simplify: true,
       },
       connectgaps: true,
-      hoverinfo: 'x+y',
-      hovertemplate: this.yearLineText()
+      hoverinfo: "x+y",
+      hovertemplate: this.yearLineText(),
     };
   }
 
@@ -674,28 +751,28 @@ class SandboxGeneratePlotData {
   traceYearlyBar() {
     return {
       uid: SandboxGeneratePlotData.uuidv(),
-      mode: 'lines',
+      mode: "lines",
       name: `Average ${this.textUnitsWords()} ${this.legendPerText}`,
-      type: 'bar',
+      type: "bar",
       x: this.xvals,
       y: this.getYvalues(),
       xbins: {
         start: this.xmin,
         end: this.xmax,
-        size: 5
+        size: 5,
       },
       marker: {
         line: {
           color: this.barColor,
-          width: 1
+          width: 1,
         },
-        color: this.barColor
+        color: this.barColor,
       },
-      histfunc: 'sum',
-      hoverinfo: 'x+y',
+      histfunc: "sum",
+      hoverinfo: "x+y",
       legendgroup: 1,
-      orientation: 'v',
-      hovertemplate: this.yearBarText()
+      orientation: "v",
+      hovertemplate: this.yearBarText(),
     };
   }
 
@@ -703,22 +780,25 @@ class SandboxGeneratePlotData {
   traceMovingAverageLine() {
     return {
       uid: SandboxGeneratePlotData.uuidv(),
-      mode: 'lines',
+      mode: "lines",
       name: `5—Year moving average (${this.legendEllapsedText})`,
-      type: 'scatter',
+      type: "scatter",
       x: this.xValsMovingAverage,
       y: this.yValsMovingAverage,
       line: {
         color: this.AverageColor,
         width: this.AverageWidth,
-        dash: 'solid',
-        shape: 'spline',
-        simplify: true
+        dash: "solid",
+        shape: "spline",
+        simplify: true,
       },
       connectgaps: true,
-      customdata: this.xValsMovingAverage.map((val) => `${val - Math.floor(this.periodGroups / 2)}—${(val - Math.floor(this.periodGroups / 2)) + this.AverageMovingPeriod}`),
-      hoverinfo: 'x+y',
-      hovertemplate: this.movingAverageLineText()
+      customdata: this.xValsMovingAverage.map(
+        (val) =>
+          `${val - Math.floor(this.periodGroups / 2)}—${val - Math.floor(this.periodGroups / 2) + this.AverageMovingPeriod}`,
+      ),
+      hoverinfo: "x+y",
+      hovertemplate: this.movingAverageLineText(),
     };
   }
 
@@ -726,22 +806,25 @@ class SandboxGeneratePlotData {
   traceAverageLine() {
     return {
       uid: SandboxGeneratePlotData.uuidv(),
-      mode: 'lines',
+      mode: "lines",
       name: `5—Year average (${this.legendEllapsedText})`,
-      type: 'scatter',
+      type: "scatter",
       x: this.xValsPeriod,
       y: this.yValsAvgByPeriod,
       line: {
         color: this.AverageColor,
         width: this.AverageWidth,
-        dash: 'solid',
-        shape: 'spline',
-        simplify: true
+        dash: "solid",
+        shape: "spline",
+        simplify: true,
       },
       connectgaps: true,
-      customdata: this.xValsPeriod.map((val) => `${val - Math.floor(this.periodGroups / 2)}—${(val - Math.floor(this.periodGroups / 2)) + this.periodGroups - 1}`),
-      hoverinfo: 'x+y',
-      hovertemplate: this.averageLineText()
+      customdata: this.xValsPeriod.map(
+        (val) =>
+          `${val - Math.floor(this.periodGroups / 2)}—${val - Math.floor(this.periodGroups / 2) + this.periodGroups - 1}`,
+      ),
+      hoverinfo: "x+y",
+      hovertemplate: this.averageLineText(),
     };
   }
 
@@ -756,26 +839,26 @@ class SandboxGeneratePlotData {
       plot_bgcolor: this.chartBackgroundColor,
       paper_bgcolor: this.chartBackgroundColor,
       legend: {
-        yanchor: 'top',
+        yanchor: "top",
         autosize: true,
-        orientation: 'h',
+        orientation: "h",
         x: this.legendBarLineX,
         y: this.legendBarLineY,
         font: {
           family: this.font,
-          size: this.fontSizeLabels
-        }
+          size: this.fontSizeLabels,
+        },
       },
       title: {
         text: this.chartTitle,
         font: {
           family: this.font,
-          size: this.fontSizePrimary
+          size: this.fontSizePrimary,
         },
-        x: this.chartTitleX
+        x: this.chartTitleX,
       },
       xaxis: {
-        type: 'linear',
+        type: "linear",
         range: [this.xmin - 5, this.xmax + 5],
         autorange: false,
         automargin: false,
@@ -784,46 +867,46 @@ class SandboxGeneratePlotData {
         showline: false,
         showgrid: false,
         fixedrange: true,
-        rangemode: 'tozero',
+        rangemode: "tozero",
         zerolinecolor: this.zeroLineColor,
         zerolinewidth: this.zerolinewidth,
         dtick: this.dtick,
         tick0: 0,
         tickangle: this.textAngle,
-        tickformat: '',
-        tickprefix: '',
+        tickformat: "",
+        tickprefix: "",
         nticks: this.periodGroups,
-        ticks: 'outside',
+        ticks: "outside",
         tickcolor: this.zeroLineColor,
         tickwidth: this.zerolinewidth,
         tickfont: {
           family: this.font,
-          size: this.fontSizeLabelsSecondary
+          size: this.fontSizeLabelsSecondary,
         },
         title: {
-          text: 'Year',
+          text: "Year",
           font: {
             family: this.font,
-            size: this.fontSizeLabels
-          }
+            size: this.fontSizeLabels,
+          },
         },
-        constraintoward: 'center',
+        constraintoward: "center",
         spikethickness: 4,
         displayModeBar: false,
-        autosize: true
+        autosize: true,
       },
       yaxis: {
         title: {
           text: this.yAxisText,
           font: {
             family: this.font,
-            size: this.fontSizeLabels
-          }
+            size: this.fontSizeLabels,
+          },
         },
-        rangemode: 'tozero',
+        rangemode: "tozero",
         range: this.yRange,
-        type: 'linear',
-        ticks: 'outside',
+        type: "linear",
+        ticks: "outside",
         tickcolor: this.zeroLineColor,
         tickwidth: this.zerolinewidth,
         autorange: false,
@@ -836,34 +919,34 @@ class SandboxGeneratePlotData {
         zerolinewidth: this.zerolinewidth,
         gridcolor: this.gridColor,
         gridwidth: this.gridwidth,
-        bargap: this.bargap
+        bargap: this.bargap,
       },
       template: {
         layout: {
-          hovermode: 'closest',
+          hovermode: "closest",
           plot_bgcolor: this.chartBackgroundColor,
-          paper_bgcolor: this.chartBackgroundColor
-        }
+          paper_bgcolor: this.chartBackgroundColor,
+        },
       },
       annotations: [
-      //   {
-      //   xref: 'x',
-      //   yref: 'y',
-      //   x: this.xmax + 1,
-      //   xanchor: 'left',
-      //   y: this.yRange[0] + 0.33,
-      //   yanchor: 'top',
-      //   text: 'Data Source X',
-      //   showarrow: false,
-      //   font: {
-      //     family: this.font,
-      //     size: this.AverageAllFontSize,
-      //     color: this.AverageAllFontColor
-      //   }
-      // },
+        //   {
+        //   xref: 'x',
+        //   yref: 'y',
+        //   x: this.xmax + 1,
+        //   xanchor: 'left',
+        //   y: this.yRange[0] + 0.33,
+        //   yanchor: 'top',
+        //   text: 'Data Source X',
+        //   showarrow: false,
+        //   font: {
+        //     family: this.font,
+        //     size: this.AverageAllFontSize,
+        //     color: this.AverageAllFontColor
+        //   }
+        // },
         {
-          xref: 'x',
-          yref: 'y',
+          xref: "x",
+          yref: "y",
           x: this.xmax + 2.5,
           y: this.yValsAvgAll.toFixed(1),
           text: `Average ${this.yValsAvgAll.toFixed(1)} ${this.averageTextUnits}`,
@@ -874,61 +957,64 @@ class SandboxGeneratePlotData {
           arrowcolor: this.AverageAllColor,
           ay: -100,
           ax: 10,
-          bgcolor: '#ffffff',
+          bgcolor: "#ffffff",
           font: {
             family: this.font,
             size: this.AverageAllFontSize,
-            color: this.AverageAllFontColor
-          }
-        }],
-      shapes: [{
-        type: 'line',
-        layer: 'below',
-        x0: this.xmin - 5,
-        y0: this.yValsAvgAll.toFixed(1),
-        x1: this.xmax + 5,
-        y1: this.yValsAvgAll.toFixed(1),
-        line: {
-          color: this.AverageAllColor,
-          width: this.AverageAllWidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: 0,
-        x1: this.xmax + 5,
-        y1: 0,
-        line: {
-          color: this.zeroLineColor,
-          width: this.zerolinewidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: this.yRange[this.yRange.length - 1],
-        x1: this.xmax + 5,
-        y1: this.yRange[this.yRange.length - 1],
-        line: {
-          color: this.gridColor,
-          width: this.gridwidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: this.yRange[0],
-        x1: this.xmax + 5,
-        y1: this.yRange[0],
-        line: {
-          color: this.zeroLineColor,
-          width: this.zerolinewidth
-        }
-      }]
+            color: this.AverageAllFontColor,
+          },
+        },
+      ],
+      shapes: [
+        {
+          type: "line",
+          layer: "below",
+          x0: this.xmin - 5,
+          y0: this.yValsAvgAll.toFixed(1),
+          x1: this.xmax + 5,
+          y1: this.yValsAvgAll.toFixed(1),
+          line: {
+            color: this.AverageAllColor,
+            width: this.AverageAllWidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: 0,
+          x1: this.xmax + 5,
+          y1: 0,
+          line: {
+            color: this.zeroLineColor,
+            width: this.zerolinewidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: this.yRange[this.yRange.length - 1],
+          x1: this.xmax + 5,
+          y1: this.yRange[this.yRange.length - 1],
+          line: {
+            color: this.gridColor,
+            width: this.gridwidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: this.yRange[0],
+          x1: this.xmax + 5,
+          y1: this.yRange[0],
+          line: {
+            color: this.zeroLineColor,
+            width: this.zerolinewidth,
+          },
+        },
+      ],
     };
   }
 
@@ -943,26 +1029,26 @@ class SandboxGeneratePlotData {
       plot_bgcolor: this.chartBackgroundColor,
       paper_bgcolor: this.chartBackgroundColor,
       legend: {
-        yanchor: 'top',
+        yanchor: "top",
         autosize: true,
-        orientation: 'h',
+        orientation: "h",
         x: this.legendBarLineX,
         y: this.legendBarLineY,
         font: {
           family: this.font,
-          size: this.fontSizeLabels
-        }
+          size: this.fontSizeLabels,
+        },
       },
       title: {
         text: this.chartTitle,
         font: {
           family: this.font,
-          size: this.fontSizePrimary
+          size: this.fontSizePrimary,
         },
-        x: this.chartTitleX
+        x: this.chartTitleX,
       },
       xaxis: {
-        type: 'linear',
+        type: "linear",
         range: [this.xmin - 5, this.xmax + 5],
         autorange: false,
         automargin: false,
@@ -971,46 +1057,46 @@ class SandboxGeneratePlotData {
         showline: false,
         showgrid: false,
         fixedrange: true,
-        rangemode: 'tozero',
+        rangemode: "tozero",
         zerolinecolor: this.zeroLineColor,
         zerolinewidth: this.zerolinewidth,
         dtick: this.dtick,
         tick0: 0,
         tickangle: this.textAngle,
-        tickformat: '',
-        tickprefix: '',
+        tickformat: "",
+        tickprefix: "",
         nticks: this.periodGroups,
-        ticks: 'outside',
+        ticks: "outside",
         tickcolor: this.zeroLineColor,
         tickwidth: this.zerolinewidth,
         tickfont: {
           family: this.font,
-          size: this.fontSizeLabelsSecondary
+          size: this.fontSizeLabelsSecondary,
         },
         title: {
-          text: 'Year',
+          text: "Year",
           font: {
             family: this.font,
-            size: this.fontSizeLabels
-          }
+            size: this.fontSizeLabels,
+          },
         },
-        constraintoward: 'center',
+        constraintoward: "center",
         spikethickness: 4,
         displayModeBar: false,
-        autosize: true
+        autosize: true,
       },
       yaxis: {
         title: {
           text: this.yAxisText,
           font: {
             family: this.font,
-            size: this.fontSizeLabels
-          }
+            size: this.fontSizeLabels,
+          },
         },
-        rangemode: 'tozero',
+        rangemode: "tozero",
         range: this.yRange,
-        type: 'linear',
-        ticks: 'outside',
+        type: "linear",
+        ticks: "outside",
         tickcolor: this.zeroLineColor,
         tickwidth: this.zerolinewidth,
         autorange: false,
@@ -1023,34 +1109,34 @@ class SandboxGeneratePlotData {
         zerolinewidth: this.zerolinewidth,
         gridcolor: this.gridColor,
         gridwidth: this.gridwidth,
-        bargap: this.bargap
+        bargap: this.bargap,
       },
       template: {
         layout: {
-          hovermode: 'x',
+          hovermode: "x",
           plot_bgcolor: this.chartBackgroundColor,
-          paper_bgcolor: this.chartBackgroundColor
-        }
+          paper_bgcolor: this.chartBackgroundColor,
+        },
       },
       annotations: [
-      // {
-      //   xref: 'x',
-      //   yref: 'y',
-      //   x: this.xmax + 1,
-      //   xanchor: 'left',
-      //   y: this.yRange[0] + 0.33,
-      //   yanchor: 'top',
-      //   text: 'Data Source X',
-      //   showarrow: false,
-      //   font: {
-      //     family: this.font,
-      //     size: this.AverageAllFontSize,
-      //     color: this.AverageAllFontColor
-      //   }
-      // },
+        // {
+        //   xref: 'x',
+        //   yref: 'y',
+        //   x: this.xmax + 1,
+        //   xanchor: 'left',
+        //   y: this.yRange[0] + 0.33,
+        //   yanchor: 'top',
+        //   text: 'Data Source X',
+        //   showarrow: false,
+        //   font: {
+        //     family: this.font,
+        //     size: this.AverageAllFontSize,
+        //     color: this.AverageAllFontColor
+        //   }
+        // },
         {
-          xref: 'x',
-          yref: 'y',
+          xref: "x",
+          yref: "y",
           x: this.xmax + 2.5,
           y: this.yValsAvgAll.toFixed(1),
           text: `Average ${this.yValsAvgAll.toFixed(1)} ${this.averageTextUnits}`,
@@ -1061,61 +1147,64 @@ class SandboxGeneratePlotData {
           arrowcolor: this.AverageAllColor,
           ay: -100,
           ax: 35,
-          bgcolor: '#ffffff',
+          bgcolor: "#ffffff",
           font: {
             family: this.font,
             size: this.AverageAllFontSize,
-            color: this.AverageAllFontColor
-          }
-        }],
-      shapes: [{
-        type: 'line',
-        layer: 'below',
-        x0: this.xmin - 5,
-        y0: this.yValsAvgAll.toFixed(1),
-        x1: this.xmax + 5,
-        y1: this.yValsAvgAll.toFixed(1),
-        line: {
-          color: this.AverageAllColor,
-          width: this.AverageAllWidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: 0,
-        x1: this.xmax + 5,
-        y1: 0,
-        line: {
-          color: this.zeroLineColor,
-          width: this.zerolinewidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: this.yRange[this.yRange.length - 1],
-        x1: this.xmax + 5,
-        y1: this.yRange[this.yRange.length - 1],
-        line: {
-          color: this.gridColor,
-          width: this.gridwidth
-        }
-      },
-      {
-        type: 'line',
-        layer: 'above',
-        x0: this.xmin - 5,
-        y0: this.yRange[0],
-        x1: this.xmax + 5,
-        y1: this.yRange[0],
-        line: {
-          color: this.zeroLineColor,
-          width: this.zerolinewidth
-        }
-      }]
+            color: this.AverageAllFontColor,
+          },
+        },
+      ],
+      shapes: [
+        {
+          type: "line",
+          layer: "below",
+          x0: this.xmin - 5,
+          y0: this.yValsAvgAll.toFixed(1),
+          x1: this.xmax + 5,
+          y1: this.yValsAvgAll.toFixed(1),
+          line: {
+            color: this.AverageAllColor,
+            width: this.AverageAllWidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: 0,
+          x1: this.xmax + 5,
+          y1: 0,
+          line: {
+            color: this.zeroLineColor,
+            width: this.zerolinewidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: this.yRange[this.yRange.length - 1],
+          x1: this.xmax + 5,
+          y1: this.yRange[this.yRange.length - 1],
+          line: {
+            color: this.gridColor,
+            width: this.gridwidth,
+          },
+        },
+        {
+          type: "line",
+          layer: "above",
+          x0: this.xmin - 5,
+          y0: this.yRange[0],
+          x1: this.xmax + 5,
+          y1: this.yRange[0],
+          line: {
+            color: this.zeroLineColor,
+            width: this.zerolinewidth,
+          },
+        },
+      ],
     };
   }
 }

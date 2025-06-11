@@ -1,7 +1,7 @@
-import React from 'react';
-import Plotly from 'plotly.js-cartesian-dist-min';
-import createPlotlyComponent from 'react-plotly.js/factory';
-import PropTypes from 'prop-types';
+import React from "react";
+import Plotly from "plotly.js-dist";
+import createPlotlyComponent from "react-plotly.js/factory";
+import PropTypes from "prop-types";
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -20,13 +20,17 @@ export default function SandboxPlotRegion(props) {
 
   // split title for small screens
   const splitTitle = (title) => {
-    if (title.indexOf('<br>', 0) > 0) return title;
+    if (title.indexOf("<br>", 0) > 0) return title;
     const longestLength = 25;
     const titleLength = title.length;
 
     let newTitle = title;
-    for (let pos = longestLength; pos < titleLength; pos = (pos + 5) + longestLength) {
-      const sepPos = newTitle.indexOf(' ', pos);
+    for (
+      let pos = longestLength;
+      pos < titleLength;
+      pos = pos + 5 + longestLength
+    ) {
+      const sepPos = newTitle.indexOf(" ", pos);
       if (sepPos > 0) {
         newTitle = `${newTitle.substring(0, sepPos)}<br>${newTitle.substring(sepPos + 1)}`;
       }
@@ -36,8 +40,8 @@ export default function SandboxPlotRegion(props) {
 
   // remove split from title for large screens
   const unSplitTitle = (title) => {
-    if (title.indexOf('<br>', 0) > 0 && window.innerWidth <= 768) return title;
-    return title.replace('<br>', ' ');
+    if (title.indexOf("<br>", 0) > 0 && window.innerWidth <= 768) return title;
+    return title.replace("<br>", " ");
   };
 
   const resizeChart = () => {
@@ -65,14 +69,17 @@ export default function SandboxPlotRegion(props) {
 
     // only change title if the object exists
     if (copiedLayout.title) {
-      const chartTitle = copiedLayout ? unSplitTitle(copiedLayout.title.text) : '';
+      const chartTitle = copiedLayout
+        ? unSplitTitle(copiedLayout.title.text)
+        : "";
       const shortTitle = splitTitle(chartTitle);
-      copiedLayout.title.text = window.innerWidth <= 768 ? shortTitle : chartTitle;
+      copiedLayout.title.text =
+        window.innerWidth <= 768 ? shortTitle : chartTitle;
       copiedLayout.title.x = titleX;
     }
 
     setLayout({ ...copiedLayout });
-    window.dispatchEvent(new Event('resizedone'));
+    window.dispatchEvent(new Event("resizedone"));
     return null;
   };
 
@@ -83,7 +90,7 @@ export default function SandboxPlotRegion(props) {
   }, [props.plotlyLayout]);
 
   React.useEffect(() => {
-    window.addEventListener('resize', resizeChart);
+    window.addEventListener("resize", resizeChart);
 
     // returned function will be called on component unmount
     return () => {
@@ -92,22 +99,23 @@ export default function SandboxPlotRegion(props) {
   }, []);
 
   return (
-    <div className="PlotRegionDiv"
+    <div
+      className="PlotRegionDiv"
       {...{
-        ref: responsiveChartRef
+        ref: responsiveChartRef,
       }}
-      >
+    >
       <Plot
         data={plotlyData}
         layout={layoutRef.current}
         config={config}
         revision={Math.floor(Math.random() * 100000)}
-        />
+      />
     </div>
   );
 }
 
 SandboxPlotRegion.propTypes = {
   plotlyLayout: PropTypes.object,
-  plotlyData: PropTypes.array
+  plotlyData: PropTypes.array,
 };
