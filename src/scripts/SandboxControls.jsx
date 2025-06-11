@@ -1351,7 +1351,7 @@ export default function SandboxControls() {
         container
         spacing={0}
         justify="flex-start"
-        direction={"row"}
+        direction="row"
         sx={{
           backgroundColor: white,
           color: fontColor,
@@ -1382,7 +1382,7 @@ export default function SandboxControls() {
             container
             spacing={0}
             justify="flex-start"
-            direction={"row"}
+            direction="row"
             sx={{
               maxHeight: "375px",
               backgroundColor: pullDownBackground,
@@ -1435,7 +1435,6 @@ export default function SandboxControls() {
                     TransitionComponent={Fade}
                     enterNextDelay={750}
                     arrow
-                    interactive
                     sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
                   >
                     <InsertChartOutlinedIcon
@@ -1444,10 +1443,8 @@ export default function SandboxControls() {
                         color: "#5C5C5C",
                         fontSize: "1.5rem",
                         marginLeft: theme.spacing(0.1),
-                        position: "absolute",
                         backgroundColor: "#ffffff",
                         borderRadius: "30px",
-                        top: "-0.66rem",
                       }}
                     />
                   </Tooltip>
@@ -1720,9 +1717,10 @@ export default function SandboxControls() {
 
         <Grid
           size={{ xs: 12 }}
-          display="flex"
-          flex={1}
           sx={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
             height: (chartOnly) =>
               chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250px)",
             maxHeight: (chartOnly) =>
@@ -1734,22 +1732,26 @@ export default function SandboxControls() {
             },
           }}
         >
-          <Box
-            display="flex"
-            flexDirection="row"
-            m={1}
-            width={1}
-            justifyContent="center"
-            flex={1}
-            flexGrow={3}
-          >
-            <SandboxAlert
-              shouldOpenAlert={openError}
-              errorType={errorType}
-              chartErrorTitle={chartErrorTitle}
-              chartErrorMessage={chartErrorMessage}
-            />
-          </Box>
+          {openError && (
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 1000,
+                display: "flex",
+                justifyContent: "center",
+                p: 1,
+              }}
+            >
+              <SandboxAlert
+                shouldOpenAlert={openError}
+                errorType={errorType}
+                chartErrorTitle={chartErrorTitle}
+                chartErrorMessage={chartErrorMessage}
+              />
+            </Box>
+          )}
 
           <Box
             display="flex"

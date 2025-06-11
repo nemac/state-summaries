@@ -282,7 +282,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -327,7 +326,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -371,7 +369,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -456,7 +453,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -493,7 +489,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -537,7 +532,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
@@ -577,7 +571,6 @@ export default function Selector(props) {
               TransitionComponent={Fade}
               enterNextDelay={750}
               arrow
-              interactive
               sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
             >
               <Button
