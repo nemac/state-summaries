@@ -20,10 +20,8 @@ import { orange, red } from "@mui/material/colors";
 // }));
 
 export default function Alert(props) {
-  const { chartErrorTitle } = props;
-  const { chartErrorMessage } = props;
-  const { errorType } = props;
-  const { shouldOpenAlert } = props;
+  const { chartErrorTitle, chartErrorMessage, errorType, shouldOpenAlert } =
+    props;
 
   const errorBgColor = red[500];
   const errorBorderColor = red[900];
