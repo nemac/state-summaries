@@ -1,5 +1,5 @@
 // floating action buttons for downloading and switching bar and averages.
-import React from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -133,17 +133,19 @@ import SandboxSumbitFigure from "./SandboxSumbitFigure.jsx";
 
 export default function Selector(props) {
   const theme = useTheme();
-  const { handleSwtichYearlyToLinea } = props;
-  const { handleSwtichAverageAndYearlya } = props;
-  const { handleSwtichMovingAverageAndYearlya } = props;
-  const { handleDownloadChartAsCSVa } = props;
-  const { handleDownloadChartAsPNGa } = props;
-  const { handleDownloadChartAsSVGa } = props;
-  const { lineChart } = props;
+  const {
+    handleSwtichYearlyToLinea,
+    handleSwtichAverageAndYearlya,
+    handleSwtichMovingAverageAndYearlya,
+    handleDownloadChartAsCSVa,
+    handleDownloadChartAsPNGa,
+    handleDownloadChartAsSVGa,
+    lineChart,
+  } = props;
 
-  const [openCustomSizeSVG, setOpenCustomSizeSVG] = React.useState(false);
-  const [openCustomSizePNG, setOpenCustomSizePNG] = React.useState(false);
-  const [openSubmitFigure, setOpenSubmitFigure] = React.useState(false);
+  const [openCustomSizeSVG, setOpenCustomSizeSVG] = useState(false);
+  const [openCustomSizePNG, setOpenCustomSizePNG] = useState(false);
+  const [openSubmitFigure, setOpenSubmitFigure] = useState(false);
 
   const setSelected = (whichchart, me) => {
     switch (lineChart) {
