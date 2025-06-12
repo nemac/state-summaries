@@ -233,7 +233,7 @@ export default function Selector(props) {
   };
 
   return (
-    <Grid container spacing={0} justify="flex-end" direction={"row"}>
+    <Grid container spacing={0} justify="flex-end" direction="row">
       <Grid size={{ xs: 12, sm: 12, md: 6 }} width="100%">
         <Box
           sx={{
