@@ -24,6 +24,7 @@ import SandboxActionMenu from "./SandboxActionMenu.jsx";
 import SandboxParseDataFiles from "./SandboxParseDataFiles.jsx";
 
 // configs
+import config from "../configs/config.js";
 import SandboxDataControl from "../configs/SandboxDataControl";
 import SandboxRegionItems from "../configs/SandboxRegionItems";
 import SandboxPeriods from "../configs/SandboxPeriods";
@@ -35,6 +36,7 @@ import axios from "axios";
 
 // css
 import "../css/Sandbox.scss";
+import GroupedDropDownSelector from "../components/GroupedDropDownSelector.jsx";
 
 const RegionItems = SandboxRegionItems();
 const PeriodsFull = SandboxPeriods();
@@ -271,6 +273,13 @@ export default function SandboxControls() {
       URLSeasonDisabled = true;
       break;
   }
+
+  // NEW STATE VARIABLES JEFF
+  const [climateOption, setClimateOption] = useState(
+    "Annual Mean (Jan-Dec)_Average Temperature",
+  );
+
+  // END NEW STATE VARIABLES
 
   // set React state via React Hooks
   // used to detect the first call - for getting state from url
@@ -1344,6 +1353,13 @@ export default function SandboxControls() {
     saveFile(fileContent, fileName, fileType);
   };
 
+  // NEW HANDLERS JEFF
+  const handleClimateOptionChange = (event) => {
+    setClimateOption(event.target.value);
+  };
+
+  // END NEW HANDLERS
+
   return (
     <div>
       <Grid
@@ -1527,7 +1543,7 @@ export default function SandboxControls() {
               </Box>
             </Grid>
             <Grid
-              size={{ xs: 12, sm: 3, md: 2 }}
+              size={{ xs: 12, sm: 3, md: 5 }}
               sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
@@ -1542,20 +1558,22 @@ export default function SandboxControls() {
                 justifyContent="flex-start"
               >
                 <SandboxSelector
-                  items={RegionItems}
-                  controlName={"Select a Geographic Scale"}
+                  items={config.dropdownOptionsList}
+                  controlName={"Select a State, Territory, or NCA Region"}
                   onChange={handleRegionChange}
-                  value={region}
+                  value={""}
                   disabled={false}
                   season={season}
                   missing={!region}
                   replaceClimatevariableType={replaceClimatevariableType}
-                  TooltipText={"Select a scale: national, NCA region, or state"}
+                  TooltipText={
+                    "Select a region: State, Territory, or NCA region"
+                  }
                 />
               </Box>
             </Grid>
             <Grid
-              size={{ xs: 12, sm: 3, md: 2 }}
+              size={{ xs: 12, sm: 3, md: 5 }}
               sx={{ height: "75px", maxHeight: "75px" }}
             >
               <Box
@@ -1569,119 +1587,15 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                <SandboxSelector
-                  items={locationItems}
-                  controlName={"Select a Location"}
-                  onChange={handleLocationChange}
-                  value={location}
-                  season={season}
-                  disabled={locationDisabled}
-                  missing={region !== "National" && !location}
-                  replaceClimatevariableType={replaceClimatevariableType}
-                  replaceLocationAbbreviation={replaceLocationAbbreviation}
-                  TooltipText={
-                    "Select the applicable NCA region or state based on your scale selection. Not applicable for national-scale figures"
-                  }
+                <GroupedDropDownSelector
+                  options={config.climateDataHierarchy}
+                  label="Select Climate Variability and Seasonality"
+                  onChange={handleClimateOptionChange}
+                  value={climateOption}
                 />
               </Box>
             </Grid>
-            <Grid
-              size={{ xs: 12, sm: 3, md: 2 }}
-              sx={{ height: "75px", maxHeight: "75px" }}
-            >
-              <Box
-                fontWeight="fontWeightBold"
-                ml={1}
-                mt={1}
-                mb={1}
-                mr={1}
-                display="flex"
-                flexDirection="row"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <SandboxSelector
-                  items={Seasons}
-                  controlName={"Select the Time Scale"}
-                  onChange={handleSeasonChange}
-                  value={season}
-                  disabled={seasonDisabled}
-                  missing={!season}
-                  season={season}
-                  replaceClimatevariableType={replaceClimatevariableType}
-                  replaceSeasonType={replaceSeasonType}
-                  TooltipText={
-                    "Select from among two annual scales or the four meteorological seasons. Your selection will drive the what is available in the climate variables."
-                  }
-                />
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12, sm: 6, md: 4 }}
-              sx={{ height: "75px", maxHeight: "75px" }}
-            >
-              <Box
-                fontWeight="fontWeightBold"
-                ml={1}
-                mt={1}
-                mb={1}
-                mr={1}
-                display="flex"
-                flexDirection="row"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <SandboxSelector
-                  items={climatevariableItems}
-                  controlName={"Select a Climate Variable"}
-                  onChange={handleClimatevariableChange}
-                  value={climatevariable}
-                  season={season}
-                  disabled={climatevariableDisabled}
-                  missing={!climatevariable}
-                  replaceClimatevariableType={replaceClimatevariableType}
-                  TooltipText={
-                    "Select an applicable climate variable. Your available choices are based on your time scale selection. Your choice here will drive the time period(s) available. "
-                  }
-                />
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12, sm: 3, md: 2 }}
-              sx={{ height: "75px", maxHeight: "75px" }}
-            >
-              <Box
-                fontWeight="fontWeightBold"
-                ml={1}
-                mt={1}
-                mb={1}
-                mr={1}
-                display="flex"
-                flexDirection="row"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <SandboxSelector
-                  items={PeriodsFull}
-                  controlName={"Select a Time Period"}
-                  onChange={handlePeriodChange}
-                  value={period}
-                  disabled={periodDisabled}
-                  missing={!period}
-                  season={season}
-                  replaceClimatevariableType={replaceClimatevariableType}
-                  replacePeriodType={replacePeriodType}
-                  TooltipText={
-                    "For mean temperature and precipitation, the entire available period of 1895-2020 should be displayed and it is thus the only option. " +
-                    "For annual threshold graphics, the longest period of 1900-2020 should generally be chosen if available to represent a fuller range of observed variability. " +
-                    "However, for some states, there are few or no stations that satisfy the missing data criterion (less than 10% missing daily data) and the shorter " +
-                    "period of 1950-2020 is the only option. This shorter period is offered as an option for all of the regions and states for the threshold graphs. " +
-                    "It may be a better option in some cases if the major features of variability occur after 1950; in that case, the greater number of stations that are " +
-                    "used in the calculations provide for more robust statistics"
-                  }
-                />
-              </Box>
-            </Grid>
+
             <Grid
               size={{ xs: 12 }}
               sx={{
