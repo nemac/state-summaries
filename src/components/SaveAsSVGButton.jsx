@@ -1,6 +1,6 @@
 import React from "react";
-import Box from "react";
-import Button from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 const SaveAsSVGButton = () => {
   return (

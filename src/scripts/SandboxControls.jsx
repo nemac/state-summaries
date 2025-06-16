@@ -276,7 +276,7 @@ export default function SandboxControls() {
 
   // NEW STATE VARIABLES JEFF
   const [climateOption, setClimateOption] = useState(
-    "Annual Mean (Jan-Dec)_Average Temperature",
+    "Annual Mean (Jan-Dec)_Average Temperature"
   );
 
   // END NEW STATE VARIABLES
@@ -330,7 +330,7 @@ export default function SandboxControls() {
   const [locationDisabled, setlocationDisabled] = useState(URLLocationDisabled);
   // if no region selected disables climate variable pulldown - helps manage user error
   const [climatevariableDisabled, setClimatevariableDisabled] = useState(
-    URLClimatevariableDisabled,
+    URLClimatevariableDisabled
   );
   // if no region selected period pulldown - helps manage user error
   const [periodDisabled, setPeriodDisabled] = useState(URLPeriodDisabled);
@@ -368,7 +368,7 @@ export default function SandboxControls() {
   const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
     const sandboxHumanReadable = new SandboxHumanReadable();
     return sandboxHumanReadable.getLocationDownText(
-      replaceAbbreviationLocation,
+      replaceAbbreviationLocation
     );
   };
 
@@ -465,7 +465,7 @@ export default function SandboxControls() {
         const chartDataFromFile = sandboxParseDataFiles.parseFile(
           response.data,
           chartDataRegion.toLowerCase(),
-          chartDataLocation,
+          chartDataLocation
         );
 
         // get the chart type which is the climate variable
@@ -476,7 +476,7 @@ export default function SandboxControls() {
         // humans can read tmax100F beceomes Days with Maximum Temperature Above 100°F and
         // AK becomes Alaska
         const sandboxHumanReadable = new SandboxHumanReadable(
-          chartDataClimatevariable,
+          chartDataClimatevariable
         );
 
         // get the location from the ui
@@ -494,7 +494,7 @@ export default function SandboxControls() {
         const humandReadablechartDataClimatevariable =
           sandboxHumanReadable.getClimateVariablePullDownText(
             chartDataClimatevariable,
-            chartDataSeason,
+            chartDataSeason
           );
 
         // get period range
@@ -581,7 +581,7 @@ export default function SandboxControls() {
           setErrorType("Warning");
           setChartErrorTitle("Warning data is all zeros");
           setChartErrorMessage(
-            `Warning the chart data for ${chartTitle} contains all zeros (0).`,
+            `Warning the chart data for ${chartTitle} contains all zeros (0).`
           );
         } else {
           setOpenError(false);
@@ -949,7 +949,7 @@ export default function SandboxControls() {
     const sandboxHumanReadable = new SandboxHumanReadable();
     return sandboxHumanReadable.getClimateVariablePullDownText(
       replaceClimatevariable,
-      seasonHR,
+      seasonHR
     );
   };
 
@@ -1105,7 +1105,7 @@ export default function SandboxControls() {
   const exportSVG = (
     svgSelector = ".js-plotly-plot .main-svg",
     widthARG = 1000,
-    heightARG = 500,
+    heightARG = 500
   ) => {
     const svgElem = document.querySelector(svgSelector);
     if (svgElem) {
@@ -1113,7 +1113,7 @@ export default function SandboxControls() {
       const sizeChanged = checkSVGForSizeChange(
         svgSelector,
         widthARG,
-        heightARG,
+        heightARG
       );
       if (!sizeChanged) {
         const base64doc = convertToOneSvg(svgSelector);
@@ -1126,7 +1126,7 @@ export default function SandboxControls() {
     const plotHolderDiv =
       document.querySelector(".PlotRegionDiv").parentElement;
     const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container",
+      ".user-select-none.svg-container"
     );
 
     // get default for heights and widths
@@ -1170,13 +1170,13 @@ export default function SandboxControls() {
   const convertToPng = (
     svgSelector = ".js-plotly-plot .main-svg",
     widthARG = 1000,
-    heightARG = 500,
+    heightARG = 500
   ) => {
     // get ploltly div
     const plotHolderDiv =
       document.querySelector(".PlotRegionDiv").parentElement;
     const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container",
+      ".user-select-none.svg-container"
     );
     const sizeChanged = checkSVGForSizeChange(svgSelector, widthARG, heightARG);
 
@@ -1217,7 +1217,7 @@ export default function SandboxControls() {
       mergedSVG.setAttribute("xmlns", svgs[0].getAttribute("xmlns"));
       mergedSVG.setAttribute(
         "xmlns:xlink",
-        svgs[0].getAttribute("xmlns:xlink"),
+        svgs[0].getAttribute("xmlns:xlink")
       );
       mergedSVG.setAttribute("width", width);
       mergedSVG.setAttribute("height", height);
@@ -1313,9 +1313,9 @@ export default function SandboxControls() {
     let csv = items.map((row) =>
       header
         .map((fieldName) =>
-          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""'),
+          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""')
         )
-        .join(","),
+        .join(",")
     );
 
     // push header to begining of array
