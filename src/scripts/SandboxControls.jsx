@@ -275,6 +275,9 @@ export default function SandboxControls() {
   }
 
   // NEW STATE VARIABLES JEFF
+  const [regionSelection, setRegionSelection] = useState(
+    "Contiguous United States",
+  );
   const [climateOption, setClimateOption] = useState(
     "Annual Mean (Jan-Dec)_Average Temperature",
   );
@@ -702,6 +705,7 @@ export default function SandboxControls() {
   // handle state change for region
   const handleRegionChange = (newValue) => {
     setRegion(newValue);
+    setRegionSelection(newValue);
 
     switch (newValue) {
       case "National":
@@ -780,108 +784,6 @@ export default function SandboxControls() {
     });
   };
 
-  // handle state change for location within the region
-  const handleLocationChange = (newValue) => {
-    setLocation(newValue);
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: newValue,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-  };
-
-  // handle state change for climate variable
-  const handleClimatevariableChange = (newValue) => {
-    setClimatevariable(newValue);
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: newValue,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
-  // handle state change for period
-  const handlePeriodChange = (newValue) => {
-    setPeriod(newValue);
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: newValue,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
-  // handle state change for season
-  const handleSeasonChange = (newValue) => {
-    const oldValue = season;
-    setSeason(newValue);
-    let newPeriod = period;
-    let newClimatevariable = climatevariable;
-
-    //  set period when changing from thresholds to seasonal data
-    if (
-      newValue !== "yearly" &&
-      (period === "1900-current" || period === "1950-current")
-    ) {
-      setPeriod("1895-current");
-      newPeriod = "1895-current";
-    }
-
-    //  set period when changing from seasonal data to thresholds
-    if (newValue === "yearly" && period === "1895-current") {
-      setPeriod("1900-current");
-      newPeriod = "1900-current";
-    }
-
-    //  set climate variable when changing from seasonal data to thresholds
-    if (oldValue === "yearly" && newValue !== "yearly") {
-      setClimatevariable("tmpc");
-      newClimatevariable = "tmpc";
-    }
-
-    //  set climate variable when changing from thresholds to seasonal data
-    if (oldValue !== "yearly" && newValue === "yearly") {
-      setClimatevariable("1inch");
-      newClimatevariable = "1inch";
-    }
-
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: newClimatevariable,
-      chartDataPeriod: newPeriod,
-      chartDataSeason: newValue,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
   // handles switching of yearly and average in chart
   // avg as bars and yearly as line - default
   // yearly as bars and avg as line
@@ -951,20 +853,6 @@ export default function SandboxControls() {
       replaceClimatevariable,
       seasonHR,
     );
-  };
-
-  // repalce the period variable with human readable period variable
-  // 1900-current beceomes 1900 - X year in YYYY format - 2021
-  const replacePeriodType = (replacePeriod, seasonHR) => {
-    const sandboxHumanReadable = new SandboxHumanReadable();
-    return sandboxHumanReadable.getPeriodPullDownText(replacePeriod, seasonHR);
-  };
-
-  // repalce the season variable with human readable period variable
-  // djf beceomes  Winter (Dec, Jan, Feb)
-  const replaceSeasonType = (replaceSeason) => {
-    const sandboxHumanReadable = new SandboxHumanReadable();
-    return sandboxHumanReadable.getSeasonPullDownText(replaceSeason);
   };
 
   // removes <br> from title atttribute (in SVG) so images are exported without error
@@ -1561,7 +1449,7 @@ export default function SandboxControls() {
                   items={config.dropdownOptionsList}
                   controlName={"Select a State, Territory, or NCA Region"}
                   onChange={handleRegionChange}
-                  value={""}
+                  value={regionSelection}
                   disabled={false}
                   season={season}
                   missing={!region}
