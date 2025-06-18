@@ -1629,7 +1629,13 @@ export default function SandboxControls() {
               {/*  handleMailToTSUa={handleMailToTSU}*/}
               {/*  lineChart={lineChart}*/}
               {/*/>*/}
-              <SaveChart chartData={chartData} />
+              <SaveChart
+                chartData={chartData}
+                region={region}
+                location={location}
+                climatevariable={climatevariable}
+                period={period}
+              />
             </Grid>
           </Grid>
         </Grid>

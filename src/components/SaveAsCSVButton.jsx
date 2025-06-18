@@ -5,7 +5,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FileSaver from "file-saver";
 
 const SaveAsCSVButton = (props) => {
-  const { chartData } = props;
+  const { chartData, region, location, climatevariable, period } = props;
   console.log(chartData);
 
   // This is what actually creates and saves the file.
@@ -17,7 +17,7 @@ const SaveAsCSVButton = (props) => {
   // handles downloads chart as CSV
   const handleDownloadChartAsCSV = () => {
     const fileContent = [convertDataToCSV(convertChartDataToJSON())];
-    const fileName = `${chartData.region}-${chartData.location}-${chartData.climatevariable}-${chartData.period}.csv`; //downloading as undefined, will revisit later
+    const fileName = `${region}-${location}-${climatevariable}-${period}.csv`;
     const fileType = "text/csv;charset=utf-8";
     saveFile(fileContent, fileName, fileType);
   };

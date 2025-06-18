@@ -4,9 +4,10 @@ import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 
 const SaveAsSVGButton = (props) => {
-  const { chartData } = props;
+  const { chartData, screenSize } = props;
 
   // handles downloads chart as SVG with fixed size
+  // can get rid of this later; redundant
   const handleDownloadChartAsSVG = (svgSelector, width, height) => {
     exportSVG(svgSelector, width, height);
   };
@@ -108,7 +109,6 @@ const SaveAsSVGButton = (props) => {
     widthARG = 1000,
     heightARG = 500
   ) => {
-    console.log(svgSelector);
     const svgElem = document.querySelector(svgSelector);
     if (svgElem) {
       // do not change dimensions if not changed by user aka default setting
@@ -178,7 +178,7 @@ const SaveAsSVGButton = (props) => {
             }}
           />
         }
-        onClick={handleDownloadChartAsSVG}
+        onClick={() => handleDownloadChartAsSVG(svgSelector, width, height)}
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >
