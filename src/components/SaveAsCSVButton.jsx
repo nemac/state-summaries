@@ -6,6 +6,7 @@ import FileSaver from "file-saver";
 
 const SaveAsCSVButton = (props) => {
   const { chartData } = props;
+  console.log(chartData);
 
   // This is what actually creates and saves the file.
   const saveFile = (content, filename, filetype) => {
