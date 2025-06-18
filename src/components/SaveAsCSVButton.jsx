@@ -4,9 +4,8 @@ import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 import FileSaver from "file-saver";
 
-const SaveAsCSVButton = () => {
-  //   const [chartData, setChartData] = useState([{}]);
-  //   setChartData();
+const SaveAsCSVButton = (props) => {
+  const { chartData } = props;
 
   // This is what actually creates and saves the file.
   const saveFile = (content, filename, filetype) => {
@@ -17,8 +16,7 @@ const SaveAsCSVButton = () => {
   // handles downloads chart as CSV
   const handleDownloadChartAsCSV = () => {
     const fileContent = [convertDataToCSV(convertChartDataToJSON())];
-    // const fileName = `${region}-${location}-${climatevariable}-${period}.csv`;
-    const fileName = "CSV_file.csv"; //hard-coded file name for now
+    const fileName = `${chartData.region}-${chartData.location}-${chartData.climatevariable}-${chartData.period}.csv`; //downloading as undefined, will revisit later
     const fileType = "text/csv;charset=utf-8";
     saveFile(fileContent, fileName, fileType);
   };
@@ -31,9 +29,9 @@ const SaveAsCSVButton = () => {
     let csv = items.map((row) =>
       header
         .map((fieldName) =>
-          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""'),
+          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""')
         )
-        .join(","),
+        .join(",")
     );
 
     // push header to begining of array
@@ -46,14 +44,8 @@ const SaveAsCSVButton = () => {
   // chart data has years in one array and values in another
   // csv conversion makes it {year: value} so its easier to convert to csv
   const convertChartDataToJSON = () => {
-    // testing with hard-coded data
-    const years = [
-      2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
-    ];
-    const values = [
-      53.19, 55.28, 52.43, 52.54, 54.39, 54.91, 54.55, 53.52, 52.68, 54.37,
-      54.51,
-    ];
+    const years = chartData[0].x;
+    const values = chartData[0].y;
 
     // merge arrays into the new object
     const JSONContent = years.map((value, index) => {

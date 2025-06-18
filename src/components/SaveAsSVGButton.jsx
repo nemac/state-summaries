@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 
-const SaveAsSVGButton = () => {
+const SaveAsSVGButton = (props) => {
+  const { chartData } = props;
   return (
     <Box>
       <Button

@@ -10,10 +10,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="sandbox-holderofall">
-        {/* Testing Buttons */}
-        {/* <SaveAsPNGButton /> */}
-        {/* <SaveAsSVGButton /> */}
-        <SaveAsCSVButton />
         <SandboxControls />
       </div>
     </ThemeProvider>
