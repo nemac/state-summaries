@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import DownloadIcon from "@mui/icons-material/Download";
 import FileSaver from "file-saver";
 
 const SaveAsCSVButton = () => {
@@ -30,9 +31,9 @@ const SaveAsCSVButton = () => {
     let csv = items.map((row) =>
       header
         .map((fieldName) =>
-          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""')
+          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""'),
         )
-        .join(",")
+        .join(","),
     );
 
     // push header to begining of array
@@ -64,7 +65,18 @@ const SaveAsCSVButton = () => {
 
   return (
     <Box>
-      <Button onClick={handleDownloadChartAsCSV} variant="outlined">
+      <Button
+        startIcon={
+          <DownloadIcon
+            sx={{
+              p: 0.5,
+            }}
+          />
+        }
+        onClick={handleDownloadChartAsCSV}
+        variant="outlined"
+        sx={{ backgroundColor: "#1976d2", color: "white" }}
+      >
         Save as a CSV
       </Button>
     </Box>
