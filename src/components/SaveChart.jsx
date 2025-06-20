@@ -327,6 +327,10 @@ const SaveChart = (props) => {
                     height={height}
                     chartData={chartData}
                     screenSize={{ width: 1000, height: 500 }}
+                    region={region}
+                    location={location}
+                    climatevariable={climatevariable}
+                    period={period}
                   />
                 )}
                 {selectedFormat === "CSV" && (
