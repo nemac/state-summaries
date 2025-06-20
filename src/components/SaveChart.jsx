@@ -319,7 +319,12 @@ const SaveChart = (props) => {
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 {selectedFormat === "PNG" && (
-                  <SaveAsPNGButton width={width} height={height} />
+                  <SaveAsPNGButton
+                    widthARG={width}
+                    heightARG={height}
+                    chartData={chartData}
+                    screenSize={{ width: 1000, height: 500 }}
+                  />
                 )}
                 {selectedFormat === "SVG" && (
                   <SaveAsSVGButton
