@@ -27,7 +27,7 @@ import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 
 const SaveChart = (props) => {
-  const { chartData } = props;
+  const { chartData, region, location, climatevariable, period } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("500");
@@ -322,10 +322,21 @@ const SaveChart = (props) => {
                   <SaveAsPNGButton width={width} height={height} />
                 )}
                 {selectedFormat === "SVG" && (
-                  <SaveAsSVGButton width={width} height={height} />
+                  <SaveAsSVGButton
+                    width={width}
+                    height={height}
+                    chartData={chartData}
+                    screenSize={{ width: 1000, height: 500 }}
+                  />
                 )}
                 {selectedFormat === "CSV" && (
-                  <SaveAsCSVButton chartData={chartData} />
+                  <SaveAsCSVButton
+                    chartData={chartData}
+                    region={region}
+                    location={location}
+                    climatevariable={climatevariable}
+                    period={period}
+                  />
                 )}
               </Box>
 
