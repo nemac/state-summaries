@@ -70,7 +70,7 @@ const SaveAsCSVButton = (props) => {
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >
-        Save as a CSV
+        Save Chart
       </Button>
     </Box>
   );

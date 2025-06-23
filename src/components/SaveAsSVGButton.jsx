@@ -247,7 +247,7 @@ const SaveAsSVGButton = (props) => {
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >
-        Save as an SVG
+        Save Chart
       </Button>
     </Box>
   );

@@ -72,13 +72,13 @@ const SaveChart = (props) => {
   return (
     <>
       <Button
-        variant="contained"
+        variant="outlined"
         startIcon={<DownloadIcon />}
         onClick={handleOpen}
-        sx={{
-          backgroundColor: "#666",
-          "&:hover": { backgroundColor: "#555" },
-        }}
+        // sx={{
+        //   backgroundColor: "#666",
+        //   "&:hover": { backgroundColor: "#555" },
+        // }}
       >
         Save Chart
       </Button>
