@@ -32,6 +32,7 @@ const SaveChart = (props) => {
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1000");
   const [height, setHeight] = useState("500");
+  const [isCustomDims, setCustomDims] = useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -63,9 +64,9 @@ const SaveChart = (props) => {
     backgroundColor: selectedFormat === format ? "#1976d2" : "white",
     color: selectedFormat === format ? "white" : "#1976d2",
     border: "1px solid #1976d2",
-    "&:hover": {
-      backgroundColor: selectedFormat === format ? "#1565c0" : "#f5f5f5",
-    },
+    // "&:hover": {
+    //   backgroundColor: selectedFormat === format ? "#1565c0" : "#f5f5f5",
+    // },
   });
 
   return (
@@ -154,6 +155,11 @@ const SaveChart = (props) => {
 
             {selectedFormat !== "CSV" && (
               <Paper
+                onClick={() => {
+                  setWidth(1920);
+                  setHeight(1440);
+                  setCustomDims(false);
+                }}
                 variant="outlined"
                 sx={{
                   p: 2,
@@ -161,13 +167,23 @@ const SaveChart = (props) => {
                   textAlign: "center",
                   border: "1px solid #e0e0e0",
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#f9f9f9" },
+                  backgroundColor: isCustomDims ? "#f9f9f9" : "#1976d2",
+                  // "&:hover": { backgroundColor: "#f9f9f9" },
                 }}
               >
-                <MonitorIcon sx={{ fontSize: 40, color: "#1976d2", mb: 1 }} />
+                <MonitorIcon
+                  sx={{
+                    fontSize: 40,
+                    color: isCustomDims ? "#1976d2" : "white",
+                    mb: 1,
+                  }}
+                />
                 <Typography
                   variant="body1"
-                  sx={{ color: "#1976d2", fontWeight: "bold" }}
+                  sx={{
+                    color: isCustomDims ? "#1976d2" : "white",
+                    fontWeight: "bold",
+                  }}
                 >
                   PRESENTATION (12:9)
                 </Typography>
@@ -178,43 +194,46 @@ const SaveChart = (props) => {
                 defaultExpanded={false}
                 sx={{
                   mb: 3,
-                  backgroundColor: "#1976d2",
+                  backgroundColor: isCustomDims ? "#1976d2" : "white",
                   color: "white",
                   boxShadow: "none",
                   border: "none",
                   "&:before": {
                     display: "none",
                   },
-                  "& .MuiAccordionSummary-root": {
-                    backgroundColor: "#1976d2",
-                    color: "white",
-                    minHeight: 56,
-                    "&.Mui-expanded": {
-                      minHeight: 56,
-                    },
-                  },
-                  "& .MuiAccordionSummary-content": {
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: 0,
-                    "&.Mui-expanded": {
-                      margin: 0,
-                    },
-                  },
-                  "& .MuiAccordionDetails-root": {
-                    backgroundColor: "#1976d2",
-                    color: "white",
-                    paddingTop: 0,
-                  },
-                  "& .MuiSvgIcon-root": {
-                    color: "white",
-                  },
+                  // "& .MuiAccordionSummary-root": {
+                  //   backgroundColor: isCustomDims ? "#1976d2" : "white",
+                  //   color: isCustomDims ? "#1976d2" : "white",
+                  //   minHeight: 56,
+                  //   "&.Mui-expanded": {
+                  //     minHeight: 56,
+                  //   },
+                  // },
+                  // "& .MuiAccordionSummary-content": {
+                  //   justifyContent: "center",
+                  //   alignItems: "center",
+                  //   margin: 0,
+                  //   "&.Mui-expanded": {
+                  //     margin: 0,
+                  //   },
+                  // },
+                  // "& .MuiAccordionDetails-root": {
+                  //   backgroundColor: "#1976d2",
+                  //   color: "white",
+                  //   paddingTop: 0,
+                  // },
+                  // "& .MuiSvgIcon-root": {
+                  //   color: isCustomDims ? "white" : "#1976d2",
+                  // },
                 }}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="custom-dimensions-content"
                   id="custom-dimensions-header"
+                  onClick={() => {
+                    setCustomDims(true);
+                  }}
                 >
                   <Box
                     sx={{
@@ -225,18 +244,39 @@ const SaveChart = (props) => {
                     }}
                   >
                     <CropFreeIcon sx={{ mr: 1 }} />
-                    <Typography variant="body1" fontWeight="bold">
+                    <Typography
+                      onClick={() => {
+                        setCustomDims(true);
+                      }}
+                      sx={{
+                        variant: "body1",
+                        fontWeight: "bold",
+                        color: isCustomDims ? "white" : "#1976d2",
+                      }}
+                    >
                       CUSTOM DIMENSIONS
                     </Typography>
                   </Box>
                 </AccordionSummary>
 
-                <AccordionDetails>
-                  <Box sx={{ display: "flex", gap: 2 }}>
+                <AccordionDetails
+                  sx={{ backgroundColor: isCustomDims ? "#1976d2" : "white" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2,
+                      backgroundColor: isCustomDims ? "#1976d2" : "white",
+                    }}
+                  >
                     <Box sx={{ flex: 1 }}>
                       <Typography
                         variant="body2"
-                        sx={{ mb: 1, fontWeight: "bold" }}
+                        sx={{
+                          mb: 1,
+                          fontWeight: "bold",
+                          color: isCustomDims ? "white" : "#1976d2",
+                        }}
                       >
                         WIDTH
                       </Typography>
@@ -274,7 +314,11 @@ const SaveChart = (props) => {
                     <Box sx={{ flex: 1 }}>
                       <Typography
                         variant="body2"
-                        sx={{ mb: 1, fontWeight: "bold" }}
+                        sx={{
+                          mb: 1,
+                          fontWeight: "bold",
+                          color: isCustomDims ? "white" : "#1976d2",
+                        }}
                       >
                         HEIGHT
                       </Typography>
