@@ -32,7 +32,7 @@ const SaveChart = (props) => {
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1000");
   const [height, setHeight] = useState("500");
-  const [isCustomDims, setCustomDims] = useState(true);
+  const [isCustomDims, setCustomDims] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -191,6 +191,7 @@ const SaveChart = (props) => {
             )}
             {selectedFormat !== "CSV" && (
               <Accordion
+                expanded={isCustomDims ? true : false}
                 defaultExpanded={false}
                 sx={{
                   mb: 3,
