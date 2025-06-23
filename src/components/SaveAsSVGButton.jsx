@@ -2,15 +2,27 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
+import SandboxHumanReadable from "/src/scripts/SandboxHumanReadable.jsx";
 
 const SaveAsSVGButton = (props) => {
-  const { chartData, screenSize } = props;
+  const {
+    chartData,
+    screenSize,
+    width,
+    height,
+    svgSelector,
+    region,
+    location,
+    climatevariable,
+    period,
+    season,
+  } = props;
 
   // handles downloads chart as SVG with fixed size
   // can get rid of this later; redundant
-  const handleDownloadChartAsSVG = (svgSelector, width, height) => {
-    exportSVG(svgSelector, width, height);
-  };
+  // const handleDownloadChartAsSVG = (svgSelector, width, height) => {
+  //   exportSVG(svgSelector, width, height);
+  // };
 
   const checkSVGForSizeChange = (svgSelector, widthARG, heightARG) => {
     const svgElem = document.querySelector(svgSelector);
@@ -35,7 +47,8 @@ const SaveAsSVGButton = (props) => {
     const e = new MouseEvent("click");
 
     // create download name based on curent settings
-    a.download = `${getDownloadName()}.${type}`;
+    // a.download = `${getDownloadName()}.${type}`; commenting out for now
+    a.download = "downloadedSVG";
 
     if (type === "svg") {
       // add data to href so its "on the fly"
@@ -168,6 +181,58 @@ const SaveAsSVGButton = (props) => {
     return null;
   };
 
+  // removes <br> from title atttribute (in SVG) so images are exported without error
+  //  used on small screens to create line breaks in chart tittle
+  //  the < and > is not allowed on svg to image so it needs to be removed
+  //  to allow for export
+  const removeBreaks = (node) => {
+    const titleSelector = ".infolayer .g-gtitle .gtitle";
+    const nodeTitle = node.querySelector(titleSelector);
+    if (nodeTitle) {
+      const nodeAttribute = nodeTitle.getAttribute("data-unformatted");
+      const newNodeAttribute = nodeAttribute
+        .replace("<br>", "")
+        .replace("<br>", "")
+        .replace("<br>", "")
+        .replace("<br>", "")
+        .replace("<br>", "")
+        .replace("<br>", "");
+      node
+        .querySelector(titleSelector)
+        .setAttribute("data-unformatted", newNodeAttribute);
+      return node;
+    }
+    return node;
+  };
+
+  // creates a download file name with current date and time and all the
+  // chart settings from the ui
+  const getDownloadName = () => {
+    // // get curent data time
+    // const date = new Date().toISOString().slice(0, 10);
+
+    // get human readable versons of text
+    const sandboxHumanReadable = new SandboxHumanReadable("");
+    const chartTitle = sandboxHumanReadable.getChartTitle({
+      climatevariable,
+      region,
+      titleLocation: replaceLocationAbbreviation(location),
+      chartDataSeason: season,
+    });
+
+    // format file name
+    return `${chartTitle}`;
+  };
+
+  // replace the state abbrevaiations from the data text files with a more
+  // human readable full state name AK becomes Alaska
+  const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
+    const sandboxHumanReadable = new SandboxHumanReadable();
+    return sandboxHumanReadable.getLocationDownText(
+      replaceAbbreviationLocation
+    );
+  };
+
   return (
     <Box>
       <Button
@@ -178,7 +243,7 @@ const SaveAsSVGButton = (props) => {
             }}
           />
         }
-        onClick={() => handleDownloadChartAsSVG(svgSelector, width, height)}
+        onClick={() => exportSVG(svgSelector, width, height)}
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >

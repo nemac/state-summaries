@@ -152,163 +152,166 @@ const SaveChart = (props) => {
               </Button>
             </Box>
 
-            <Paper
-              variant="outlined"
-              sx={{
-                p: 2,
-                mb: 2,
-                textAlign: "center",
-                border: "1px solid #e0e0e0",
-                cursor: "pointer",
-                "&:hover": { backgroundColor: "#f9f9f9" },
-              }}
-            >
-              <MonitorIcon sx={{ fontSize: 40, color: "#1976d2", mb: 1 }} />
-              <Typography
-                variant="body1"
-                sx={{ color: "#1976d2", fontWeight: "bold" }}
+            {selectedFormat !== "CSV" && (
+              <Paper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  textAlign: "center",
+                  border: "1px solid #e0e0e0",
+                  cursor: "pointer",
+                  "&:hover": { backgroundColor: "#f9f9f9" },
+                }}
               >
-                PRESENTATION (12:9)
-              </Typography>
-            </Paper>
-
-            <Accordion
-              defaultExpanded={false}
-              sx={{
-                mb: 3,
-                backgroundColor: "#1976d2",
-                color: "white",
-                boxShadow: "none",
-                border: "none",
-                "&:before": {
-                  display: "none",
-                },
-                "& .MuiAccordionSummary-root": {
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  minHeight: 56,
-                  "&.Mui-expanded": {
-                    minHeight: 56,
-                  },
-                },
-                "& .MuiAccordionSummary-content": {
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: 0,
-                  "&.Mui-expanded": {
-                    margin: 0,
-                  },
-                },
-                "& .MuiAccordionDetails-root": {
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  paddingTop: 0,
-                },
-                "& .MuiSvgIcon-root": {
-                  color: "white",
-                },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="custom-dimensions-content"
-                id="custom-dimensions-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
+                <MonitorIcon sx={{ fontSize: 40, color: "#1976d2", mb: 1 }} />
+                <Typography
+                  variant="body1"
+                  sx={{ color: "#1976d2", fontWeight: "bold" }}
                 >
-                  <CropFreeIcon sx={{ mr: 1 }} />
-                  <Typography variant="body1" fontWeight="bold">
-                    CUSTOM DIMENSIONS
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Box sx={{ display: "flex", gap: 2 }}>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography
-                      variant="body2"
-                      sx={{ mb: 1, fontWeight: "bold" }}
-                    >
-                      WIDTH
+                  PRESENTATION (12:9)
+                </Typography>
+              </Paper>
+            )}
+            {selectedFormat !== "CSV" && (
+              <Accordion
+                defaultExpanded={false}
+                sx={{
+                  mb: 3,
+                  backgroundColor: "#1976d2",
+                  color: "white",
+                  boxShadow: "none",
+                  border: "none",
+                  "&:before": {
+                    display: "none",
+                  },
+                  "& .MuiAccordionSummary-root": {
+                    backgroundColor: "#1976d2",
+                    color: "white",
+                    minHeight: 56,
+                    "&.Mui-expanded": {
+                      minHeight: 56,
+                    },
+                  },
+                  "& .MuiAccordionSummary-content": {
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: 0,
+                    "&.Mui-expanded": {
+                      margin: 0,
+                    },
+                  },
+                  "& .MuiAccordionDetails-root": {
+                    backgroundColor: "#1976d2",
+                    color: "white",
+                    paddingTop: 0,
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "white",
+                  },
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="custom-dimensions-content"
+                  id="custom-dimensions-header"
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <CropFreeIcon sx={{ mr: 1 }} />
+                    <Typography variant="body1" fontWeight="bold">
+                      CUSTOM DIMENSIONS
                     </Typography>
-                    <TextField
-                      value={width}
-                      onChange={(e) => setWidth(e.target.value)}
-                      variant="filled"
-                      size="small"
-                      slotProps={{
-                        input: {
-                          endAdornment: (
-                            <Typography
-                              variant="body2"
-                              sx={{ color: "rgba(255,255,255,0.7)" }}
-                            >
-                              pixels
-                            </Typography>
-                          ),
-                          sx: {
-                            backgroundColor: "white",
-                            borderRadius: 1,
-                            "& input": {
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              fontSize: "1.2rem",
-                              color: "#1976d2",
+                  </Box>
+                </AccordionSummary>
+
+                <AccordionDetails>
+                  <Box sx={{ display: "flex", gap: 2 }}>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ mb: 1, fontWeight: "bold" }}
+                      >
+                        WIDTH
+                      </Typography>
+                      <TextField
+                        value={width}
+                        onChange={(e) => setWidth(e.target.value)}
+                        variant="filled"
+                        size="small"
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "rgba(255,255,255,0.7)" }}
+                              >
+                                pixels
+                              </Typography>
+                            ),
+                            sx: {
+                              backgroundColor: "white",
+                              borderRadius: 1,
+                              "& input": {
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                fontSize: "1.2rem",
+                                color: "#1976d2",
+                              },
                             },
                           },
-                        },
-                      }}
-                      sx={{ width: "100%" }}
-                    />
-                  </Box>
+                        }}
+                        sx={{ width: "100%" }}
+                      />
+                    </Box>
 
-                  <Box sx={{ flex: 1 }}>
-                    <Typography
-                      variant="body2"
-                      sx={{ mb: 1, fontWeight: "bold" }}
-                    >
-                      HEIGHT
-                    </Typography>
-                    <TextField
-                      value={height}
-                      onChange={(e) => setHeight(e.target.value)}
-                      variant="filled"
-                      size="small"
-                      slotProps={{
-                        input: {
-                          endAdornment: (
-                            <Typography
-                              variant="body2"
-                              sx={{ color: "rgba(255,255,255,0.7)" }}
-                            >
-                              pixels
-                            </Typography>
-                          ),
-                          sx: {
-                            backgroundColor: "white",
-                            borderRadius: 1,
-                            "& input": {
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              fontSize: "1.2rem",
-                              color: "#1976d2",
+                    <Box sx={{ flex: 1 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ mb: 1, fontWeight: "bold" }}
+                      >
+                        HEIGHT
+                      </Typography>
+                      <TextField
+                        value={height}
+                        onChange={(e) => setHeight(e.target.value)}
+                        variant="filled"
+                        size="small"
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "rgba(255,255,255,0.7)" }}
+                              >
+                                pixels
+                              </Typography>
+                            ),
+                            sx: {
+                              backgroundColor: "white",
+                              borderRadius: 1,
+                              "& input": {
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                fontSize: "1.2rem",
+                                color: "#1976d2",
+                              },
                             },
                           },
-                        },
-                      }}
-                      sx={{ width: "100%" }}
-                    />
+                        }}
+                        sx={{ width: "100%" }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              </AccordionDetails>
-            </Accordion>
+                </AccordionDetails>
+              </Accordion>
+            )}
 
             <Box
               sx={{
@@ -319,7 +322,12 @@ const SaveChart = (props) => {
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 {selectedFormat === "PNG" && (
-                  <SaveAsPNGButton width={width} height={height} />
+                  <SaveAsPNGButton
+                    widthARG={width}
+                    heightARG={height}
+                    chartData={chartData}
+                    screenSize={{ width: 1000, height: 500 }}
+                  />
                 )}
                 {selectedFormat === "SVG" && (
                   <SaveAsSVGButton
@@ -327,6 +335,10 @@ const SaveChart = (props) => {
                     height={height}
                     chartData={chartData}
                     screenSize={{ width: 1000, height: 500 }}
+                    region={region}
+                    location={location}
+                    climatevariable={climatevariable}
+                    period={period}
                   />
                 )}
                 {selectedFormat === "CSV" && (
