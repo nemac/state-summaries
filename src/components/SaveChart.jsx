@@ -30,7 +30,7 @@ const SaveChart = (props) => {
   const { chartData, region, location, climatevariable, period } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
-  const [width, setWidth] = useState("500");
+  const [width, setWidth] = useState("1000");
   const [height, setHeight] = useState("500");
 
   const handleOpen = () => setOpen(true);
