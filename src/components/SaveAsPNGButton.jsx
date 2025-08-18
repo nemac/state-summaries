@@ -192,7 +192,7 @@ const SaveAsPNGButton = (props) => {
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >
-        Save as PNG
+        Save Chart
       </Button>
     </Box>
   );
