@@ -591,7 +591,7 @@ export default function SandboxControls() {
         // this is here for when URL parameters are passed
         if (atStart) {
           getChartData({
-            chartDataRegion: region,
+            chartDataRegion: "Contiguous United States",
             chartDataLocation: location,
             chartDataClimatevariable: climatevariable,
             chartDataPeriod: period,
@@ -599,6 +599,7 @@ export default function SandboxControls() {
             climateDataFilesJSONFile: responseData,
             chartLineChart: lineChart,
             chartOnlyProp: chartOnly,
+            climateOption: "Annual Mean (Jan-Dec)_Average Temperature",
             // chartShowLine: false
           });
         }
@@ -1105,7 +1106,7 @@ export default function SandboxControls() {
   const handleClimateOptionChange = (event) => {
     const newOption = event.target.value;
     getChartData({
-      chartDataRegion: region,
+      chartDataRegion: regionSelection,
       chartDataClimatevariable: climatevariable,
       chartDataPeriod: period,
       chartDataSeason: season,
