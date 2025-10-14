@@ -89,7 +89,7 @@ def main():
                     "start": startYear,
                     "end": endYear,
                     "robust": robust,
-                    "period": str(startYear) + '-current',
+                    "period": str(startYear) + '-2024',
                     "season": season,
                 })
                 break;

@@ -326,25 +326,28 @@ export default function SandboxControls() {
   const getClimatevariableType = (switchClimatevariable) => {
     const chartType = {
       default: "Temperature", // eslint-disable-line quote-props
-      pcpn: "Precipitation", // eslint-disable-line quote-props
-      "1inch": "Precipitation",
-      "2inch": "Precipitation",
-      "3inch": "Precipitation",
-      "4inch": "Precipitation",
+      prcp_1inch: "Precipitation",
+      prcp_2inch: "Precipitation",
+      prcp_3inch: "Precipitation",
+      prcp_4inch: "Precipitation",
       tmin: "Temperature", // eslint-disable-line quote-props
       tmax: "Temperature", // eslint-disable-line quote-props
-      tmax0F: "Temperature", // eslint-disable-line quote-props
-      tmax32F: "Temperature", // eslint-disable-line quote-props
-      tmax90F: "Temperature", // eslint-disable-line quote-props
-      tmax95F: "Temperature", // eslint-disable-line quote-props
-      tmax100F: "Temperature", // eslint-disable-line quote-props
-      tmin0F: "Temperature", // eslint-disable-line quote-props
-      tmin32F: "Temperature", // eslint-disable-line quote-props
-      tmin70F: "Temperature", // eslint-disable-line quote-props
-      tmin75F: "Temperature", // eslint-disable-line quote-props
-      tmin80F: "Temperature", // eslint-disable-line quote-props
+      tmax_0F: "Temperature", // eslint-disable-line quote-props
+      tmax_32F: "Temperature", // eslint-disable-line quote-props
+      tmax_90F: "Temperature", // eslint-disable-line quote-props
+      tmax_95F: "Temperature", // eslint-disable-line quote-props
+      tmax_100F: "Temperature", // eslint-disable-line quote-props
+      tmin_0F: "Temperature", // eslint-disable-line quote-props
+      tmin_32F: "Temperature", // eslint-disable-line quote-props
+      tmin_70F: "Temperature", // eslint-disable-line quote-props
+      tmin_75F: "Temperature", // eslint-disable-line quote-props
+      tmin_80F: "Temperature", // eslint-disable-line quote-props
       hdd: "HeatingDays", // eslint-disable-line quote-props
       cdd: "CoolingDays", // eslint-disable-line quote-props
+      prcp_ann: "Precipitation",
+      tmean_ann: "Temperature",
+      tmin_ann: "Temperature",
+      tmax_ann: "Temperature",
     };
     return chartType[switchClimatevariable] || chartType.default;
   };
@@ -401,6 +404,8 @@ export default function SandboxControls() {
     const { climateDataFilesJSONFile } = props;
     const { chartLineChart } = props;
     const { chartOnlyProp } = props;
+    const { climateOption } = props;
+    console.log("props", props);
 
     // update url history this is the point at which we will need to make sure
     // the graph looks the same when shared via url
@@ -417,51 +422,55 @@ export default function SandboxControls() {
 
     // limit the possible data file to period
     // (years aka 1900 - current 1950 - current) and the climate variable (should be one)
-    const data = climateDataFilesJSONFile.filter((json) => {
-      const returnValue =
-        json.period === chartDataPeriod &&
-        json.type === chartDataClimatevariable &&
-        json.season === chartDataSeason;
-      return returnValue;
-    });
+    // const data = climateDataFilesJSONFile.filter((json) => {
+    //   const returnValue =
+    //     json.period === chartDataPeriod &&
+    //     json.type === chartDataClimatevariable &&
+    //     json.season === chartDataSeason;
+    //   return returnValue;
+    // });
 
-    // get the data file name
-    const dataFile = data.map((json) => json.name);
+    const locationType = config.locationTypeMapping[chartDataRegion]; // e.g. CONUS
+    const data = climateDataFilesJSONFile[locationType];
 
-    // define the data file location should always be the current url and public folder
-    const path = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+    // this is so awful lol
+    const split = climateOption.split("_");
+    const machineReadable = // e.g. Average_Temperature
+      config.machineReadableClimateData[split[0]].metrics[split[1]];
+    const fileType = config.metricToFileTypeMapping[machineReadable]; // e.g. tmean_ann
+    const chartType = getClimatevariableType(fileType);
 
-    // do not proceed of pulldowns not set not set
-    if (
-      !chartDataRegion ||
-      (chartDataRegion !== "National" && !chartDataLocation) ||
-      !chartDataClimatevariable ||
-      !chartDataPeriod ||
-      !chartDataSeason
-    )
-      return null;
+    // Find the best matching file from the available data files
+    // Filter files by location type and file type, then find the best date range match
+    const matchingFiles = data.filter((file) => file.type === fileType);
+
+    // Prefer files with date ranges 1895-2024 or 1900-2024 over 1950-2024
+    const preferredFile =
+      matchingFiles.find(
+        (file) => file.period === "1895-2024" || file.period === "1900-2024",
+      ) || matchingFiles[0]; // fallback to first match if no preferred range found
+
+    const dataFile = preferredFile
+      ? preferredFile.name
+      : `${locationType}_${fileType}_1900-2024_SCS2025.txt`;
+    console.log("dataFile", dataFile);
 
     axios
-      .get(`${path}sandboxdata/2025_SandboxDatafiles/${dataFile}`)
+      .get(`./sandboxdata/2025_Sandbox_Datafiles/${dataFile}`)
       .then((response) => {
         // parse the csv text file
         const sandboxParseDataFiles = new SandboxParseDataFiles();
         const chartDataFromFile = sandboxParseDataFiles.parseFile(
           response.data,
-          chartDataRegion.toLowerCase(),
+          locationType,
           chartDataLocation,
         );
-
-        // get the chart type which is the climate variable
-        const chartType = getClimatevariableType(chartDataClimatevariable);
 
         // create a new instance of the sandbox human readable class this transforms
         // the short text to something
         // humans can read tmax100F beceomes Days with Maximum Temperature Above 100°F and
         // AK becomes Alaska
-        const sandboxHumanReadable = new SandboxHumanReadable(
-          chartDataClimatevariable,
-        );
+        const sandboxHumanReadable = new SandboxHumanReadable(fileType);
 
         // get the location from the ui
         const titleLocation = replaceLocationAbbreviation(chartDataLocation);
@@ -515,32 +524,32 @@ export default function SandboxControls() {
         const plotData = new SandboxGeneratePlotData(plotInfo);
 
         // if data is missing then zero out chart
-        if (dataMissing) {
-          plotData.zeroOutChartData();
-        }
-
-        // check if region or location has data if not display
-        // no data available for location and clear the chart
-        // if data missing for combo field level errors will handle messaging
-        if (!plotData.hasData() && !dataMissing) {
-          setOpenError(true);
-          setErrorType("Error");
-          setChartErrorTitle("Error data not available");
-          setChartErrorMessage(`Unfortunately, there is no data available for ${humandReadablechartDataClimatevariable}
-            for ${titleLocation}. To resolve this issue, try one or all of these three actions.
-            1) Change the location.
-            2) Change the climate variable.
-            3) Change the time period`);
-        } else if (plotData.isAllZeros() && !dataMissing) {
-          setOpenError(true);
-          setErrorType("Warning");
-          setChartErrorTitle("Warning data is all zeros");
-          setChartErrorMessage(
-            `Warning the chart data for ${chartTitle} contains all zeros (0).`,
-          );
-        } else {
-          setOpenError(false);
-        }
+        // if (dataMissing) {
+        //   plotData.zeroOutChartData();
+        // }
+        //
+        // // check if region or location has data if not display
+        // // no data available for location and clear the chart
+        // // if data missing for combo field level errors will handle messaging
+        // if (!plotData.hasData() && !dataMissing) {
+        //   setOpenError(true);
+        //   setErrorType("Error");
+        //   setChartErrorTitle("Error data not available");
+        //   setChartErrorMessage(`Unfortunately, there is no data available for ${humandReadablechartDataClimatevariable}
+        //     for ${titleLocation}. To resolve this issue, try one or all of these three actions.
+        //     1) Change the location.
+        //     2) Change the climate variable.
+        //     3) Change the time period`);
+        // } else if (plotData.isAllZeros() && !dataMissing) {
+        //   setOpenError(true);
+        //   setErrorType("Warning");
+        //   setChartErrorTitle("Warning data is all zeros");
+        //   setChartErrorMessage(
+        //     `Warning the chart data for ${chartTitle} contains all zeros (0).`,
+        //   );
+        // } else {
+        //   setOpenError(false);
+        // }
 
         const xRange = {
           xmin: humandReadablPeriodRange[0],
@@ -566,27 +575,14 @@ export default function SandboxControls() {
   // the user chooses or from URL parameters
   const loadData = async (loadRegion, argPeriod, argSeason) => {
     await axios
-      .get("./sandboxdata/2025_SandboxDatafiles/index.json")
+      .get("./sandboxdata/2025_Sandbox_Datafiles/index.json")
       .then((response) => {
         // handle success
         let responseData = {};
         let data = {};
         // Regions change the file and how the object is refrenced
         //  TODO might be better to fix this in the future
-        switch (loadRegion) {
-          case "National":
-            responseData = response.data.national;
-            break;
-          case "Regional":
-            responseData = response.data.regional;
-            break;
-          case "State":
-            responseData = response.data.state;
-            break;
-          default:
-            responseData = response.data.national;
-            break;
-        }
+        responseData = response.data;
 
         // set climate data json data file
         setClimateDataFilesJSON(responseData);
@@ -643,6 +639,7 @@ export default function SandboxControls() {
       climateDataFilesJSONFile: climateDataFilesJSON,
       chartLineChart: lineChart,
       chartOnlyProp: "no",
+      climateOption: climateOption,
       // chartShowLine: false
     });
   };
@@ -1106,7 +1103,18 @@ export default function SandboxControls() {
 
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (event) => {
-    setClimateOption(event.target.value);
+    const newOption = event.target.value;
+    getChartData({
+      chartDataRegion: region,
+      chartDataClimatevariable: climatevariable,
+      chartDataPeriod: period,
+      chartDataSeason: season,
+      climateDataFilesJSONFile: climateDataFilesJSON,
+      chartLineChart: lineChart,
+      chartOnlyProp: "no",
+      climateOption: newOption,
+    });
+    setClimateOption(newOption);
   };
 
   // END NEW HANDLERS
