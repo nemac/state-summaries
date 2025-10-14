@@ -16,15 +16,19 @@ class SandboxParseDataFiles {
     }
 
     let colIndex = this.undefined; // eslint-disable-line no-undef-init
+    console.log(type, parseRegion);
 
     // not sure this is needed anymore the python script that creates the JSON
     // config from all the txt files now cleans up extra columns aka #grids and #grid
     // columns. Think its handling no location name in national file
     if (type === "CONUS") {
       colIndex = 1;
-    } else if (type === "regions" || type === "states") {
+    } else if (type === "regional" || type === "states") {
       for (let h = 1; h < headers.length; h += 1) {
-        if (headers[h].toUpperCase() === parseRegion.toUpperCase()) {
+        if (
+          (type === "states" ? headers[h].toUpperCase() : headers[h]) ===
+          (type === "states" ? parseRegion.toUpperCase() : parseRegion)
+        ) {
           colIndex = h;
           break;
         }

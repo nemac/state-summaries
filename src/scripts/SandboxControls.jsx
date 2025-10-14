@@ -405,7 +405,6 @@ export default function SandboxControls() {
     const { chartLineChart } = props;
     const { chartOnlyProp } = props;
     const { climateOption } = props;
-    console.log("props", props);
 
     // update url history this is the point at which we will need to make sure
     // the graph looks the same when shared via url
@@ -453,7 +452,6 @@ export default function SandboxControls() {
     const dataFile = preferredFile
       ? preferredFile.name
       : `${locationType}_${fileType}_1900-2024_SCS2025.txt`;
-    console.log("dataFile", dataFile);
 
     axios
       .get(`./sandboxdata/2025_Sandbox_Datafiles/${dataFile}`)
@@ -463,7 +461,9 @@ export default function SandboxControls() {
         const chartDataFromFile = sandboxParseDataFiles.parseFile(
           response.data,
           locationType,
-          chartDataLocation,
+          locationType === "states"
+            ? config.stateAbbreviations[chartDataRegion]
+            : config.ncaRegionAbbreviations[chartDataRegion],
         );
 
         // create a new instance of the sandbox human readable class this transforms
@@ -472,14 +472,11 @@ export default function SandboxControls() {
         // AK becomes Alaska
         const sandboxHumanReadable = new SandboxHumanReadable(fileType);
 
-        // get the location from the ui
-        const titleLocation = replaceLocationAbbreviation(chartDataLocation);
-
         // convert the all the parameters to human readable title
         const chartTitle = sandboxHumanReadable.getChartTitle({
-          climatevariable: chartDataClimatevariable,
+          climatevariable: fileType,
           region: chartDataRegion,
-          titleLocation,
+          titleLocation: chartDataRegion,
           chartDataSeason,
         });
 
@@ -519,6 +516,8 @@ export default function SandboxControls() {
           season: chartDataSeason,
           // chartShowLine
         };
+
+        console.log("plotInfo", plotInfo);
 
         // get the charts data formated for plotly
         const plotData = new SandboxGeneratePlotData(plotInfo);
