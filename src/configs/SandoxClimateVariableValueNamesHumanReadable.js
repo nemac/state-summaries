@@ -1,4 +1,4 @@
-const SandoxClimateVariableValueNamesHumanReadable = () => [
+const SandboxClimateVariableValueNamesHumanReadable = () => [
   {
     value: "prcp_1inch",
     pullDownText: "Days with Precipitation Greater than 1 inch",
@@ -265,4 +265,4 @@ const SandoxClimateVariableValueNamesHumanReadable = () => [
     season: "son",
   },
 ];
-export default SandoxClimateVariableValueNamesHumanReadable;
+export default SandboxClimateVariableValueNamesHumanReadable;

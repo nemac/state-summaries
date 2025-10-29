@@ -1,4 +1,3 @@
-// mui and react
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import FileSaver from "file-saver";
@@ -14,183 +13,29 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-// sandbox conmponents
 import SandboxPlotRegion from "./SandboxPlotRegion.jsx";
 import SandboxGeneratePlotData from "./SandboxGeneratePlotData.jsx";
 import SandboxHumanReadable from "./SandboxHumanReadable.jsx";
 import SandboxSelector from "./SandboxSelector.jsx";
 import SandboxAlert from "./SandboxAlert.jsx";
-import SandboxParseDataFiles from "./SandboxParseDataFiles.jsx";
 
-// configs
 import config from "../configs/config.js";
-import SandboxRegionItems from "../configs/SandboxRegionItems";
-import SandboxPeriods from "../configs/SandboxPeriods";
-import SandboxSeasons from "../configs/SandboxSeasons";
 import SandboxLocationRegionalItems from "../configs/SandboxLocationRegionalItems";
 import SandboxLocationStateItems from "../configs/SandboxLocationStateItems";
 
 import axios from "axios";
 
-// css
 import "../css/Sandbox.scss";
 import GroupedDropDownSelector from "../components/GroupedDropDownSelector.jsx";
 import SaveChart from "../components/SaveChart.jsx";
+import parseFile from "./utils.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
 const LocationStateItems = SandboxLocationStateItems();
 
-const white = "#FFFFFF";
 const darkGrey = "#E6E6E6";
 const pullDownBackground = "#FBFCFE";
 const fontColor = "#5C5C5C";
-
-// heights for buttons
-const exportButtons = 7;
-const exportButtonHeight = 50;
-const exportAreaHeight = 75;
-const exportButtonsSmallScreenHeight = exportButtons * exportButtonHeight;
-const exportButtonsMeduimlScreenHeight = exportAreaHeight;
-
-// heights for header - title
-const headerTitleHeight = 50;
-const headerTitleSmallScreenHeight = 75;
-
-// heights for header - description
-const headerDescriptionHeight = 60;
-const headerDescriptionSmallScreenHeight = 90;
-
-// heights for selectors - pullldowns
-const selectors = 5;
-const selectorHeight = 90;
-const selectorAreaSmallScreenHeight =
-  selectors * selectorHeight + headerDescriptionSmallScreenHeight;
-const selectorAreaMediumScreenHeight = 3.33 * selectorHeight;
-
-// heights for entire header with buttons, pulldowns, and header
-const actionAreaSmallScreenHeight =
-  headerTitleSmallScreenHeight +
-  selectorAreaSmallScreenHeight +
-  exportButtonsSmallScreenHeight;
-const actionAreaMediumScreenHeight =
-  headerTitleSmallScreenHeight +
-  selectorAreaMediumScreenHeight +
-  exportButtonsMeduimlScreenHeight;
-const chartRegionMinHeight = 400;
-const sandboxChartRegionSmallScreenHeight = 575;
-
-// const useStyles = makeStyles((theme) => ({
-//   sandboxRoot: {
-//     backgroundColor: white,
-//     color: fontColor,
-//     height: "calc(100vh - 16px)",
-//     [theme.breakpoints.down("xs")]: {
-//       overflow: "scroll",
-//     },
-//   },
-//   sandboxDescription: {
-//     border: "0px solid transparent",
-//     height: `${headerDescriptionHeight}px`,
-//     maxHeight: `${headerDescriptionHeight}px`,
-//     color: fontColor,
-//     marginBottom: theme.spacing(1.25),
-//     zIndex: 900,
-//     [theme.breakpoints.down("xs")]: {
-//       height: `${headerDescriptionSmallScreenHeight}px`,
-//       maxHeight: `${headerDescriptionSmallScreenHeight}px`,
-//     },
-//   },
-//   sandboxSelectionArea: {
-//     maxHeight: "375px",
-//     backgroundColor: pullDownBackground,
-//     border: `1px solid ${darkGrey}`,
-//     borderRadius: "4px",
-//     [theme.breakpoints.down("sm")]: {
-//       height: `${actionAreaMediumScreenHeight}px`,
-//       maxHeight: `${actionAreaMediumScreenHeight}px`,
-//     },
-//     [theme.breakpoints.down("xs")]: {
-//       height: `${actionAreaSmallScreenHeight}px`,
-//       minHeight: `${actionAreaSmallScreenHeight}px`,
-//     },
-//   },
-//   sandboxSelectionAreaHolder: {
-//     display: (chartOnly) =>
-//       chartOnly.chartOnly === "yes" ? "none" : "inherit",
-//     margin: "6px",
-//     [theme.breakpoints.down("sm")]: {
-//       height: `${actionAreaMediumScreenHeight}px`,
-//       maxHeight: `${actionAreaMediumScreenHeight}px`,
-//     },
-//     [theme.breakpoints.down("xs")]: {
-//       height: `${actionAreaSmallScreenHeight}px`,
-//       maxHeight: `${actionAreaSmallScreenHeight}px`,
-//     },
-//   },
-//   sandboxChartRegion: {
-//     height: (chartOnly) =>
-//       chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250px)",
-//     maxHeight: (chartOnly) =>
-//       chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250x)",
-//     minHeight: `${chartRegionMinHeight}px`,
-//     [theme.breakpoints.down("sm")]: {
-//       height: `${sandboxChartRegionSmallScreenHeight}px !important`,
-//       maxHeight: `${sandboxChartRegionSmallScreenHeight}px !important`,
-//     },
-//   },
-//   sandboxChartRegionBox: {
-//     height: "calc(100% - 10px)",
-//     [theme.breakpoints.down("sm")]: {
-//       height: "575px",
-//     },
-//   },
-//
-//   sandboxExports: {
-//     height: `${exportAreaHeight}px`,
-//     maxHeight: `${exportAreaHeight}px`,
-//     paddingTop: "12px",
-//     [theme.breakpoints.down("sm")]: {
-//       height: `${exportAreaHeight * 2}px`,
-//       maxHeight: `${exportAreaHeight * 2}px`,
-//     },
-//     [theme.breakpoints.down("xs")]: {
-//       height: `${exportButtonsSmallScreenHeight}px`,
-//       maxHeight: `${exportButtonsSmallScreenHeight}px`,
-//     },
-//   },
-//   extendedIcon: {
-//     marginRight: theme.spacing(1),
-//   },
-//   infoButton: {
-//     color: "#5C5C5C",
-//     fontSize: "1.5rem",
-//     marginLeft: theme.spacing(0.1),
-//     position: "absolute",
-//     backgroundColor: "#ffffff",
-//     borderRadius: "30px",
-//     top: "-0.66rem",
-//   },
-//   toolTip: {
-//     padding: theme.spacing(2),
-//     fontSize: "1rem",
-//   },
-//   pulldownInfoHolder: {
-//     "& .MuiPaper-elevation1.Mui-expanded": {
-//       boxShadow:
-//         "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
-//       backgroundColor: darkGrey,
-//     },
-//     "& .MuiAccordionSummary-root.Mui-expanded": {
-//       backgroundColor: white,
-//     },
-//     "& .MuiPaper-elevation1": {
-//       boxShadow: "unset",
-//     },
-//   },
-//   moreAboutData: {
-//     backgroundColor: pullDownBackground,
-//   },
-// }));
 
 export default function SandboxControls() {
   const theme = useTheme();
@@ -236,11 +81,11 @@ export default function SandboxControls() {
   let URLSeasonDisabled = true;
   let URLLocationItems = [""];
 
-  // the region determines some of the inital states, so if the URl contains a region
-  // make sure we set those states, also there diferent location values for different regions
+  // the region determines some of the initial states, so if the URl contains a region
+  // make sure we set those states, also there different location values for different regions
   switch (URLRegion) {
     case "National":
-      // National data set the climatevariable pulldown to NOT disabled by changing the state
+      // National data set the climatevariable pull down to NOT disabled by changing the state
       URLClimatevariableDisabled = false;
       URLPeriodDisabled = false;
       URLSeasonDisabled = false;
@@ -325,25 +170,25 @@ export default function SandboxControls() {
   // sets climate variable type for precip or temp, this will likely change latter...
   const getClimatevariableType = (switchClimatevariable) => {
     const chartType = {
-      default: "Temperature", // eslint-disable-line quote-props
+      default: "Temperature",
       prcp_1inch: "Precipitation",
       prcp_2inch: "Precipitation",
       prcp_3inch: "Precipitation",
       prcp_4inch: "Precipitation",
-      tmin: "Temperature", // eslint-disable-line quote-props
-      tmax: "Temperature", // eslint-disable-line quote-props
-      tmax_0F: "Temperature", // eslint-disable-line quote-props
-      tmax_32F: "Temperature", // eslint-disable-line quote-props
-      tmax_90F: "Temperature", // eslint-disable-line quote-props
-      tmax_95F: "Temperature", // eslint-disable-line quote-props
-      tmax_100F: "Temperature", // eslint-disable-line quote-props
-      tmin_0F: "Temperature", // eslint-disable-line quote-props
-      tmin_32F: "Temperature", // eslint-disable-line quote-props
-      tmin_70F: "Temperature", // eslint-disable-line quote-props
-      tmin_75F: "Temperature", // eslint-disable-line quote-props
-      tmin_80F: "Temperature", // eslint-disable-line quote-props
-      hdd: "HeatingDays", // eslint-disable-line quote-props
-      cdd: "CoolingDays", // eslint-disable-line quote-props
+      tmin: "Temperature",
+      tmax: "Temperature",
+      tmax_0F: "Temperature",
+      tmax_32F: "Temperature",
+      tmax_90F: "Temperature",
+      tmax_95F: "Temperature",
+      tmax_100F: "Temperature",
+      tmin_0F: "Temperature",
+      tmin_32F: "Temperature",
+      tmin_70F: "Temperature",
+      tmin_75F: "Temperature",
+      tmin_80F: "Temperature",
+      hdd: "HeatingDays",
+      cdd: "CoolingDays",
       prcp_ann: "Precipitation",
       tmean_ann: "Temperature",
       tmin_ann: "Temperature",
@@ -352,8 +197,8 @@ export default function SandboxControls() {
     return chartType[switchClimatevariable] || chartType.default;
   };
 
-  // replace the state abbrevaiations from the data text files with a more
-  // human readable full state name AK becomes Alaska
+  // replace the state abbreviations from the data text files with a more
+  // human-readable full state name AK becomes Alaska
   const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
     const sandboxHumanReadable = new SandboxHumanReadable();
     return sandboxHumanReadable.getLocationDownText(
@@ -457,8 +302,7 @@ export default function SandboxControls() {
       .get(`./sandboxdata/2025_Sandbox_Datafiles/${dataFile}`)
       .then((response) => {
         // parse the csv text file
-        const sandboxParseDataFiles = new SandboxParseDataFiles();
-        const chartDataFromFile = sandboxParseDataFiles.parseFile(
+        const chartDataFromFile = parseFile(
           response.data,
           locationType,
           locationType === "states"
@@ -480,7 +324,7 @@ export default function SandboxControls() {
           chartDataSeason,
         });
 
-        // get climate varriable human readable format
+        // get climate variable human readable format
         const humandReadablechartDataClimatevariable =
           sandboxHumanReadable.getClimateVariablePullDownText(
             chartDataClimatevariable,
@@ -501,7 +345,7 @@ export default function SandboxControls() {
         if (!chartDataPeriod) dataMissing = true;
         if (!chartDataSeason) dataMissing = true;
 
-        // create the plotly input so the chart is created based on users seletion
+        // create the plotly input so the chart is created based on users selection
         const plotInfo = {
           xvals: chartDataFromFile[0],
           yvals: chartDataFromFile[1],
@@ -521,34 +365,6 @@ export default function SandboxControls() {
 
         // get the charts data formated for plotly
         const plotData = new SandboxGeneratePlotData(plotInfo);
-
-        // if data is missing then zero out chart
-        // if (dataMissing) {
-        //   plotData.zeroOutChartData();
-        // }
-        //
-        // // check if region or location has data if not display
-        // // no data available for location and clear the chart
-        // // if data missing for combo field level errors will handle messaging
-        // if (!plotData.hasData() && !dataMissing) {
-        //   setOpenError(true);
-        //   setErrorType("Error");
-        //   setChartErrorTitle("Error data not available");
-        //   setChartErrorMessage(`Unfortunately, there is no data available for ${humandReadablechartDataClimatevariable}
-        //     for ${titleLocation}. To resolve this issue, try one or all of these three actions.
-        //     1) Change the location.
-        //     2) Change the climate variable.
-        //     3) Change the time period`);
-        // } else if (plotData.isAllZeros() && !dataMissing) {
-        //   setOpenError(true);
-        //   setErrorType("Warning");
-        //   setChartErrorTitle("Warning data is all zeros");
-        //   setChartErrorMessage(
-        //     `Warning the chart data for ${chartTitle} contains all zeros (0).`,
-        //   );
-        // } else {
-        //   setOpenError(false);
-        // }
 
         const xRange = {
           xmin: humandReadablPeriodRange[0],
@@ -578,7 +394,6 @@ export default function SandboxControls() {
       .then((response) => {
         // handle success
         let responseData = {};
-        let data = {};
         // Regions change the file and how the object is refrenced
         //  TODO might be better to fix this in the future
         responseData = response.data;
@@ -715,8 +530,8 @@ export default function SandboxControls() {
     );
   };
 
-  // removes <br> from title atttribute (in SVG) so images are exported without error
-  //  used on small screens to create line breaks in chart tittle
+  // removes <br> from title attribute (in SVG) so images are exported without error
+  //  used on small screens to create line breaks in chart title
   //  the < and > is not allowed on svg to image so it needs to be removed
   //  to allow for export
   const removeBreaks = (node) => {
@@ -739,7 +554,7 @@ export default function SandboxControls() {
     return node;
   };
 
-  // hack to export svg, not using using pure JS
+  // hack to export svg, not using pure JS
   const convertToOneSvg = (svgSelector) => {
     // find and covnert html all plotly chart nodes
     // (plotly puts legends and the chart in seperate nodes)
@@ -1019,35 +834,6 @@ export default function SandboxControls() {
     exportSVG(svgSelector, width, height);
   };
 
-  // handles mail to TSU
-  const handleMailToTSU = () => {
-    const sandboxHumanReadable = new SandboxHumanReadable();
-    const TSUEMail = document.createElement("a");
-
-    // convert the all the parameters to human readable title
-    const chartTitle = sandboxHumanReadable.getChartTitle({
-      climatevariable,
-      region,
-      titleLocation: location,
-      chartDataSeason: season,
-    });
-
-    // email subject
-    const emailSubject = "Here is my chart for the NCA";
-
-    // email subject with link to chart
-    const emailBody = `I created a chart to show the ${chartTitle}, using the NCA Sandbox. Here is a link to the chart: \n ${encodeURIComponent(window.location.href)}`;
-    TSUEMail.href = `mailto:mail@example.org?subject=${emailSubject}&body=${emailBody}`;
-
-    // force click
-    const e = new MouseEvent("click");
-    TSUEMail.dispatchEvent(e);
-
-    // Remove a element
-    TSUEMail.remove();
-    return null;
-  };
-
   // handles downloads chart as PNG
   const handleDownloadChartAsPNG = (svgSelector, width, height) => {
     convertToPng(svgSelector, width, height);
@@ -1093,14 +879,6 @@ export default function SandboxControls() {
     return JSONContent;
   };
 
-  // handles downloads chart as CSV
-  const handleDownloadChartAsCSV = () => {
-    const fileContent = [convertDataToCSV(convertChartDataToJSON())];
-    const fileName = `${region}-${location}-${climatevariable}-${period}.csv`;
-    const fileType = "text/csv;charset=utf-8";
-    saveFile(fileContent, fileName, fileType);
-  };
-
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (event) => {
     const newOption = event.target.value;
@@ -1127,7 +905,7 @@ export default function SandboxControls() {
         justify="flex-start"
         direction="row"
         sx={{
-          backgroundColor: white,
+          backgroundColor: "white",
           color: fontColor,
           height: "calc(100vh - 16px)",
           [theme.breakpoints.down("xs")]: {
@@ -1143,12 +921,12 @@ export default function SandboxControls() {
               chartOnly.chartOnly === "yes" ? "none" : "inherit",
             margin: "6px",
             [theme.breakpoints.down("sm")]: {
-              height: `${actionAreaMediumScreenHeight}px`,
-              maxHeight: `${actionAreaMediumScreenHeight}px`,
+              height: `450px`,
+              maxHeight: `450px`,
             },
             [theme.breakpoints.down("xs")]: {
-              height: `${actionAreaSmallScreenHeight}px`,
-              maxHeight: `${actionAreaSmallScreenHeight}px`,
+              height: "965px",
+              maxHeight: "965px",
             },
           }}
         >
@@ -1163,12 +941,12 @@ export default function SandboxControls() {
               border: `1px solid ${darkGrey}`,
               borderRadius: "4px",
               [theme.breakpoints.down("sm")]: {
-                height: `${actionAreaMediumScreenHeight}px`,
-                maxHeight: `${actionAreaMediumScreenHeight}px`,
+                height: `450px`,
+                maxHeight: `450px`,
               },
               [theme.breakpoints.down("xs")]: {
-                height: `${actionAreaSmallScreenHeight}px`,
-                minHeight: `${actionAreaSmallScreenHeight}px`,
+                height: `965px`,
+                minHeight: `965px`,
               },
             }}
           >
@@ -1176,12 +954,12 @@ export default function SandboxControls() {
               size={{ xs: 12 }}
               width="100%"
               sx={{
-                height: `${headerTitleHeight}px`,
-                maxHeight: `${headerTitleHeight}px`,
+                height: `50px`,
+                maxHeight: `50px`,
                 color: fontColor,
                 [theme.breakpoints.down("xs")]: {
-                  height: `${headerTitleSmallScreenHeight}px`,
-                  maxHeight: `${headerTitleSmallScreenHeight}px`,
+                  height: `75px`,
+                  maxHeight: `75px`,
                 },
               }}
             >
@@ -1233,14 +1011,14 @@ export default function SandboxControls() {
               width="100%"
               sx={{
                 border: "0px solid transparent",
-                height: `${headerDescriptionHeight}px`,
-                maxHeight: `${headerDescriptionHeight}px`,
+                height: `60px`,
+                maxHeight: `60px`,
                 color: fontColor,
                 marginBottom: theme.spacing(1.25),
                 zIndex: 900,
                 [theme.breakpoints.down("xs")]: {
-                  height: `${headerDescriptionSmallScreenHeight}px`,
-                  maxHeight: `${headerDescriptionSmallScreenHeight}px`,
+                  height: `90px`,
+                  maxHeight: `90px`,
                 },
               }}
             >
@@ -1261,7 +1039,7 @@ export default function SandboxControls() {
                       backgroundColor: darkGrey,
                     },
                     "& .MuiAccordionSummary-root.Mui-expanded": {
-                      backgroundColor: white,
+                      backgroundColor: "white",
                     },
                     "& .MuiPaper-elevation1": {
                       boxShadow: "unset",
@@ -1358,20 +1136,20 @@ export default function SandboxControls() {
             <Grid
               size={{ xs: 12 }}
               sx={{
-                height: `${exportAreaHeight}px`,
-                maxHeight: `${exportAreaHeight}px`,
+                height: `75px`,
+                maxHeight: `75px`,
                 paddingTop: "12px",
                 paddingRight: "36px",
                 display: "flex",
                 justifyContent: "flex-end",
                 alignItems: "flex-start",
                 [theme.breakpoints.down("sm")]: {
-                  height: `${exportAreaHeight * 2}px`,
-                  maxHeight: `${exportAreaHeight * 2}px`,
+                  height: `150px`,
+                  maxHeight: `150px`,
                 },
                 [theme.breakpoints.down("xs")]: {
-                  height: `${exportButtonsSmallScreenHeight}px`,
-                  maxHeight: `${exportButtonsSmallScreenHeight}px`,
+                  height: "350px",
+                  maxHeight: "350px",
                 },
               }}
             >
@@ -1408,10 +1186,10 @@ export default function SandboxControls() {
               chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250px)",
             maxHeight: (chartOnly) =>
               chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250x)",
-            minHeight: `${chartRegionMinHeight}px`,
+            minHeight: `400px`,
             [theme.breakpoints.down("sm")]: {
-              height: `${sandboxChartRegionSmallScreenHeight}px !important`,
-              maxHeight: `${sandboxChartRegionSmallScreenHeight}px !important`,
+              height: `575px !important`,
+              maxHeight: `575px !important`,
             },
           }}
         >
