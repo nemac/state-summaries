@@ -610,7 +610,7 @@ export default function SandboxControls() {
     // // get curent data time
     // const date = new Date().toISOString().slice(0, 10);
 
-    // get human readable versons of text
+    // get human-readable versions of text
     const sandboxHumanReadable = new SandboxHumanReadable("");
     const chartTitle = sandboxHumanReadable.getChartTitle({
       climatevariable,
@@ -623,8 +623,8 @@ export default function SandboxControls() {
     return `${chartTitle}`;
   };
 
-  // take blob data and add it to a href, intiate a click so the file downloads
-  const donwloadFile = (data, type = "svg") => {
+  // take blob data and add it to a href, initiate a click so the file downloads
+  const downloadFile = (data, type = "svg") => {
     // create a new a element
     const a = document.createElement("a");
 
@@ -680,12 +680,12 @@ export default function SandboxControls() {
       );
       if (!sizeChanged) {
         const base64doc = convertToOneSvg(svgSelector);
-        donwloadFile(base64doc);
+        downloadFile(base64doc);
         return null;
       }
     }
 
-    // get ploltly div
+    // get plotly div
     const plotHolderDiv =
       document.querySelector(".PlotRegionDiv").parentElement;
     const plotRegionDiv = document.querySelector(
@@ -706,14 +706,14 @@ export default function SandboxControls() {
       plotHolderDiv.style.height = `${heightARG}px`;
       plotRegionDiv.style.height = `${heightARG}px`;
 
-      // force window reszize so plotly re-renders the chart at fixed dimensions
+      // force window resize so plotly re-renders the chart at fixed dimensions
       window.dispatchEvent(new Event("resize"));
 
       // delay creation of svg export while resize happens
       setTimeout(() => {
         // create download file
         const base64doc = convertToOneSvg(svgSelector);
-        donwloadFile(base64doc);
+        downloadFile(base64doc);
 
         // reset dimensions back to orginal dimensions
         plotHolderDiv.style.width = originalHolderWidth;
@@ -721,7 +721,7 @@ export default function SandboxControls() {
         plotHolderDiv.style.height = originalHolderHeight;
         plotRegionDiv.style.height = originalHeight;
 
-        // force window reszize so plotly re-renders the chart at fixed dimensions
+        // force window resize so plotly re-renders the chart at fixed dimensions
         window.dispatchEvent(new Event("resize"));
         return null;
       }, 500);
@@ -735,7 +735,7 @@ export default function SandboxControls() {
     widthARG = 1000,
     heightARG = 500,
   ) => {
-    // get ploltly div
+    // get plotly div
     const plotHolderDiv =
       document.querySelector(".PlotRegionDiv").parentElement;
     const plotRegionDiv = document.querySelector(
@@ -757,12 +757,12 @@ export default function SandboxControls() {
       plotHolderDiv.style.height = `${heightARG}px`;
       plotRegionDiv.style.height = `${heightARG}px`;
 
-      // force window reszize so plotly re-renders the chart at fixed dimensions
+      // force window resize so plotly re-renders the chart at fixed dimensions
       window.dispatchEvent(new Event("resize"));
     }
 
     setTimeout(() => {
-      // find and covnert html all plotly chart nodes
+      // find and convert html all plotly chart nodes
       // (plotly puts legends and the chart in seperate nodes)
       // to an JS array
       const svgs = Array.from(document.querySelectorAll(svgSelector));
@@ -813,10 +813,10 @@ export default function SandboxControls() {
         const context = canvas.getContext("2d");
         context.drawImage(image, 0, 0, width, height);
         const png = canvas.toDataURL();
-        donwloadFile(png, "png");
+        downloadFile(png, "png");
 
         if (sizeChanged) {
-          // reset dimensions back to orginal dimensions
+          // reset dimensions back to original dimensions
           plotHolderDiv.style.width = originalHolderWidth;
           plotRegionDiv.style.width = originalWidth;
           plotHolderDiv.style.height = originalHolderHeight;
