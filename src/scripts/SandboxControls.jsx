@@ -16,7 +16,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SandboxPlotRegion from "./SandboxPlotRegion.jsx";
 import SandboxGeneratePlotData from "./SandboxGeneratePlotData.jsx";
 import SandboxHumanReadable from "./SandboxHumanReadable.jsx";
-import SandboxSelector from "./SandboxSelector.jsx";
 import SandboxAlert from "./SandboxAlert.jsx";
 
 import config from "../configs/config.js";
@@ -28,6 +27,7 @@ import axios from "axios";
 import "../css/Sandbox.scss";
 import GroupedDropDownSelector from "../components/GroupedDropDownSelector.jsx";
 import SaveChart from "../components/SaveChart.jsx";
+import MegaMenu from "../components/MegaMenu.jsx";
 import parseFile from "./utils.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
@@ -122,6 +122,7 @@ export default function SandboxControls() {
   const [climateOption, setClimateOption] = useState(
     "Annual Mean (Jan-Dec)_Average Temperature",
   );
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
 
   // END NEW STATE VARIABLES
 
@@ -895,6 +896,12 @@ export default function SandboxControls() {
     setClimateOption(newOption);
   };
 
+  const handleMegaMenuSelect = (location) => {
+    setRegionSelection(location.label);
+    handleRegionChange(location.label);
+    setMegaMenuOpen(false);
+  };
+
   // END NEW HANDLERS
 
   return (
@@ -1094,19 +1101,35 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                <SandboxSelector
-                  items={config.dropdownOptionsList}
-                  controlName={"Select a State, Territory, or NCA Region"}
-                  onChange={handleRegionChange}
-                  value={regionSelection}
-                  disabled={false}
-                  season={season}
-                  missing={!region}
-                  replaceClimatevariableType={replaceClimatevariableType}
-                  TooltipText={
-                    "Select a region: State, Territory, or NCA region"
-                  }
-                />
+                <Box
+                  onClick={() => setMegaMenuOpen(true)}
+                  sx={{
+                    width: "100%",
+                    height: "56px",
+                    border: "1px solid #0379C8",
+                    borderRadius: "4px",
+                    backgroundColor: "#FFFFFF",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 16px",
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                    },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#0379C8",
+                      fontSize: "16px",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {regionSelection || "Region, State or Territory"}
+                  </Typography>
+                  <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+                </Box>
               </Box>
             </Grid>
             <Grid
@@ -1235,6 +1258,11 @@ export default function SandboxControls() {
           </Box>
         </Grid>
       </Grid>
+      <MegaMenu
+        open={megaMenuOpen}
+        onClose={() => setMegaMenuOpen(false)}
+        onSelect={handleMegaMenuSelect}
+      />
     </div>
   );
 }
