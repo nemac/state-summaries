@@ -105,6 +105,6 @@ dist
 .tern-port
 
 # Python
-.lib/
-.bin/
-pyenv.cfg
+lib/
+bin/
+pyvenv.cfg
