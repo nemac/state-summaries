@@ -28,6 +28,7 @@ import "../css/Sandbox.scss";
 import GroupedDropDownSelector from "../components/GroupedDropDownSelector.jsx";
 import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
+import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
 import parseFile from "./utils.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
@@ -123,6 +124,8 @@ export default function SandboxControls() {
     "Annual Mean (Jan-Dec)_Average Temperature",
   );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [climateMenuOpen, setClimateMenuOpen] = useState(false);
+  const [showMapImage, setShowMapImage] = useState(false);
 
   // END NEW STATE VARIABLES
 
@@ -881,22 +884,37 @@ export default function SandboxControls() {
   };
 
   // NEW HANDLERS JEFF
-  const handleClimateOptionChange = (event) => {
-    const newOption = event.target.value;
-    getChartData({
-      chartDataRegion: regionSelection,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
-      chartOnlyProp: "no",
-      climateOption: newOption,
-    });
-    setClimateOption(newOption);
+  const handleClimateOptionChange = (option) => {
+    console.log("Climate option selected:", option);
+    setClimateOption(option.label);
+    setClimateMenuOpen(false);
+
+    // Check if this is a map option that should display an image
+    const isMapOption =
+      option.value === "change_annual_precip" ||
+      option.value === "change_seasonal_precip";
+
+    if (isMapOption) {
+      // Just show the map image, don't generate chart data
+      setShowMapImage(true);
+    } else {
+      // Regular chart option - hide map and generate chart data
+      setShowMapImage(false);
+      getChartData({
+        chartDataRegion: regionSelection,
+        chartDataClimatevariable: climatevariable,
+        chartDataPeriod: period,
+        chartDataSeason: season,
+        climateDataFilesJSONFile: climateDataFilesJSON,
+        chartLineChart: lineChart,
+        chartOnlyProp: "no",
+        climateOption: climateOption,
+      });
+    }
   };
 
   const handleMegaMenuSelect = (location) => {
+    console.log("jeff", location);
     setRegionSelection(location.label);
     handleRegionChange(location.label);
     setMegaMenuOpen(false);
@@ -1147,12 +1165,35 @@ export default function SandboxControls() {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
               >
-                <GroupedDropDownSelector
-                  options={config.climateDataHierarchy}
-                  label="Select Climate Variability and Seasonality"
-                  onChange={handleClimateOptionChange}
-                  value={climateOption}
-                />
+                <Box
+                  onClick={() => setClimateMenuOpen(true)}
+                  sx={{
+                    width: "100%",
+                    height: "56px",
+                    border: "1px solid #0379C8",
+                    borderRadius: "4px",
+                    backgroundColor: "#FFFFFF",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 16px",
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                    },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#0379C8",
+                      fontSize: "16px",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {climateOption || "Climate Variable and Seasonality"}
+                  </Typography>
+                  <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+                </Box>
               </Box>
             </Grid>
 
@@ -1251,10 +1292,23 @@ export default function SandboxControls() {
               },
             }}
           >
-            <SandboxPlotRegion
-              plotlyData={chartData}
-              plotlyLayout={chartLayout}
-            />
+            {showMapImage ? (
+              <Box
+                component="img"
+                src="/tempData/gergMap.png"
+                alt="Change in Annual Precipitation Map"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <SandboxPlotRegion
+                plotlyData={chartData}
+                plotlyLayout={chartLayout}
+              />
+            )}
           </Box>
         </Grid>
       </Grid>
@@ -1262,6 +1316,11 @@ export default function SandboxControls() {
         open={megaMenuOpen}
         onClose={() => setMegaMenuOpen(false)}
         onSelect={handleMegaMenuSelect}
+      />
+      <ClimateVariableAndSeasonality
+        open={climateMenuOpen}
+        onClose={() => setClimateMenuOpen(false)}
+        onSelect={handleClimateOptionChange}
       />
     </div>
   );
