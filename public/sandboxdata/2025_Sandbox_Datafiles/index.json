@@ -523,7 +523,7 @@
             "type": "tmin_son"
         }
     ],
-    "regional": [
+    "regions": [
         {
             "end": 2024,
             "name": "regions_prcp_1inch_1900-2024_SCS2025.txt",

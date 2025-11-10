@@ -22,7 +22,7 @@ function parseFile(data, type, parseRegion) {
   // columns. Think its handling no location name in national file
   if (type === "CONUS") {
     colIndex = 1;
-  } else if (type === "regional" || type === "states") {
+  } else if (type === "regions" || type === "states") {
     for (let h = 1; h < headers.length; h += 1) {
       if (
         (type === "states" ? headers[h].toUpperCase() : headers[h]) ===

@@ -216,13 +216,15 @@ export default function SandboxControls() {
   // get chart data from current state = which should include
   const getChartData = (props) => {
     // get argument keys
-    const { chartDataRegion } = props;
-    const { chartDataClimatevariable } = props;
-    const { chartDataPeriod } = props;
-    const { chartDataSeason } = props;
-    const { climateDataFilesJSONFile } = props;
-    const { chartLineChart } = props;
-    const { climateOption } = props;
+    const {
+      chartDataRegion,
+      chartDataClimatevariable,
+      chartDataPeriod,
+      chartDataSeason,
+      climateDataFilesJSONFile,
+      chartLineChart,
+      climateOption,
+    } = props;
 
     // update url history this is the point at which we will need to make sure
     // the graph looks the same when shared via url
@@ -257,6 +259,7 @@ export default function SandboxControls() {
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
     const matchingFiles = data.filter((file) => file.type === fileType);
+    console.log("match", matchingFiles);
 
     // Prefer files with date ranges 1895-2024 or 1900-2024 over 1950-2024
     const preferredFile =
@@ -289,9 +292,10 @@ export default function SandboxControls() {
         // convert the all the parameters to human readable title
         const chartTitle = sandboxHumanReadable.getChartTitle({
           climatevariable: fileType,
-          region: chartDataRegion,
+          region: locationType,
           titleLocation: chartDataRegion,
           chartDataSeason,
+          chartDataRegion,
         });
 
         // get climate variable human readable format
@@ -328,8 +332,6 @@ export default function SandboxControls() {
           season: chartDataSeason,
           // chartShowLine
         };
-
-        console.log("plotInfo", plotInfo);
 
         // get the charts data formated for plotly
         const plotData = new SandboxGeneratePlotData(plotInfo);
@@ -772,7 +774,6 @@ export default function SandboxControls() {
 
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (option) => {
-    console.log("Climate option selected:", option);
     setClimateOption(option.label);
     setClimateMenuOpen(false);
 
@@ -800,7 +801,6 @@ export default function SandboxControls() {
   };
 
   const handleMegaMenuSelect = (location) => {
-    console.log("jeff", location);
     setRegionSelection(location.label);
     handleRegionChange(location.label);
     setMegaMenuOpen(false);

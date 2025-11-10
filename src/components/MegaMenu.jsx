@@ -21,6 +21,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       label: "Contiguous United States",
       category: "United States",
       value: "contiguous",
+      type: "contiguous",
     },
     { label: "Alaska", category: "United States", value: "alaska_us" },
     {
@@ -467,14 +468,14 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       svg: "/svgs/regions/alaska.svg",
       description: "Alaska",
       value: "alaska",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Hawai'i and US-Affiliated Pacific Islands",
       svg: "/svgs/regions/hawaii.svg",
       description: "Hawai'i",
       value: "hawaii_pacific",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Northeast",
@@ -482,21 +483,21 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       description:
         "Connecticut, Delaware, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, & Vermont",
       value: "northeast",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Northern Rockies and Plains",
       svg: "/svgs/regions/northern_rockies_plains.svg",
       description: "Montana, Nebraska, North Dakota, South Dakota, & Wyoming",
       value: "northern_rockies_plains",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Northwest",
       svg: "/svgs/regions/northwest.svg",
       description: "Idaho, Oregon, & Washington",
       value: "northwest",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Ohio Valley",
@@ -504,7 +505,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       description:
         "Illinois, Indiana, Kentucky, Missouri, Ohio, Tennessee, & West Virginia",
       value: "ohio_valley",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "South",
@@ -512,7 +513,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       description:
         "Alabama, Arkansas, Louisiana, Mississippi, Oklahoma, & Texas",
       value: "south",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Southeast",
@@ -520,35 +521,35 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       description:
         "Florida, Georgia, North Carolina, South Carolina, & Virginia",
       value: "southeast",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Southwest",
       svg: "/svgs/regions/southwest.svg",
       description: "Arizona, Colorado, New Mexico, & Utah",
       value: "southwest",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "Upper Midwest",
       svg: "/svgs/regions/upper_midwest.svg",
       description: "Iowa, Michigan, Minnesota, & Wisconsin",
       value: "upper_midwest",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "US Caribbean",
       svg: "/svgs/regions/us_caribbean.svg",
       description: "Puerto Rico & U.S. Virgin Islands",
       value: "us_caribbean",
-      type: "regional",
+      type: "regions",
     },
     {
       label: "West",
       svg: "/svgs/regions/west.svg",
       description: "California, Nevada",
       value: "west",
-      type: "regional",
+      type: "regions",
     },
   ];
 

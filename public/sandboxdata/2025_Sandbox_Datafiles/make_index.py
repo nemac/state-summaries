@@ -94,7 +94,7 @@ def main():
                 })
                 break;
 
-    data['regional'] = data.pop('regions')
+    data['regions'] = data.pop('regions')
     with open(jsonFile, 'w+') as fd:
         fd.write(json.dumps(data, sort_keys=True, indent=4))
 

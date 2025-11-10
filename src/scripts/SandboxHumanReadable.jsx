@@ -15,6 +15,7 @@ export default class SandboxHumanReadable {
 
   // creates chart title
   getChartTitle(props) {
+    const { climatevariable, chartDataRegion } = props;
     if (!props.climatevariable) return "";
     const climateVariableValueNames = this.climateVariableValueNames;
     const newValue = climateVariableValueNames.filter(
@@ -22,14 +23,8 @@ export default class SandboxHumanReadable {
         variables.value === props.climatevariable &&
         variables.season === props.chartDataSeason,
     );
-    console.log(newValue);
     let chartTitle = newValue[0].chartTitle;
-    if (props.region === "Contiguous United States")
-      chartTitle = `${chartTitle} (Contiguous United States)`;
-    if (props.region === "Regional")
-      chartTitle = `${chartTitle} (NCA Region ${props.titleLocation})`;
-    if (props.region === "States")
-      chartTitle = `${chartTitle} (${props.titleLocation})`;
+    chartTitle = `${chartDataRegion} ${chartTitle} `;
     return chartTitle;
   }
 
