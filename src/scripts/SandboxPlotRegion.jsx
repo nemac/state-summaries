@@ -98,7 +98,6 @@ export default function SandboxPlotRegion(props) {
 
   return (
     <div
-      className="PlotRegionDiv"
       {...{
         ref: responsiveChartRef,
       }}

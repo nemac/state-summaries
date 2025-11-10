@@ -27,7 +27,7 @@ import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 
 const SaveChart = (props) => {
-  const { chartData, region, location, climatevariable, period } = props;
+  const { chartData, region, location, climatevariable, period, sx } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1000");
@@ -75,10 +75,7 @@ const SaveChart = (props) => {
         variant="outlined"
         startIcon={<DownloadIcon />}
         onClick={handleOpen}
-        // sx={{
-        //   backgroundColor: "#666",
-        //   "&:hover": { backgroundColor: "#555" },
-        // }}
+        sx={sx}
       >
         Save Chart
       </Button>

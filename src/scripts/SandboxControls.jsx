@@ -5,11 +5,6 @@ import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
-import Tooltip from "@mui/material/Tooltip";
-import Fade from "@mui/material/Fade";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -24,8 +19,6 @@ import SandboxLocationStateItems from "../configs/SandboxLocationStateItems";
 
 import axios from "axios";
 
-import "../css/Sandbox.scss";
-import GroupedDropDownSelector from "../components/GroupedDropDownSelector.jsx";
 import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
@@ -34,8 +27,6 @@ import parseFile from "./utils.js";
 const LocationRegionalItems = SandboxLocationRegionalItems();
 const LocationStateItems = SandboxLocationStateItems();
 
-const darkGrey = "#E6E6E6";
-const pullDownBackground = "#FBFCFE";
 const fontColor = "#5C5C5C";
 
 export default function SandboxControls() {
@@ -48,11 +39,6 @@ export default function SandboxControls() {
   const URLRegion = urlParams.get("region")
     ? urlParams.get("region")
     : "National";
-
-  // check url parameters for a location if none make it blank
-  const URLLocation = urlParams.get("location")
-    ? urlParams.get("location")
-    : "";
 
   // check url parameters for a climatevariable if none make it blank
   const URLClimatevariable = urlParams.get("climatevariable")
@@ -69,11 +55,6 @@ export default function SandboxControls() {
 
   // check url parameters for season data it blank make yearly
   const URLSeason = urlParams.get("season") ? urlParams.get("season") : "ann";
-
-  // check url parameters for showing chart only
-  const URLChartOnly = urlParams.get("chartonly")
-    ? urlParams.get("chartonly")
-    : "no";
 
   // set defaults for intial states of ui compnents
   let URLClimatevariableDisabled = true;
@@ -142,8 +123,6 @@ export default function SandboxControls() {
   const [errorType, setErrorType] = useState("Error");
   // the region
   const [region, setRegion] = useState(URLRegion);
-  // the location within region its National when region is National
-  const [location, setLocation] = useState(URLLocation);
   // the climate varriable tmax100F etc
   const [climatevariable, setClimatevariable] = useState(URLClimatevariable);
   // the period current 1900 - current or 1950 - current
@@ -154,10 +133,6 @@ export default function SandboxControls() {
   // when false average is the bars when false average is line
   // when true yearly is the line when false yearly is bars
   const [lineChart, setLineChart] = useState(URLLineChart);
-
-  // The chart only option is not something in the ui  but a URL prarmater
-  // so the the same interactive chart can be imbeded in a website
-  const [chartOnly, setChartOnly] = useState(URLChartOnly);
 
   // chart data from files in ../sandboxdata
   const [chartData, setChartData] = useState([{}]);
@@ -214,23 +189,19 @@ export default function SandboxControls() {
   const sandBoxURL = (props) => {
     // get values from argument keys
     const { chartDataRegion } = props;
-    const { chartDataLocation } = props;
     const { chartDataClimatevariable } = props;
     const { chartDataPeriod } = props;
     const { chartDataSeason } = props;
     const { chartLineChart } = props;
-    const { chartOnlyProp } = props;
     // create new URL parameter object
     const searchParams = new URLSearchParams();
 
     // get the url parameters
     searchParams.set("region", chartDataRegion);
-    searchParams.set("location", chartDataLocation);
     searchParams.set("climatevariable", chartDataClimatevariable);
     searchParams.set("period", chartDataPeriod);
     searchParams.set("season", chartDataSeason);
     searchParams.set("line", chartLineChart);
-    searchParams.set("chartonly", chartOnlyProp);
     // searchParams.set('chartShowLine', chartShowLine);
 
     // convert url parameters to a string and add the leading ? so it we can add it
@@ -246,26 +217,21 @@ export default function SandboxControls() {
   const getChartData = (props) => {
     // get argument keys
     const { chartDataRegion } = props;
-    const { chartDataLocation } = props;
     const { chartDataClimatevariable } = props;
     const { chartDataPeriod } = props;
     const { chartDataSeason } = props;
     const { climateDataFilesJSONFile } = props;
     const { chartLineChart } = props;
-    const { chartOnlyProp } = props;
     const { climateOption } = props;
 
     // update url history this is the point at which we will need to make sure
     // the graph looks the same when shared via url
     sandBoxURL({
       chartDataRegion,
-      chartDataLocation,
       chartDataClimatevariable,
       chartDataPeriod,
       chartDataSeason,
       chartLineChart,
-      chartOnlyProp,
-      // chartShowLine,
     });
 
     // limit the possible data file to period
@@ -343,8 +309,6 @@ export default function SandboxControls() {
         let dataMissing = false;
         if (!climateDataFilesJSONFile) dataMissing = true;
         if (!chartDataRegion) dataMissing = true;
-        if (chartDataRegion !== "National" && !chartDataLocation)
-          dataMissing = true;
         if (!chartDataClimatevariable) dataMissing = true;
         if (!chartDataPeriod) dataMissing = true;
         if (!chartDataSeason) dataMissing = true;
@@ -410,13 +374,11 @@ export default function SandboxControls() {
         if (atStart) {
           getChartData({
             chartDataRegion: "Contiguous United States",
-            chartDataLocation: location,
             chartDataClimatevariable: climatevariable,
             chartDataPeriod: period,
             chartDataSeason: season,
             climateDataFilesJSONFile: responseData,
             chartLineChart: lineChart,
-            chartOnlyProp: chartOnly,
             climateOption: "Annual Mean (Jan-Dec)_Average Temperature",
             // chartShowLine: false
           });
@@ -447,91 +409,16 @@ export default function SandboxControls() {
     setRegion(newValue);
     setRegionSelection(newValue);
 
-    setLocation("");
-    setChartOnly("no");
     getChartData({
       chartDataRegion: newValue,
-      chartDataLocation: "", // make sure location is blank
       chartDataClimatevariable: climatevariable,
       chartDataPeriod: period,
       chartDataSeason: season,
       climateDataFilesJSONFile: climateDataFilesJSON,
       chartLineChart: lineChart,
-      chartOnlyProp: "no",
       climateOption: climateOption,
       // chartShowLine: false
     });
-  };
-
-  // handles switching of yearly and average in chart
-  // avg as bars and yearly as line - default
-  // yearly as bars and avg as line
-  const handleSwtichAverageAndYearly = () => {
-    setLineChart("avg");
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: "avg",
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
-  // handles switching of yearly and average in chart
-  // avg as bars and yearly as line - default
-  // yearly as bars and avg as line
-  const handleSwtichMovingAverageAndYearly = () => {
-    setLineChart("mavg");
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: "mavg",
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
-  // handles switching of yearly and average in chart
-  // avg as bars and yearly as line - default
-  // yearly as bars and avg as line
-  const handleSwtichYearlyToLine = () => {
-    // do something
-    setLineChart("year");
-    setChartOnly("no");
-    getChartData({
-      chartDataRegion: region,
-      chartDataLocation: location,
-      chartDataClimatevariable: climatevariable,
-      chartDataPeriod: period,
-      chartDataSeason: season,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: "year",
-      chartOnlyProp: "no",
-      // chartShowLine: false
-    });
-    return null;
-  };
-
-  // repalce the climate variable with human readable climate variable
-  // tmax100F beceomes Days with Maximum Temperature Above 100°F
-  const replaceClimatevariableType = (replaceClimatevariable, seasonHR) => {
-    const sandboxHumanReadable = new SandboxHumanReadable();
-    return sandboxHumanReadable.getClimateVariablePullDownText(
-      replaceClimatevariable,
-      seasonHR,
-    );
   };
 
   // removes <br> from title attribute (in SVG) so images are exported without error
@@ -907,7 +794,6 @@ export default function SandboxControls() {
         chartDataSeason: season,
         climateDataFilesJSONFile: climateDataFilesJSON,
         chartLineChart: lineChart,
-        chartOnlyProp: "no",
         climateOption: climateOption,
       });
     }
@@ -923,320 +809,159 @@ export default function SandboxControls() {
   // END NEW HANDLERS
 
   return (
-    <div>
-      <Grid
-        container
-        spacing={0}
-        justify="flex-start"
-        direction="row"
+    <>
+      <Box
         sx={{
           backgroundColor: "white",
           color: fontColor,
           height: "calc(100vh - 16px)",
+          width: "100%",
           [theme.breakpoints.down("xs")]: {
             overflow: "scroll",
           },
         }}
       >
-        <Grid
-          size={{ xs: 12 }}
-          width="100%"
-          sx={{
-            display: (chartOnly) =>
-              chartOnly.chartOnly === "yes" ? "none" : "inherit",
-            margin: "6px",
-            [theme.breakpoints.down("sm")]: {
-              height: `450px`,
-              maxHeight: `450px`,
-            },
-            [theme.breakpoints.down("xs")]: {
-              height: "965px",
-              maxHeight: "965px",
-            },
-          }}
-        >
+        <Grid container spacing={1} justify="flex-start" direction="row">
           <Grid
-            container
-            spacing={0}
-            justify="flex-start"
-            direction="row"
+            size={{ xs: 12 }}
+            width="100%"
             sx={{
-              maxHeight: "375px",
-              backgroundColor: pullDownBackground,
-              border: `1px solid ${darkGrey}`,
-              borderRadius: "4px",
-              [theme.breakpoints.down("sm")]: {
-                height: `450px`,
-                maxHeight: `450px`,
-              },
+              height: `50px`,
+              maxHeight: `50px`,
+              color: fontColor,
               [theme.breakpoints.down("xs")]: {
-                height: `965px`,
-                minHeight: `965px`,
+                height: `75px`,
+                maxHeight: `75px`,
               },
             }}
           >
-            <Grid
-              size={{ xs: 12 }}
-              width="100%"
-              sx={{
-                height: `50px`,
-                maxHeight: `50px`,
-                color: fontColor,
-                [theme.breakpoints.down("xs")]: {
-                  height: `75px`,
-                  maxHeight: `75px`,
-                },
-              }}
+            <Box
+              px={1}
+              display="flex"
+              alignItems="center"
+              gap={1}
+              fontSize="h5.fontSize"
             >
-              <Box
-                fontWeight="fontWeightBold"
-                mt={1}
-                p={0}
-                display="flex"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
+              <InsertChartOutlinedIcon
+                sx={{
+                  color: "#5C5C5C",
+                  fontSize: "4.0rem",
+                  backgroundColor: "#ffffff",
+                  borderRadius: "30px",
+                }}
+              />
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 400,
+                  color: "#5C5C5C",
+                }}
               >
-                <Box
-                  onClick={handleDownloadChartAsSVG}
-                  px={1}
-                  fontSize="h4.fontSize"
-                >
-                  <Tooltip
-                    title={
-                      "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X."
-                    }
-                    aria-label={
-                      "Create a figure for the NCA using the buttons to how you want to filter the data. Generated graphics can be exported or submitted to the TSU. Data source: X"
-                    }
-                    placement="bottom-end"
-                    TransitionComponent={Fade}
-                    enterNextDelay={750}
-                    arrow
-                    sx={{ padding: theme.spacing(2), fontSize: "1rem" }}
-                  >
-                    <InsertChartOutlinedIcon
-                      fontSize="large"
-                      sx={{
-                        color: "#5C5C5C",
-                        fontSize: "1.5rem",
-                        marginLeft: theme.spacing(0.1),
-                        backgroundColor: "#ffffff",
-                        borderRadius: "30px",
-                      }}
-                    />
-                  </Tooltip>
-                </Box>
-                <Box px={1} fontSize="h5.fontSize">
-                  NCA Figure and Climate Data Generator
-                </Box>
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12 }}
-              width="100%"
-              sx={{
-                border: "0px solid transparent",
-                height: `60px`,
-                maxHeight: `60px`,
-                color: fontColor,
-                marginBottom: theme.spacing(1.25),
-                zIndex: 900,
-                [theme.breakpoints.down("xs")]: {
-                  height: `90px`,
-                  maxHeight: `90px`,
-                },
-              }}
-            >
-              <Box
-                p={0}
-                display="flex"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <Box
-                  px={1}
-                  fontWeight={400}
-                  fontSize="caption"
-                  sx={{
-                    "& .MuiPaper-elevation1.Mui-expanded": {
-                      boxShadow:
-                        "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
-                      backgroundColor: darkGrey,
-                    },
-                    "& .MuiAccordionSummary-root.Mui-expanded": {
-                      backgroundColor: "white",
-                    },
-                    "& .MuiPaper-elevation1": {
-                      boxShadow: "unset",
-                    },
-                  }}
-                >
-                  <Accordion
-                    square
-                    sx={{ backgroundColor: pullDownBackground }}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="data-description-header"
-                      id="data-description-header"
-                    >
-                      <Typography>
-                        Access climate data to create a proposed figure
-                        supporting your NCA chapter.&nbsp;
-                        <a href="#">
-                          Learn more about what data is being used...
-                        </a>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
-                        The Annual-Threshold graphs are derived from the Global
-                        Historical Climatology Network-Daily (GHCN) of the
-                        National Centers for Environmental Information. A select
-                        set of stations with minimal missing data are used for
-                        the calculations. The Annual and Seasonal Temperature
-                        and Precipitation graphs are derived from the new NOAA
-                        Monthly U.S. Climate Divisional Database (NClimDiv) of
-                        the National Centers for Environmental Information.
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12, sm: 3, md: 5 }}
-              sx={{ height: "75px", maxHeight: "75px" }}
-            >
-              <Box
-                fontWeight="fontWeightBold"
-                ml={1}
-                mt={1}
-                mb={1}
-                mr={1}
-                display="flex"
-                flexDirection="row"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <Box
-                  onClick={() => setMegaMenuOpen(true)}
-                  sx={{
-                    width: "100%",
-                    height: "56px",
-                    border: "1px solid #0379C8",
-                    borderRadius: "4px",
-                    backgroundColor: "#FFFFFF",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "0 16px",
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#0379C8",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {regionSelection || "Region, State or Territory"}
-                  </Typography>
-                  <ExpandMoreIcon sx={{ color: "#0379C8" }} />
-                </Box>
-              </Box>
-            </Grid>
-            <Grid
-              size={{ xs: 12, sm: 3, md: 5 }}
-              sx={{ height: "75px", maxHeight: "75px" }}
-            >
-              <Box
-                fontWeight="fontWeightBold"
-                ml={1}
-                mt={1}
-                mb={1}
-                mr={1}
-                display="flex"
-                flexDirection="row"
-                flexWrap="nowrap"
-                justifyContent="flex-start"
-              >
-                <Box
-                  onClick={() => setClimateMenuOpen(true)}
-                  sx={{
-                    width: "100%",
-                    height: "56px",
-                    border: "1px solid #0379C8",
-                    borderRadius: "4px",
-                    backgroundColor: "#FFFFFF",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "0 16px",
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#0379C8",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {climateOption || "Climate Variable and Seasonality"}
-                  </Typography>
-                  <ExpandMoreIcon sx={{ color: "#0379C8" }} />
-                </Box>
-              </Box>
-            </Grid>
+                State Summaries Data Explorer
+              </Typography>
+            </Box>
+          </Grid>
 
-            <Grid
-              size={{ xs: 12 }}
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box
+              onClick={() => setMegaMenuOpen(true)}
+              display="flex"
+              ml={1}
+              mr={1}
+              mt={1}
+              mb={1}
               sx={{
-                height: `75px`,
-                maxHeight: `75px`,
-                paddingTop: "12px",
-                paddingRight: "36px",
+                height: "44px",
+                border: "1px solid #0379C8",
+                borderRadius: "4px",
                 display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-start",
-                [theme.breakpoints.down("sm")]: {
-                  height: `150px`,
-                  maxHeight: `150px`,
-                },
-                [theme.breakpoints.down("xs")]: {
-                  height: "350px",
-                  maxHeight: "350px",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "8px",
+                gap: "8px",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
                 },
               }}
             >
-              {/*<SandboxActionMenu*/}
-              {/*  handleDownloadChartAsCSVa={handleDownloadChartAsCSV}*/}
-              {/*  handleDownloadChartAsPNGa={handleDownloadChartAsPNG}*/}
-              {/*  handleDownloadChartAsSVGa={handleDownloadChartAsSVG}*/}
-              {/*  handleSwtichAverageAndYearlya={handleSwtichAverageAndYearly}*/}
-              {/*  handleSwtichMovingAverageAndYearlya={*/}
-              {/*    handleSwtichMovingAverageAndYearly*/}
-              {/*  }*/}
-              {/*  handleSwtichYearlyToLinea={handleSwtichYearlyToLine}*/}
-              {/*  handleMailToTSUa={handleMailToTSU}*/}
-              {/*  lineChart={lineChart}*/}
-              {/*/>*/}
+              <Typography
+                sx={{
+                  color: "#0379C8",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                {regionSelection || "Region, State or Territory"}
+              </Typography>
+              <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box
+              onClick={() => setClimateMenuOpen(true)}
+              display="flex"
+              ml={1}
+              mr={1}
+              mt={1}
+              mb={1}
+              sx={{
+                height: "44px",
+                border: "1px solid #0379C8",
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "8px",
+                gap: "8px",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#0379C8",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                {climateOption || "Climate Variable and Seasonality"}
+              </Typography>
+              <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+            </Box>
+          </Grid>
+
+          <Grid
+            size={{ xs: 12, md: 2 }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+            }}
+          >
+            <Box display="flex" flexDirection="row" ml={1} mr={1} mt={1} mb={1}>
               <SaveChart
                 chartData={chartData}
                 region={region}
-                location={location}
                 climatevariable={climatevariable}
                 period={period}
+                sx={{
+                  height: "56px",
+                  maxHeight: "56px",
+                  paddingTop: "4px",
+                  paddingRight: "8px",
+                  paddingBottom: "4px",
+                  paddingLeft: "8px",
+                  borderRadius: "4px",
+                  border: "1px solid #0379C8",
+                  gap: "8px",
+                  fontWeight: 500,
+                  color: "#0379C8",
+                }}
               />
-            </Grid>
+            </Box>
           </Grid>
         </Grid>
 
@@ -1246,10 +971,8 @@ export default function SandboxControls() {
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            height: (chartOnly) =>
-              chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250px)",
-            maxHeight: (chartOnly) =>
-              chartOnly.chartOnly === "yes" ? "100%" : "calc(100% - 250x)",
+            height: "calc(100% - 250px)",
+            maxHeight: "calc(100% - 250x)",
             minHeight: `400px`,
             [theme.breakpoints.down("sm")]: {
               height: `575px !important`,
@@ -1311,7 +1034,7 @@ export default function SandboxControls() {
             )}
           </Box>
         </Grid>
-      </Grid>
+      </Box>
       <MegaMenu
         open={megaMenuOpen}
         onClose={() => setMegaMenuOpen(false)}
@@ -1322,17 +1045,15 @@ export default function SandboxControls() {
         onClose={() => setClimateMenuOpen(false)}
         onSelect={handleClimateOptionChange}
       />
-    </div>
+    </>
   );
 }
 
 SandboxControls.propTypes = {
   chartDataRegion: PropTypes.string,
-  chartDataLocation: PropTypes.string,
   chartDataClimatevariable: PropTypes.string,
   chartDataPeriod: PropTypes.string,
   chartDataSeason: PropTypes.string,
   climateDataFilesJSONFile: PropTypes.object,
   chartLineChart: PropTypes.string,
-  chartOnlyProp: PropTypes.string,
 };
