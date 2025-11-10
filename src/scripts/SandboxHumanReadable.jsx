@@ -15,7 +15,7 @@ export default class SandboxHumanReadable {
 
   // creates chart title
   getChartTitle(props) {
-    const { climatevariable, chartDataRegion } = props;
+    const { climatevariable, selection } = props;
     if (!props.climatevariable) return "";
     const climateVariableValueNames = this.climateVariableValueNames;
     const newValue = climateVariableValueNames.filter(
@@ -24,7 +24,7 @@ export default class SandboxHumanReadable {
         variables.season === props.chartDataSeason,
     );
     let chartTitle = newValue[0].chartTitle;
-    chartTitle = `${chartDataRegion} ${chartTitle} `;
+    chartTitle = `${selection.label} ${chartTitle} `;
     return chartTitle;
   }
 

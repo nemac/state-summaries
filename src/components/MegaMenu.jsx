@@ -143,17 +143,25 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       label: "Contiguous United States",
       svg: "/svgs/contiguous_usa.svg",
       value: "contiguous",
+      type: "CONUS",
     },
-    { label: "Alaska", svg: "/svgs/states/Alaska.svg", value: "alaska_us" },
+    {
+      label: "Alaska",
+      svg: "/svgs/states/Alaska.svg",
+      value: "alaska_us",
+      type: "",
+    },
     {
       label: "Hawai'i and US-Affiliated Pacific Islands",
       svg: "/svgs/states/Hawaii.svg",
       value: "hawaii_pacific",
+      type: "",
     },
     {
       label: "US Caribbean",
       svg: "/svgs/us_caribbean.svg",
       value: "caribbean",
+      type: "",
     },
   ];
 

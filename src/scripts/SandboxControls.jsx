@@ -50,9 +50,6 @@ export default function SandboxControls() {
     ? urlParams.get("period")
     : "1895-current";
 
-  // check url parameters for a using average bar true (averages are bar) if blank
-  const URLLineChart = urlParams.get("line") ? urlParams.get("line") : "year";
-
   // check url parameters for season data it blank make yearly
   const URLSeason = urlParams.get("season") ? urlParams.get("season") : "ann";
 
@@ -98,6 +95,12 @@ export default function SandboxControls() {
   }
 
   // NEW STATE VARIABLES JEFF
+  const [megaMenuSelection, setMegaMenuSelection] = useState({
+    label: "Contiguous United States",
+    svg: "/svgs/contiguous_usa.svg",
+    value: "contiguous",
+    type: "CONUS",
+  });
   const [regionSelection, setRegionSelection] = useState(
     "Contiguous United States",
   );
@@ -111,8 +114,6 @@ export default function SandboxControls() {
   // END NEW STATE VARIABLES
 
   // set React state via React Hooks
-  // used to detect the first call - for getting state from url
-  const [atStart, setAtStart] = useState(true);
   // used to oepn or close the alert box
   const [openError, setOpenError] = useState(false);
   // chart error message
@@ -121,18 +122,12 @@ export default function SandboxControls() {
   const [chartErrorTitle, setChartErrorTitle] = useState("Error");
   // chart error type currently Error or Warning
   const [errorType, setErrorType] = useState("Error");
-  // the region
-  const [region, setRegion] = useState(URLRegion);
   // the climate varriable tmax100F etc
   const [climatevariable, setClimatevariable] = useState(URLClimatevariable);
   // the period current 1900 - current or 1950 - current
   const [period, setPeriod] = useState(URLPeriod);
   // the season yearly, or spring mam, summer jja, fal son, winter djf
   const [season, setSeason] = useState(URLSeason);
-  // average bars or line
-  // when false average is the bars when false average is line
-  // when true yearly is the line when false yearly is bars
-  const [lineChart, setLineChart] = useState(URLLineChart);
 
   // chart data from files in ../sandboxdata
   const [chartData, setChartData] = useState([{}]);
@@ -192,7 +187,6 @@ export default function SandboxControls() {
     const { chartDataClimatevariable } = props;
     const { chartDataPeriod } = props;
     const { chartDataSeason } = props;
-    const { chartLineChart } = props;
     // create new URL parameter object
     const searchParams = new URLSearchParams();
 
@@ -201,8 +195,6 @@ export default function SandboxControls() {
     searchParams.set("climatevariable", chartDataClimatevariable);
     searchParams.set("period", chartDataPeriod);
     searchParams.set("season", chartDataSeason);
-    searchParams.set("line", chartLineChart);
-    // searchParams.set('chartShowLine', chartShowLine);
 
     // convert url parameters to a string and add the leading ? so it we can add it
     // to browser history (back button works)
@@ -215,38 +207,27 @@ export default function SandboxControls() {
 
   // get chart data from current state = which should include
   const getChartData = (props) => {
-    // get argument keys
     const {
-      chartDataRegion,
+      selection,
       chartDataClimatevariable,
       chartDataPeriod,
       chartDataSeason,
       climateDataFilesJSONFile,
-      chartLineChart,
       climateOption,
     } = props;
+
+    const selectionLabel = selection.label;
 
     // update url history this is the point at which we will need to make sure
     // the graph looks the same when shared via url
     sandBoxURL({
-      chartDataRegion,
+      selectionLabel,
       chartDataClimatevariable,
       chartDataPeriod,
       chartDataSeason,
-      chartLineChart,
     });
 
-    // limit the possible data file to period
-    // (years aka 1900 - current 1950 - current) and the climate variable (should be one)
-    // const data = climateDataFilesJSONFile.filter((json) => {
-    //   const returnValue =
-    //     json.period === chartDataPeriod &&
-    //     json.type === chartDataClimatevariable &&
-    //     json.season === chartDataSeason;
-    //   return returnValue;
-    // });
-
-    const locationType = config.locationTypeMapping[chartDataRegion]; // e.g. CONUS
+    const locationType = selection.type;
     const data = climateDataFilesJSONFile[locationType];
 
     // this is so awful lol
@@ -259,7 +240,6 @@ export default function SandboxControls() {
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
     const matchingFiles = data.filter((file) => file.type === fileType);
-    console.log("match", matchingFiles);
 
     // Prefer files with date ranges 1895-2024 or 1900-2024 over 1950-2024
     const preferredFile =
@@ -279,23 +259,19 @@ export default function SandboxControls() {
           response.data,
           locationType,
           locationType === "states"
-            ? config.stateAbbreviations[chartDataRegion]
-            : config.ncaRegionAbbreviations[chartDataRegion],
+            ? config.stateAbbreviations[selectionLabel]
+            : config.ncaRegionAbbreviations[selectionLabel],
         );
 
-        // create a new instance of the sandbox human readable class this transforms
-        // the short text to something
-        // humans can read tmax100F beceomes Days with Maximum Temperature Above 100°F and
-        // AK becomes Alaska
         const sandboxHumanReadable = new SandboxHumanReadable(fileType);
 
         // convert the all the parameters to human readable title
         const chartTitle = sandboxHumanReadable.getChartTitle({
           climatevariable: fileType,
           region: locationType,
-          titleLocation: chartDataRegion,
+          titleLocation: selectionLabel,
           chartDataSeason,
-          chartDataRegion,
+          selection,
         });
 
         // get climate variable human readable format
@@ -312,7 +288,6 @@ export default function SandboxControls() {
         // if no data mark as data missing so we can handle required fields and error messaging
         let dataMissing = false;
         if (!climateDataFilesJSONFile) dataMissing = true;
-        if (!chartDataRegion) dataMissing = true;
         if (!chartDataClimatevariable) dataMissing = true;
         if (!chartDataPeriod) dataMissing = true;
         if (!chartDataSeason) dataMissing = true;
@@ -327,7 +302,6 @@ export default function SandboxControls() {
           legnedText: chartType,
           chartType,
           climatevariable: humandReadablechartDataClimatevariable,
-          chartLineChart,
           dataMissing,
           season: chartDataSeason,
           // chartShowLine
@@ -358,7 +332,7 @@ export default function SandboxControls() {
 
   // function loads the index.json file to find the correct data.txt file based on the varriables
   // the user chooses or from URL parameters
-  const loadData = async (loadRegion, argPeriod, argSeason) => {
+  const loadData = async () => {
     await axios
       .get("./sandboxdata/2025_Sandbox_Datafiles/index.json")
       .then((response) => {
@@ -373,23 +347,19 @@ export default function SandboxControls() {
 
         // only send chart data if at the intializing of the app aka the first time
         // this is here for when URL parameters are passed
-        if (atStart) {
-          getChartData({
-            chartDataRegion: "Contiguous United States",
-            chartDataClimatevariable: climatevariable,
-            chartDataPeriod: period,
-            chartDataSeason: season,
-            climateDataFilesJSONFile: responseData,
-            chartLineChart: lineChart,
-            climateOption: "Annual Mean (Jan-Dec)_Average Temperature",
-            // chartShowLine: false
-          });
-        }
+        getChartData({
+          selection: megaMenuSelection,
+          chartDataClimatevariable: climatevariable,
+          chartDataPeriod: period,
+          chartDataSeason: season,
+          climateDataFilesJSONFile: responseData,
+          climateOption: "Annual Mean (Jan-Dec)_Average Temperature",
+        });
         return responseData;
       })
       .catch((error) => {
         // handle error
-        console.error(`SanboxControls loadData error: ${error}`); // eslint-disable-line no-console
+        console.error(`SandboxControls loadData error: ${error}`); // eslint-disable-line no-console
         return [""];
       });
   };
@@ -399,25 +369,20 @@ export default function SandboxControls() {
   useEffect(() => {
     // call loadData when at start changes, meaning only call this
     // when the site fist starts and intializes
-    loadData(region, period, season, atStart);
-
-    // make sure the start state is no false and this will never run again
-    // the loadData function will only update chartdata the first timei t runs
-    setAtStart(false);
-  }, [atStart]);
+    loadData();
+  }, []);
 
   // handle state change for region
-  const handleRegionChange = (newValue) => {
-    setRegion(newValue);
-    setRegionSelection(newValue);
+  const handleSelectionChange = (selection) => {
+    setRegionSelection(selection.label);
 
     getChartData({
-      chartDataRegion: newValue,
+      selection,
+      chartDataRegion: selection.label,
       chartDataClimatevariable: climatevariable,
       chartDataPeriod: period,
       chartDataSeason: season,
       climateDataFilesJSONFile: climateDataFilesJSON,
-      chartLineChart: lineChart,
       climateOption: climateOption,
       // chartShowLine: false
     });
@@ -507,7 +472,7 @@ export default function SandboxControls() {
     const sandboxHumanReadable = new SandboxHumanReadable("");
     const chartTitle = sandboxHumanReadable.getChartTitle({
       climatevariable,
-      region,
+      regionSelection,
       titleLocation: replaceLocationAbbreviation(location),
       chartDataSeason: season,
     });
@@ -608,7 +573,7 @@ export default function SandboxControls() {
         const base64doc = convertToOneSvg(svgSelector);
         downloadFile(base64doc);
 
-        // reset dimensions back to orginal dimensions
+        // reset dimensions back to orignal dimensions
         plotHolderDiv.style.width = originalHolderWidth;
         plotRegionDiv.style.width = originalWidth;
         plotHolderDiv.style.height = originalHolderHeight;
@@ -789,20 +754,19 @@ export default function SandboxControls() {
       // Regular chart option - hide map and generate chart data
       setShowMapImage(false);
       getChartData({
+        selection: megaMenuSelection,
         chartDataRegion: regionSelection,
         chartDataClimatevariable: climatevariable,
         chartDataPeriod: period,
         chartDataSeason: season,
         climateDataFilesJSONFile: climateDataFilesJSON,
-        chartLineChart: lineChart,
         climateOption: climateOption,
       });
     }
   };
 
-  const handleMegaMenuSelect = (location) => {
-    setRegionSelection(location.label);
-    handleRegionChange(location.label);
+  const handleMegaMenuSelect = (selection) => {
+    handleSelectionChange(selection);
     setMegaMenuOpen(false);
   };
 
@@ -944,7 +908,7 @@ export default function SandboxControls() {
             <Box display="flex" flexDirection="row" ml={1} mr={1} mt={1} mb={1}>
               <SaveChart
                 chartData={chartData}
-                region={region}
+                region={regionSelection}
                 climatevariable={climatevariable}
                 period={period}
                 sx={{
@@ -1055,5 +1019,4 @@ SandboxControls.propTypes = {
   chartDataPeriod: PropTypes.string,
   chartDataSeason: PropTypes.string,
   climateDataFilesJSONFile: PropTypes.object,
-  chartLineChart: PropTypes.string,
 };
