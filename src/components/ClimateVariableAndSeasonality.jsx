@@ -93,52 +93,72 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
     {
       label: "(Days) Max Temp Below 0°F",
       value: "tmax_0F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Maximum Temperature Below 0°F",
+      title: "Number of Days with Maximum Temperature Below 0°F",
     },
     {
       label: "(Days) Max Temp Below 32°F",
       value: "tmax_32F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Maximum Temperature Below 32°F",
+      title: "Number of Days with Maximum Temperature Below 32°F",
     },
     {
       label: "(Days) Max Temp Below 90°F",
       value: "tmax_90F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Maximum Temperature Below 90°F",
+      title: "Number of Days with Maximum Temperature Below 90°F",
     },
     {
       label: "(Days) Max Temp Below 95°F",
       value: "tmax_95F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Maximum Temperature Below 95°F",
+      title: "Number of Days with Maximum Temperature Below 95°F",
     },
     {
       label: "(Days) Max Temp Below 100°F",
       value: "tmax_100F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Maximum Temperature Below 100°F",
+      title: "Number of Days with Maximum Temperature Below 100°F",
     },
     {
       label: "(Days) Min Temp Below 0°F",
       value: "tmin_0F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Minimum Temperature Below 0°F",
+      title: "Number of Days with Minimum Temperature Below 0°F",
     },
     {
       label: "(Days) Min Temp Below 32°F",
       value: "tmin_32F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Minimum Temperature Below 32°F",
+      title: "Number of Days with Minimum Temperature Below 32°F",
     },
     {
       label: "(Days) Min Temp Below 70°F",
       value: "tmin_70F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Minimum Temperature Below 70°F",
+      title: "Number of Days with Minimum Temperature Below 70°F",
     },
     {
       label: "(Days) Min Temp Below 75°F",
       value: "tmin_75F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Minimum Temperature Below 75°F",
+      title: "Number of Days with Minimum Temperature Below 75°F",
     },
     {
       label: "(Days) Min Temp Below 90°F",
       value: "tmin_90F",
-      type: "temperature",
+      chartType: "Temperature",
+      tooltip: "Days with Minimum Temperature Below 90°F",
+      title: "Number of Days with Minimum Temperature Below 90°F",
     },
   ];
 
@@ -147,17 +167,23 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
     {
       label: "(Days) Precipitation > 1 inch",
       value: "prcp_1inch",
-      type: "precipitation",
+      chartType: "Precipitation",
+      tooltip: "Days with Precipitation Greater than 1 inch",
+      title: "Number of Days with Precipitation Greater than 2 inches",
     },
     {
       label: "(Days) Precipitation > 2 inches",
       value: "prcp_2inch",
-      type: "precipitation",
+      chartType: "Precipitation",
+      tooltip: "Days with Precipitation Greater than 2 inch",
+      title: "Number of Days with Precipitation Greater than 2 inches",
     },
     {
       label: "(Days) Precipitation > 3 inches",
       value: "prcp_3inch",
-      type: "precipitation",
+      chartType: "Precipitation",
+      tooltip: "Days with Precipitation Greater than 3 inch",
+      title: "Number of Days with Precipitation Greater than 3 inches",
     },
   ];
 
@@ -166,18 +192,30 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
     {
       label: "Total Precipitation",
       value: "prcp",
-      icon: "precipitation",
+      icon: "Precipitation",
+      tooltip: "Total Precipitation",
+      title: "Total Precipitation",
     },
-    { label: "Average Temperature", value: "tmean", icon: "temperature" },
+    {
+      label: "Average Temperature",
+      value: "tmean",
+      icon: "Temperature",
+      tooltip: "Average Temperature",
+      title: "Average Temperature",
+    },
     {
       label: "Average Max Temperature",
       value: "tmax",
-      icon: "temperature",
+      icon: "Temperature",
+      tooltip: "Average Max Temperature",
+      title: "Average Max Temperature",
     },
     {
       label: "Average Min Temperature",
       value: "tmin",
-      icon: "temperature",
+      icon: "Temperature",
+      tooltip: "Average Min Temperature",
+      title: "Average Min Temperature",
     },
   ];
 
@@ -258,7 +296,13 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   <Button
                     key={option.value}
                     sx={buttonStyle}
-                    onClick={() => handleOptionSelect(option)}
+                    onClick={() =>
+                      handleOptionSelect({
+                        ...option,
+                        season: "Annual (Jan-Dec)",
+                        seasonId: "ann",
+                      })
+                    }
                   >
                     <ThermostatIcon
                       sx={{ color: "#003366", fontSize: "1.5rem" }}
@@ -290,7 +334,12 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   <Button
                     key={option.value}
                     sx={buttonStyle}
-                    onClick={() => handleOptionSelect(option)}
+                    onClick={() =>
+                      handleOptionSelect({
+                        ...option,
+                        season: "Annual (Jan-Dec)",
+                      })
+                    }
                   >
                     <ThunderstormIcon
                       sx={{ color: "#003366", fontSize: "1.5rem" }}
@@ -349,7 +398,7 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                     })
                   }
                 >
-                  {option.icon === "precipitation" ? (
+                  {option.icon === "Precipitation" ? (
                     <ThunderstormIcon
                       sx={{ color: "#003366", fontSize: "1.5rem" }}
                     />

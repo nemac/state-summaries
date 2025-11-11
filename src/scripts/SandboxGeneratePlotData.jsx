@@ -83,6 +83,7 @@ class SandboxGeneratePlotData {
 
   // set color for chart based on climate variable or chartType
   setChartColor(chartType) {
+    console.log(chartType);
     switch (chartType) {
       case "Precipitation":
         return this.precipitationColor;
@@ -107,6 +108,7 @@ class SandboxGeneratePlotData {
       if (this.season === "ann") return "annually";
       return seasonHumanReadable.toLowerCase().split(" ")[0].replace(":", "");
     }
+    console.log("hoverTemplateSeasonText");
     return "year";
   }
 

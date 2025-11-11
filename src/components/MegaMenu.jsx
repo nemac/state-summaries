@@ -23,13 +23,6 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       value: "contiguous",
       type: "contiguous",
     },
-    { label: "Alaska", category: "United States", value: "alaska_us" },
-    {
-      label: "Hawai'i and US-Affiliated Pacific Islands",
-      category: "United States",
-      value: "hawaii_pacific",
-    },
-    { label: "US Caribbean", category: "United States", value: "caribbean" },
     // States
     { label: "Alabama", category: "States", value: "Alabama" },
     { label: "Alaska", category: "States", value: "Alaska" },
@@ -136,34 +129,6 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       backgroundColor: "#f0f0f0",
     },
   };
-
-  // United States options
-  const unitedStatesOptions = [
-    {
-      label: "Contiguous United States",
-      svg: "/svgs/contiguous_usa.svg",
-      value: "contiguous",
-      type: "CONUS",
-    },
-    {
-      label: "Alaska",
-      svg: "/svgs/states/Alaska.svg",
-      value: "alaska_us",
-      type: "",
-    },
-    {
-      label: "Hawai'i and US-Affiliated Pacific Islands",
-      svg: "/svgs/states/Hawaii.svg",
-      value: "hawaii_pacific",
-      type: "",
-    },
-    {
-      label: "US Caribbean",
-      svg: "/svgs/us_caribbean.svg",
-      value: "caribbean",
-      type: "",
-    },
-  ];
 
   // States options - all 50 states
   const statesOptions = [
@@ -559,6 +524,12 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
       value: "west",
       type: "regions",
     },
+    {
+      label: "Contiguous United States",
+      svg: "/svgs/contiguous_usa.svg",
+      value: "contiguous",
+      type: "CONUS",
+    },
   ];
 
   return (
@@ -647,40 +618,6 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               />
             )}
           />
-        </Box>
-
-        {/* United States Section */}
-        <Box sx={{ mb: 3 }}>
-          <Box sx={sectionTitleStyle}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              United States
-            </Typography>
-          </Box>
-          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
-            some description
-          </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            {unitedStatesOptions.map((option) => (
-              <Button
-                key={option.value}
-                sx={buttonStyle}
-                onClick={() => handleLocationSelect(option)}
-              >
-                <Box
-                  component="img"
-                  src={option.svg}
-                  alt={option.label}
-                  sx={{ width: "30px", height: "30px", objectFit: "contain" }}
-                />
-                <Typography
-                  variant="body2"
-                  sx={{ color: "#003366", fontWeight: 500 }}
-                >
-                  {option.label}
-                </Typography>
-              </Button>
-            ))}
-          </Box>
         </Box>
 
         {/* States Section */}
