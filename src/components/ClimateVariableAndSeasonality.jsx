@@ -15,8 +15,10 @@ import ThermostatIcon from "@mui/icons-material/Thermostat";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 
 const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
-  const [selectedHistoricalSeason, setSelectedHistoricalSeason] = useState("Annual (Jan–Dec)");
-  const [selectedMapsSeason, setSelectedMapsSeason] = useState("Annual (Jan–Dec)");
+  const [selectedHistoricalSeason, setSelectedHistoricalSeason] =
+    useState("Annual (Jan–Dec)");
+  const [selectedMapsSeason, setSelectedMapsSeason] =
+    useState("Annual (Jan–Dec)");
 
   const handleOptionSelect = (option) => {
     if (onSelect) {
@@ -79,11 +81,11 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
   };
 
   const seasonOptions = [
-    { label: "Annual (Jan–Dec)", value: "annual" },
-    { label: "Spring (Mar–May)", value: "spring" },
-    { label: "Summer (Jun–Aug)", value: "summer" },
-    { label: "Fall (Sep–Nov)", value: "fall" },
-    { label: "Winter (Dec–Feb)", value: "winter" },
+    { label: "Annual (Jan–Dec)", value: "ann" },
+    { label: "Spring (Mar–May)", value: "mam" },
+    { label: "Summer (Jun–Aug)", value: "jja" },
+    { label: "Fall (Sep–Nov)", value: "son" },
+    { label: "Winter (Dec–Feb)", value: "djf" },
   ];
 
   // Historical Annual Extremes - Temperature options
@@ -153,43 +155,45 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       type: "precipitation",
     },
     {
-      label: "(Days) Precipitation > 2 inches",
-      value: "prcp_2inch_alt",
-      type: "precipitation",
-    },
-    {
       label: "(Days) Precipitation > 3 inches",
       value: "prcp_3inch",
-      type: "precipitation",
-    },
-    {
-      label: "(Days) Precipitation > 3 inches",
-      value: "prcp_3inch_alt",
       type: "precipitation",
     },
   ];
 
   // Historical Seasonality options
   const historicalSeasonalityOptions = [
-    { label: "Total Precipitation", value: "total_precipitation", icon: "precipitation" },
-    { label: "Average Temperature", value: "avg_temp", icon: "temperature" },
-    { label: "Average Max Temperature", value: "avg_max_temp", icon: "temperature" },
-    { label: "Average Min Temperature", value: "avg_min_temp", icon: "temperature" },
+    {
+      label: "Total Precipitation",
+      value: "prcp",
+      icon: "precipitation",
+    },
+    { label: "Average Temperature", value: "tmean", icon: "temperature" },
+    {
+      label: "Average Max Temperature",
+      value: "tmax",
+      icon: "temperature",
+    },
+    {
+      label: "Average Min Temperature",
+      value: "tmin",
+      icon: "temperature",
+    },
   ];
 
-  // Observed and Projected options
   const observedProjectedOptions = [
     { label: "Temperature", value: "temperature_obs_proj" },
   ];
 
-  // Maps - Annual options
   const mapsAnnualOptions = [
     { label: "Change in Annual Precipitation", value: "change_annual_precip" },
   ];
 
-  // Maps - Seasonality options (uses same dropdown as Historical Seasonality)
   const mapsSeasonalityOptions = [
-    { label: "Change in Annual Precipitation", value: "change_seasonal_precip" },
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_seasonal_precip",
+    },
   ];
 
   return (
@@ -200,7 +204,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       aria-describedby="climate-variable-modal-description"
     >
       <Box sx={modalStyle}>
-        {/* Header with Title and Close Button */}
         <Box
           sx={{
             display: "flex",
@@ -226,7 +229,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
           Choose the Climate Variable and Seasonality
         </Typography>
 
-        {/* Charts Section */}
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -234,7 +236,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             </Typography>
           </Box>
 
-          {/* Historical Annual Extremes */}
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
@@ -243,9 +244,10 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
               Historical Annual Extremes
             </Typography>
 
-            {/* Temperature Section */}
             <Box sx={{ mb: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
                 <ThermostatIcon sx={{ color: "#5C5C5C", fontSize: "1.2rem" }} />
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
                   Temperature
@@ -258,7 +260,9 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                     sx={buttonStyle}
                     onClick={() => handleOptionSelect(option)}
                   >
-                    <ThermostatIcon sx={{ color: "#003366", fontSize: "1.5rem" }} />
+                    <ThermostatIcon
+                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                    />
                     <Typography
                       variant="body2"
                       sx={{ color: "#003366", fontWeight: 500 }}
@@ -270,10 +274,13 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
               </Box>
             </Box>
 
-            {/* Precipitation Section */}
             <Box sx={{ mb: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                <ThunderstormIcon sx={{ color: "#5C5C5C", fontSize: "1.2rem" }} />
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <ThunderstormIcon
+                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                />
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
                   Precipitation
                 </Typography>
@@ -300,7 +307,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             </Box>
           </Box>
 
-          {/* Historical Seasonality */}
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
@@ -334,13 +340,23 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   key={option.value}
                   sx={buttonStyle}
                   onClick={() =>
-                    handleOptionSelect({ ...option, season: selectedHistoricalSeason })
+                    handleOptionSelect({
+                      ...option,
+                      season: selectedHistoricalSeason,
+                      seasonId: seasonOptions.find(
+                        (s) => s.label === selectedHistoricalSeason,
+                      )?.value,
+                    })
                   }
                 >
                   {option.icon === "precipitation" ? (
-                    <ThunderstormIcon sx={{ color: "#003366", fontSize: "1.5rem" }} />
+                    <ThunderstormIcon
+                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                    />
                   ) : (
-                    <ThermostatIcon sx={{ color: "#003366", fontSize: "1.5rem" }} />
+                    <ThermostatIcon
+                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                    />
                   )}
                   <Typography
                     variant="body2"
@@ -353,7 +369,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             </Box>
           </Box>
 
-          {/* Observed and Projected */}
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
@@ -368,7 +383,9 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   sx={buttonStyle}
                   onClick={() => handleOptionSelect(option)}
                 >
-                  <ThermostatIcon sx={{ color: "#003366", fontSize: "1.5rem" }} />
+                  <ThermostatIcon
+                    sx={{ color: "#003366", fontSize: "1.5rem" }}
+                  />
                   <Typography
                     variant="body2"
                     sx={{ color: "#003366", fontWeight: 500 }}
@@ -381,7 +398,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
           </Box>
         </Box>
 
-        {/* Maps Section */}
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -389,7 +405,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             </Typography>
           </Box>
 
-          {/* Annual */}
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
@@ -418,7 +433,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             </Box>
           </Box>
 
-          {/* Seasonality */}
           <Box sx={{ mb: 3 }}>
             <Typography
               variant="subtitle1"
@@ -452,7 +466,13 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   key={option.value}
                   sx={buttonStyle}
                   onClick={() =>
-                    handleOptionSelect({ ...option, season: selectedMapsSeason })
+                    handleOptionSelect({
+                      ...option,
+                      season: selectedMapsSeason,
+                      seasonId: seasonOptions.find(
+                        (s) => s.label === selectedMapsSeason,
+                      )?.value,
+                    })
                   }
                 >
                   <ThunderstormIcon
@@ -470,7 +490,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
           </Box>
         </Box>
 
-        {/* Cancel Button */}
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
           <Button sx={cancelButtonStyle} onClick={onClose}>
             CANCEL

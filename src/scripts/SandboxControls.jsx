@@ -104,9 +104,12 @@ export default function SandboxControls() {
   const [regionSelection, setRegionSelection] = useState(
     "Contiguous United States",
   );
-  const [climateOption, setClimateOption] = useState(
-    "Annual Mean (Jan-Dec)_Average Temperature",
-  );
+  const [climateOption, setClimateOption] = useState({
+    label: "Average Temperature",
+    value: "tmean",
+    season: "Annual (Jan–Dec)",
+    seasonId: "ann",
+  });
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
   const [showMapImage, setShowMapImage] = useState(false);
@@ -215,6 +218,7 @@ export default function SandboxControls() {
       climateDataFilesJSONFile,
       climateOption,
     } = props;
+    console.log("jeff", props);
 
     const selectionLabel = selection.label;
 
@@ -230,12 +234,8 @@ export default function SandboxControls() {
     const locationType = selection.type;
     const data = climateDataFilesJSONFile[locationType];
 
-    // this is so awful lol
-    const split = climateOption.split("_");
-    const machineReadable = // e.g. Average_Temperature
-      config.machineReadableClimateData[split[0]].metrics[split[1]];
-    const fileType = config.metricToFileTypeMapping[machineReadable]; // e.g. tmean_ann
-    const chartType = getClimatevariableType(fileType);
+    const fileType = climateOption.value + "_" + climateOption.seasonId;
+    const chartType = climateOption.type;
 
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
@@ -353,7 +353,7 @@ export default function SandboxControls() {
           chartDataPeriod: period,
           chartDataSeason: season,
           climateDataFilesJSONFile: responseData,
-          climateOption: "Annual Mean (Jan-Dec)_Average Temperature",
+          climateOption: climateOption,
         });
         return responseData;
       })
@@ -739,7 +739,8 @@ export default function SandboxControls() {
 
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (option) => {
-    setClimateOption(option.label);
+    const newOption = option;
+    setClimateOption(newOption);
     setClimateMenuOpen(false);
 
     // Check if this is a map option that should display an image
@@ -760,7 +761,7 @@ export default function SandboxControls() {
         chartDataPeriod: period,
         chartDataSeason: season,
         climateDataFilesJSONFile: climateDataFilesJSON,
-        climateOption: climateOption,
+        climateOption: newOption,
       });
     }
   };
@@ -891,7 +892,8 @@ export default function SandboxControls() {
                   fontWeight: 400,
                 }}
               >
-                {climateOption || "Climate Variable and Seasonality"}
+                {climateOption.season + " " + climateOption.label ||
+                  "Climate Variable and Seasonality"}
               </Typography>
               <ExpandMoreIcon sx={{ color: "#0379C8" }} />
             </Box>
