@@ -47,70 +47,23 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 export default function SandboxControls() {
   const theme = useTheme();
 
-  // check url parameters first for values
-  const urlParams = new URLSearchParams(window.location.search);
-
-  // check url parameters for the region if none make it blank
-  const URLRegion = urlParams.get("region")
-    ? urlParams.get("region")
-    : "National";
-
-  // check url parameters for a climatevariable if none make it blank
-  const URLClimatevariable = urlParams.get("climatevariable")
-    ? urlParams.get("climatevariable")
-    : "tmpc";
-
-  // set defaults for intial states of ui compnents
-  let URLClimatevariableDisabled = true;
-  let URLLocationDisabled = true;
-  let URLPeriodDisabled = true;
-  let URLSeasonDisabled = true;
-  let URLLocationItems = [""];
-
-  // the region determines some of the initial states, so if the URl contains a region
-  // make sure we set those states, also there different location values for different regions
-  switch (URLRegion) {
-    case "National":
-      // National data set the climatevariable pull down to NOT disabled by changing the state
-      URLClimatevariableDisabled = false;
-      URLPeriodDisabled = false;
-      URLSeasonDisabled = false;
-      break;
-    case "Regional":
-      // National data set the climatevariable pulldown to NOT disabled by changing the state
-      URLLocationItems = LocationRegionalItems;
-      URLLocationDisabled = false;
-      URLClimatevariableDisabled = false;
-      URLPeriodDisabled = false;
-      URLSeasonDisabled = false;
-      break;
-    case "State":
-      // National data set the climatevariable pulldown to NOT disabled by changing the state
-      URLLocationItems = LocationStateItems;
-      URLLocationDisabled = false;
-      URLClimatevariableDisabled = false;
-      URLPeriodDisabled = false;
-      URLSeasonDisabled = false;
-      break;
-    default:
-      // default state
-      URLClimatevariableDisabled = true;
-      URLLocationDisabled = true;
-      URLPeriodDisabled = true;
-      URLSeasonDisabled = true;
-      break;
-  }
-
   // NEW STATE VARIABLES JEFF
   const [megaMenuSelection, setMegaMenuSelection] = useState({
     label: "Contiguous United States",
-    svg: "/svgs/contiguous_usa.svg",
-    value: "contiguous",
+    category: "United States",
+    value: "CONUS",
     type: "CONUS",
+    startDates: {
+      threshold: "1900",
+      temperature: "1895",
+      precipitation: "1895",
+    },
+    endDates: {
+      threshold: "2024",
+      temperature: "2024",
+      precipitation: "2024",
+    },
   });
-  const [regionSelection, setRegionSelection] = useState(
-    "Contiguous United States",
-  );
   const [climateOption, setClimateOption] = useState({
     label: "Average Temperature",
     value: "tmean",
@@ -118,7 +71,10 @@ export default function SandboxControls() {
     seasonId: "ann",
     tooltip: "Average Temperature",
     title: "Average Temperature",
+    type: "temperature",
     chartType: "Temperature",
+    yAxisText: "Temperature (°F)",
+    avgTextUnits: "°F",
   });
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
@@ -127,7 +83,7 @@ export default function SandboxControls() {
   // END NEW STATE VARIABLES
 
   // set React state via React Hooks
-  // used to oepn or close the alert box
+  // used to open or close the alert box
   const [openError, setOpenError] = useState(false);
   // chart error message
   const [chartErrorMessage, setChartErrorMessage] = useState("Chart Error");
@@ -135,8 +91,6 @@ export default function SandboxControls() {
   const [chartErrorTitle, setChartErrorTitle] = useState("Error");
   // chart error type currently Error or Warning
   const [errorType, setErrorType] = useState("Error");
-  // the climate varriable tmax100F etc
-  const [climatevariable, setClimatevariable] = useState(URLClimatevariable);
 
   // chart data from files in ../sandboxdata
   const [chartData, setChartData] = useState([{}]);
@@ -159,27 +113,6 @@ export default function SandboxControls() {
     );
   };
 
-  // function to set URL parameters based on state and user seletions
-  const sandBoxURL = (props) => {
-    // get values from argument keys
-    const { chartDataRegion } = props;
-    const { chartDataClimatevariable } = props;
-    // create new URL parameter object
-    const searchParams = new URLSearchParams();
-
-    // get the url parameters
-    searchParams.set("region", chartDataRegion);
-    searchParams.set("climatevariable", chartDataClimatevariable);
-
-    // convert url parameters to a string and add the leading ? so it we can add it
-    // to browser history (back button works)
-    const urlParameters = `?${searchParams.toString()}`;
-
-    // adds url and url parameters to browser history
-    window.history.replaceState({}, document.title, urlParameters);
-    return urlParameters;
-  };
-
   // get chart data from current state = which should include
   const getChartData = (props) => {
     const { selection, climateDataFilesJSONFile, climateOption } = props;
@@ -187,21 +120,19 @@ export default function SandboxControls() {
 
     const selectionLabel = selection.label;
 
-    // // update url history this is the point at which we will need to make sure
-    // // the graph looks the same when shared via url
-    // sandBoxURL({
-    //   selectionLabel,
-    //   chartDataClimatevariable,
-    // });
-
     const locationType = selection.type;
     const data = climateDataFilesJSONFile[locationType];
 
     // Construct file type identifier, appending seasonId only if it exists
+    // e.g. value = prcp and if seasonId = ann this becomes prcp_ann
     const fileType = climateOption.seasonId
       ? climateOption.value + "_" + climateOption.seasonId
       : climateOption.value;
     const chartType = climateOption.chartType;
+
+    // use type from climateOption (e.g. temperature) to find start and end dates
+    const startDate = parseInt(selection.startDates[climateOption.type]);
+    const endDate = parseInt(selection.endDates[climateOption.type]);
 
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
@@ -217,10 +148,6 @@ export default function SandboxControls() {
       ? preferredFile.name
       : `${locationType}_${fileType}_1900-2024_SCS2025.txt`;
 
-    // create a two element list of periods e.g. [1900, 2024]
-    const periodString = preferredFile ? preferredFile.period : "1900-2024";
-    const period = periodString.split("-").map(Number);
-
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
         const chartTitle =
@@ -234,21 +161,23 @@ export default function SandboxControls() {
         const plotInfo = {
           xvals: chartDataFromFile[0],
           yvals: chartDataFromFile[1],
-          xmin: period[0],
-          xmax: period[1],
+          xmin: startDate,
+          xmax: endDate,
           chartTitle,
           legnedText: chartType,
           chartType,
           climatevariable: climateOption.tooltip, // e.g. Days with Precipitation Greater than 1 inch
           season: climateOption.seasonId,
+          yAxisText: climateOption.yAxisText,
+          avgTextUnits: climateOption.avgTextUnits,
         };
 
         // get the charts data formated for plotly
         const plotData = new SandboxGeneratePlotData(plotInfo);
 
         const xRange = {
-          xmin: period[0],
-          xmax: period[1],
+          xmin: startDate,
+          xmax: endDate,
         };
 
         // set the charts min and max based on the data in the data file
@@ -303,11 +232,10 @@ export default function SandboxControls() {
 
   // handle state change for region
   const handleSelectionChange = (selection) => {
-    setRegionSelection(selection.label);
+    setMegaMenuSelection(selection);
 
     getChartData({
       selection,
-      chartDataRegion: selection.label,
       climateDataFilesJSONFile: climateDataFilesJSON,
       climateOption: climateOption,
       // chartShowLine: false
@@ -398,7 +326,7 @@ export default function SandboxControls() {
     const sandboxHumanReadable = new SandboxHumanReadable("");
     const chartTitle = sandboxHumanReadable.getChartTitle({
       climatevariable,
-      regionSelection,
+      climateOption, // needs fixing
       titleLocation: replaceLocationAbbreviation(location),
     });
 
@@ -681,7 +609,6 @@ export default function SandboxControls() {
       setShowMapImage(false);
       getChartData({
         selection: megaMenuSelection,
-        chartDataRegion: regionSelection,
         climateDataFilesJSONFile: climateDataFilesJSON,
         climateOption: newOption,
       });
@@ -779,7 +706,7 @@ export default function SandboxControls() {
                   fontWeight: 400,
                 }}
               >
-                {regionSelection || "Region, State or Territory"}
+                {megaMenuSelection.label || "Region, State or Territory"}
               </Typography>
               <ExpandMoreIcon sx={{ color: "#0379C8" }} />
             </Box>
@@ -832,8 +759,8 @@ export default function SandboxControls() {
             <Box display="flex" flexDirection="row" ml={1} mr={1} mt={1} mb={1}>
               <SaveChart
                 chartData={chartData}
-                region={regionSelection}
-                climatevariable={climatevariable}
+                region={"FIX THIS"}
+                climatevariable={"FIX THIS"}
                 period={"1900-2024"}
                 sx={{
                   height: "56px",
@@ -938,7 +865,6 @@ export default function SandboxControls() {
 }
 
 SandboxControls.propTypes = {
-  chartDataRegion: PropTypes.string,
   chartDataClimatevariable: PropTypes.string,
   climateDataFilesJSONFile: PropTypes.object,
 };

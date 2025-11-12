@@ -75,10 +75,10 @@ class SandboxGeneratePlotData {
       this.prettyRange[0],
       this.prettyRange[this.prettyRange.length - 1],
     ];
-    this.yAxisText = this.createYAxisText();
+    this.yAxisText = props.yAxisText;
     this.legendPerText = this.createlegendPerText();
     this.legendEllapsedText = this.legendEllapsedText();
-    this.averageTextUnits = this.averageTextUnits();
+    this.averageTextUnits = props.avgTextUnits;
   }
 
   // set color for chart based on climate variable or chartType
@@ -303,23 +303,6 @@ class SandboxGeneratePlotData {
     }
     // default prefix legend text
     return "per year";
-  }
-
-  // creates y axis text
-  createYAxisText() {
-    // seasonal y axis text
-    if (this.season !== "yearly") {
-      const axisText =
-        this.chartType === "Precipitation" ? "Inches" : "Temperature (°F)";
-      return axisText;
-    }
-    // threshold y axis text
-    if (this.season === "yearly") {
-      const axisText = "Days";
-      return axisText;
-    }
-    // default y axis text
-    return "Days";
   }
 
   // splits chart title string into parts so its truncated
@@ -578,10 +561,6 @@ class SandboxGeneratePlotData {
   setXRange(props) {
     this.xmin = props.xmin;
     this.xmax = props.xmax;
-  }
-
-  setTitle(props) {
-    this.chartTitle = props.chartTitle;
   }
 
   getXvalues() {
