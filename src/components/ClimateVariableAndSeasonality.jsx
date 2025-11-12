@@ -99,6 +99,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Maximum Temperature Below 0°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Max Temp Below 32°F",
@@ -109,6 +111,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Maximum Temperature Below 32°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Max Temp Below 90°F",
@@ -119,6 +123,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Maximum Temperature Below 90°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Max Temp Below 95°F",
@@ -129,6 +135,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Maximum Temperature Below 95°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Max Temp Below 100°F",
@@ -139,6 +147,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Maximum Temperature Below 100°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Min Temp Below 0°F",
@@ -149,6 +159,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Minimum Temperature Below 0°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Min Temp Below 32°F",
@@ -159,6 +171,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Minimum Temperature Below 32°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Min Temp Below 70°F",
@@ -169,6 +183,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Minimum Temperature Below 70°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Min Temp Below 75°F",
@@ -179,6 +195,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Minimum Temperature Below 75°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Min Temp Below 90°F",
@@ -189,6 +207,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Minimum Temperature Below 90°F",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
   ];
 
@@ -203,6 +223,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Precipitation Greater than 2 inches",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Precipitation > 2 inches",
@@ -213,6 +235,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Precipitation Greater than 2 inches",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Precipitation > 3 inches",
@@ -223,6 +247,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Precipitation Greater than 3 inches",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
     {
       label: "(Days) Precipitation > 4 inches",
@@ -233,6 +259,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Number of Days with Precipitation Greater than 4 inches",
       yAxisText: "Days",
       avgTextUnits: "days",
+      barChartLegend: "5—Year Average (days)",
+      lineChartLegend: "Average days per year",
     },
   ];
 
@@ -248,6 +276,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Total Precipitation",
       yAxisText: "Inches",
       avgTextUnits: '"',
+      barChartLegend: "5—Year Average (inches annually)",
+      lineChartLegend: "Average inches annually",
     },
     {
       label: "Average Temperature",
@@ -259,6 +289,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Average Temperature",
       yAxisText: "Temperature (°F)",
       avgTextUnits: "°F",
+      barChartLegend: "5—Year Average (°F annually)",
+      lineChartLegend: "Average °F annually",
     },
     {
       label: "Average Max Temperature",
@@ -270,6 +302,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Average Max Temperature",
       yAxisText: "Temperature (°F)",
       avgTextUnits: "°F",
+      barChartLegend: "5—Year Average (°F annually)",
+      lineChartLegend: "Average °F annually",
     },
     {
       label: "Average Min Temperature",
@@ -281,6 +315,8 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       title: "Average Min Temperature",
       yAxisText: "Temperature (°F)",
       avgTextUnits: "°F",
+      barChartLegend: "5—Year Average (°F annually)",
+      lineChartLegend: "Average °F annually",
     },
   ];
 

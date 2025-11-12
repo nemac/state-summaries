@@ -21,6 +21,11 @@ import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
 import parseFile from "./utils.js";
+import {
+  createFiveYearGroups,
+  getPlotData,
+  setChartColor,
+} from "./getPlotData.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
 const LocationStateItems = SandboxLocationStateItems();
@@ -75,6 +80,8 @@ export default function SandboxControls() {
     chartType: "Temperature",
     yAxisText: "Temperature (°F)",
     avgTextUnits: "°F",
+    barChartLegend: "5—Year Average (°F annually)",
+    lineChartLegend: "Average °F annually",
   });
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
@@ -183,8 +190,57 @@ export default function SandboxControls() {
         // set the charts min and max based on the data in the data file
         plotData.setXRange(xRange);
 
-        // change reacts state so it refreshes
-        setChartData(plotData.getData());
+        const barChartFiveYearHoverGroups = createFiveYearGroups(
+          startDate,
+          endDate,
+        );
+
+        const barChartData = getPlotData({
+          name: climateOption.barChartLegend,
+          type: "histogram",
+          histfunc: "avg",
+          xbins: {
+            start: startDate,
+            end: endDate,
+            size: 5,
+          },
+          nbinsx: 0,
+          xValues: chartDataFromFile[0],
+          yValues: chartDataFromFile[1],
+          bargroupgap: 5,
+          marker: {
+            line: {
+              color: setChartColor(chartType),
+              width: 1,
+            },
+            color: setChartColor(chartType),
+          },
+          hoverinfo: "x+y",
+          customdata: barChartFiveYearHoverGroups,
+          legendgroup: 1,
+          orientation: "v",
+        });
+        const lineChartData = getPlotData({
+          name: climateOption.lineChartLegend,
+          type: "scatter",
+          // visible: this.chartShowLine,
+          xValues: chartDataFromFile[0],
+          yValues: chartDataFromFile[1],
+          marker: {
+            color: "#000000",
+          },
+          line: {
+            color: "#000000",
+            width: 3,
+            dash: "solid",
+            shape: "linear",
+            simplify: true,
+          },
+          connectgaps: true,
+          hoverinfo: "x+y",
+        });
+        // setChartData(plotData.getData());
+        setChartData([barChartData, lineChartData]);
         setChartLayout(plotData.getLayout());
         return plotData;
       })

@@ -188,7 +188,7 @@ const config = {
       value: "Delaware",
       type: "states",
       startDates: {
-        threshold: "1910",
+        threshold: "1900",
         temperature: "1895",
         precipitation: "1895",
       },
