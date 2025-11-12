@@ -11,6 +11,15 @@
         },
         {
             "end": 2024,
+            "name": "CONUS_prcp_1inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "prcp_1inch"
+        },
+        {
+            "end": 2024,
             "name": "CONUS_prcp_1inch_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -25,6 +34,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "prcp_2inch"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_prcp_2inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "prcp_2inch"
         },
         {
@@ -53,6 +71,24 @@
             "season": "yearly",
             "start": 1950,
             "type": "prcp_3inch"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_prcp_4inch_1900-2024_SCS2025.txt",
+            "period": "1900-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1900,
+            "type": "prcp_4inch"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_prcp_4inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "prcp_4inch"
         },
         {
             "end": 2024,
@@ -110,6 +146,15 @@
         },
         {
             "end": 2024,
+            "name": "CONUS_tmax_0F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmax_0F"
+        },
+        {
+            "end": 2024,
             "name": "CONUS_tmax_0F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -128,11 +173,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmax_100F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmax_100F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmax_100F"
         },
         {
@@ -142,6 +187,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmax_32F"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_tmax_32F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmax_32F"
         },
         {
@@ -164,11 +218,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmax_80F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmax_80F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmax_80F"
         },
         {
@@ -182,11 +236,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmax_87F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmax_87F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmax_87F"
         },
         {
@@ -200,11 +254,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmax_90F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmax_90F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmax_90F"
         },
         {
@@ -218,11 +272,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmax_95F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmax_95F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmax_95F"
         },
         {
@@ -326,11 +380,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmin_-30F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmin_-30F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmin_-30F"
         },
         {
@@ -340,6 +394,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_0F"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_tmin_0F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_0F"
         },
         {
@@ -362,11 +425,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmin_20F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmin_20F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmin_20F"
         },
         {
@@ -380,11 +443,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmin_32F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmin_32F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmin_32F"
         },
         {
@@ -394,6 +457,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_60F"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_tmin_60F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_60F"
         },
         {
@@ -416,20 +488,20 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmin_65F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
-            "season": "yearly",
-            "start": 1950,
-            "type": "tmin_65F"
-        },
-        {
-            "end": 2024,
             "name": "CONUS_tmin_70F_1900-2024_SCS2025.txt",
             "period": "1900-2024",
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_70F"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_tmin_70F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_70F"
         },
         {
@@ -452,11 +524,11 @@
         },
         {
             "end": 2024,
-            "name": "CONUS_tmin_75F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "CONUS_tmin_75F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmin_75F"
         },
         {
@@ -466,6 +538,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_80F"
+        },
+        {
+            "end": 2024,
+            "name": "CONUS_tmin_80F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_80F"
         },
         {
@@ -1059,6 +1140,15 @@
         },
         {
             "end": 2024,
+            "name": "states_prcp_1inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "prcp_1inch"
+        },
+        {
+            "end": 2024,
             "name": "states_prcp_1inch_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1073,6 +1163,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "prcp_2inch"
+        },
+        {
+            "end": 2024,
+            "name": "states_prcp_2inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "prcp_2inch"
         },
         {
@@ -1095,12 +1194,48 @@
         },
         {
             "end": 2024,
+            "name": "states_prcp_3inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "prcp_3inch"
+        },
+        {
+            "end": 2024,
             "name": "states_prcp_3inch_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
             "season": "yearly",
             "start": 1950,
             "type": "prcp_3inch"
+        },
+        {
+            "end": 2024,
+            "name": "states_prcp_4inch_1900-2024_SCS2025.txt",
+            "period": "1900-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1900,
+            "type": "prcp_4inch"
+        },
+        {
+            "end": 2024,
+            "name": "states_prcp_4inch_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "prcp_4inch"
+        },
+        {
+            "end": 2024,
+            "name": "states_prcp_4inch_1950-2024_SCS2025.txt",
+            "period": "1950-2024",
+            "robust": true,
+            "season": "yearly",
+            "start": 1950,
+            "type": "prcp_4inch"
         },
         {
             "end": 2024,
@@ -1158,6 +1293,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmax_0F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmax_0F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmax_0F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1172,6 +1316,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmax_100F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmax_100F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmax_100F"
         },
         {
@@ -1194,6 +1347,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmax_32F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmax_32F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmax_32F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1208,6 +1370,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmax_80F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmax_80F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmax_80F"
         },
         {
@@ -1230,6 +1401,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmax_87F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmax_87F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmax_87F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1248,6 +1428,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmax_90F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmax_90F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmax_90F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1262,6 +1451,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmax_95F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmax_95F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmax_95F"
         },
         {
@@ -1374,6 +1572,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmin_-30F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmin_-30F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmin_-30F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1388,6 +1595,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_0F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmin_0F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_0F"
         },
         {
@@ -1410,6 +1626,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmin_20F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmin_20F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmin_20F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1424,6 +1649,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_32F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmin_32F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_32F"
         },
         {
@@ -1446,6 +1680,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmin_60F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmin_60F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmin_60F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1464,11 +1707,11 @@
         },
         {
             "end": 2024,
-            "name": "states_tmin_65F_1950-2024_SCS2025.txt",
-            "period": "1950-2024",
-            "robust": true,
+            "name": "states_tmin_65F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
             "season": "yearly",
-            "start": 1950,
+            "start": 1930,
             "type": "tmin_65F"
         },
         {
@@ -1478,6 +1721,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_70F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmin_70F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_70F"
         },
         {
@@ -1500,6 +1752,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmin_75F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
+            "type": "tmin_75F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmin_75F_1950-2024_SCS2025.txt",
             "period": "1950-2024",
             "robust": true,
@@ -1514,6 +1775,15 @@
             "robust": false,
             "season": "yearly",
             "start": 1900,
+            "type": "tmin_80F"
+        },
+        {
+            "end": 2024,
+            "name": "states_tmin_80F_1930-2024_SCS2025.txt",
+            "period": "1930-2024",
+            "robust": false,
+            "season": "yearly",
+            "start": 1930,
             "type": "tmin_80F"
         },
         {
