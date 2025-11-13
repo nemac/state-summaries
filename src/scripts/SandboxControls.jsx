@@ -146,9 +146,10 @@ export default function SandboxControls() {
 
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
-        const chartTitle = climateOption.seasonality && climateOption.getLabel
-          ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
-          : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
+        const chartTitle =
+          climateOption.seasonality && climateOption.getLabel
+            ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
+            : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
 
         // create the plotly input so the chart is created based on users selection
         const plotInfo = {
@@ -183,6 +184,12 @@ export default function SandboxControls() {
         const barChartHoverTemplate = getHoverTemplate(
           "histogram",
           climateOption,
+          selectedSeason,
+        );
+        const lineChartHoverTemplate = getHoverTemplate(
+          "scatter",
+          climateOption,
+          selectedSeason,
         );
 
         const barChartData = getPlotData({
@@ -226,6 +233,7 @@ export default function SandboxControls() {
             shape: "linear",
             simplify: true,
           },
+          hoverTemplate: lineChartHoverTemplate,
           connectgaps: true,
           hoverinfo: "x+y",
         });

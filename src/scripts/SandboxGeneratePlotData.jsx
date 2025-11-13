@@ -112,31 +112,6 @@ class SandboxGeneratePlotData {
     return "year";
   }
 
-  // default climate variable text
-  hoverTemplateClimateVariableText() {
-    // changes threshold wording to make more sense
-    if (this.season !== "yearly") return this.climatevariable.toLowerCase();
-    return this.climatevariable
-      .toLowerCase()
-      .replace("precipitation", "precipitation")
-      .replace("minimum", "the minimum")
-      .replace("maximum", "the maximum");
-  }
-
-  // creaete prefix for hover text to deal with seasonal data
-  //  seasonal data also has annual data so the wording is hard to deal with
-  //  and one word to work for it all was not working
-  hoverTemplateSeasonTextPrefix() {
-    // seasonal data
-    if (this.season !== "yearly") {
-      // annual season data
-      if (this.season === "ann") return "";
-      return "during the";
-    }
-    // default
-    return "for the";
-  }
-
   // creates units days, °F, " for annotation on Average line
   textUnitsWords() {
     // seasonal units for inches of precip and degrees farhnheit
@@ -163,52 +138,6 @@ class SandboxGeneratePlotData {
     }
     // deault to days
     return "days";
-  }
-
-  // hover text for the yearly line
-  yearLineText(x, y) {
-    const seasonTextPrefix = this.hoverTemplateSeasonTextPrefix();
-    const seasonText = this.hoverTemplateSeasonText();
-    const climateVariableText = this.hoverTemplateClimateVariableText().replace(
-      "°f",
-      "°F",
-    );
-    console.log(seasonTextPrefix, seasonText, climateVariableText);
-    const unitText = this.averageTextUnits;
-    // season sentence
-    if (this.season !== "yearly")
-      return ` In %{x} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f} ${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
-        / {2}/g,
-        " ",
-      );
-    // threshold and default sentence
-    return ` In %{x} there was an average of %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(
-      / {2}/g,
-      " ",
-    );
-  }
-
-  // hover text for average bar
-  averageBarText(x, y, customdata) {
-    const seasonTextPrefix = this.hoverTemplateSeasonTextPrefix();
-    const seasonText = this.hoverTemplateSeasonText();
-    const climateVariableText = this.hoverTemplateClimateVariableText().replace(
-      "°f",
-      "°F",
-    );
-    console.log(seasonTextPrefix, seasonText, climateVariableText);
-    const unitText = this.averageTextUnits;
-    // season sentence
-    if (this.season !== "yearly")
-      return ` Between %{customdata} the ${climateVariableText}${this.SmallScreenBreak} was %{y:0.2f}${unitText} ${seasonTextPrefix} ${seasonText} <extra></extra>`.replace(
-        / {2}/g,
-        " ",
-      );
-    // threshold and default sentence
-    return ` Between the years %{customdata} there were %{y:0.2f}${this.SmallScreenBreak} ${climateVariableText} <extra></extra>`.replace(
-      / {2}/g,
-      " ",
-    );
   }
 
   // creates legend text in parentheses
@@ -271,30 +200,6 @@ class SandboxGeneratePlotData {
       }
     }
     return newTitle;
-  }
-
-  // some regions-locations have 0 for all data and that is okay but we need to warn
-  // user so they don't think its an error
-  isAllZeros() {
-    if (this.maxVal === 0 && this.minVal === 0) {
-      return true;
-    }
-    return false;
-  }
-
-  // some regions-locations have no data or -9999 need
-  // to check if the region or location has data and is so return false
-  // so we can pass an message to user
-  hasData() {
-    if (
-      Number.isNaN(this.maxVal) ||
-      Number.isNaN(this.minVal) ||
-      (this.maxVal === -999 && this.minVal === -999) ||
-      (this.maxVal === 0 && this.minVal === -999)
-    ) {
-      return false;
-    }
-    return true;
   }
 
   static pretty(range, n = 5, internalOnly = false) {
@@ -393,30 +298,6 @@ class SandboxGeneratePlotData {
     return movingAveragesX;
   }
 
-  // creates the x values for each period for the custom hover template
-  xValsAverageBarHoverText() {
-    let count = 0;
-    const yValsPeriodAll = this.xvals.map((value, index) => {
-      // eslint-disable-line
-      // return value
-      if (index === 0) {
-        const plus = value + (this.periodGroups - 1);
-        const tickText = `${value}—${plus.toString().slice(0)}`;
-        count += 1;
-        return tickText;
-      }
-      if (count === this.periodGroups) {
-        count = 0;
-        const plus = value + (this.periodGroups - 1);
-        const tickText = `${value}—${plus.toString().slice(0)}`;
-        count += 1;
-        return tickText;
-      }
-      count += 1;
-    });
-    return yValsPeriodAll.filter((value) => value !== undefined);
-  }
-
   // creates the y values for each period
   xValsPeriod() {
     let count = 0;
@@ -510,75 +391,6 @@ class SandboxGeneratePlotData {
     this.xmax = props.xmax;
   }
 
-  getXvalues() {
-    const ret = [];
-    for (let xVal = this.xmin; xVal <= this.xmax; xVal += 1) {
-      ret.push(xVal.toString());
-    }
-    return ret;
-  }
-
-  getYvalues() {
-    const ret = [];
-    let xIndex = this.xmin;
-
-    // remove -9999
-    this.yvals = this.yvals.map((val) => {
-      let newVal = val;
-      if (val < 0) {
-        newVal = undefined;
-      }
-      return newVal;
-    });
-    while (xIndex < parseInt(this.xvals[0], 10)) {
-      // requested range below data range
-      xIndex += 1;
-      ret.push("0"); // should this be undef/NaN? How does plotly handle it?
-    }
-    let yvalsIndex = 0;
-    while (xIndex <= parseInt(this.xvals[this.xvals.length - 1], 10)) {
-      // data
-      ret.push(this.yvals[yvalsIndex]);
-      yvalsIndex += 1;
-      xIndex += 1;
-    }
-    while (xIndex <= this.xmax) {
-      // requested range above data range
-      xIndex += 1;
-      ret.push("0");
-    }
-    return ret;
-  }
-
-  // there are cases when the chart data needs to be zero out
-  zeroOutChartData() {
-    const zeroValue = 0;
-    this.yvals = [zeroValue];
-    this.yValsSumByPeriod = [zeroValue];
-    this.yValsAvgByPeriod = [zeroValue];
-    this.yRange = [0, 4];
-    this.yValsSumAll = 0.00000001;
-    this.yValsAvgAll = 0.00000001;
-  }
-
-  getData() {
-    // remove bad data so chart resets to all zeros
-    if (!this.hasData() || this.isAllZeros()) {
-      this.zeroOutChartData();
-    }
-
-    if (this.maxVal === -Infinity) return [{}];
-
-    // switch for handling which variable is the line chart
-    // for now its yearly, period average (defaults to 5), or
-    // period moving average (defaults to 5).
-    switch (this.lineChart) {
-      default:
-        // yearly the line chart average is the bar chart
-        return [this.traceAverageBar(), this.traceYearlyLine()];
-    }
-  }
-
   // get the chart layout
   getLayout() {
     // switch for handling layout of chart depending on what variable is the line
@@ -589,62 +401,6 @@ class SandboxGeneratePlotData {
         // yearly the line chart average is the bar chart
         return this.layoutAverageBar();
     }
-  }
-
-  // trace for averages when average is a bar
-  traceAverageBar() {
-    return {
-      mode: "lines",
-      name: `5—Year Average (${this.legendElapsedText})`,
-      type: "histogram",
-      histfunc: "avg",
-      xbins: {
-        start: this.xmin,
-        end: this.xmax,
-        size: 5,
-      },
-      nbinsx: 0,
-      x: this.xvals,
-      y: this.getYvalues(),
-      bargroupgap: 5,
-      marker: {
-        line: {
-          color: this.barColor,
-          width: 1,
-        },
-        color: this.barColor,
-      },
-      hoverinfo: "x+y",
-      customdata: this.xValsAverageBarHoverText(),
-      hovertemplate: this.averageBarText(),
-      legendgroup: 1,
-      orientation: "v",
-    };
-  }
-
-  // trace for year when average is a bar
-  traceYearlyLine() {
-    return {
-      mode: "lines",
-      name: `Average ${this.textUnitsWords()} ${this.legendPerText}`,
-      type: "scatter",
-      // visible: this.chartShowLine,
-      x: this.xvals,
-      y: this.getYvalues(),
-      marker: {
-        color: this.annualLineColor,
-      },
-      line: {
-        color: this.AverageColor,
-        width: this.AverageWidth,
-        dash: "solid",
-        shape: "linear",
-        simplify: true,
-      },
-      connectgaps: true,
-      hoverinfo: "x+y",
-      hovertemplate: this.yearLineText(),
-    };
   }
 
   // layout  when average is a bar
