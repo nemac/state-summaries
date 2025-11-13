@@ -23,6 +23,7 @@ import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeaso
 import parseFile from "./utils.js";
 import {
   createFiveYearGroups,
+  getHoverTemplate,
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
@@ -51,41 +52,21 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 
 export default function SandboxControls() {
   const theme = useTheme();
-
-  // NEW STATE VARIABLES JEFF
-  const [megaMenuSelection, setMegaMenuSelection] = useState({
-    label: "Contiguous United States",
-    category: "United States",
-    value: "CONUS",
-    type: "CONUS",
-    startDates: {
-      threshold: "1900",
-      temperature: "1895",
-      precipitation: "1895",
-    },
-    endDates: {
-      threshold: "2024",
-      temperature: "2024",
-      precipitation: "2024",
-    },
-  });
-  const [climateOption, setClimateOption] = useState({
-    label: "Average Temperature",
-    value: "tmean",
-    season: "Annual (Jan–Dec)",
-    seasonId: "ann",
-    tooltip: "Average Temperature",
-    title: "Average Temperature",
-    type: "temperature",
-    chartType: "Temperature",
-    yAxisText: "Temperature (°F)",
-    avgTextUnits: "°F",
-    barChartLegend: "5—Year Average (°F annually)",
-    lineChartLegend: "Average °F annually",
-  });
+  const [megaMenuSelection, setMegaMenuSelection] = useState(
+    config.regionsOptions.find((region) => region.value === "CONUS"),
+  );
+  const [climateOption, setClimateOption] = useState(
+    config.historicalSeasonalityOptions.find(
+      (option) => option.value === "tmean",
+    ),
+  );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
   const [showMapImage, setShowMapImage] = useState(false);
+  const [selectedSeason, setSelectedSeason] = useState({
+    label: "Annual",
+    value: "ann",
+  });
 
   // END NEW STATE VARIABLES
 
@@ -111,6 +92,14 @@ export default function SandboxControls() {
   // chart data json file
   const [climateDataFilesJSON, setClimateDataFilesJSON] = useState([""]);
 
+  const seasonOptions = [
+    { label: "Annual ", value: "ann" },
+    { label: "Spring", value: "mam" },
+    { label: "Summer", value: "jja" },
+    { label: "Autumn", value: "son" },
+    { label: "Winter", value: "djf" },
+  ];
+
   // replace the state abbreviations from the data text files with a more
   // human-readable full state name AK becomes Alaska
   const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
@@ -130,10 +119,10 @@ export default function SandboxControls() {
     const locationType = selection.type;
     const data = climateDataFilesJSONFile[locationType];
 
-    // Construct file type identifier, appending seasonId only if it exists
+    // Construct file type identifier, appending selected season if seasonality === true
     // e.g. value = prcp and if seasonId = ann this becomes prcp_ann
-    const fileType = climateOption.seasonId
-      ? climateOption.value + "_" + climateOption.seasonId
+    const fileType = climateOption.seasonality
+      ? climateOption.value + "_" + selectedSeason.value
       : climateOption.value;
     const chartType = climateOption.chartType;
 
@@ -157,12 +146,9 @@ export default function SandboxControls() {
 
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
-        const chartTitle =
-          selectionLabel +
-          " " +
-          climateOption.season +
-          " " +
-          climateOption.label; // e.g. Contiguous United States Annual (Jan–Dec) Average Temperature
+        const chartTitle = climateOption.seasonality && climateOption.getLabel
+          ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
+          : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
 
         // create the plotly input so the chart is created based on users selection
         const plotInfo = {
@@ -174,7 +160,7 @@ export default function SandboxControls() {
           legnedText: chartType,
           chartType,
           climatevariable: climateOption.tooltip, // e.g. Days with Precipitation Greater than 1 inch
-          season: climateOption.seasonId,
+          season: selectedSeason.value,
           yAxisText: climateOption.yAxisText,
           avgTextUnits: climateOption.avgTextUnits,
         };
@@ -193,6 +179,10 @@ export default function SandboxControls() {
         const barChartFiveYearHoverGroups = createFiveYearGroups(
           startDate,
           endDate,
+        );
+        const barChartHoverTemplate = getHoverTemplate(
+          "histogram",
+          climateOption,
         );
 
         const barChartData = getPlotData({
@@ -216,6 +206,7 @@ export default function SandboxControls() {
             color: setChartColor(chartType),
           },
           hoverinfo: "x+y",
+          hoverTemplate: barChartHoverTemplate,
           customdata: barChartFiveYearHoverGroups,
           legendgroup: 1,
           orientation: "v",
@@ -223,7 +214,6 @@ export default function SandboxControls() {
         const lineChartData = getPlotData({
           name: climateOption.lineChartLegend,
           type: "scatter",
-          // visible: this.chartShowLine,
           xValues: chartDataFromFile[0],
           yValues: chartDataFromFile[1],
           marker: {
@@ -797,8 +787,9 @@ export default function SandboxControls() {
                   fontWeight: 400,
                 }}
               >
-                {climateOption.season + " " + climateOption.label ||
-                  "Climate Variable and Seasonality"}
+                {climateOption.seasonality && climateOption.getLabel
+                  ? climateOption.getLabel(selectedSeason.label)
+                  : climateOption.labelTemplate || climateOption.label}
               </Typography>
               <ExpandMoreIcon sx={{ color: "#0379C8" }} />
             </Box>
@@ -915,6 +906,9 @@ export default function SandboxControls() {
         open={climateMenuOpen}
         onClose={() => setClimateMenuOpen(false)}
         onSelect={handleClimateOptionChange}
+        selectedSeason={selectedSeason}
+        setSelectedSeason={setSelectedSeason}
+        seasonOptions={seasonOptions}
       />
     </>
   );

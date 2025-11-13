@@ -59,7 +59,25 @@ export const createFiveYearGroups = (startYear, endYear) => {
   return groups;
 };
 
-const getHoverTemplate = (type) => {
+// converts strings to annually, spring, summer, fall, or winter
+const convertToSeasons = (periodOfTime) => {
+  switch (periodOfTime) {
+    case "Annual (Jan-Dec)":
+      return "annually.";
+    case "Spring (Mar–May)":
+      return "in the spring.";
+    case "Summer (Jun–Aug)":
+      return "in the summer.";
+    case "Fall (Sep–Nov)":
+      return "in the fall.";
+    case "Winter (Dec–Feb)":
+      return "in the winter.";
+    default:
+      return "annually.";
+  }
+};
+
+export const getHoverTemplate = (type, data) => {
   switch (type) {
     case "scatter":
       return ` In %{x} the blank was %{y:0.2f} units prefix season <extra></extra>`.replace(
@@ -67,7 +85,7 @@ const getHoverTemplate = (type) => {
         " ",
       );
     case "histogram":
-      return ` Between %{customdata} the blank was %{y:0.2f}units prefix  <extra></extra>`.replace(
+      return ` Between %{customdata} the ${data.label} was %{y:0.2f}${data.avgTextUnits} ${convertToSeasons(data.season)}  <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
@@ -99,6 +117,8 @@ export const getPlotData = (data) => {
     ...(data.legendGroup && { legendGroup: data.legendGroup }),
     ...(data.orientation && { orientation: data.orientation }),
     hoverinfo: "x+y",
-    hovertemplate: getHoverTemplate(data.type),
+    hovertemplate: data.hoverTemplate
+      ? data.hoverTemplate
+      : getHoverTemplate(data.type),
   };
 };
