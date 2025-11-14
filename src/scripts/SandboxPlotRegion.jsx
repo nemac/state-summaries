@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 export default function SandboxPlotRegion(props) {
   const { plotlyData } = props;
+  console.log(plotlyData);
   const config = { ...{ responsive: true, displayModeBar: false } };
   const responsiveChartRef = React.useRef();
   const [layout, _setLayout] = React.useState({ ...props.plotlyLayout });

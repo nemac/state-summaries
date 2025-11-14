@@ -13,12 +13,17 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
+import config from "../configs/config.js";
 
-const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
-  const [selectedHistoricalSeason, setSelectedHistoricalSeason] =
-    useState("Annual (Jan–Dec)");
-  const [selectedMapsSeason, setSelectedMapsSeason] =
-    useState("Annual (Jan–Dec)");
+const ClimateVariableAndSeasonality = (props) => {
+  const {
+    open,
+    onClose,
+    onSelect,
+    selectedSeason,
+    setSelectedSeason,
+    seasonOptions,
+  } = props;
 
   const handleOptionSelect = (option) => {
     if (onSelect) {
@@ -79,210 +84,6 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
       backgroundColor: "#f5f5f5",
     },
   };
-
-  const seasonOptions = [
-    { label: "Annual (Jan–Dec)", value: "ann" },
-    { label: "Spring (Mar–May)", value: "mam" },
-    { label: "Summer (Jun–Aug)", value: "jja" },
-    { label: "Fall (Sep–Nov)", value: "son" },
-    { label: "Winter (Dec–Feb)", value: "djf" },
-  ];
-
-  // Historical Annual Extremes - Temperature options
-  const temperatureOptions = [
-    {
-      label: "(Days) Max Temp Below 0°F",
-      value: "tmax_0F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Maximum Temperature Below 0°F",
-      title: "Number of Days with Maximum Temperature Below 0°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Max Temp Below 32°F",
-      value: "tmax_32F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Maximum Temperature Below 32°F",
-      title: "Number of Days with Maximum Temperature Below 32°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Max Temp Below 90°F",
-      value: "tmax_90F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Maximum Temperature Below 90°F",
-      title: "Number of Days with Maximum Temperature Below 90°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Max Temp Below 95°F",
-      value: "tmax_95F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Maximum Temperature Below 95°F",
-      title: "Number of Days with Maximum Temperature Below 95°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Max Temp Below 100°F",
-      value: "tmax_100F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Maximum Temperature Below 100°F",
-      title: "Number of Days with Maximum Temperature Below 100°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Min Temp Below 0°F",
-      value: "tmin_0F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Minimum Temperature Below 0°F",
-      title: "Number of Days with Minimum Temperature Below 0°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Min Temp Below 32°F",
-      value: "tmin_32F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Minimum Temperature Below 32°F",
-      title: "Number of Days with Minimum Temperature Below 32°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Min Temp Below 70°F",
-      value: "tmin_70F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Minimum Temperature Below 70°F",
-      title: "Number of Days with Minimum Temperature Below 70°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Min Temp Below 75°F",
-      value: "tmin_75F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Minimum Temperature Below 75°F",
-      title: "Number of Days with Minimum Temperature Below 75°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Min Temp Below 90°F",
-      value: "tmin_90F",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Days with Minimum Temperature Below 90°F",
-      title: "Number of Days with Minimum Temperature Below 90°F",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-  ];
-
-  // Historical Annual Extremes - Precipitation options
-  const precipitationOptions = [
-    {
-      label: "(Days) Precipitation > 1 inch",
-      value: "prcp_1inch",
-      type: "threshold",
-      chartType: "Precipitation",
-      tooltip: "Days with Precipitation Greater than 1 inch",
-      title: "Number of Days with Precipitation Greater than 2 inches",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Precipitation > 2 inches",
-      value: "prcp_2inch",
-      type: "threshold",
-      chartType: "Precipitation",
-      tooltip: "Days with Precipitation Greater than 2 inch",
-      title: "Number of Days with Precipitation Greater than 2 inches",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Precipitation > 3 inches",
-      value: "prcp_3inch",
-      type: "threshold",
-      chartType: "Precipitation",
-      tooltip: "Days with Precipitation Greater than 3 inch",
-      title: "Number of Days with Precipitation Greater than 3 inches",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-    {
-      label: "(Days) Precipitation > 4 inches",
-      value: "prcp_4inch",
-      type: "threshold",
-      chartType: "Precipitation",
-      tooltip: "Days with Precipitation Greater than 4 inch",
-      title: "Number of Days with Precipitation Greater than 4 inches",
-      yAxisText: "Days",
-      avgTextUnits: "days",
-    },
-  ];
-
-  // Historical Seasonality options
-  const historicalSeasonalityOptions = [
-    {
-      label: "Total Precipitation",
-      value: "prcp",
-      icon: "Precipitation",
-      type: "precipitation",
-      chartType: "Precipitation",
-      tooltip: "Total Precipitation",
-      title: "Total Precipitation",
-      yAxisText: "Inches",
-      avgTextUnits: '"',
-    },
-    {
-      label: "Average Temperature",
-      value: "tmean",
-      icon: "Temperature",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Average Temperature",
-      title: "Average Temperature",
-      yAxisText: "Temperature (°F)",
-      avgTextUnits: "°F",
-    },
-    {
-      label: "Average Max Temperature",
-      value: "tmax",
-      icon: "Temperature",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Average Max Temperature",
-      title: "Average Max Temperature",
-      yAxisText: "Temperature (°F)",
-      avgTextUnits: "°F",
-    },
-    {
-      label: "Average Min Temperature",
-      value: "tmin",
-      icon: "Temperature",
-      type: "temperature",
-      chartType: "Temperature",
-      tooltip: "Average Min Temperature",
-      title: "Average Min Temperature",
-      yAxisText: "Temperature (°F)",
-      avgTextUnits: "°F",
-    },
-  ];
 
   const observedProjectedOptions = [
     { label: "Temperature", value: "temperature_obs_proj" },
@@ -357,16 +158,11 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                {temperatureOptions.map((option) => (
+                {config.temperatureOptions.map((option) => (
                   <Button
                     key={option.value}
                     sx={buttonStyle}
-                    onClick={() =>
-                      handleOptionSelect({
-                        ...option,
-                        season: "Annual (Jan-Dec)",
-                      })
-                    }
+                    onClick={() => handleOptionSelect(option)}
                   >
                     <ThermostatIcon
                       sx={{ color: "#003366", fontSize: "1.5rem" }}
@@ -394,7 +190,7 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                {precipitationOptions.map((option) => (
+                {config.precipitationOptions.map((option) => (
                   <Button
                     key={option.value}
                     sx={buttonStyle}
@@ -430,8 +226,15 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             <Box sx={{ mb: 2 }}>
               <FormControl sx={{ minWidth: 250, mb: 2 }}>
                 <Select
-                  value={selectedHistoricalSeason}
-                  onChange={(e) => setSelectedHistoricalSeason(e.target.value)}
+                  value={selectedSeason.value}
+                  variant="outlined"
+                  onChange={(e) =>
+                    setSelectedSeason(
+                      seasonOptions.find(
+                        (season) => season.value === e.target.value,
+                      ),
+                    )
+                  }
                   sx={{
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
@@ -440,7 +243,7 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   }}
                 >
                   {seasonOptions.map((season) => (
-                    <MenuItem key={season.value} value={season.label}>
+                    <MenuItem key={season.value} value={season.value}>
                       {season.label}
                     </MenuItem>
                   ))}
@@ -448,16 +251,16 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
               </FormControl>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {historicalSeasonalityOptions.map((option) => (
+              {config.historicalSeasonalityOptions.map((option) => (
                 <Button
                   key={option.value}
                   sx={buttonStyle}
                   onClick={() =>
                     handleOptionSelect({
                       ...option,
-                      season: selectedHistoricalSeason,
+                      season: selectedSeason,
                       seasonId: seasonOptions.find(
-                        (s) => s.label === selectedHistoricalSeason,
+                        (s) => s.label === selectedSeason,
                       )?.value,
                     })
                   }
@@ -475,7 +278,9 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                     variant="body2"
                     sx={{ color: "#003366", fontWeight: 500 }}
                   >
-                    {option.label}
+                    {option.getLabel
+                      ? option.getLabel(selectedSeason.label)
+                      : option.labelTemplate || option.label}
                   </Typography>
                 </Button>
               ))}
@@ -556,8 +361,15 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
             <Box sx={{ mb: 2 }}>
               <FormControl sx={{ minWidth: 250, mb: 2 }}>
                 <Select
-                  value={selectedMapsSeason}
-                  onChange={(e) => setSelectedMapsSeason(e.target.value)}
+                  value={selectedSeason.value}
+                  variant="outlined"
+                  onChange={(e) =>
+                    setSelectedSeason(
+                      seasonOptions.find(
+                        (season) => season.value === e.target.value,
+                      ),
+                    )
+                  }
                   sx={{
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
@@ -566,7 +378,7 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                   }}
                 >
                   {seasonOptions.map((season) => (
-                    <MenuItem key={season.value} value={season.label}>
+                    <MenuItem key={season.value} value={season.value}>
                       {season.label}
                     </MenuItem>
                   ))}
@@ -578,15 +390,7 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                 <Button
                   key={option.value}
                   sx={buttonStyle}
-                  onClick={() =>
-                    handleOptionSelect({
-                      ...option,
-                      season: selectedMapsSeason,
-                      seasonId: seasonOptions.find(
-                        (s) => s.label === selectedMapsSeason,
-                      )?.value,
-                    })
-                  }
+                  onClick={() => handleOptionSelect(option)}
                 >
                   <ThunderstormIcon
                     sx={{ color: "#003366", fontSize: "1.5rem" }}
@@ -595,7 +399,9 @@ const ClimateVariableAndSeasonality = ({ open, onClose, onSelect }) => {
                     variant="body2"
                     sx={{ color: "#003366", fontWeight: 500 }}
                   >
-                    {option.label}
+                    {option.getLabel
+                      ? option.getLabel(selectedSeason.label)
+                      : option.labelTemplate || option.label}
                   </Typography>
                 </Button>
               ))}
