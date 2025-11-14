@@ -55,15 +55,12 @@ class SandboxGeneratePlotData {
     this.chartType = props.chartType;
     this.climatevariable = props.climatevariable;
     this.season = props.season;
-    this.barColor = this.setChartColor(this.chartType);
     this.periodGroups = props.periodGroups ? props.periodGroups : 5;
     this.AverageMovingPeriod = 5;
     this.textAngle = window.innerWidth <= 1000 ? 90 : 0;
     this.dtick = window.innerWidth <= this.smallScreen ? 10 : 5;
     this.yValsSumByPeriod = this.yValsSumByPeriod();
     this.yValsAvgByPeriod = this.yValsAvgByPeriod();
-    this.yValsMovingAverage = this.computeMovingAverage();
-    this.xValsMovingAverage = this.movingAverageXValues();
     this.xValsPeriod = this.xValsPeriod();
     const sumAll = this.yValsSumAll();
     this.yValsSumAll = sumAll <= -50 ? undefined : sumAll;
@@ -76,26 +73,8 @@ class SandboxGeneratePlotData {
       this.prettyRange[this.prettyRange.length - 1],
     ];
     this.yAxisText = props.yAxisText;
-    this.legendPerText = this.createLegendPerText();
     this.legendElapsedText = this.legendElapsedText();
     this.averageTextUnits = props.avgTextUnits;
-  }
-
-  // set color for chart based on climate variable or chartType
-  setChartColor(chartType) {
-    console.log(chartType);
-    switch (chartType) {
-      case "Precipitation":
-        return this.precipitationColor;
-      case "Temperature":
-        return this.temperatureColor;
-      case "CoolingDays":
-        return this.coolingDegreeColor;
-      case "HeatingDays":
-        return this.heatingDegreeColor;
-      default:
-        return this.temperatureColor;
-    }
   }
 
   // default season text
@@ -156,29 +135,6 @@ class SandboxGeneratePlotData {
     }
     // default legend text
     return "days";
-  }
-
-  // creates legend per text
-  //  this is the per year or per season
-  createLegendPerText() {
-    if (this.season !== "yearly") {
-      const seasonText = this.hoverTemplateSeasonText();
-      // seasonal prefix legend text
-      let fortext = "for ";
-      // seasonal when annual prefix legend text
-      if (this.season === "ann") {
-        fortext = "";
-      }
-      const legendPerText = `${fortext}${seasonText.split(" ")[0].toLowerCase()}`;
-      return legendPerText;
-    }
-    // threshold prefix legend text
-    if (this.season === "yearly") {
-      const legendPerText = "per year";
-      return legendPerText;
-    }
-    // default prefix legend text
-    return "per year";
   }
 
   // splits chart title string into parts so its truncated
@@ -260,42 +216,6 @@ class SandboxGeneratePlotData {
     }
 
     return ticks;
-  }
-
-  // calc moving average
-  computeMovingAverage() {
-    const data = this.yvals;
-    const period = this.AverageMovingPeriod;
-    const getAverage = (avgArr) =>
-      avgArr.reduce((a, b) => a + b, 0) / avgArr.length;
-    const movingAverages = [];
-
-    // if the period is greater than the length of the dataset
-    // then return the average of the whole dataset
-    if (period > data.length) {
-      return getAverage(data);
-    }
-    for (let x = 0; x + period - 1 < data.length; x += 1) {
-      movingAverages.push(getAverage(data.slice(x, x + period)));
-    }
-    return movingAverages;
-  }
-
-  // calc moving average
-  movingAverageXValues() {
-    const data = this.xvals;
-    const period = this.AverageMovingPeriod;
-    const halfPeriod = Math.floor(this.periodGroups / 2);
-    const movingAveragesX = [];
-
-    for (
-      let x = period - halfPeriod - 1;
-      x - period - 1 < data.length;
-      x += 1
-    ) {
-      movingAveragesX.push(data[x]);
-    }
-    return movingAveragesX;
   }
 
   // creates the y values for each period
