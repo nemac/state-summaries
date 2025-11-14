@@ -31,9 +31,9 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
   };
 
   const buttonStyle = {
-    padding: "8px 12px",
+    padding: "8px 30px",
     borderRadius: "8px",
-    width: "250px",
+    width: "210px",
     height: "74px",
     border: "1px solid #707070",
     backgroundColor: "#FAFAFA",
@@ -42,7 +42,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     display: "flex",
     alignItems: "center",
 
-    gap: 1,
+    gap: "12px",
     "&:hover": {
       backgroundColor: "#f0f0f0",
     },
@@ -61,8 +61,8 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "auto",
-          maxWidth: "1200px",
+          width: "90%",
+          maxWidth: "950px",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 3,
@@ -77,7 +77,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: 2,
+            mb: .5,
           }}
         >
           <Typography
@@ -93,7 +93,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           </IconButton>
         </Box>
 
-        <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
+        <Typography variant="body2" sx={{ mb: 3, color: "#5C5C5C" }}>
           Choose the State, or Region
         </Typography>
 
@@ -153,13 +153,15 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
             some description
           </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2, }}>
             {config.statesOptions.map((option) => (
               <Button
                 key={option.label}
-                sx={buttonStyle}
-                onClick={() => handleLocationSelect(option)}
-              >
+                sx={{ "@media (max-width: 768px)": {
+                      flexGrow: "1",
+                    },
+                    ...buttonStyle }}
+                onClick={() => handleLocationSelect(option)}>
                 <Box
                   component="img"
                   src={option.svg}
@@ -194,7 +196,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                 sx={{
                   padding: "12px",
                   borderRadius: "8px",
-                  width: "320px",
+                  width: "300px",
                   height: "160px",
                   border: "1px solid #707070",
                   backgroundColor: "#FAFAFA",
@@ -240,7 +242,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                     alignItems: "flex-start",
                     justifyContent: "center",
                     flex: 1,
-                    gap: 1,
+                    gap: .75,
                   }}
                 >
                   <Typography
@@ -249,7 +251,8 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                       color: "#124086",
                       fontWeight: 700,
                       fontSize: "1.25rem",
-                      lineHeight: 1.2,
+                      lineHeight: 1.1,
+                      textAlign: "left",
                     }}
                   >
                     {option.label}
@@ -259,7 +262,8 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                     sx={{
                       color: "#124086",
                       fontSize: "0.875rem",
-                      lineHeight: 1.4,
+                      lineHeight: 1.1,
+                      textAlign: "left",
                     }}
                   >
                     {option.description}
@@ -274,7 +278,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
           <Button
             sx={{
-              borderRadius: "1px",
+              borderRadius: 1,
               border: "1px solid #0379C8",
               padding: "4px 8px",
               gap: "4px",
