@@ -27,6 +27,11 @@ import {
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
+import { getPlotlyLayout, pretty } from "./getPlotlyLayout.js";
+import {
+  fetchObservedAndProjectedData,
+  plotObservedAndProjected,
+} from "./plotObservedAndPredicted.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
 const LocationStateItems = SandboxLocationStateItems();
@@ -109,10 +114,14 @@ export default function SandboxControls() {
     );
   };
 
+  // check if the selection has predicted data available
+  const checkForPredictedData = (selection) => {
+    return config.hasPredictedData.includes(selection.label);
+  };
+
   // get chart data from current state = which should include
   const getChartData = (props) => {
     const { selection, climateDataFilesJSONFile, climateOption } = props;
-    console.log(props);
 
     const selectionLabel = selection.label;
 
@@ -218,6 +227,7 @@ export default function SandboxControls() {
           legendgroup: 1,
           orientation: "v",
         });
+
         const lineChartData = getPlotData({
           name: climateOption.lineChartLegend,
           type: "scatter",
@@ -237,9 +247,37 @@ export default function SandboxControls() {
           connectgaps: true,
           hoverinfo: "x+y",
         });
+
+        // find yRange for layout
+        const yValues = chartDataFromFile[1].map((item) =>
+          item === -999 ? undefined : item,
+        );
+        const validYValues = yValues.filter((val) => val !== undefined);
+        const yMin = validYValues.length > 0 ? Math.min(...validYValues) : 0;
+        const yMax = validYValues.length > 0 ? Math.max(...validYValues) : 0;
+
+        const prettyRange = pretty([yMin, yMax]);
+        const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
+        const yValuesAverageAll = Math.max(
+          0,
+          validYValues.reduce((a, b) => a + b, 0) / validYValues.length,
+        );
+        console.log(yValuesAverageAll);
+
         // setChartData(plotData.getData());
         setChartData([barChartData, lineChartData]);
-        setChartLayout(plotData.getLayout());
+        setChartLayout(
+          getPlotlyLayout({
+            chartTitle: chartTitle,
+            xmin: startDate,
+            xmax: endDate,
+            yRange: yRange,
+            yAxisText: climateOption.yAxisText,
+            yValues: chartDataFromFile[1],
+            yValsAvgAll: yValuesAverageAll,
+          }),
+        );
+        //setChartLayout(plotData.getLayout());
         return plotData;
       })
       // handle errors
@@ -283,18 +321,6 @@ export default function SandboxControls() {
     // when the site fist starts and intializes
     loadData();
   }, []);
-
-  // handle state change for region
-  const handleSelectionChange = (selection) => {
-    setMegaMenuSelection(selection);
-
-    getChartData({
-      selection,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      climateOption: climateOption,
-      // chartShowLine: false
-    });
-  };
 
   // removes <br> from title attribute (in SVG) so images are exported without error
   //  used on small screens to create line breaks in chart title
@@ -644,11 +670,113 @@ export default function SandboxControls() {
     return JSONContent;
   };
 
+  // handles plotting of observed and predicted data
+  const handleObservedPredicted = (megaMenuSelection, climateOption) => {
+    const hasPredictedData = checkForPredictedData(megaMenuSelection);
+    if (!hasPredictedData) {
+      setChartData();
+      setChartLayout(layoutDefaults);
+      setChartErrorMessage("No data available.");
+      setOpenError(true);
+      return;
+    }
+
+    fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
+      // Define all data series to plot
+      const dataSeries = [
+        { name: "Observed", key: "obs", color: "#000000" },
+        { name: "Historical Lower", key: "historical_lower", color: "#8B4513" },
+        { name: "Historical Upper", key: "historical_upper", color: "#A0522D" },
+        { name: "SSP1-2.6 Lower", key: "ssp126_lower", color: "#4169E1" },
+        { name: "SSP1-2.6 Upper", key: "ssp126_upper", color: "#6495ED" },
+        { name: "SSP2-4.5 Lower", key: "ssp245_lower", color: "#32CD32" },
+        { name: "SSP2-4.5 Upper", key: "ssp245_upper", color: "#90EE90" },
+        { name: "SSP3-7.0 Lower", key: "ssp370_lower", color: "#FF8C00" },
+        { name: "SSP3-7.0 Upper", key: "ssp370_upper", color: "#FFA500" },
+      ];
+
+      const lineChartHoverTemplate = getHoverTemplate(
+        "scatter",
+        climateOption,
+        selectedSeason,
+      );
+
+      // Loop through all data series and create plot data for each
+      const chartDataList = dataSeries.map((series) => {
+        return getPlotData({
+          name: series.name,
+          type: "scatter",
+          xValues: data.year,
+          yValues: data[series.key],
+          marker: {
+            color: series.color,
+          },
+          line: {
+            color: series.color,
+            width: 3,
+            dash: "solid",
+            shape: "linear",
+            simplify: true,
+          },
+          hoverTemplate: lineChartHoverTemplate,
+          connectgaps: true,
+          hoverinfo: "x+y",
+        });
+      });
+
+      // Set the chart data with all 9 series
+      setChartData(chartDataList);
+
+      // use lowest observed and highest ssp585_upper to get range of y axis
+      const yValuesObserved = data.obs.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const validYValuesObserved = yValuesObserved.filter(
+        (val) => val !== undefined,
+      );
+      const yValuesUpper = data.ssp585_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const validYValuesUpper = yValuesUpper.filter((val) => val !== undefined);
+
+      const yMin =
+        validYValuesObserved.length > 0 ? Math.min(...validYValuesObserved) : 0;
+      const yMax =
+        validYValuesUpper.length > 0 ? Math.max(...validYValuesUpper) : 0;
+
+      const prettyRange = pretty([yMin, yMax]);
+      const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
+      const yValuesAverageAll = Math.max(
+        0,
+        validYValuesObserved.reduce((a, b) => a + b, 0) /
+          validYValuesObserved.length,
+      );
+
+      setChartLayout(
+        getPlotlyLayout({
+          chartTitle: `${megaMenuSelection.value} - ${climateOption.title}`,
+          xmin: parseInt(data.year[0]),
+          xmax: parseInt(data.year[data.year.length - 1]),
+          yRange: yRange,
+          yAxisText: climateOption.yAxisText,
+          yValues: validYValuesObserved,
+          yValsAvgAll: yValuesAverageAll,
+          periodGroups: 25,
+        }),
+      );
+    });
+  };
+
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (option) => {
     const newOption = option;
     setClimateOption(newOption);
     setClimateMenuOpen(false);
+
+    if (climateOption.type === "observed_projected") {
+      handleObservedPredicted(megaMenuSelection, option);
+      return;
+    }
 
     // Check if this is a map option that should display an image
     const isMapOption =
@@ -670,8 +798,19 @@ export default function SandboxControls() {
   };
 
   const handleMegaMenuSelect = (selection) => {
-    handleSelectionChange(selection);
+    setMegaMenuSelection(selection);
     setMegaMenuOpen(false);
+
+    if (climateOption.type === "observed_projected") {
+      handleObservedPredicted(selection, climateOption);
+      return;
+    }
+
+    getChartData({
+      selection,
+      climateDataFilesJSONFile: climateDataFilesJSON,
+      climateOption: climateOption,
+    });
   };
 
   // END NEW HANDLERS

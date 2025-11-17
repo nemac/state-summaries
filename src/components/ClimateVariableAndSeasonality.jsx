@@ -85,10 +85,6 @@ const ClimateVariableAndSeasonality = (props) => {
     },
   };
 
-  const observedProjectedOptions = [
-    { label: "Temperature", value: "temperature_obs_proj" },
-  ];
-
   const mapsAnnualOptions = [
     { label: "Change in Annual Precipitation", value: "change_annual_precip" },
   ];
@@ -295,7 +291,7 @@ const ClimateVariableAndSeasonality = (props) => {
               Observed and Projected
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {observedProjectedOptions.map((option) => (
+              {config.observedProjectedOptions.map((option) => (
                 <Button
                   key={option.value}
                   sx={buttonStyle}
