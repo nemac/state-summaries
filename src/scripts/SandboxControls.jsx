@@ -27,11 +27,12 @@ import {
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
-import { getPlotlyLayout, pretty } from "./getPlotlyLayout.js";
 import {
-  fetchObservedAndProjectedData,
-  plotObservedAndProjected,
-} from "./plotObservedAndPredicted.js";
+  getPlotlyLayout,
+  getPredictedDataLayout,
+  pretty,
+} from "./getPlotlyLayout.js";
+import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 
 const LocationRegionalItems = SandboxLocationRegionalItems();
 const LocationStateItems = SandboxLocationStateItems();
@@ -262,7 +263,6 @@ export default function SandboxControls() {
           0,
           validYValues.reduce((a, b) => a + b, 0) / validYValues.length,
         );
-        console.log(yValuesAverageAll);
 
         // setChartData(plotData.getData());
         setChartData([barChartData, lineChartData]);
@@ -684,44 +684,149 @@ export default function SandboxControls() {
     fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
       // Define all data series to plot
       const dataSeries = [
-        { name: "Observed", key: "obs", color: "#000000" },
-        { name: "Historical Lower", key: "historical_lower", color: "#8B4513" },
-        { name: "Historical Upper", key: "historical_upper", color: "#A0522D" },
-        { name: "SSP1-2.6 Lower", key: "ssp126_lower", color: "#4169E1" },
-        { name: "SSP1-2.6 Upper", key: "ssp126_upper", color: "#6495ED" },
-        { name: "SSP2-4.5 Lower", key: "ssp245_lower", color: "#32CD32" },
-        { name: "SSP2-4.5 Upper", key: "ssp245_upper", color: "#90EE90" },
-        { name: "SSP3-7.0 Lower", key: "ssp370_lower", color: "#FF8C00" },
-        { name: "SSP3-7.0 Upper", key: "ssp370_upper", color: "#FFA500" },
-      ];
-
-      const lineChartHoverTemplate = getHoverTemplate(
-        "scatter",
-        climateOption,
-        selectedSeason,
-      );
-
-      // Loop through all data series and create plot data for each
-      const chartDataList = dataSeries.map((series) => {
-        return getPlotData({
-          name: series.name,
-          type: "scatter",
-          xValues: data.year,
-          yValues: data[series.key],
-          marker: {
-            color: series.color,
-          },
+        {
+          name: "Observed",
+          key: "obs",
+          width: 2,
+          mode: "lines+markers",
           line: {
-            color: series.color,
-            width: 3,
+            color: "#000000",
+            width: 2,
             dash: "solid",
             shape: "linear",
             simplify: true,
           },
-          hoverTemplate: lineChartHoverTemplate,
-          connectgaps: true,
+          marker: {
+            color: "#000000",
+            size: 5,
+          },
+          connectgaps: false,
           hoverinfo: "x+y",
-        });
+          hovertemplate: "<b>%{x}</b><br>Observed: %{y}<extra></extra>",
+          legendgroup: 0,
+          showlegend: true,
+        },
+        {
+          name: "Modeled Historical Lower",
+          key: "historical_lower",
+          line: {
+            color: "rgba(169, 169, 169, 0)",
+            width: 0,
+            shape: "linear",
+            simplify: true,
+            dash: "solid",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "Modeled Historical Upper",
+          key: "historical_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(169, 169, 169, 0.5)",
+          line: {
+            color: "rgba(169, 169, 169, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate:
+            "<b>%{x}</b><br>Modeled Historical: %{y}<extra></extra>",
+          legendgroup: 1,
+          showlegend: true,
+        },
+        {
+          name: "SSP1-2.6 Lower",
+          key: "ssp126_lower",
+          line: {
+            color: "rgba(173, 216, 230, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP1-2.6 Upper",
+          key: "ssp126_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(173, 216, 230, 0.6)",
+          line: {
+            color: "rgba(173, 216, 230, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Lower Emissions: %{y}<extra></extra>",
+          legendgroup: 2,
+          showlegend: true,
+        },
+        {
+          name: "SSP2-4.5 Lower",
+          key: "ssp245_lower",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP2-4.5 Upper",
+          key: "ssp245_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(105, 105, 105, 0.6)",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate:
+            "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
+          legendgroup: 3,
+          showlegend: true,
+        },
+        {
+          name: "SSP3-7.0 Lower",
+          key: "ssp370_lower",
+          line: {
+            color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP3-7.0 Upper",
+          key: "ssp370_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(219, 112, 147, 0.7)",
+          line: {
+            color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
+          legendgroup: 4,
+          showlegend: true,
+        },
+      ];
+
+      // Loop through all data series and create plot data for each
+      const chartDataList = dataSeries.map((series) => {
+        return {
+          mode: series.mode ? series.mode : "line",
+          name: series.name,
+          type: "scatter",
+          x: data.year,
+          y: data[series.key].map((item) => (item === -999 ? null : item)),
+          ...(series.fill && { fill: series.fill }),
+          ...(series.fillcolor && { fillcolor: series.fillcolor }),
+          line: series.line,
+          ...(series.marker && { marker: series.marker }),
+          ...(series.hoverTemplate && { hoverTemplate: series.hovertemplate }),
+          ...(series.connectgaps && { connectgaps: series.connectgaps }),
+          hoverinfo: series.hoverinfo,
+          ...(series.legendgroup && { legendgroup: series.legendgroup }),
+          showlegend: series.showlegend,
+        };
       });
 
       // Set the chart data with all 9 series
@@ -742,7 +847,7 @@ export default function SandboxControls() {
       const yMin =
         validYValuesObserved.length > 0 ? Math.min(...validYValuesObserved) : 0;
       const yMax =
-        validYValuesUpper.length > 0 ? Math.max(...validYValuesUpper) : 0;
+        validYValuesUpper.length > 0 ? Math.max(...validYValuesObserved) : 0;
 
       const prettyRange = pretty([yMin, yMax]);
       const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
@@ -752,16 +857,77 @@ export default function SandboxControls() {
           validYValuesObserved.length,
       );
 
+      const yHigherTopValues = data.ssp370_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yHigherBottomValues = data.ssp370_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yIntermediateTopValues = data.ssp245_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yIntermediateBottomValues = data.ssp245_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerTopValues = data.ssp126_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerBottomValues = data.ssp126_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+
+      // Find min and max of top and bottom for high, intermediate, and low
+      // 1. Filters the array to remove undefined values
+      // 2. Checks if the filtered array has any elements
+      // 3. If yes, applies Math.max() or Math.min() to the filtered values
+      // 4. If no, returns 0 as the default value
+
+      const yHigherTop =
+        yHigherTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yHigherTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yHigherBottom =
+        yHigherBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.min(...yHigherBottomValues.filter((v) => v !== undefined))
+          : 0;
+      const yIntermediateTop =
+        yIntermediateTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yIntermediateTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yIntermediateBottom =
+        yIntermediateBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.min(
+              ...yIntermediateBottomValues.filter((v) => v !== undefined),
+            )
+          : 0;
+      const yLowerTop =
+        yLowerTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.min(...yLowerTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yLowerBottom =
+        yLowerBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.min(...yLowerBottomValues.filter((v) => v !== undefined))
+          : 0;
+
       setChartLayout(
-        getPlotlyLayout({
+        getPredictedDataLayout({
           chartTitle: `${megaMenuSelection.value} - ${climateOption.title}`,
+          stateName: megaMenuSelection.value,
           xmin: parseInt(data.year[0]),
           xmax: parseInt(data.year[data.year.length - 1]),
+          xvals: data.year,
+          yHigherTop: yHigherTop,
+          yHigherBottom: yHigherBottom,
+          yIntermediateTop: yIntermediateTop,
+          yIntermediateBottom: yIntermediateBottom,
+          yLowerTop: yLowerTop,
+          yLowerBottom: yLowerBottom,
+          yMin: yMin - 2,
+          yMax: ((n) => n + (n % 2))(yHigherTop),
           yRange: yRange,
           yAxisText: climateOption.yAxisText,
           yValues: validYValuesObserved,
           yValsAvgAll: yValuesAverageAll,
-          periodGroups: 25,
         }),
       );
     });
@@ -773,8 +939,8 @@ export default function SandboxControls() {
     setClimateOption(newOption);
     setClimateMenuOpen(false);
 
-    if (climateOption.type === "observed_projected") {
-      handleObservedPredicted(megaMenuSelection, option);
+    if (newOption.type === "observed_projected") {
+      handleObservedPredicted(megaMenuSelection, newOption);
       return;
     }
 

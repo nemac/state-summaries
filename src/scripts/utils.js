@@ -15,7 +15,6 @@ function parseFile(data, type, parseRegion) {
   }
 
   let colIndex;
-  console.log(type, parseRegion);
 
   // not sure this is needed anymore the python script that creates the JSON
   // config from all the txt files now cleans up extra columns aka #grids and #grid
