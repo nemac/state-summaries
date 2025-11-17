@@ -505,7 +505,7 @@ export const getPredictedDataLayout = (options) => {
         x0: 1.0185,
         y0: yIntermediateTop,
         x1: 1.0185,
-        y1: yIntermediateTop,
+        y1: yIntermediateBottom,
         line: { color: "rgb(105,105,105)", width: 5 },
       },
       {

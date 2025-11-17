@@ -685,28 +685,6 @@ export default function SandboxControls() {
       // Define all data series to plot
       const dataSeries = [
         {
-          name: "Observed",
-          key: "obs",
-          width: 2,
-          mode: "lines+markers",
-          line: {
-            color: "#000000",
-            width: 2,
-            dash: "solid",
-            shape: "linear",
-            simplify: true,
-          },
-          marker: {
-            color: "#000000",
-            size: 5,
-          },
-          connectgaps: false,
-          hoverinfo: "x+y",
-          hovertemplate: "<b>%{x}</b><br>Observed: %{y}<extra></extra>",
-          legendgroup: 0,
-          showlegend: true,
-        },
-        {
           name: "Modeled Historical Lower",
           key: "historical_lower",
           line: {
@@ -807,6 +785,28 @@ export default function SandboxControls() {
           legendgroup: 4,
           showlegend: true,
         },
+        {
+          name: "Observed",
+          key: "obs",
+          width: 2,
+          mode: "lines+markers",
+          line: {
+            color: "#000000",
+            width: 2,
+            dash: "solid",
+            shape: "linear",
+            simplify: true,
+          },
+          marker: {
+            color: "#000000",
+            size: 5,
+          },
+          connectgaps: false,
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Observed: %{y}<extra></extra>",
+          legendgroup: 0,
+          showlegend: true,
+        },
       ];
 
       // Loop through all data series and create plot data for each
@@ -826,6 +826,7 @@ export default function SandboxControls() {
           hoverinfo: series.hoverinfo,
           ...(series.legendgroup && { legendgroup: series.legendgroup }),
           showlegend: series.showlegend,
+          hovertemplate: series.hovertemplate,
         };
       });
 
@@ -888,7 +889,7 @@ export default function SandboxControls() {
           : 0;
       const yHigherBottom =
         yHigherBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.min(...yHigherBottomValues.filter((v) => v !== undefined))
+          ? Math.max(...yHigherBottomValues.filter((v) => v !== undefined))
           : 0;
       const yIntermediateTop =
         yIntermediateTopValues.filter((v) => v !== undefined).length > 0
@@ -896,17 +897,17 @@ export default function SandboxControls() {
           : 0;
       const yIntermediateBottom =
         yIntermediateBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.min(
+          ? Math.max(
               ...yIntermediateBottomValues.filter((v) => v !== undefined),
             )
           : 0;
       const yLowerTop =
         yLowerTopValues.filter((v) => v !== undefined).length > 0
-          ? Math.min(...yLowerTopValues.filter((v) => v !== undefined))
+          ? Math.max(...yLowerTopValues.filter((v) => v !== undefined))
           : 0;
       const yLowerBottom =
         yLowerBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.min(...yLowerBottomValues.filter((v) => v !== undefined))
+          ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
           : 0;
 
       setChartLayout(
@@ -935,6 +936,7 @@ export default function SandboxControls() {
 
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (option) => {
+    setOpenError(false); // reset
     const newOption = option;
     setClimateOption(newOption);
     setClimateMenuOpen(false);
@@ -964,6 +966,7 @@ export default function SandboxControls() {
   };
 
   const handleMegaMenuSelect = (selection) => {
+    setOpenError(false); // reset
     setMegaMenuSelection(selection);
     setMegaMenuOpen(false);
 
