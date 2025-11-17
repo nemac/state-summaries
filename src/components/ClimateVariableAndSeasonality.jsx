@@ -86,13 +86,18 @@ const ClimateVariableAndSeasonality = (props) => {
   };
 
   const mapsAnnualOptions = [
-    { label: "Change in Annual Precipitation", value: "change_annual_precip" },
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_annual_precip",
+      type: "mappy_map",
+    },
   ];
 
   const mapsSeasonalityOptions = [
     {
       label: "Change in Annual Precipitation",
       value: "change_seasonal_precip",
+      type: "mappy_map",
     },
   ];
 
