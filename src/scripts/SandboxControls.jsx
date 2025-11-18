@@ -114,6 +114,7 @@ export default function SandboxControls() {
     label: "Annual",
     value: "ann",
   });
+  const [chartTitle, setChartTitle] = useState("");
 
   // END NEW STATE VARIABLES
 
@@ -200,10 +201,11 @@ export default function SandboxControls() {
           setOpenError(true);
           return;
         }
-        const chartTitle =
+        const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
             : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
+        setChartTitle(newChartTitle);
 
         const barChartHoverTemplate = getHoverTemplate(
           "histogram",
@@ -290,7 +292,7 @@ export default function SandboxControls() {
         setChartData([barChartData, lineChartData]);
         setChartLayout(
           getPlotlyLayout({
-            chartTitle: chartTitle,
+            chartTitle: newChartTitle,
             xmin: startDate,
             xmax: endDate,
             yRange: yRange,
@@ -346,342 +348,6 @@ export default function SandboxControls() {
     // when the site fist starts and intializes
     loadData();
   }, []);
-
-  // removes <br> from title attribute (in SVG) so images are exported without error
-  //  used on small screens to create line breaks in chart title
-  //  the < and > is not allowed on svg to image so it needs to be removed
-  //  to allow for export
-  const removeBreaks = (node) => {
-    const titleSelector = ".infolayer .g-gtitle .gtitle";
-    const nodeTitle = node.querySelector(titleSelector);
-    if (nodeTitle) {
-      const nodeAttribute = nodeTitle.getAttribute("data-unformatted");
-      const newNodeAttribute = nodeAttribute
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "");
-      node
-        .querySelector(titleSelector)
-        .setAttribute("data-unformatted", newNodeAttribute);
-      return node;
-    }
-    return node;
-  };
-
-  // hack to export svg, not using pure JS
-  const convertToOneSvg = (svgSelector) => {
-    // find and covnert html all plotly chart nodes
-    // (plotly puts legends and the chart in seperate nodes)
-    // to an JS array
-    const svgs = Array.from(document.querySelectorAll(svgSelector));
-    const mergedDiv = document.createElement("div");
-    mergedDiv.setAttribute("id", "merged-div");
-
-    // create a new svg element
-    const mergedSVG = document.createElement("svg");
-
-    // set default for height and width
-    const SVGWidth = svgs[0].getAttribute("width");
-    const SVGHeight = svgs[0].getAttribute("height");
-
-    // set new svg element getAttributes to match the first plotly svg element
-    // this will ensure width/height style and all the other settings match in the export
-    mergedSVG.setAttribute("xmlns", svgs[0].getAttribute("xmlns"));
-    mergedSVG.setAttribute("xmlns:xlink", svgs[0].getAttribute("xmlns:xlink"));
-    mergedSVG.setAttribute("width", SVGWidth);
-    mergedSVG.setAttribute("height", SVGHeight);
-    mergedSVG.setAttribute("style", svgs[0].getAttribute("style"));
-
-    // append the svg to the div - this is needed to export the svg tet properly
-    mergedDiv.appendChild(mergedSVG);
-
-    // iterate all the plotly nodes and merge them into the same svg node
-    // this forces all the svg into one dom element to export correctly
-    svgs.forEach((svgnode) => {
-      const content = Array.from(svgnode.childNodes);
-      content.forEach((svgele) => {
-        // drag layer contains svg that is not needed and results
-        // in svg data that will require manipulation of data.
-        if (!svgele.classList.contains("draglayer")) {
-          const node = svgele.cloneNode(true);
-          const newNode = removeBreaks(node);
-          mergedSVG.appendChild(newNode);
-        }
-      });
-    });
-
-    // create the base64 data text so the svg is written correctly
-    const base64doc = btoa(unescape(encodeURIComponent(mergedSVG.outerHTML)));
-
-    // remove the added dom element used to create the svg base64 data
-    mergedDiv.remove();
-    return base64doc;
-  };
-
-  // creates a download file name with current date and time and all the
-  // chart settings from the ui
-  const getDownloadName = () => {
-    return "fix this";
-  };
-
-  // take blob data and add it to a href, initiate a click so the file downloads
-  const downloadFile = (data, type = "svg") => {
-    // create a new a element
-    const a = document.createElement("a");
-
-    // add click handler
-    const e = new MouseEvent("click");
-
-    // create download name based on curent settings
-    a.download = `${getDownloadName()}.${type}`;
-
-    if (type === "svg") {
-      // add data to href so its "on the fly"
-      const b64start = "data:image/svg+xml;base64,";
-      a.href = `${b64start}${data}`;
-    } else {
-      a.href = data;
-    }
-
-    // force click
-    a.dispatchEvent(e);
-
-    // Remove a element
-    a.remove();
-    return null;
-  };
-
-  const checkSVGForSizeChange = (svgSelector, widthARG, heightARG) => {
-    const svgElem = document.querySelector(svgSelector);
-    if (svgElem) {
-      const svgwidth = svgElem.getAttribute("width");
-      const svgheight = svgElem.getAttribute("height");
-      if (
-        Number(svgwidth) === Number(widthARG) &&
-        Number(svgheight) === Number(heightARG)
-      )
-        return false;
-    }
-    return true;
-  };
-
-  // create svg and although for custom size
-  const exportSVG = (
-    svgSelector = ".js-plotly-plot .main-svg",
-    widthARG = 1000,
-    heightARG = 500,
-  ) => {
-    const svgElem = document.querySelector(svgSelector);
-    if (svgElem) {
-      // do not change dimensions if not changed by user aka default setting
-      const sizeChanged = checkSVGForSizeChange(
-        svgSelector,
-        widthARG,
-        heightARG,
-      );
-      if (!sizeChanged) {
-        const base64doc = convertToOneSvg(svgSelector);
-        downloadFile(base64doc);
-        return null;
-      }
-    }
-
-    // get plotly div
-    const plotHolderDiv =
-      document.querySelector(".PlotRegionDiv").parentElement;
-    const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container",
-    );
-
-    // get default for heights and widths
-    const originalHolderWidth = plotHolderDiv.getAttribute("width");
-    const originalHolderHeight = plotHolderDiv.getAttribute("height");
-    const originalWidth = plotRegionDiv.getAttribute("width");
-    const originalHeight = plotRegionDiv.getAttribute("height");
-
-    // set width to fixed width
-    if (widthARG > 0 && heightARG > 0) {
-      // set divs to fixed width for standard or custom suze
-      plotHolderDiv.style.width = `${widthARG}px`;
-      plotRegionDiv.style.width = `${widthARG}px`;
-      plotHolderDiv.style.height = `${heightARG}px`;
-      plotRegionDiv.style.height = `${heightARG}px`;
-
-      // force window resize so plotly re-renders the chart at fixed dimensions
-      window.dispatchEvent(new Event("resize"));
-
-      // delay creation of svg export while resize happens
-      setTimeout(() => {
-        // create download file
-        const base64doc = convertToOneSvg(svgSelector);
-        downloadFile(base64doc);
-
-        // reset dimensions back to orignal dimensions
-        plotHolderDiv.style.width = originalHolderWidth;
-        plotRegionDiv.style.width = originalWidth;
-        plotHolderDiv.style.height = originalHolderHeight;
-        plotRegionDiv.style.height = originalHeight;
-
-        // force window resize so plotly re-renders the chart at fixed dimensions
-        window.dispatchEvent(new Event("resize"));
-        return null;
-      }, 500);
-    }
-    return null;
-  };
-
-  // convert svg base64 data to png
-  const convertToPng = (
-    svgSelector = ".js-plotly-plot .main-svg",
-    widthARG = 1000,
-    heightARG = 500,
-  ) => {
-    // get plotly div
-    const plotHolderDiv =
-      document.querySelector(".PlotRegionDiv").parentElement;
-    const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container",
-    );
-    const sizeChanged = checkSVGForSizeChange(svgSelector, widthARG, heightARG);
-
-    // get default for heights and widths
-    const originalHolderWidth = plotHolderDiv.getAttribute("width");
-    const originalHolderHeight = plotHolderDiv.getAttribute("height");
-    const originalWidth = plotRegionDiv.getAttribute("width");
-    const originalHeight = plotRegionDiv.getAttribute("height");
-
-    // only do this of dimensions are different
-    if (sizeChanged) {
-      // set divs to fixed width for standard or custom suze
-      plotHolderDiv.style.width = `${widthARG}px`;
-      plotRegionDiv.style.width = `${widthARG}px`;
-      plotHolderDiv.style.height = `${heightARG}px`;
-      plotRegionDiv.style.height = `${heightARG}px`;
-
-      // force window resize so plotly re-renders the chart at fixed dimensions
-      window.dispatchEvent(new Event("resize"));
-    }
-
-    setTimeout(() => {
-      // find and convert html all plotly chart nodes
-      // (plotly puts legends and the chart in seperate nodes)
-      // to an JS array
-      const svgs = Array.from(document.querySelectorAll(svgSelector));
-      const width = svgs[0].getAttribute("width");
-      const height = svgs[0].getAttribute("height");
-
-      const mergedDiv = document.createElement("div");
-      mergedDiv.setAttribute("id", "merged-div");
-
-      // create a new svg element
-      const mergedSVG = document.createElement("svg");
-
-      // set new svg element getAttributes to match the first plotly svg element
-      // this will ensure width/height style and all the other settings match in the export
-      mergedSVG.setAttribute("xmlns", svgs[0].getAttribute("xmlns"));
-      mergedSVG.setAttribute(
-        "xmlns:xlink",
-        svgs[0].getAttribute("xmlns:xlink"),
-      );
-      mergedSVG.setAttribute("width", width);
-      mergedSVG.setAttribute("height", height);
-      mergedSVG.setAttribute("style", svgs[0].getAttribute("style"));
-      // append the svg to the div - this is needed to export the svg tet properly
-      mergedDiv.appendChild(mergedSVG);
-
-      // iterate all the plotly nodes and merge them into the same svg node
-      // this forces all the svg into one dom element to export correctly
-      svgs.forEach((svgnode) => {
-        const content = Array.from(svgnode.childNodes);
-        content.forEach((svgele) => {
-          const node = svgele.cloneNode(true);
-          const newNode = removeBreaks(node);
-          mergedSVG.appendChild(newNode);
-        });
-      });
-
-      const blob = new Blob([mergedSVG.outerHTML], {
-        type: "image/svg+xml;charset=utf-8",
-      });
-      const URL = window.URL || window.webkitURL || window;
-      const blobURL = URL.createObjectURL(blob);
-
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const context = canvas.getContext("2d");
-        context.drawImage(image, 0, 0, width, height);
-        const png = canvas.toDataURL();
-        downloadFile(png, "png");
-
-        if (sizeChanged) {
-          // reset dimensions back to original dimensions
-          plotHolderDiv.style.width = originalHolderWidth;
-          plotRegionDiv.style.width = originalWidth;
-          plotHolderDiv.style.height = originalHolderHeight;
-          plotRegionDiv.style.height = originalHeight;
-          // force window resize so plotly re-renders the chart at fixed dimensions
-          window.dispatchEvent(new Event("resize"));
-        }
-      };
-      image.src = blobURL;
-    }, 500);
-  };
-
-  // handles downloads chart as SVG with fixed size
-  const handleDownloadChartAsSVG = (svgSelector, width, height) => {
-    exportSVG(svgSelector, width, height);
-  };
-
-  // handles downloads chart as PNG
-  const handleDownloadChartAsPNG = (svgSelector, width, height) => {
-    convertToPng(svgSelector, width, height);
-  };
-
-  // convert json data to csv
-  const convertDataToCSV = (data) => {
-    const items = data;
-    const replacer = (key, value) => (value === null ? "" : value);
-    const header = Object.keys(items[0]);
-    let csv = items.map((row) =>
-      header
-        .map((fieldName) =>
-          JSON.stringify(row[fieldName], replacer).replace(/\\"/g, '""'),
-        )
-        .join(","),
-    );
-
-    // push header to beginning of array
-    csv.unshift(header.join(","));
-    csv = csv.join("\r\n");
-    return csv;
-  };
-
-  // This is what actually creates and saves the file.
-  const saveFile = (content, filename, filetype) => {
-    const blob = new Blob(content, { type: filetype });
-    FileSaver.saveAs(blob, filename);
-  };
-
-  // converts chart data json from x,y to a pair key
-  // chart data has years in one array and values in another
-  // csv conversion makes it {year: value} so its easier to convert to csv
-  const convertChartDataToJSON = () => {
-    const years = chartData[0].x;
-    const values = chartData[0].y;
-
-    // merge arrays into the new object
-    const JSONContent = years.map((value, index) => {
-      const val = { year: value, value: values[index] };
-      return val;
-    });
-    return JSONContent;
-  };
 
   // handles plotting of observed and predicted data
   const handleObservedPredicted = (megaMenuSelection, climateOption) => {
@@ -1143,6 +809,9 @@ export default function SandboxControls() {
           >
             <Box display="flex" flexDirection="row" ml={1} mr={1} mt={1} mb={1}>
               <SaveChart
+                selection={megaMenuSelection}
+                climateOption={climateOption}
+                chartTitle={chartTitle}
                 chartData={chartData}
                 region={"FIX THIS"}
                 climatevariable={"FIX THIS"}

@@ -8,6 +8,7 @@ const SaveAsSVGButton = (props) => {
   const {
     chartData,
     screenSize,
+    chartTitle,
     width,
     height,
     svgSelector,
@@ -46,9 +47,8 @@ const SaveAsSVGButton = (props) => {
     // add click handler
     const e = new MouseEvent("click");
 
-    // create download name based on curent settings
-    // a.download = `${getDownloadName()}.${type}`; commenting out for now
-    a.download = "downloadedSVG";
+    // create download name based on current settings
+    a.download = `${chartTitle}`;
 
     if (type === "svg") {
       // add data to href so its "on the fly"
@@ -120,7 +120,7 @@ const SaveAsSVGButton = (props) => {
   const exportSVG = (
     svgSelector = ".js-plotly-plot .main-svg",
     widthARG = 1000,
-    heightARG = 500
+    heightARG = 500,
   ) => {
     const svgElem = document.querySelector(svgSelector);
     if (svgElem) {
@@ -128,7 +128,7 @@ const SaveAsSVGButton = (props) => {
       const sizeChanged = checkSVGForSizeChange(
         svgSelector,
         widthARG,
-        heightARG
+        heightARG,
       );
       if (!sizeChanged) {
         const base64doc = convertToOneSvg(svgSelector);
@@ -139,9 +139,9 @@ const SaveAsSVGButton = (props) => {
 
     // get ploltly div
     const plotHolderDiv =
-      document.querySelector(".PlotRegionDiv").parentElement;
+      document.querySelector(".js-plotly-plot").parentElement;
     const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container"
+      ".user-select-none.svg-container",
     );
 
     // get default for heights and widths
@@ -229,7 +229,7 @@ const SaveAsSVGButton = (props) => {
   const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
     const sandboxHumanReadable = new SandboxHumanReadable();
     return sandboxHumanReadable.getLocationDownText(
-      replaceAbbreviationLocation
+      replaceAbbreviationLocation,
     );
   };
 
