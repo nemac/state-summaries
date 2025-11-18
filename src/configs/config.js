@@ -1386,7 +1386,7 @@ const config = {
   ],
   observedProjectedOptions: [
     {
-      label: "Temperature",
+      label: "Observed and Projected Temperature",
       value: "temperature_obs_proj",
       type: "observed_projected",
       title: "Observed and Projected Temperature Change",
