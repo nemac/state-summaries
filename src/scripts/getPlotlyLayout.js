@@ -273,9 +273,9 @@ export const getPredictedDataLayout = (options) => {
     legendBarLineX = window.innerWidth <= smallScreenWidth ? 0 : 0.65,
     legendBarLineY = window.innerWidth <= smallScreenWidth ? -0.15 : 1.125,
     font = "Arial",
-    fontSizeLabels = "12pt",
-    fontSizePrimary = "14pt",
-    fontSizeLabelsSecondary = "12pt",
+    fontSizeLabels = "12",
+    fontSizePrimary = "14",
+    fontSizeLabelsSecondary = "12",
     chartTitle = "",
     chartTitleX = window.innerWidth <= smallScreenWidth ? 0.5 : 0.4,
     xmin = 0,
@@ -295,7 +295,6 @@ export const getPredictedDataLayout = (options) => {
     AverageAllWidth = 2,
     AverageAllFontSize = 12,
     AverageAllFontColor = "#000000",
-    stateName,
     yMax,
     yMin,
     xvals,
@@ -312,15 +311,15 @@ export const getPredictedDataLayout = (options) => {
     displayModeBar: false,
     showlegend: showLegend,
     autosize: true,
-    height: 1,
     bargap: bargap,
     plot_bgcolor: chartBackgroundColor,
     paper_bgcolor: chartBackgroundColor,
     margin: {
-      r: 125,
+      r: 150,
     },
     legend: {
       orientation: "v",
+      autosize: true,
       x: 0.01,
       y: 0.9,
       xanchor: "left",
@@ -416,17 +415,6 @@ export const getPredictedDataLayout = (options) => {
       },
     },
     annotations: [
-      // State name label
-      {
-        x: 0.01,
-        y: 0.98,
-        xref: "paper",
-        yref: "paper",
-        text: stateName,
-        showarrow: false,
-        font: { color: "rgba(126, 126, 126, 1)", size: 26, family: "Arial" },
-        align: "left",
-      },
       // Higher Emissions label
       {
         x: 1.0375,

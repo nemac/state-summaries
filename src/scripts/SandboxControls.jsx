@@ -79,8 +79,10 @@ export default function SandboxControls() {
   const [chartData, setChartData] = useState([{}]);
   // plotly chart layout defaults
   const layoutDefaults = {
-    yaxis: { rangemode: "tozero", title: "Days", fixedrange: true },
-    xaxis: { rangemode: "tozero", fixedrange: true },
+    title: {
+      text: "Responsive to window's size!",
+    },
+    font: { size: 18 },
   };
   // plotly chart layout
   const [chartLayout, setChartLayout] = useState(layoutDefaults);
@@ -853,7 +855,7 @@ export default function SandboxControls() {
 
       setChartLayout(
         getPredictedDataLayout({
-          chartTitle: `${megaMenuSelection.value} - ${climateOption.title}`,
+          chartTitle: `${megaMenuSelection.value.replace(/_/g, ' ')} - ${climateOption.title}`,
           stateName: megaMenuSelection.value,
           xmin: parseInt(data.year[0]),
           xmax: parseInt(data.year[data.year.length - 1]),

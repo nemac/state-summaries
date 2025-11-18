@@ -1,6 +1,7 @@
 export const fetchObservedAndProjectedData = async (megaMenuSelectionValue) => {
+  const valueWithoutSpaces = megaMenuSelectionValue.replace(/[\s_]+/g, '');
   const response = await fetch(
-    `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${megaMenuSelectionValue}_FIG1_SCS2025.csv`,
+    `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${valueWithoutSpaces}_FIG1_SCS2025.csv`,
   );
   const csvText = await response.text();
 
