@@ -87,7 +87,6 @@ class SandboxGeneratePlotData {
       if (this.season === "ann") return "annually";
       return seasonHumanReadable.toLowerCase().split(" ")[0].replace(":", "");
     }
-    console.log("hoverTemplateSeasonText");
     return "year";
   }
 

@@ -80,12 +80,12 @@ const convertToSeasons = (periodOfTime) => {
 export const getHoverTemplate = (type, data, selectedSeason) => {
   switch (type) {
     case "scatter":
-      return ` In %{x} the ${data.tooltip} was %{y:0.2f}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
+      return ` In %{x} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
     case "histogram":
-      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
+      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
@@ -101,17 +101,19 @@ export const setChartColor = (chartType) => {
 
 export const getPlotData = (data) => {
   return {
-    mode: "lines",
+    mode: data.mode,
     name: data.name,
     type: data.type,
     ...(data.histfunc && { histfunc: data.histfunc }),
     ...(data.xbins && { xbins: data.xbins }),
     ...(data.nbinsx && { nbinsx: data.nbinsx }),
     x: data.xValues,
-    y: data.yValues.map((item) => (item === -999 ? undefined : item)),
+    y: data.yValues.map((item) => (item === -999 ? null : item)),
     ...(data.bargroupgap && { bargroupgap: data.bargroupgap }),
-    marker: data.marker,
+    ...(data.marker && { marker: data.marker }),
     ...(data.line && { line: data.line }),
+    ...(data.fill && { fill: data.fill }),
+    ...(data.fillcolor && { fillcolor: data.fillcolor }),
     ...(data.connectgaps && { connectgaps: data.connectgaps }),
     ...(data.customdata && { customdata: data.customdata }),
     ...(data.legendGroup && { legendGroup: data.legendGroup }),

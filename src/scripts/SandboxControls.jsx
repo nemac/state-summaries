@@ -9,27 +9,26 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import SandboxPlotRegion from "./SandboxPlotRegion.jsx";
-import SandboxGeneratePlotData from "./SandboxGeneratePlotData.jsx";
-import SandboxHumanReadable from "./SandboxHumanReadable.jsx";
 import SandboxAlert from "./SandboxAlert.jsx";
 
 import config from "../configs/config.js";
-import SandboxLocationRegionalItems from "../configs/SandboxLocationRegionalItems";
-import SandboxLocationStateItems from "../configs/SandboxLocationStateItems";
 
 import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
-import parseFile from "./utils.js";
+import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
   getHoverTemplate,
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
-
-const LocationRegionalItems = SandboxLocationRegionalItems();
-const LocationStateItems = SandboxLocationStateItems();
+import {
+  getPlotlyLayout,
+  getPredictedDataLayout,
+  pretty,
+} from "./getPlotlyLayout.js";
+import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 
 // Fetch sandbox data file and parse it
 const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
@@ -52,13 +51,61 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 
 export default function SandboxControls() {
   const theme = useTheme();
-  const [megaMenuSelection, setMegaMenuSelection] = useState(
-    config.regionsOptions.find((region) => region.value === "CONUS"),
-  );
-  const [climateOption, setClimateOption] = useState(
-    config.historicalSeasonalityOptions.find(
+
+  // Initialize state from URL parameters or defaults
+  const getInitialSelection = () => {
+    const params = new URLSearchParams(window.location.search);
+    const selectionParam = params.get("selection");
+    if (selectionParam) {
+      // Search in both regionsOptions and statesOptions
+      let foundSelection = config.regionsOptions.find(
+        (region) => region.value === selectionParam,
+      );
+      if (!foundSelection && config.statesOptions) {
+        foundSelection = config.statesOptions.find(
+          (state) => state.value === selectionParam,
+        );
+      }
+      if (foundSelection) return foundSelection;
+    }
+    return config.regionsOptions.find((region) => region.value === "CONUS");
+  };
+
+  const getInitialClimateOption = () => {
+    const params = new URLSearchParams(window.location.search);
+    const optionParam = params.get("option");
+    if (optionParam) {
+      // Search in all climate option arrays
+      let foundOption = config.historicalSeasonalityOptions.find(
+        (option) => option.value === optionParam,
+      );
+      if (!foundOption && config.temperatureOptions) {
+        foundOption = config.temperatureOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.precipitationOptions) {
+        foundOption = config.precipitationOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.observedProjectedOptions) {
+        foundOption = config.observedProjectedOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (foundOption) return foundOption;
+    }
+    return config.historicalSeasonalityOptions.find(
       (option) => option.value === "tmean",
-    ),
+    );
+  };
+
+  const [megaMenuSelection, setMegaMenuSelection] = useState(() =>
+    getInitialSelection(),
+  );
+  const [climateOption, setClimateOption] = useState(() =>
+    getInitialClimateOption(),
   );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
@@ -75,17 +122,15 @@ export default function SandboxControls() {
   const [openError, setOpenError] = useState(false);
   // chart error message
   const [chartErrorMessage, setChartErrorMessage] = useState("Chart Error");
-  // chart error title
-  const [chartErrorTitle, setChartErrorTitle] = useState("Error");
-  // chart error type currently Error or Warning
-  const [errorType, setErrorType] = useState("Error");
 
   // chart data from files in ../sandboxdata
   const [chartData, setChartData] = useState([{}]);
   // plotly chart layout defaults
   const layoutDefaults = {
-    yaxis: { rangemode: "tozero", title: "Days", fixedrange: true },
-    xaxis: { rangemode: "tozero", fixedrange: true },
+    title: {
+      text: "",
+    },
+    font: { size: 18 },
   };
   // plotly chart layout
   const [chartLayout, setChartLayout] = useState(layoutDefaults);
@@ -100,19 +145,23 @@ export default function SandboxControls() {
     { label: "Winter", value: "djf" },
   ];
 
-  // replace the state abbreviations from the data text files with a more
-  // human-readable full state name AK becomes Alaska
-  const replaceLocationAbbreviation = (replaceAbbreviationLocation) => {
-    const sandboxHumanReadable = new SandboxHumanReadable();
-    return sandboxHumanReadable.getLocationDownText(
-      replaceAbbreviationLocation,
-    );
+  // Update URL query parameters
+  const updateURLParams = (selection, option) => {
+    const params = new URLSearchParams();
+    params.set("selection", selection.value);
+    params.set("option", option.value);
+    const newURL = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newURL);
+  };
+
+  // check if the selection has predicted data available
+  const checkForPredictedData = (selection) => {
+    return config.hasPredictedData.includes(selection.label);
   };
 
   // get chart data from current state = which should include
   const getChartData = (props) => {
     const { selection, climateDataFilesJSONFile, climateOption } = props;
-    console.log(props);
 
     const selectionLabel = selection.label;
 
@@ -125,10 +174,6 @@ export default function SandboxControls() {
       ? climateOption.value + "_" + selectedSeason.value
       : climateOption.value;
     const chartType = climateOption.chartType;
-
-    // use type from climateOption (e.g. temperature) to find start and end dates
-    const startDate = parseInt(selection.startDates[climateOption.type]);
-    const endDate = parseInt(selection.endDates[climateOption.type]);
 
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
@@ -146,41 +191,20 @@ export default function SandboxControls() {
 
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
+        if (areAllValuesNoData(chartDataFromFile[1]) === true) {
+          setChartData();
+          setChartLayout(layoutDefaults);
+          setChartErrorMessage(
+            "No data available for the selected area and climate option",
+          );
+          setOpenError(true);
+          return;
+        }
         const chartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
             : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
 
-        // create the plotly input so the chart is created based on users selection
-        const plotInfo = {
-          xvals: chartDataFromFile[0],
-          yvals: chartDataFromFile[1],
-          xmin: startDate,
-          xmax: endDate,
-          chartTitle,
-          legnedText: chartType,
-          chartType,
-          climatevariable: climateOption.tooltip, // e.g. Days with Precipitation Greater than 1 inch
-          season: selectedSeason.value,
-          yAxisText: climateOption.yAxisText,
-          avgTextUnits: climateOption.avgTextUnits,
-        };
-
-        // get the charts data formated for plotly
-        const plotData = new SandboxGeneratePlotData(plotInfo);
-
-        const xRange = {
-          xmin: startDate,
-          xmax: endDate,
-        };
-
-        // set the charts min and max based on the data in the data file
-        plotData.setXRange(xRange);
-
-        const barChartFiveYearHoverGroups = createFiveYearGroups(
-          startDate,
-          endDate,
-        );
         const barChartHoverTemplate = getHoverTemplate(
           "histogram",
           climateOption,
@@ -190,6 +214,15 @@ export default function SandboxControls() {
           "scatter",
           climateOption,
           selectedSeason,
+        );
+
+        // use type from climateOption (e.g. temperature) to find start and end dates
+        const startDate = parseInt(selection.startDates[climateOption.type]);
+        const endDate = parseInt(selection.endDates[climateOption.type]);
+
+        const barChartFiveYearHoverGroups = createFiveYearGroups(
+          startDate,
+          endDate,
         );
 
         const barChartData = getPlotData({
@@ -218,6 +251,7 @@ export default function SandboxControls() {
           legendgroup: 1,
           orientation: "v",
         });
+
         const lineChartData = getPlotData({
           name: climateOption.lineChartLegend,
           type: "scatter",
@@ -237,14 +271,39 @@ export default function SandboxControls() {
           connectgaps: true,
           hoverinfo: "x+y",
         });
-        // setChartData(plotData.getData());
+
+        // find yRange for layout
+        const yValues = chartDataFromFile[1].map((item) =>
+          item === -999 ? undefined : item,
+        );
+        const validYValues = yValues.filter((val) => val !== undefined);
+        const yMin = validYValues.length > 0 ? Math.min(...validYValues) : 0;
+        const yMax = validYValues.length > 0 ? Math.max(...validYValues) : 0;
+
+        const prettyRange = pretty([yMin, yMax]);
+        const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
+        const yValuesAverageAll = Math.max(
+          0,
+          validYValues.reduce((a, b) => a + b, 0) / validYValues.length,
+        );
+
         setChartData([barChartData, lineChartData]);
-        setChartLayout(plotData.getLayout());
-        return plotData;
+        setChartLayout(
+          getPlotlyLayout({
+            chartTitle: chartTitle,
+            xmin: startDate,
+            xmax: endDate,
+            yRange: yRange,
+            yAxisText: climateOption.yAxisText,
+            yValues: chartDataFromFile[1],
+            yValsAvgAll: yValuesAverageAll,
+            averageTextUnits: climateOption.avgTextUnits,
+          }),
+        );
       })
       // handle errors
       .catch((error) => {
-        console.error(`SanboxControls.updatePlotData() error=${error}`); // eslint-disable-line no-console
+        console.error(`SandboxControls.updatePlotData() error=${error}`);
       });
     return null;
   };
@@ -253,6 +312,10 @@ export default function SandboxControls() {
   // the user chooses or from URL parameters
   const loadData = async () => {
     try {
+      if (climateOption.type === "observed_projected") {
+        handleObservedPredicted(megaMenuSelection, climateOption);
+        return;
+      }
       const response = await fetch(
         "./sandboxdata/2025_Sandbox_Datafiles/index.json",
       );
@@ -283,18 +346,6 @@ export default function SandboxControls() {
     // when the site fist starts and intializes
     loadData();
   }, []);
-
-  // handle state change for region
-  const handleSelectionChange = (selection) => {
-    setMegaMenuSelection(selection);
-
-    getChartData({
-      selection,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      climateOption: climateOption,
-      // chartShowLine: false
-    });
-  };
 
   // removes <br> from title attribute (in SVG) so images are exported without error
   //  used on small screens to create line breaks in chart title
@@ -373,19 +424,7 @@ export default function SandboxControls() {
   // creates a download file name with current date and time and all the
   // chart settings from the ui
   const getDownloadName = () => {
-    // // get curent data time
-    // const date = new Date().toISOString().slice(0, 10);
-
-    // get human-readable versions of text
-    const sandboxHumanReadable = new SandboxHumanReadable("");
-    const chartTitle = sandboxHumanReadable.getChartTitle({
-      climatevariable,
-      climateOption, // needs fixing
-      titleLocation: replaceLocationAbbreviation(location),
-    });
-
-    // format file name
-    return `${chartTitle}`;
+    return "fix this";
   };
 
   // take blob data and add it to a href, initiate a click so the file downloads
@@ -586,7 +625,7 @@ export default function SandboxControls() {
           plotRegionDiv.style.width = originalWidth;
           plotHolderDiv.style.height = originalHolderHeight;
           plotRegionDiv.style.height = originalHeight;
-          // force window reszize so plotly re-renders the chart at fixed dimensions
+          // force window resize so plotly re-renders the chart at fixed dimensions
           window.dispatchEvent(new Event("resize"));
         }
       };
@@ -617,7 +656,7 @@ export default function SandboxControls() {
         .join(","),
     );
 
-    // push header to begining of array
+    // push header to beginning of array
     csv.unshift(header.join(","));
     csv = csv.join("\r\n");
     return csv;
@@ -644,34 +683,325 @@ export default function SandboxControls() {
     return JSONContent;
   };
 
+  // handles plotting of observed and predicted data
+  const handleObservedPredicted = (megaMenuSelection, climateOption) => {
+    const hasPredictedData = checkForPredictedData(megaMenuSelection);
+    if (!hasPredictedData) {
+      setChartData();
+      setChartLayout(layoutDefaults);
+      setChartErrorMessage("No data available.");
+      setOpenError(true);
+      return;
+    }
+
+    fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
+      // Define all data series to plot
+      const dataSeries = [
+        {
+          name: "Modeled Historical Lower",
+          key: "historical_lower",
+          line: {
+            color: "rgba(169, 169, 169, 0)",
+            width: 0,
+            shape: "linear",
+            simplify: true,
+            dash: "solid",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "Modeled Historical Upper",
+          key: "historical_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(169, 169, 169, 0.5)",
+          line: {
+            color: "rgba(169, 169, 169, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate:
+            "<b>%{x}</b><br>Modeled Historical: %{y}<extra></extra>",
+          legendgroup: 1,
+          showlegend: true,
+        },
+        {
+          name: "SSP1-2.6 Lower",
+          key: "ssp126_lower",
+          line: {
+            color: "rgba(173, 216, 230, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP1-2.6 Upper",
+          key: "ssp126_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(173, 216, 230, 0.6)",
+          line: {
+            color: "rgba(173, 216, 230, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Lower Emissions: %{y}<extra></extra>",
+          legendgroup: 2,
+          showlegend: true,
+        },
+        {
+          name: "SSP2-4.5 Lower",
+          key: "ssp245_lower",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP2-4.5 Upper",
+          key: "ssp245_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(105, 105, 105, 0.6)",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate:
+            "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
+          legendgroup: 3,
+          showlegend: true,
+        },
+        {
+          name: "SSP3-7.0 Lower",
+          key: "ssp370_lower",
+          line: {
+            color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP3-7.0 Upper",
+          key: "ssp370_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(219, 112, 147, 0.7)",
+          line: {
+            color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
+          legendgroup: 4,
+          showlegend: true,
+        },
+        {
+          name: "Observed",
+          key: "obs",
+          width: 2,
+          mode: "lines+markers",
+          line: {
+            color: "#000000",
+            width: 2,
+            dash: "solid",
+            shape: "linear",
+            simplify: true,
+          },
+          marker: {
+            color: "#000000",
+            size: 5,
+          },
+          connectgaps: false,
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Observed: %{y}<extra></extra>",
+          legendgroup: 0,
+          showlegend: true,
+        },
+      ];
+
+      // Loop through all data series and create plot data for each
+      const chartDataList = dataSeries.map((series) => {
+        return {
+          mode: series.mode ? series.mode : "line",
+          name: series.name,
+          type: "scatter",
+          x: data.year,
+          y: data[series.key].map((item) => (item === -999 ? null : item)),
+          ...(series.fill && { fill: series.fill }),
+          ...(series.fillcolor && { fillcolor: series.fillcolor }),
+          line: series.line,
+          ...(series.marker && { marker: series.marker }),
+          ...(series.hoverTemplate && { hoverTemplate: series.hovertemplate }),
+          ...(series.connectgaps && { connectgaps: series.connectgaps }),
+          hoverinfo: series.hoverinfo,
+          ...(series.legendgroup && { legendgroup: series.legendgroup }),
+          showlegend: series.showlegend,
+          hovertemplate: series.hovertemplate,
+        };
+      });
+
+      // Set the chart data with all 9 series
+      setChartData(chartDataList);
+
+      // use lowest observed and highest ssp585_upper to get range of y axis
+      const yValuesObserved = data.obs.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const validYValuesObserved = yValuesObserved.filter(
+        (val) => val !== undefined,
+      );
+      const yValuesUpper = data.ssp585_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const validYValuesUpper = yValuesUpper.filter((val) => val !== undefined);
+
+      const yMin =
+        validYValuesObserved.length > 0 ? Math.min(...validYValuesObserved) : 0;
+      const yMax =
+        validYValuesUpper.length > 0 ? Math.max(...validYValuesObserved) : 0;
+
+      const prettyRange = pretty([yMin, yMax]);
+      const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
+      const yValuesAverageAll = Math.max(
+        0,
+        validYValuesObserved.reduce((a, b) => a + b, 0) /
+          validYValuesObserved.length,
+      );
+
+      const yHigherTopValues = data.ssp370_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yHigherBottomValues = data.ssp370_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yIntermediateTopValues = data.ssp245_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yIntermediateBottomValues = data.ssp245_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerTopValues = data.ssp126_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerBottomValues = data.ssp126_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+
+      // Find max of top and bottom for high, intermediate, and low
+      // 1. Filters the array to remove undefined values
+      // 2. Checks if the filtered array has any elements
+      // 3. If yes, applies Math.max() or Math.min() to the filtered values
+      // 4. If no, returns 0 as the default value
+
+      const yHigherTop =
+        yHigherTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yHigherTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yHigherBottom =
+        yHigherBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yHigherBottomValues.filter((v) => v !== undefined))
+          : 0;
+      const yIntermediateTop =
+        yIntermediateTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yIntermediateTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yIntermediateBottom =
+        yIntermediateBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(
+              ...yIntermediateBottomValues.filter((v) => v !== undefined),
+            )
+          : 0;
+      const yLowerTop =
+        yLowerTopValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yLowerTopValues.filter((v) => v !== undefined))
+          : 0;
+      const yLowerBottom =
+        yLowerBottomValues.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
+          : 0;
+
+      setChartLayout(
+        getPredictedDataLayout({
+          chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")} - ${climateOption.title}`,
+          stateName: megaMenuSelection.value,
+          xmin: parseInt(data.year[0]),
+          xmax: parseInt(data.year[data.year.length - 1]),
+          xvals: data.year,
+          yHigherTop: yHigherTop,
+          yHigherBottom: yHigherBottom,
+          yIntermediateTop: yIntermediateTop,
+          yIntermediateBottom: yIntermediateBottom,
+          yLowerTop: yLowerTop,
+          yLowerBottom: yLowerBottom,
+          yMin: yMin - 2,
+          yMax: ((n) => n + (n % 2))(yHigherTop),
+          yRange: yRange,
+          yAxisText: climateOption.yAxisText,
+          yValues: validYValuesObserved,
+          yValsAvgAll: yValuesAverageAll,
+        }),
+      );
+    });
+  };
+
   // NEW HANDLERS JEFF
   const handleClimateOptionChange = (option) => {
+    setOpenError(false); // reset
+    setShowMapImage(false); // reset
+
     const newOption = option;
     setClimateOption(newOption);
     setClimateMenuOpen(false);
 
+    // Update URL parameters
+    updateURLParams(megaMenuSelection, newOption);
+
     // Check if this is a map option that should display an image
-    const isMapOption =
-      option.value === "change_annual_precip" ||
-      option.value === "change_seasonal_precip";
+    const isMapOption = newOption.type === "mappy_map";
 
     if (isMapOption) {
       // Just show the map image, don't generate chart data
       setShowMapImage(true);
-    } else {
-      // Regular chart option - hide map and generate chart data
-      setShowMapImage(false);
-      getChartData({
-        selection: megaMenuSelection,
-        climateDataFilesJSONFile: climateDataFilesJSON,
-        climateOption: newOption,
-      });
+      return;
     }
+
+    if (newOption.type === "observed_projected") {
+      handleObservedPredicted(megaMenuSelection, newOption);
+      return;
+    }
+
+    getChartData({
+      selection: megaMenuSelection,
+      climateDataFilesJSONFile: climateDataFilesJSON,
+      climateOption: newOption,
+    });
   };
 
   const handleMegaMenuSelect = (selection) => {
-    handleSelectionChange(selection);
+    setOpenError(false); // reset
+    setMegaMenuSelection(selection);
     setMegaMenuOpen(false);
+
+    // Update URL parameters
+    updateURLParams(selection, climateOption);
+
+    if (showMapImage === true) {
+      return;
+    }
+
+    if (climateOption.type === "observed_projected") {
+      handleObservedPredicted(selection, climateOption);
+      return;
+    }
+
+    getChartData({
+      selection,
+      climateDataFilesJSONFile: climateDataFilesJSON,
+      climateOption: climateOption,
+    });
   };
 
   // END NEW HANDLERS
@@ -864,8 +1194,8 @@ export default function SandboxControls() {
             >
               <SandboxAlert
                 shouldOpenAlert={openError}
-                errorType={errorType}
-                chartErrorTitle={chartErrorTitle}
+                errorType={"Error"}
+                chartErrorTitle={"Error"}
                 chartErrorMessage={chartErrorMessage}
               />
             </Box>

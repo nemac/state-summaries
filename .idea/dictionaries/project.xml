@@ -1,7 +1,22 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>connectgaps</w>
+      <w>conus</w>
+      <w>fixedrange</w>
+      <w>hoverinfo</w>
+      <w>hovertemplate</w>
+      <w>legendgroup</w>
       <w>prcp</w>
+      <w>rangemode</w>
+      <w>sandboxdata</w>
+      <w>showlegend</w>
+      <w>tmean</w>
+      <w>tonexty</w>
+      <w>tozero</w>
+      <w>xmax</w>
+      <w>xmin</w>
+      <w>xvals</w>
     </words>
   </dictionary>
 </component>

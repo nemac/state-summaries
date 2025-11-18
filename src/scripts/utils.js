@@ -15,7 +15,6 @@ function parseFile(data, type, parseRegion) {
   }
 
   let colIndex;
-  console.log(type, parseRegion);
 
   // not sure this is needed anymore the python script that creates the JSON
   // config from all the txt files now cleans up extra columns aka #grids and #grid
@@ -48,6 +47,11 @@ function parseFile(data, type, parseRegion) {
     yvals.push(yval);
   }
   return [xvals, yvals];
+}
+
+// Check if all values in an array are -999 (no data indicator)
+export function areAllValuesNoData(values) {
+  return values.every((value) => value === -999);
 }
 
 export default parseFile;
