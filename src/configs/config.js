@@ -1404,7 +1404,6 @@ const config = {
     "Delaware",
     "Florida",
     "Georgia",
-    "Hawai'i",
     "Idaho",
     "Illinois",
     "Indiana",
