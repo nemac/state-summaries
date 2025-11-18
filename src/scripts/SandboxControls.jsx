@@ -16,7 +16,7 @@ import config from "../configs/config.js";
 import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
-import parseFile from "./utils.js";
+import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
   getHoverTemplate,
@@ -191,6 +191,15 @@ export default function SandboxControls() {
 
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
+        if (areAllValuesNoData(chartDataFromFile[1]) === true) {
+          setChartData();
+          setChartLayout(layoutDefaults);
+          setChartErrorMessage(
+            "No data available for the selected area and climate option",
+          );
+          setOpenError(true);
+          return;
+        }
         const chartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`

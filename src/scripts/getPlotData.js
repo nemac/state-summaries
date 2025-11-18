@@ -80,12 +80,12 @@ const convertToSeasons = (periodOfTime) => {
 export const getHoverTemplate = (type, data, selectedSeason) => {
   switch (type) {
     case "scatter":
-      return ` In %{x} the ${data.tooltip} was %{y:0.2f}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
+      return ` In %{x} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
     case "histogram":
-      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
+      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
         / {2}/g,
         " ",
       );

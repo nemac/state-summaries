@@ -49,4 +49,9 @@ function parseFile(data, type, parseRegion) {
   return [xvals, yvals];
 }
 
+// Check if all values in an array are -999 (no data indicator)
+export function areAllValuesNoData(values) {
+  return values.every((value) => value === -999);
+}
+
 export default parseFile;
