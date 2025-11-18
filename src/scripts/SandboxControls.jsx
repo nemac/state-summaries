@@ -56,7 +56,6 @@ export default function SandboxControls() {
   const getInitialSelection = () => {
     const params = new URLSearchParams(window.location.search);
     const selectionParam = params.get("selection");
-    console.log("URL selection param:", selectionParam);
     if (selectionParam) {
       // Search in both regionsOptions and statesOptions
       let foundSelection = config.regionsOptions.find(
@@ -67,7 +66,6 @@ export default function SandboxControls() {
           (state) => state.value === selectionParam,
         );
       }
-      console.log("Found selection:", foundSelection);
       if (foundSelection) return foundSelection;
     }
     return config.regionsOptions.find((region) => region.value === "CONUS");
@@ -76,7 +74,6 @@ export default function SandboxControls() {
   const getInitialClimateOption = () => {
     const params = new URLSearchParams(window.location.search);
     const optionParam = params.get("option");
-    console.log("URL option param:", optionParam);
     if (optionParam) {
       // Search in all climate option arrays
       let foundOption = config.historicalSeasonalityOptions.find(
@@ -97,7 +94,6 @@ export default function SandboxControls() {
           (option) => option.value === optionParam,
         );
       }
-      console.log("Found option:", foundOption);
       if (foundOption) return foundOption;
     }
     return config.historicalSeasonalityOptions.find(
