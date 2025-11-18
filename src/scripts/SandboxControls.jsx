@@ -51,13 +51,65 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 
 export default function SandboxControls() {
   const theme = useTheme();
-  const [megaMenuSelection, setMegaMenuSelection] = useState(
-    config.regionsOptions.find((region) => region.value === "CONUS"),
-  );
-  const [climateOption, setClimateOption] = useState(
-    config.historicalSeasonalityOptions.find(
+
+  // Initialize state from URL parameters or defaults
+  const getInitialSelection = () => {
+    const params = new URLSearchParams(window.location.search);
+    const selectionParam = params.get("selection");
+    console.log("URL selection param:", selectionParam);
+    if (selectionParam) {
+      // Search in both regionsOptions and statesOptions
+      let foundSelection = config.regionsOptions.find(
+        (region) => region.value === selectionParam,
+      );
+      if (!foundSelection && config.statesOptions) {
+        foundSelection = config.statesOptions.find(
+          (state) => state.value === selectionParam,
+        );
+      }
+      console.log("Found selection:", foundSelection);
+      if (foundSelection) return foundSelection;
+    }
+    return config.regionsOptions.find((region) => region.value === "CONUS");
+  };
+
+  const getInitialClimateOption = () => {
+    const params = new URLSearchParams(window.location.search);
+    const optionParam = params.get("option");
+    console.log("URL option param:", optionParam);
+    if (optionParam) {
+      // Search in all climate option arrays
+      let foundOption = config.historicalSeasonalityOptions.find(
+        (option) => option.value === optionParam,
+      );
+      if (!foundOption && config.temperatureOptions) {
+        foundOption = config.temperatureOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.precipitationOptions) {
+        foundOption = config.precipitationOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.observedProjectedOptions) {
+        foundOption = config.observedProjectedOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      console.log("Found option:", foundOption);
+      if (foundOption) return foundOption;
+    }
+    return config.historicalSeasonalityOptions.find(
       (option) => option.value === "tmean",
-    ),
+    );
+  };
+
+  const [megaMenuSelection, setMegaMenuSelection] = useState(() =>
+    getInitialSelection(),
+  );
+  const [climateOption, setClimateOption] = useState(() =>
+    getInitialClimateOption(),
   );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
@@ -80,7 +132,7 @@ export default function SandboxControls() {
   // plotly chart layout defaults
   const layoutDefaults = {
     title: {
-      text: "Responsive to window's size!",
+      text: "",
     },
     font: { size: 18 },
   };
@@ -96,6 +148,15 @@ export default function SandboxControls() {
     { label: "Autumn", value: "son" },
     { label: "Winter", value: "djf" },
   ];
+
+  // Update URL query parameters
+  const updateURLParams = (selection, option) => {
+    const params = new URLSearchParams();
+    params.set("selection", selection.value);
+    params.set("option", option.value);
+    const newURL = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newURL);
+  };
 
   // check if the selection has predicted data available
   const checkForPredictedData = (selection) => {
@@ -246,6 +307,10 @@ export default function SandboxControls() {
   // the user chooses or from URL parameters
   const loadData = async () => {
     try {
+      if (climateOption.type === "observed_projected") {
+        handleObservedPredicted(megaMenuSelection, climateOption);
+        return;
+      }
       const response = await fetch(
         "./sandboxdata/2025_Sandbox_Datafiles/index.json",
       );
@@ -855,7 +920,7 @@ export default function SandboxControls() {
 
       setChartLayout(
         getPredictedDataLayout({
-          chartTitle: `${megaMenuSelection.value.replace(/_/g, ' ')} - ${climateOption.title}`,
+          chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")} - ${climateOption.title}`,
           stateName: megaMenuSelection.value,
           xmin: parseInt(data.year[0]),
           xmax: parseInt(data.year[data.year.length - 1]),
@@ -886,6 +951,9 @@ export default function SandboxControls() {
     setClimateOption(newOption);
     setClimateMenuOpen(false);
 
+    // Update URL parameters
+    updateURLParams(megaMenuSelection, newOption);
+
     // Check if this is a map option that should display an image
     const isMapOption = newOption.type === "mappy_map";
 
@@ -911,6 +979,10 @@ export default function SandboxControls() {
     setOpenError(false); // reset
     setMegaMenuSelection(selection);
     setMegaMenuOpen(false);
+
+    // Update URL parameters
+    updateURLParams(selection, climateOption);
+
     if (showMapImage === true) {
       return;
     }
