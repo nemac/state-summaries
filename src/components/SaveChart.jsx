@@ -27,7 +27,17 @@ import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 
 const SaveChart = (props) => {
-  const { chartData, region, location, climatevariable, period, sx } = props;
+  const {
+    selection,
+    climateOption,
+    chartTitle,
+    chartData,
+    region,
+    location,
+    climatevariable,
+    period,
+    sx,
+  } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1000");
@@ -301,6 +311,7 @@ const SaveChart = (props) => {
                                 fontWeight: "bold",
                                 fontSize: "1.2rem",
                                 color: "#1976d2",
+                                "&:hover": { backgroundColor: "white" },
                               },
                             },
                           },
@@ -343,6 +354,7 @@ const SaveChart = (props) => {
                                 fontWeight: "bold",
                                 fontSize: "1.2rem",
                                 color: "#1976d2",
+                                "&:hover": { backgroundColor: "white" },
                               },
                             },
                           },
@@ -365,9 +377,9 @@ const SaveChart = (props) => {
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 {selectedFormat === "PNG" && (
                   <SaveAsPNGButton
+                    chartTitle={chartTitle}
                     widthARG={width}
                     heightARG={height}
-                    chartData={chartData}
                     screenSize={{ width: 1000, height: 500 }}
                   />
                 )}
@@ -375,6 +387,7 @@ const SaveChart = (props) => {
                   <SaveAsSVGButton
                     width={width}
                     height={height}
+                    chartTitle={chartTitle}
                     chartData={chartData}
                     screenSize={{ width: 1000, height: 500 }}
                     region={region}
@@ -385,11 +398,8 @@ const SaveChart = (props) => {
                 )}
                 {selectedFormat === "CSV" && (
                   <SaveAsCSVButton
+                    chartTitle={chartTitle}
                     chartData={chartData}
-                    region={region}
-                    location={location}
-                    climatevariable={climatevariable}
-                    period={period}
                   />
                 )}
               </Box>

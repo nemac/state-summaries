@@ -4,25 +4,19 @@ import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 
 const SaveAsPNGButton = (props) => {
-  const { chartData, svgSelector, widthARG, heightARG } = props;
-
-  // handles downloads chart as PNG
-  // can get rid of this later; redundant
-  // const handleDownloadChartAsPNG = (svgSelector, width, height) => {
-  //   convertToPng(svgSelector, width, height);
-  // };
+  const { chartTitle, svgSelector, widthARG, heightARG } = props;
 
   // convert svg base64 data to png
   const convertToPng = (
     svgSelector = ".js-plotly-plot .main-svg",
     widthARG = 1000,
-    heightARG = 500
+    heightARG = 500,
   ) => {
-    // get ploltly div
+    // get plotly div
     const plotHolderDiv =
-      document.querySelector(".PlotRegionDiv").parentElement;
+      document.querySelector(".js-plotly-plot").parentElement;
     const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container"
+      ".user-select-none.svg-container",
     );
     const sizeChanged = checkSVGForSizeChange(svgSelector, widthARG, heightARG);
 
@@ -40,13 +34,13 @@ const SaveAsPNGButton = (props) => {
       plotHolderDiv.style.height = `${heightARG}px`;
       plotRegionDiv.style.height = `${heightARG}px`;
 
-      // force window reszize so plotly re-renders the chart at fixed dimensions
+      // force window resize so plotly re-renders the chart at fixed dimensions
       window.dispatchEvent(new Event("resize"));
     }
 
     setTimeout(() => {
-      // find and covnert html all plotly chart nodes
-      // (plotly puts legends and the chart in seperate nodes)
+      // find and convert html all plotly chart nodes
+      // (plotly puts legends and the chart in separate nodes)
       // to an JS array
       const svgs = Array.from(document.querySelectorAll(svgSelector));
       const width = svgs[0].getAttribute("width");
@@ -63,7 +57,7 @@ const SaveAsPNGButton = (props) => {
       mergedSVG.setAttribute("xmlns", svgs[0].getAttribute("xmlns"));
       mergedSVG.setAttribute(
         "xmlns:xlink",
-        svgs[0].getAttribute("xmlns:xlink")
+        svgs[0].getAttribute("xmlns:xlink"),
       );
       mergedSVG.setAttribute("width", width);
       mergedSVG.setAttribute("height", height);
@@ -96,10 +90,10 @@ const SaveAsPNGButton = (props) => {
         const context = canvas.getContext("2d");
         context.drawImage(image, 0, 0, width, height);
         const png = canvas.toDataURL();
-        donwloadFile(png, "png");
+        downloadFile(png, "png");
 
         if (sizeChanged) {
-          // reset dimensions back to orginal dimensions
+          // reset dimensions back to original dimensions
           plotHolderDiv.style.width = originalHolderWidth;
           plotRegionDiv.style.width = originalWidth;
           plotHolderDiv.style.height = originalHolderHeight;
@@ -126,7 +120,7 @@ const SaveAsPNGButton = (props) => {
     return true;
   };
 
-  // removes <br> from title atttribute (in SVG) so images are exported without error
+  // removes <br> from title attribute (in SVG) so images are exported without error
   //  used on small screens to create line breaks in chart tittle
   //  the < and > is not allowed on svg to image so it needs to be removed
   //  to allow for export
@@ -150,17 +144,15 @@ const SaveAsPNGButton = (props) => {
     return node;
   };
 
-  // take blob data and add it to a href, intiate a click so the file downloads
-  const donwloadFile = (data, type = "svg") => {
+  // take blob data and add it to a href, initiate a click so the file downloads
+  const downloadFile = (data, type = "svg") => {
     // create a new a element
     const a = document.createElement("a");
 
     // add click handler
     const e = new MouseEvent("click");
 
-    // create download name based on curent settings
-    // a.download = `${getDownloadName()}.${type}`; commenting out for now
-    a.download = "downloadedFile";
+    a.download = `${chartTitle}`;
 
     if (type === "svg") {
       // add data to href so its "on the fly"

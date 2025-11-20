@@ -1082,7 +1082,7 @@ const config = {
     {
       label: "Observed Number of Warm Days (Tmax ≥ 80ºF)",
       value: "tmax_80F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 80°F",
       title: "Number of Days with Maximum Temperature At or Above 80°F",
@@ -1094,7 +1094,7 @@ const config = {
     {
       label: "Observed Number of Warm Days (Tmax ≥ 87ºF)",
       value: "tmax_87F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 87°F",
       title: "Number of Days with Maximum Temperature At or Above 87°F",
@@ -1106,7 +1106,7 @@ const config = {
     {
       label: "Observed Number of Hot Days (Tmax ≥ 90ºF)",
       value: "tmax_90F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 90°F",
       title: "Number of Days with Maximum Temperature At or Above 90°F",
@@ -1118,7 +1118,7 @@ const config = {
     {
       label: "Observed Number of Very Hot Days (Tmax ≥ 95ºF)",
       value: "tmax_95F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 95°F",
       title: "Number of Days with Maximum Temperature At or Above 95°F",
@@ -1130,7 +1130,7 @@ const config = {
     {
       label: "Observed Number of Very Hot Days (Tmax ≥ 100ºF)",
       value: "tmax_100F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 100°F",
       title: "Number of Days with Maximum Temperature At or Above 100°F",
@@ -1142,7 +1142,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 60ºF)",
       value: "tmin_60F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 60°F",
       title: "Number of Days with Minimum Temperature At or Above 60°F",
@@ -1154,7 +1154,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 65ºF)",
       value: "tmin_65F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 65°F",
       title: "Number of Days with Minimum Temperature At or Above 65°F",
@@ -1166,7 +1166,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 70ºF)",
       value: "tmin_70F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 70°F",
       title: "Number of Days with Minimum Temperature At or Above 70°F",
@@ -1178,7 +1178,7 @@ const config = {
     {
       label: "Observed Number of Very Warm Nights (Tmin ≥ 75ºF)",
       value: "tmin_75F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 75°F",
       title: "Number of Days with Minimum Temperature At or Above 75°F",
@@ -1190,7 +1190,7 @@ const config = {
     {
       label: "Observed Number of Extremely Warm Nights (Tmin ≥ 80ºF)",
       value: "tmin_80F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 80°F",
       title: "Number of Days with Minimum Temperature At or Above 80°F",
@@ -1202,7 +1202,7 @@ const config = {
     {
       label: "Observed Number of Freezing Days (Tmax ≤ 32ºF)",
       value: "tmax_32F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature Below 32°F",
       title: "Number of Days with Maximum Temperature Below 32°F",
@@ -1214,7 +1214,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Days (Tmax ≤ 0ºF)",
       value: "tmax_0F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature Below 0°F",
       title: "Number of Days with Maximum Temperature Below 0°F",
@@ -1226,7 +1226,7 @@ const config = {
     {
       label: "Observed Number of Freezing Nights (Tmin ≤ 32ºF)",
       value: "tmin_32F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 32°F",
       title: "Number of Days with Minimum Temperature Below 32°F",
@@ -1238,7 +1238,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Nights (Tmin ≤ 20ºF)",
       value: "tmin_20F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 20°F",
       title: "Number of Days with Minimum Temperature Below 20°F",
@@ -1250,7 +1250,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Nights (Tmin ≤ 0ºF)",
       value: "tmin_0F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 0°F",
       title: "Number of Days with Minimum Temperature Below 0°F",
@@ -1262,7 +1262,7 @@ const config = {
     {
       label: "Observed Number of Extremely Cold Nights (Tmin ≤ –30ºF)",
       value: "tmin_-30F",
-      type: "temperature",
+      type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below -30°F",
       title: "Number of Days with Minimum Temperature Below -30°F",
@@ -1391,6 +1391,21 @@ const config = {
       type: "observed_projected",
       title: "Observed and Projected Temperature Change",
       yAxisText: "Temperature Change (ºF)",
+    },
+  ],
+  mapsAnnualOptions: [
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_annual_precip",
+      type: "mappy_map",
+    },
+  ],
+
+  mapsSeasonalityOptions: [
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_seasonal_precip",
+      type: "mappy_map",
     },
   ],
   hasPredictedData: [

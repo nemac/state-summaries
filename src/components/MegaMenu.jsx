@@ -4,7 +4,6 @@ import {
   Modal,
   Box,
   TextField,
-  Autocomplete,
   Button,
   Typography,
   IconButton,
@@ -21,6 +20,18 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     }
     onClose();
   };
+
+  // Filter states and regions based on search input
+  const filteredStates = config.statesOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  const filteredRegions = config.regionsOptions.filter(
+    (option) =>
+      option.label.toLowerCase().includes(searchValue.toLowerCase()) ||
+      (option.description &&
+        option.description.toLowerCase().includes(searchValue.toLowerCase())),
+  );
 
   const sectionTitleStyle = {
     display: "flex",
@@ -41,7 +52,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     justifyContent: "flex-start",
     display: "flex",
     alignItems: "center",
-
+    textAlign: "left",
     gap: "12px",
     "&:hover": {
       backgroundColor: "#f0f0f0",
@@ -77,7 +88,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: .5,
+            mb: 0.5,
           }}
         >
           <Typography
@@ -102,44 +113,21 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
             Search
           </Typography>
-          <Autocomplete
-            options={[...config.statesOptions, ...config.regionsOptions]}
-            groupBy={(option) =>
-              option.category ||
-              (option.type === "CONUS"
-                ? "United States"
-                : option.type === "states"
-                  ? "States"
-                  : "Regions")
-            }
-            getOptionLabel={(option) => option.label}
-            value={null}
-            onChange={(event, newValue) => {
-              if (newValue) {
-                handleLocationSelect(newValue);
-              }
+          <TextField
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+            placeholder="Search for state, territory, or Region"
+            variant="outlined"
+            sx={{
+              minWidth: "250px",
+              width: "940px",
+              maxWidth: "100%",
+              backgroundColor: "#FAFAFA",
+              borderRadius: "2px",
+              "& .MuiOutlinedInput-root": {
+                padding: "8px",
+              },
             }}
-            inputValue={searchValue}
-            onInputChange={(event, newInputValue) => {
-              setSearchValue(newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Search for state, territory, or Region"
-                variant="outlined"
-                sx={{
-                  minWidth: "250px",
-                  width: "940px",
-                  maxWidth: "100%",
-                  backgroundColor: "#FAFAFA",
-                  borderRadius: "2px",
-                  "& .MuiOutlinedInput-root": {
-                    padding: "8px",
-                  },
-                }}
-              />
-            )}
           />
         </Box>
 
@@ -153,15 +141,18 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
             some description
           </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2, }}>
-            {config.statesOptions.map((option) => (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2 }}>
+            {filteredStates.map((option) => (
               <Button
                 key={option.label}
-                sx={{ "@media (max-width: 768px)": {
-                      flexGrow: "1",
-                    },
-                    ...buttonStyle }}
-                onClick={() => handleLocationSelect(option)}>
+                sx={{
+                  "@media (max-width: 768px)": {
+                    flexGrow: "1",
+                  },
+                  ...buttonStyle,
+                }}
+                onClick={() => handleLocationSelect(option)}
+              >
                 <Box
                   component="img"
                   src={option.svg}
@@ -190,7 +181,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             some description
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            {config.regionsOptions.map((option) => (
+            {filteredRegions.map((option) => (
               <Button
                 key={option.label}
                 sx={{
@@ -242,7 +233,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                     alignItems: "flex-start",
                     justifyContent: "center",
                     flex: 1,
-                    gap: .75,
+                    gap: 0.75,
                   }}
                 >
                   <Typography
