@@ -491,31 +491,7 @@ export default function SandboxControls() {
           legendgroup: 2,
           showlegend: true,
         },
-        {
-          name: "SSP2-4.5 Lower",
-          key: "ssp245_lower",
-          line: {
-            color: "rgba(105, 105, 105, 0)",
-            width: 0,
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "SSP2-4.5 Upper",
-          key: "ssp245_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(105, 105, 105, 0.6)",
-          line: {
-            color: "rgba(105, 105, 105, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate:
-            "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
-          legendgroup: 3,
-          showlegend: true,
-        },
+
         {
           name: "SSP5-8.5 Lower",
           key: "ssp585_lower",
@@ -541,7 +517,7 @@ export default function SandboxControls() {
           showlegend: true,
         },
         {
-          name: "SSP5-7.0 Lower",
+          name: "SSP3-7.0 Lower",
           key: "ssp370_lower",
           line: {
             color: "rgba(247, 205, 166, 0)",
@@ -562,6 +538,31 @@ export default function SandboxControls() {
           hoverinfo: "x+y",
           hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
           legendgroup: 4,
+          showlegend: true,
+        },
+        {
+          name: "SSP2-4.5 Lower",
+          key: "ssp245_lower",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP2-4.5 Upper",
+          key: "ssp245_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(105, 105, 105, 0.6)",
+          line: {
+            color: "rgba(105, 105, 105, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate:
+            "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
+          legendgroup: 3,
           showlegend: true,
         },
         {
