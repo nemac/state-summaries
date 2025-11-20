@@ -54,6 +54,14 @@ export default function SandboxControls() {
   const theme = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const seasonOptions = [
+    { label: "Annual ", value: "ann" },
+    { label: "Spring", value: "mam" },
+    { label: "Summer", value: "jja" },
+    { label: "Autumn", value: "son" },
+    { label: "Winter", value: "djf" },
+  ];
+
   // Initialize state from URL parameters or defaults
   const getInitialSelection = () => {
     const selectionParam = searchParams.get("selection");
@@ -101,6 +109,17 @@ export default function SandboxControls() {
     );
   };
 
+  const getInitialSeason = () => {
+    const seasonParam = searchParams.get("season");
+    if (seasonParam) {
+      const foundSeason = seasonOptions.find(
+        (season) => season.value === seasonParam,
+      );
+      if (foundSeason) return foundSeason;
+    }
+    return { label: "Annual", value: "ann" };
+  };
+
   const [megaMenuSelection, setMegaMenuSelection] = useState(() =>
     getInitialSelection(),
   );
@@ -110,10 +129,9 @@ export default function SandboxControls() {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
   const [showMapImage, setShowMapImage] = useState(false);
-  const [selectedSeason, setSelectedSeason] = useState({
-    label: "Annual",
-    value: "ann",
-  });
+  const [selectedSeason, setSelectedSeason] = useState(() =>
+    getInitialSeason(),
+  );
   const [chartTitle, setChartTitle] = useState("");
 
   // END NEW STATE VARIABLES
@@ -137,14 +155,6 @@ export default function SandboxControls() {
   const [chartLayout, setChartLayout] = useState(layoutDefaults);
   // chart data json file
   const [climateDataFilesJSON, setClimateDataFilesJSON] = useState([""]);
-
-  const seasonOptions = [
-    { label: "Annual ", value: "ann" },
-    { label: "Spring", value: "mam" },
-    { label: "Summer", value: "jja" },
-    { label: "Autumn", value: "son" },
-    { label: "Winter", value: "djf" },
-  ];
 
   // check if the selection has predicted data available
   const checkForPredictedData = (selection) => {
@@ -315,7 +325,7 @@ export default function SandboxControls() {
       const responseData = await response.json();
 
       setClimateDataFilesJSON(responseData);
-      setSearchParams({ selection: "CONUS", option: "tmean" });
+      setSearchParams({ selection: "CONUS", option: "tmean", season: "ann" });
 
       getChartData({
         selection: megaMenuSelection,
@@ -342,6 +352,7 @@ export default function SandboxControls() {
   useEffect(() => {
     const selectionParam = searchParams.get("selection");
     const optionParam = searchParams.get("option");
+    const seasonParam = searchParams.get("season");
 
     // Update selection if URL changed
     if (selectionParam && selectionParam !== megaMenuSelection.value) {
@@ -382,6 +393,14 @@ export default function SandboxControls() {
         setClimateOption(foundOption);
       }
     }
+
+    // Update season if URL changed
+    if (seasonParam && seasonParam !== selectedSeason.value) {
+      const foundSeason = seasonOptions.find((s) => s.value === seasonParam);
+      if (foundSeason) {
+        setSelectedSeason(foundSeason);
+      }
+    }
   }, [searchParams]);
 
   // Reload chart data when selection or option changes (including from browser navigation)
@@ -399,7 +418,7 @@ export default function SandboxControls() {
         climateOption: climateOption,
       });
     }
-  }, [megaMenuSelection, climateOption]);
+  }, [megaMenuSelection, climateOption, selectedSeason]);
 
   // handles plotting of observed and predicted data
   const handleObservedPredicted = (megaMenuSelection, climateOption) => {
@@ -678,6 +697,7 @@ export default function SandboxControls() {
     setSearchParams({
       selection: megaMenuSelection.value,
       option: newOption.value,
+      season: selectedSeason.value,
     });
 
     // Check if this is a map option that should display an image
@@ -710,6 +730,7 @@ export default function SandboxControls() {
     setSearchParams({
       selection: selection.value,
       option: climateOption.value,
+      season: selectedSeason.value,
     });
 
     if (showMapImage === true) {
