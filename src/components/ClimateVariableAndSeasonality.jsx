@@ -109,7 +109,7 @@ const ClimateVariableAndSeasonality = (props) => {
             id="climate-variable-modal-title"
             variant="h5"
             component="h2"
-            sx={{ fontWeight: 600 }}
+            sx={{ fontWeight: 700, color: "#0379C8", fontSize: "40px" }}
           >
             Climate Variable and Seasonality
           </Typography>
@@ -118,7 +118,10 @@ const ClimateVariableAndSeasonality = (props) => {
           </IconButton>
         </Box>
 
-        <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 400, fontSize: "14px", mb: 2, color: "#5C5C5C" }}
+        >
           Choose the Climate Variable and Seasonality
         </Typography>
 
@@ -174,7 +177,11 @@ const ClimateVariableAndSeasonality = (props) => {
                     />
                     <Typography
                       variant="body2"
-                      sx={{ color: "#003366", fontWeight: 500 }}
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        color: "#124086",
+                      }}
                     >
                       {option.label}
                     </Typography>
@@ -220,7 +227,11 @@ const ClimateVariableAndSeasonality = (props) => {
                     />
                     <Typography
                       variant="body2"
-                      sx={{ color: "#003366", fontWeight: 500 }}
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        color: "#124086",
+                      }}
                     >
                       {option.label}
                     </Typography>
@@ -291,7 +302,7 @@ const ClimateVariableAndSeasonality = (props) => {
                   )}
                   <Typography
                     variant="body2"
-                    sx={{ color: "#003366", fontWeight: 500 }}
+                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
                   >
                     {option.getLabel
                       ? option.getLabel(selectedSeason.label)
@@ -324,7 +335,7 @@ const ClimateVariableAndSeasonality = (props) => {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ color: "#003366", fontWeight: 500 }}
+                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
                   >
                     {option.label}
                   </Typography>
@@ -393,7 +404,7 @@ const ClimateVariableAndSeasonality = (props) => {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ color: "#003366", fontWeight: 500 }}
+                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
                   >
                     {option.getLabel
                       ? option.getLabel(selectedSeason.label)
