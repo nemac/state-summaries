@@ -805,28 +805,22 @@ export default function SandboxControls() {
           backgroundColor: "white",
           color: "#5C5C5C",
           height: "calc(100vh - 16px)",
-          width: "100%",
+          // width: "100%",
+          margin: "16px",
           [theme.breakpoints.down("xs")]: {
             overflow: "scroll",
           },
         }}
       >
-        <Grid container spacing={1} justify="flex-start" direction="row">
+        <Grid container spacing={2} justify="flex-start" direction="row" margin="0 16px">
           <Grid
             size={{ xs: 12 }}
             width="100%"
             sx={{
-              height: `50px`,
-              maxHeight: `50px`,
               color: "#5C5C5C",
-              [theme.breakpoints.down("xs")]: {
-                height: `75px`,
-                maxHeight: `75px`,
-              },
             }}
           >
             <Box
-              px={1}
               display="flex"
               alignItems="center"
               gap={1}
@@ -856,12 +850,8 @@ export default function SandboxControls() {
             <Box
               onClick={() => setMegaMenuOpen(true)}
               display="flex"
-              ml={1}
-              mr={1}
-              mt={1}
-              mb={1}
               sx={{
-                height: "44px",
+                height: "30px",
                 border: "1px solid #0379C8",
                 borderRadius: "4px",
                 display: "flex",
@@ -891,12 +881,8 @@ export default function SandboxControls() {
             <Box
               onClick={() => setClimateMenuOpen(true)}
               display="flex"
-              ml={1}
-              mr={1}
-              mt={1}
-              mb={1}
               sx={{
-                height: "44px",
+                height: "30px",
                 border: "1px solid #0379C8",
                 borderRadius: "4px",
                 display: "flex",
@@ -925,15 +911,6 @@ export default function SandboxControls() {
             </Box>
           </Grid>
 
-          <Grid
-            size={{ xs: 12, md: 2 }}
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-            }}
-          >
-            <Box display="flex" flexDirection="row" ml={1} mr={1} mt={1} mb={1}>
               <SaveChart
                 selection={megaMenuSelection}
                 climateOption={climateOption}
@@ -943,21 +920,13 @@ export default function SandboxControls() {
                 climatevariable={"FIX THIS"}
                 period={"1900-2024"}
                 sx={{
-                  height: "56px",
-                  maxHeight: "56px",
-                  paddingTop: "4px",
-                  paddingRight: "8px",
-                  paddingBottom: "4px",
-                  paddingLeft: "8px",
                   borderRadius: "4px",
                   border: "1px solid #0379C8",
-                  gap: "8px",
                   fontWeight: 500,
                   color: "#0379C8",
+                  height: "48px",
                 }}
               />
-            </Box>
-          </Grid>
         </Grid>
 
         <Grid

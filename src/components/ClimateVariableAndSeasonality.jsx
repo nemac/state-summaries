@@ -128,7 +128,7 @@ const ClimateVariableAndSeasonality = (props) => {
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <InsertChartOutlinedIcon
-              sx={{ color: "#124086", fontSize: "32px", mr: 1 }}
+              sx={{ color: "#124086", fontSize: "50px" }}
             />
             <Typography
               sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
@@ -348,7 +348,7 @@ const ClimateVariableAndSeasonality = (props) => {
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <MapOutlinedIcon
-              sx={{ color: "#124086", fontSize: "32px", mr: 1 }}
+              sx={{ color: "#124086", fontSize: "50px" }}
             />
             <Typography
               sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
