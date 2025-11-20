@@ -66,6 +66,7 @@ const ClimateVariableAndSeasonality = (props) => {
     justifyContent: "flex-start",
     display: "flex",
     alignItems: "center",
+    textAlign: "left",
     gap: 1,
     "&:hover": {
       backgroundColor: "#f0f0f0",

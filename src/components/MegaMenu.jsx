@@ -23,12 +23,14 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
 
   // Filter states and regions based on search input
   const filteredStates = config.statesOptions.filter((option) =>
-    option.label.toLowerCase().includes(searchValue.toLowerCase())
+    option.label.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
-  const filteredRegions = config.regionsOptions.filter((option) =>
-    option.label.toLowerCase().includes(searchValue.toLowerCase()) ||
-    (option.description && option.description.toLowerCase().includes(searchValue.toLowerCase()))
+  const filteredRegions = config.regionsOptions.filter(
+    (option) =>
+      option.label.toLowerCase().includes(searchValue.toLowerCase()) ||
+      (option.description &&
+        option.description.toLowerCase().includes(searchValue.toLowerCase())),
   );
 
   const sectionTitleStyle = {
@@ -50,7 +52,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     justifyContent: "flex-start",
     display: "flex",
     alignItems: "center",
-
+    textAlign: "left",
     gap: "12px",
     "&:hover": {
       backgroundColor: "#f0f0f0",
@@ -86,7 +88,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: .5,
+            mb: 0.5,
           }}
         >
           <Typography
@@ -139,15 +141,18 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
             some description
           </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2, }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2 }}>
             {filteredStates.map((option) => (
               <Button
                 key={option.label}
-                sx={{ "@media (max-width: 768px)": {
-                      flexGrow: "1",
-                    },
-                    ...buttonStyle }}
-                onClick={() => handleLocationSelect(option)}>
+                sx={{
+                  "@media (max-width: 768px)": {
+                    flexGrow: "1",
+                  },
+                  ...buttonStyle,
+                }}
+                onClick={() => handleLocationSelect(option)}
+              >
                 <Box
                   component="img"
                   src={option.svg}
@@ -228,7 +233,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                     alignItems: "flex-start",
                     justifyContent: "center",
                     flex: 1,
-                    gap: .75,
+                    gap: 0.75,
                   }}
                 >
                   <Typography
