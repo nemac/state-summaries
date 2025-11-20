@@ -4,7 +4,6 @@ import {
   Modal,
   Box,
   TextField,
-  Autocomplete,
   Button,
   Typography,
   IconButton,
@@ -21,6 +20,16 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     }
     onClose();
   };
+
+  // Filter states and regions based on search input
+  const filteredStates = config.statesOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const filteredRegions = config.regionsOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase()) ||
+    (option.description && option.description.toLowerCase().includes(searchValue.toLowerCase()))
+  );
 
   const sectionTitleStyle = {
     display: "flex",
@@ -102,44 +111,21 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
             Search
           </Typography>
-          <Autocomplete
-            options={[...config.statesOptions, ...config.regionsOptions]}
-            groupBy={(option) =>
-              option.category ||
-              (option.type === "CONUS"
-                ? "United States"
-                : option.type === "states"
-                  ? "States"
-                  : "Regions")
-            }
-            getOptionLabel={(option) => option.label}
-            value={null}
-            onChange={(event, newValue) => {
-              if (newValue) {
-                handleLocationSelect(newValue);
-              }
+          <TextField
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+            placeholder="Search for state, territory, or Region"
+            variant="outlined"
+            sx={{
+              minWidth: "250px",
+              width: "940px",
+              maxWidth: "100%",
+              backgroundColor: "#FAFAFA",
+              borderRadius: "2px",
+              "& .MuiOutlinedInput-root": {
+                padding: "8px",
+              },
             }}
-            inputValue={searchValue}
-            onInputChange={(event, newInputValue) => {
-              setSearchValue(newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Search for state, territory, or Region"
-                variant="outlined"
-                sx={{
-                  minWidth: "250px",
-                  width: "940px",
-                  maxWidth: "100%",
-                  backgroundColor: "#FAFAFA",
-                  borderRadius: "2px",
-                  "& .MuiOutlinedInput-root": {
-                    padding: "8px",
-                  },
-                }}
-              />
-            )}
           />
         </Box>
 
@@ -154,7 +140,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             some description
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2, }}>
-            {config.statesOptions.map((option) => (
+            {filteredStates.map((option) => (
               <Button
                 key={option.label}
                 sx={{ "@media (max-width: 768px)": {
@@ -190,7 +176,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             some description
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            {config.regionsOptions.map((option) => (
+            {filteredRegions.map((option) => (
               <Button
                 key={option.label}
                 sx={{
