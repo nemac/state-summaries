@@ -13,7 +13,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import config from "../configs/config.js";
+import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 
 const ClimateVariableAndSeasonality = (props) => {
   const {
@@ -57,6 +59,7 @@ const ClimateVariableAndSeasonality = (props) => {
 
   const buttonStyle = {
     padding: "8px 12px",
+    marginLeft: "32px",
     borderRadius: "8px",
     width: "250px",
     height: "74px",
@@ -121,25 +124,41 @@ const ClimateVariableAndSeasonality = (props) => {
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <InsertChartOutlinedIcon
+              sx={{ color: "#124086", fontSize: "32px", mr: 1 }}
+            />
+            <Typography
+              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+            >
               Charts
             </Typography>
           </Box>
 
           <Box sx={{ mb: 3 }}>
             <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, mb: 1, color: "#5C5C5C" }}
+              ml={2}
+              mr={2}
+              mb={2}
+              sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
             >
               Historical Annual Extremes
             </Typography>
 
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 4 }}>
               <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 2,
+                  marginLeft: "32px",
+                }}
               >
                 <ThermostatIcon sx={{ color: "#5C5C5C", fontSize: "1.2rem" }} />
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                >
                   Temperature
                 </Typography>
               </Box>
@@ -164,14 +183,23 @@ const ClimateVariableAndSeasonality = (props) => {
               </Box>
             </Box>
 
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 4 }}>
               <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 2,
+                  marginLeft: "32px",
+                }}
               >
                 <ThunderstormIcon
                   sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
                 />
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                >
                   Precipitation
                 </Typography>
               </Box>
@@ -203,14 +231,15 @@ const ClimateVariableAndSeasonality = (props) => {
           </Box>
 
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, mb: 1, color: "#5C5C5C" }}
-            >
-              Historical Seasonality
-            </Typography>
-            <Box sx={{ mb: 2 }}>
-              <FormControl sx={{ minWidth: 250, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+              <Typography
+                ml={2}
+                mr={2}
+                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+              >
+                Historical Seasonality
+              </Typography>
+              <FormControl sx={{ minWidth: 250 }}>
                 <Select
                   value={selectedSeason.value}
                   variant="outlined"
@@ -274,12 +303,15 @@ const ClimateVariableAndSeasonality = (props) => {
           </Box>
 
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, mb: 1, color: "#5C5C5C" }}
-            >
-              Observed and Projected
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+              <Typography
+                ml={2}
+                mr={2}
+                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+              >
+                Observed and Projected
+              </Typography>
+            </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {config.observedProjectedOptions.map((option) => (
                 <Button
@@ -304,48 +336,26 @@ const ClimateVariableAndSeasonality = (props) => {
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <MapOutlinedIcon
+              sx={{ color: "#124086", fontSize: "32px", mr: 1 }}
+            />
+            <Typography
+              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+            >
               Maps
             </Typography>
           </Box>
 
           <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, mb: 1, color: "#5C5C5C" }}
-            >
-              Annual
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {config.mapsAnnualOptions.map((option) => (
-                <Button
-                  key={option.value}
-                  sx={buttonStyle}
-                  onClick={() => handleOptionSelect(option)}
-                >
-                  <ThunderstormIcon
-                    sx={{ color: "#003366", fontSize: "1.5rem" }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "#003366", fontWeight: 500 }}
-                  >
-                    {option.label}
-                  </Typography>
-                </Button>
-              ))}
-            </Box>
-          </Box>
-
-          <Box sx={{ mb: 3 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, mb: 1, color: "#5C5C5C" }}
-            >
-              Seasonality
-            </Typography>
-            <Box sx={{ mb: 2 }}>
-              <FormControl sx={{ minWidth: 250, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+              <Typography
+                ml={2}
+                mr={2}
+                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+              >
+                Seasonality
+              </Typography>
+              <FormControl sx={{ minWidth: 250 }}>
                 <Select
                   value={selectedSeason.value}
                   variant="outlined"
