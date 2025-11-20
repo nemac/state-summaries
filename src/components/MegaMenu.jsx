@@ -208,6 +208,14 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                   "&:hover": {
                     backgroundColor: "#f0f0f0",
                   },
+                  "@media (max-width: 1036px)": {
+                    flexGrow: "1",
+                    maxWidth: "calc(50% - 16px)"
+                  },
+                  "@media (max-width: 686px)": {
+                    flexGrow: "1",
+                    maxWidth: "none",
+                  },
                 }}
                 onClick={() => handleLocationSelect(option)}
               >
