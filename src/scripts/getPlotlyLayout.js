@@ -85,9 +85,9 @@ export const getPlotlyLayout = (options) => {
     gridwidth = 1,
     yValsAvgAll = 0,
     averageTextUnits = "°F",
-    AverageAllColor = "#ff0000",
-    AverageAllWidth = 2,
-    AverageAllFontSize = 12,
+    AverageAllColor = "#858585",
+    AverageAllWidth = 6,
+    AverageAllFontSize = 14,
     AverageAllFontColor = "#000000",
   } = options;
 
@@ -214,7 +214,7 @@ export const getPlotlyLayout = (options) => {
     shapes: [
       {
         type: "line",
-        layer: "below",
+        layer: "above",
         x0: xmin - 5,
         y0: Number(yValsAvgAll.toFixed(1)),
         x1: xmax + 5,

@@ -137,7 +137,7 @@ const SaveAsSVGButton = (props) => {
       }
     }
 
-    // get ploltly div
+    // get plotly div
     const plotHolderDiv =
       document.querySelector(".js-plotly-plot").parentElement;
     const plotRegionDiv = document.querySelector(
