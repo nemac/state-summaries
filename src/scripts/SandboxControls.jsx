@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import FileSaver from "file-saver";
 import { useTheme } from "@mui/material/styles";
+import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
@@ -51,11 +52,11 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 
 export default function SandboxControls() {
   const theme = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Initialize state from URL parameters or defaults
   const getInitialSelection = () => {
-    const params = new URLSearchParams(window.location.search);
-    const selectionParam = params.get("selection");
+    const selectionParam = searchParams.get("selection");
     if (selectionParam) {
       // Search in both regionsOptions and statesOptions
       let foundSelection = config.regionsOptions.find(
@@ -72,8 +73,7 @@ export default function SandboxControls() {
   };
 
   const getInitialClimateOption = () => {
-    const params = new URLSearchParams(window.location.search);
-    const optionParam = params.get("option");
+    const optionParam = searchParams.get("option");
     if (optionParam) {
       // Search in all climate option arrays
       let foundOption = config.historicalSeasonalityOptions.find(
@@ -145,15 +145,6 @@ export default function SandboxControls() {
     { label: "Autumn", value: "son" },
     { label: "Winter", value: "djf" },
   ];
-
-  // Update URL query parameters
-  const updateURLParams = (selection, option) => {
-    const params = new URLSearchParams();
-    params.set("selection", selection.value);
-    params.set("option", option.value);
-    const newURL = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({}, "", newURL);
-  };
 
   // check if the selection has predicted data available
   const checkForPredictedData = (selection) => {
@@ -323,11 +314,9 @@ export default function SandboxControls() {
       );
       const responseData = await response.json();
 
-      // set climate data json data file
       setClimateDataFilesJSON(responseData);
+      setSearchParams({ selection: "CONUS", option: "tmean" });
 
-      // only send chart data if at the intializing of the app aka the first time
-      // this is here for when URL parameters are passed
       getChartData({
         selection: megaMenuSelection,
         climateDataFilesJSONFile: responseData,
@@ -348,6 +337,69 @@ export default function SandboxControls() {
     // when the site fist starts and intializes
     loadData();
   }, []);
+
+  // Sync state with URL parameter changes (for browser back/forward navigation)
+  useEffect(() => {
+    const selectionParam = searchParams.get("selection");
+    const optionParam = searchParams.get("option");
+
+    // Update selection if URL changed
+    if (selectionParam && selectionParam !== megaMenuSelection.value) {
+      let foundSelection = config.regionsOptions.find(
+        (region) => region.value === selectionParam,
+      );
+      if (!foundSelection && config.statesOptions) {
+        foundSelection = config.statesOptions.find(
+          (state) => state.value === selectionParam,
+        );
+      }
+      if (foundSelection) {
+        setMegaMenuSelection(foundSelection);
+      }
+    }
+
+    // Update option if URL changed
+    if (optionParam && optionParam !== climateOption.value) {
+      let foundOption = config.historicalSeasonalityOptions.find(
+        (option) => option.value === optionParam,
+      );
+      if (!foundOption && config.temperatureOptions) {
+        foundOption = config.temperatureOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.precipitationOptions) {
+        foundOption = config.precipitationOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (!foundOption && config.observedProjectedOptions) {
+        foundOption = config.observedProjectedOptions.find(
+          (option) => option.value === optionParam,
+        );
+      }
+      if (foundOption) {
+        setClimateOption(foundOption);
+      }
+    }
+  }, [searchParams]);
+
+  // Reload chart data when selection or option changes (including from browser navigation)
+  useEffect(() => {
+    if (climateDataFilesJSON.length === 0 || climateDataFilesJSON[0] === "") {
+      return; // Wait for initial data load
+    }
+
+    if (climateOption.type === "observed_projected") {
+      handleObservedPredicted(megaMenuSelection, climateOption);
+    } else {
+      getChartData({
+        selection: megaMenuSelection,
+        climateDataFilesJSONFile: climateDataFilesJSON,
+        climateOption: climateOption,
+      });
+    }
+  }, [megaMenuSelection, climateOption]);
 
   // handles plotting of observed and predicted data
   const handleObservedPredicted = (megaMenuSelection, climateOption) => {
@@ -623,7 +675,10 @@ export default function SandboxControls() {
     setClimateMenuOpen(false);
 
     // Update URL parameters
-    updateURLParams(megaMenuSelection, newOption);
+    setSearchParams({
+      selection: megaMenuSelection.value,
+      option: newOption.value,
+    });
 
     // Check if this is a map option that should display an image
     const isMapOption = newOption.type === "mappy_map";
@@ -652,7 +707,10 @@ export default function SandboxControls() {
     setMegaMenuOpen(false);
 
     // Update URL parameters
-    updateURLParams(selection, climateOption);
+    setSearchParams({
+      selection: selection.value,
+      option: climateOption.value,
+    });
 
     if (showMapImage === true) {
       return;
