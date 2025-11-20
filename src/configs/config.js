@@ -1393,6 +1393,21 @@ const config = {
       yAxisText: "Temperature Change (ºF)",
     },
   ],
+  mapsAnnualOptions: [
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_annual_precip",
+      type: "mappy_map",
+    },
+  ],
+
+  mapsSeasonalityOptions: [
+    {
+      label: "Change in Annual Precipitation",
+      value: "change_seasonal_precip",
+      type: "mappy_map",
+    },
+  ],
   hasPredictedData: [
     "Alabama",
     "Alaska",

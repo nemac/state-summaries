@@ -85,22 +85,6 @@ const ClimateVariableAndSeasonality = (props) => {
     },
   };
 
-  const mapsAnnualOptions = [
-    {
-      label: "Change in Annual Precipitation",
-      value: "change_annual_precip",
-      type: "mappy_map",
-    },
-  ];
-
-  const mapsSeasonalityOptions = [
-    {
-      label: "Change in Annual Precipitation",
-      value: "change_seasonal_precip",
-      type: "mappy_map",
-    },
-  ];
-
   return (
     <Modal
       open={open}
@@ -332,7 +316,7 @@ const ClimateVariableAndSeasonality = (props) => {
               Annual
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {mapsAnnualOptions.map((option) => (
+              {config.mapsAnnualOptions.map((option) => (
                 <Button
                   key={option.value}
                   sx={buttonStyle}
@@ -387,7 +371,7 @@ const ClimateVariableAndSeasonality = (props) => {
               </FormControl>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {mapsSeasonalityOptions.map((option) => (
+              {config.mapsSeasonalityOptions.map((option) => (
                 <Button
                   key={option.value}
                   sx={buttonStyle}

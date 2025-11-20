@@ -408,6 +408,11 @@ export default function SandboxControls() {
     if (climateDataFilesJSON.length === 0 || climateDataFilesJSON[0] === "") {
       return; // Wait for initial data load
     }
+    setOpenError(false); // reset
+
+    if (showMapImage === true) {
+      return;
+    }
 
     if (climateOption.type === "observed_projected") {
       handleObservedPredicted(megaMenuSelection, climateOption);
@@ -512,10 +517,34 @@ export default function SandboxControls() {
           showlegend: true,
         },
         {
-          name: "SSP3-7.0 Lower",
-          key: "ssp370_lower",
+          name: "SSP5-8.5 Lower",
+          key: "ssp585_lower",
           line: {
             color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
+          name: "SSP5-8.5 Upper",
+          key: "ssp585_upper",
+          fill: "tonexty",
+          fillcolor: "rgba(219, 112, 147, 0.7)",
+          line: {
+            color: "rgba(219, 112, 147, 0)",
+            width: 0,
+          },
+          hoverinfo: "x+y",
+          hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
+          legendgroup: 4,
+          showlegend: true,
+        },
+        {
+          name: "SSP5-7.0 Lower",
+          key: "ssp370_lower",
+          line: {
+            color: "rgba(247, 205, 166, 0)",
             width: 0,
           },
           hoverinfo: "skip",
@@ -525,9 +554,9 @@ export default function SandboxControls() {
           name: "SSP3-7.0 Upper",
           key: "ssp370_upper",
           fill: "tonexty",
-          fillcolor: "rgba(219, 112, 147, 0.7)",
+          fillcolor: "rgba(247, 205, 166, 0.7)",
           line: {
-            color: "rgba(219, 112, 147, 0)",
+            color: "rgba(247, 205, 166, 0)",
             width: 0,
           },
           hoverinfo: "x+y",
@@ -608,10 +637,10 @@ export default function SandboxControls() {
           validYValuesObserved.length,
       );
 
-      const yHigherTopValues = data.ssp370_upper.map((item) =>
+      const yHigherTopValues = data.ssp585_upper.map((item) =>
         item === -999 ? undefined : item,
       );
-      const yHigherBottomValues = data.ssp370_lower.map((item) =>
+      const yHigherBottomValues = data.ssp585_lower.map((item) =>
         item === -999 ? undefined : item,
       );
       const yIntermediateTopValues = data.ssp245_upper.map((item) =>
@@ -624,6 +653,12 @@ export default function SandboxControls() {
         item === -999 ? undefined : item,
       );
       const yLowerBottomValues = data.ssp126_lower.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerTop370Values = data.ssp370_upper.map((item) =>
+        item === -999 ? undefined : item,
+      );
+      const yLowerBottom370Values = data.ssp370_lower.map((item) =>
         item === -999 ? undefined : item,
       );
 
@@ -660,6 +695,15 @@ export default function SandboxControls() {
           ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
           : 0;
 
+      const y370Top =
+        yLowerTop370Values.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yLowerTopValues.filter((v) => v !== undefined))
+          : 0;
+      const y370Bottom =
+        yLowerBottom370Values.filter((v) => v !== undefined).length > 0
+          ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
+          : 0;
+
       setChartLayout(
         getPredictedDataLayout({
           chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")} - ${climateOption.title}`,
@@ -673,6 +717,8 @@ export default function SandboxControls() {
           yIntermediateBottom: yIntermediateBottom,
           yLowerTop: yLowerTop,
           yLowerBottom: yLowerBottom,
+          y370Bottom: y370Bottom,
+          y370Top: y370Top,
           yMin: yMin - 2,
           yMax: ((n) => n + (n % 2))(yHigherTop),
           yRange: yRange,
@@ -723,8 +769,9 @@ export default function SandboxControls() {
 
   const handleMegaMenuSelect = (selection) => {
     setOpenError(false); // reset
-    setMegaMenuSelection(selection);
     setMegaMenuOpen(false);
+
+    setMegaMenuSelection(selection);
 
     // Update URL parameters
     setSearchParams({
