@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import config from "../configs/config.js";
+import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 
 const MegaMenu = ({ open, onClose, onSelect }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -73,7 +74,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "90%",
-          maxWidth: "950px",
+          maxWidth: "1050px",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 3,
@@ -134,14 +135,19 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         {/* States Section */}
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <InsertChartOutlinedIcon
+              sx={{ color: "#124086", fontSize: "50px" }}
+            />
+            <Typography
+              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+            >
               States
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
+          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C", fontWeight: "700", ml: 2, fontSize: "1.25rem" }}>
             some description
           </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredStates.map((option) => (
               <Button
                 key={option.label}
@@ -173,14 +179,19 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         {/* Regions Section */}
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <InsertChartOutlinedIcon
+              sx={{ color: "#124086", fontSize: "50px" }}
+            />
+            <Typography
+              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+            >
               Regions
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C" }}>
+          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C", fontWeight: "700", ml: 2, fontSize: "1.25rem" }}>
             some description
           </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredRegions.map((option) => (
               <Button
                 key={option.label}
