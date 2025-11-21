@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>bargroupgap</w>
+      <w>climatevariable</w>
       <w>connectgaps</w>
       <w>conus</w>
       <w>customdata</w>
@@ -10,6 +11,7 @@
       <w>hoverinfo</w>
       <w>hovertemplate</w>
       <w>legendgroup</w>
+      <w>nbinsx</w>
       <w>prcp</w>
       <w>rangemode</w>
       <w>sandboxdata</w>

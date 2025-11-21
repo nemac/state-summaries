@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import FileSaver from "file-saver";
 import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -39,15 +38,13 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
   const data = await response.text();
 
   // parse the csv text file
-  const chartDataFromFile = parseFile(
+  return parseFile(
     data,
     locationType,
     locationType === "states"
       ? config.stateAbbreviations[selectionLabel]
       : config.ncaRegionAbbreviations[selectionLabel],
   );
-
-  return chartDataFromFile;
 };
 
 export default function SandboxControls() {
@@ -345,7 +342,7 @@ export default function SandboxControls() {
     return null;
   };
 
-  // function loads the index.json file to find the correct data.txt file based on the varriables
+  // function loads the index.json file to find the correct data.txt file based on the variables
   // the user chooses or from URL parameters
   const loadData = async () => {
     try {
@@ -368,16 +365,13 @@ export default function SandboxControls() {
       return responseData;
     } catch (error) {
       // handle error
-      console.error(`SandboxControls loadData error: ${error}`); // eslint-disable-line no-console
+      console.error(`SandboxControls loadData error: ${error}`);
       return [""];
     }
   };
 
-  // use the react effect to control when loading state from URL
-  // this should only happen once during startup.
+  // call loadData during startup
   useEffect(() => {
-    // call loadData when at start changes, meaning only call this
-    // when the site fist starts and intializes
     loadData();
   }, []);
 
@@ -439,7 +433,7 @@ export default function SandboxControls() {
   const handleObservedPredicted = (megaMenuSelection, climateOption) => {
     const hasPredictedData = checkForPredictedData(megaMenuSelection);
     if (!hasPredictedData) {
-      setChartData();
+      setChartData([]);
       setChartLayout(layoutDefaults);
       setChartErrorMessage("No data available.");
       setOpenError(true);
@@ -623,7 +617,7 @@ export default function SandboxControls() {
       // Set the chart data with all 9 series
       setChartData(chartDataList);
 
-      // use lowest observed and highest ssp585_upper to get range of y axis
+      // use lowest observed and highest ssp585_upper to get range of y-axis
       const yValuesObserved = data.obs.map((item) =>
         item === -999 ? undefined : item,
       );
