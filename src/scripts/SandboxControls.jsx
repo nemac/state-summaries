@@ -62,6 +62,40 @@ export default function SandboxControls() {
     { label: "Winter", value: "djf" },
   ];
 
+  const getMegaMenuSelectionFromSearchParams = (selectionParam) => {
+    let foundSelection = config.regionsOptions.find(
+      (region) => region.value === selectionParam,
+    );
+    if (!foundSelection && config.statesOptions) {
+      foundSelection = config.statesOptions.find(
+        (state) => state.value === selectionParam,
+      );
+    }
+    return foundSelection;
+  };
+
+  const getClimateChangeOptionFromSearchParams = (optionParam) => {
+    let foundOption = config.historicalSeasonalityOptions.find(
+      (option) => option.value === optionParam,
+    );
+    if (!foundOption && config.temperatureOptions) {
+      foundOption = config.temperatureOptions.find(
+        (option) => option.value === optionParam,
+      );
+    }
+    if (!foundOption && config.precipitationOptions) {
+      foundOption = config.precipitationOptions.find(
+        (option) => option.value === optionParam,
+      );
+    }
+    if (!foundOption && config.observedProjectedOptions) {
+      foundOption = config.observedProjectedOptions.find(
+        (option) => option.value === optionParam,
+      );
+    }
+    return foundOption;
+  };
+
   // Initialize state from URL parameters or defaults
   const getInitialSelection = () => {
     const selectionParam = searchParams.get("selection");
@@ -315,17 +349,16 @@ export default function SandboxControls() {
   // the user chooses or from URL parameters
   const loadData = async () => {
     try {
-      if (climateOption.type === "observed_projected") {
-        handleObservedPredicted(megaMenuSelection, climateOption);
-        return;
-      }
       const response = await fetch(
         "./sandboxdata/2025_Sandbox_Datafiles/index.json",
       );
       const responseData = await response.json();
-
       setClimateDataFilesJSON(responseData);
-      setSearchParams({ selection: "CONUS", option: "tmean", season: "ann" });
+
+      if (climateOption.type === "observed_projected") {
+        handleObservedPredicted(megaMenuSelection, climateOption);
+        return;
+      }
 
       getChartData({
         selection: megaMenuSelection,
@@ -356,14 +389,8 @@ export default function SandboxControls() {
 
     // Update selection if URL changed
     if (selectionParam && selectionParam !== megaMenuSelection.value) {
-      let foundSelection = config.regionsOptions.find(
-        (region) => region.value === selectionParam,
-      );
-      if (!foundSelection && config.statesOptions) {
-        foundSelection = config.statesOptions.find(
-          (state) => state.value === selectionParam,
-        );
-      }
+      const foundSelection =
+        getMegaMenuSelectionFromSearchParams(selectionParam);
       if (foundSelection) {
         setMegaMenuSelection(foundSelection);
       }
@@ -371,24 +398,7 @@ export default function SandboxControls() {
 
     // Update option if URL changed
     if (optionParam && optionParam !== climateOption.value) {
-      let foundOption = config.historicalSeasonalityOptions.find(
-        (option) => option.value === optionParam,
-      );
-      if (!foundOption && config.temperatureOptions) {
-        foundOption = config.temperatureOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
-      if (!foundOption && config.precipitationOptions) {
-        foundOption = config.precipitationOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
-      if (!foundOption && config.observedProjectedOptions) {
-        foundOption = config.observedProjectedOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
+      const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
       if (foundOption) {
         setClimateOption(foundOption);
       }
@@ -416,13 +426,13 @@ export default function SandboxControls() {
 
     if (climateOption.type === "observed_projected") {
       handleObservedPredicted(megaMenuSelection, climateOption);
-    } else {
-      getChartData({
-        selection: megaMenuSelection,
-        climateDataFilesJSONFile: climateDataFilesJSON,
-        climateOption: climateOption,
-      });
+      return;
     }
+    getChartData({
+      selection: megaMenuSelection,
+      climateDataFilesJSONFile: climateDataFilesJSON,
+      climateOption: climateOption,
+    });
   }, [megaMenuSelection, climateOption, selectedSeason]);
 
   // handles plotting of observed and predicted data
