@@ -513,7 +513,7 @@ export default function SandboxControls() {
           },
           hoverinfo: "x+y",
           hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
-          legendgroup: 4,
+          legendgroup: 5,
           showlegend: true,
         },
         {
@@ -813,7 +813,13 @@ export default function SandboxControls() {
           },
         }}
       >
-        <Grid container spacing={2} justify="flex-start" direction="row" margin="0 16px">
+        <Grid
+          container
+          spacing={2}
+          justify="flex-start"
+          direction="row"
+          margin="0 16px"
+        >
           <Grid
             size={{ xs: 12 }}
             width="100%"
@@ -912,22 +918,22 @@ export default function SandboxControls() {
             </Box>
           </Grid>
 
-              <SaveChart
-                selection={megaMenuSelection}
-                climateOption={climateOption}
-                chartTitle={chartTitle}
-                chartData={chartData}
-                region={"FIX THIS"}
-                climatevariable={"FIX THIS"}
-                period={"1900-2024"}
-                sx={{
-                  borderRadius: "4px",
-                  border: "1px solid #0379C8",
-                  fontWeight: 500,
-                  color: "#0379C8",
-                  height: "48px",
-                }}
-              />
+          <SaveChart
+            selection={megaMenuSelection}
+            climateOption={climateOption}
+            chartTitle={chartTitle}
+            chartData={chartData}
+            region={"FIX THIS"}
+            climatevariable={"FIX THIS"}
+            period={"1900-2024"}
+            sx={{
+              borderRadius: "4px",
+              border: "1px solid #0379C8",
+              fontWeight: 500,
+              color: "#0379C8",
+              height: "48px",
+            }}
+          />
         </Grid>
 
         <Grid

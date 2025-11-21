@@ -16,6 +16,7 @@ import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import config from "../configs/config.js";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
+import MegaMenuButton from "./MegaMenuButton.jsx";
 
 const ClimateVariableAndSeasonality = (props) => {
   const {
@@ -55,25 +56,6 @@ const ClimateVariableAndSeasonality = (props) => {
     gap: 1,
     mb: 1,
     mt: 2,
-  };
-
-  const buttonStyle = {
-    padding: "8px 12px",
-    marginLeft: "32px",
-    borderRadius: "8px",
-    width: "250px",
-    height: "74px",
-    border: "1px solid #707070",
-    backgroundColor: "#FAFAFA",
-    textTransform: "none",
-    justifyContent: "flex-start",
-    display: "flex",
-    alignItems: "center",
-    textAlign: "left",
-    gap: 1,
-    "&:hover": {
-      backgroundColor: "#f0f0f0",
-    },
   };
 
   const cancelButtonStyle = {
@@ -167,25 +149,17 @@ const ClimateVariableAndSeasonality = (props) => {
               </Box>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
                 {config.temperatureOptions.map((option) => (
-                  <Button
+                  <MegaMenuButton
                     key={option.value}
-                    sx={buttonStyle}
+                    icon={
+                      <ThermostatIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    }
                     onClick={() => handleOptionSelect(option)}
                   >
-                    <ThermostatIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#124086",
-                      }}
-                    >
-                      {option.label}
-                    </Typography>
-                  </Button>
+                    {option.label}
+                  </MegaMenuButton>
                 ))}
               </Box>
             </Box>
@@ -212,9 +186,13 @@ const ClimateVariableAndSeasonality = (props) => {
               </Box>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
                 {config.precipitationOptions.map((option) => (
-                  <Button
+                  <MegaMenuButton
                     key={option.value}
-                    sx={buttonStyle}
+                    icon={
+                      <ThunderstormIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    }
                     onClick={() =>
                       handleOptionSelect({
                         ...option,
@@ -222,20 +200,8 @@ const ClimateVariableAndSeasonality = (props) => {
                       })
                     }
                   >
-                    <ThunderstormIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#124086",
-                      }}
-                    >
-                      {option.label}
-                    </Typography>
-                  </Button>
+                    {option.label}
+                  </MegaMenuButton>
                 ))}
               </Box>
             </Box>
@@ -262,6 +228,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
+                    color: "#0379C8",
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#707070",
@@ -278,9 +245,19 @@ const ClimateVariableAndSeasonality = (props) => {
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {config.historicalSeasonalityOptions.map((option) => (
-                <Button
+                <MegaMenuButton
                   key={option.value}
-                  sx={buttonStyle}
+                  icon={
+                    option.icon === "Precipitation" ? (
+                      <ThunderstormIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    ) : (
+                      <ThermostatIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    )
+                  }
                   onClick={() =>
                     handleOptionSelect({
                       ...option,
@@ -291,24 +268,10 @@ const ClimateVariableAndSeasonality = (props) => {
                     })
                   }
                 >
-                  {option.icon === "Precipitation" ? (
-                    <ThunderstormIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
-                    />
-                  ) : (
-                    <ThermostatIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
-                    />
-                  )}
-                  <Typography
-                    variant="body2"
-                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
-                  >
-                    {option.getLabel
-                      ? option.getLabel(selectedSeason.label)
-                      : option.labelTemplate || option.label}
-                  </Typography>
-                </Button>
+                  {option.getLabel
+                    ? option.getLabel(selectedSeason.label)
+                    : option.labelTemplate || option.label}
+                </MegaMenuButton>
               ))}
             </Box>
           </Box>
@@ -325,21 +288,17 @@ const ClimateVariableAndSeasonality = (props) => {
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {config.observedProjectedOptions.map((option) => (
-                <Button
+                <MegaMenuButton
                   key={option.value}
-                  sx={buttonStyle}
+                  icon={
+                    <ThermostatIcon
+                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                    />
+                  }
                   onClick={() => handleOptionSelect(option)}
                 >
-                  <ThermostatIcon
-                    sx={{ color: "#003366", fontSize: "1.5rem" }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
-                  >
-                    {option.label}
-                  </Typography>
-                </Button>
+                  {option.label}
+                </MegaMenuButton>
               ))}
             </Box>
           </Box>
@@ -347,9 +306,7 @@ const ClimateVariableAndSeasonality = (props) => {
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <MapOutlinedIcon
-              sx={{ color: "#124086", fontSize: "50px" }}
-            />
+            <MapOutlinedIcon sx={{ color: "#124086", fontSize: "50px" }} />
             <Typography
               sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
             >
@@ -378,6 +335,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
+                    color: "#0379C8",
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#707070",
@@ -394,23 +352,19 @@ const ClimateVariableAndSeasonality = (props) => {
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {config.mapsSeasonalityOptions.map((option) => (
-                <Button
+                <MegaMenuButton
                   key={option.value}
-                  sx={buttonStyle}
+                  icon={
+                    <ThunderstormIcon
+                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                    />
+                  }
                   onClick={() => handleOptionSelect(option)}
                 >
-                  <ThunderstormIcon
-                    sx={{ color: "#003366", fontSize: "1.5rem" }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ fontSize: "14px", fontWeight: 700, color: "#124086" }}
-                  >
-                    {option.getLabel
-                      ? option.getLabel(selectedSeason.label)
-                      : option.labelTemplate || option.label}
-                  </Typography>
-                </Button>
+                  {option.getLabel
+                    ? option.getLabel(selectedSeason.label)
+                    : option.labelTemplate || option.label}
+                </MegaMenuButton>
               ))}
             </Box>
           </Box>
