@@ -21,6 +21,9 @@ const MegaMenuButton = ({ children, icon, onClick }) => {
     "&:hover": {
       backgroundColor: "#f0f0f0",
     },
+    "@media (max-width: 768px)": {
+      flexGrow: "1",
+    },
   };
 
   return (
