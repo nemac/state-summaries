@@ -228,6 +228,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
+                    color: "#0379C8",
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#707070",
@@ -334,6 +335,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
+                    color: "#0379C8",
                     backgroundColor: "#FAFAFA",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#707070",
