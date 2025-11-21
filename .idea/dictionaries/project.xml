@@ -14,9 +14,11 @@
       <w>tmean</w>
       <w>tonexty</w>
       <w>tozero</w>
+      <w>xaxis</w>
       <w>xmax</w>
       <w>xmin</w>
       <w>xvals</w>
+      <w>yanchor</w>
     </words>
   </dictionary>
 </component>
