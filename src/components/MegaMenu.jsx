@@ -144,8 +144,17 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               States
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C", fontWeight: "700", ml: 2, fontSize: "1.25rem" }}>
-            some description
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 2,
+              color: "#5C5C5C",
+              fontWeight: "700",
+              ml: 2,
+              fontSize: "1.25rem",
+            }}
+          >
+            Select a state
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredStates.map((option) => (
@@ -188,8 +197,17 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               Regions
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ mb: 2, color: "#5C5C5C", fontWeight: "700", ml: 2, fontSize: "1.25rem" }}>
-            some description
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 2,
+              color: "#5C5C5C",
+              fontWeight: "700",
+              ml: 2,
+              fontSize: "1.25rem",
+            }}
+          >
+            Select a region
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredRegions.map((option) => (
@@ -212,7 +230,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                   },
                   "@media (max-width: 1036px)": {
                     flexGrow: "1",
-                    maxWidth: "calc(50% - 16px)"
+                    maxWidth: "calc(50% - 16px)",
                   },
                   "@media (max-width: 686px)": {
                     flexGrow: "1",
