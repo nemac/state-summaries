@@ -25,6 +25,7 @@ import {
 import SaveAsPNGButton from "./SaveAsPNGButton";
 import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
+import SaveAsMethodology from "./SaveAsMethodology";
 
 const SaveChart = (props) => {
   const {
@@ -151,16 +152,28 @@ const SaveChart = (props) => {
                   ...formatButtonStyle("CSV"),
                   borderTopLeftRadius: 0,
                   borderBottomLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  borderBottomRightRadius: 8,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
                 }}
                 onClick={() => setSelectedFormat("CSV")}
               >
                 Chart-data.CSV
               </Button>
+              <Button
+                sx={{
+                  ...formatButtonStyle("methodology"),
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8,
+                }}
+                onClick={() => setSelectedFormat("methodology")}
+              >
+                Methodology
+              </Button>
             </Box>
 
-            {selectedFormat !== "CSV" && (
+            {selectedFormat !== "CSV" && selectedFormat !== "methodology" && (
               <Paper
                 onClick={() => {
                   setWidth(1920);
@@ -196,7 +209,7 @@ const SaveChart = (props) => {
                 </Typography>
               </Paper>
             )}
-            {selectedFormat !== "CSV" && (
+            {selectedFormat !== "CSV" && selectedFormat !== "methodology" && (
               <Accordion
                 expanded={isCustomDims ? true : false}
                 defaultExpanded={false}
@@ -402,6 +415,7 @@ const SaveChart = (props) => {
                     chartData={chartData}
                   />
                 )}
+                {selectedFormat === "methodology" && <SaveAsMethodology />}
               </Box>
 
               <Button
