@@ -114,25 +114,7 @@ export default function SandboxControls() {
   const getInitialClimateOption = () => {
     const optionParam = searchParams.get("option");
     if (optionParam) {
-      // Search in all climate option arrays
-      let foundOption = config.historicalSeasonalityOptions.find(
-        (option) => option.value === optionParam,
-      );
-      if (!foundOption && config.temperatureOptions) {
-        foundOption = config.temperatureOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
-      if (!foundOption && config.precipitationOptions) {
-        foundOption = config.precipitationOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
-      if (!foundOption && config.observedProjectedOptions) {
-        foundOption = config.observedProjectedOptions.find(
-          (option) => option.value === optionParam,
-        );
-      }
+      const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
       if (foundOption) return foundOption;
     }
     return config.historicalSeasonalityOptions.find(
@@ -225,7 +207,7 @@ export default function SandboxControls() {
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
         if (areAllValuesNoData(chartDataFromFile[1]) === true) {
-          setChartData();
+          setChartData([]);
           setChartLayout(layoutDefaults);
           setChartErrorMessage(
             "No data available for the selected area and climate option",
