@@ -25,7 +25,6 @@ import {
 import SaveAsPNGButton from "./SaveAsPNGButton";
 import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
-import SaveAsMethodology from "./SaveAsMethodology";
 
 const SaveChart = (props) => {
   const {
@@ -118,7 +117,7 @@ const SaveChart = (props) => {
             <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
               Have questions about the methodologies that went into the data in
               this chart?{" "}
-              <Link href="#" sx={{ color: "#1976d2" }}>
+              <Link href="/tempData/sample-local-pdf.pdf" target="_blank" rel="noopener noreferrer" sx={{ color: "#1976d2" }}>
                 Learn more
               </Link>
             </Typography>
@@ -152,28 +151,16 @@ const SaveChart = (props) => {
                   ...formatButtonStyle("CSV"),
                   borderTopLeftRadius: 0,
                   borderBottomLeftRadius: 0,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8,
                 }}
                 onClick={() => setSelectedFormat("CSV")}
               >
                 Chart-data.CSV
               </Button>
-              <Button
-                sx={{
-                  ...formatButtonStyle("methodology"),
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  borderBottomRightRadius: 8,
-                }}
-                onClick={() => setSelectedFormat("methodology")}
-              >
-                Methodology
-              </Button>
             </Box>
 
-            {selectedFormat !== "CSV" && selectedFormat !== "methodology" && (
+            {selectedFormat !== "CSV" && (
               <Paper
                 onClick={() => {
                   setWidth(1920);
@@ -209,7 +196,7 @@ const SaveChart = (props) => {
                 </Typography>
               </Paper>
             )}
-            {selectedFormat !== "CSV" && selectedFormat !== "methodology" && (
+            {selectedFormat !== "CSV" && (
               <Accordion
                 expanded={isCustomDims ? true : false}
                 defaultExpanded={false}
@@ -415,7 +402,6 @@ const SaveChart = (props) => {
                     chartData={chartData}
                   />
                 )}
-                {selectedFormat === "methodology" && <SaveAsMethodology />}
               </Box>
 
               <Button
