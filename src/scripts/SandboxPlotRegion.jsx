@@ -8,6 +8,12 @@ export default function SandboxPlotRegion(props) {
   const responsiveChartRef = React.useRef();
   const [layout, _setLayout] = React.useState({ ...props.plotlyLayout });
 
+  // Store the original layout with all shapes/annotations
+  const originalLayoutRef = React.useRef(null);
+
+  // Track which scenarios are currently hidden
+  const hiddenScenariosRef = React.useRef(new Set());
+
   // create ref to use in listener
   const layoutRef = React.useRef(layout);
   const setLayout = (data) => {
@@ -82,6 +88,17 @@ export default function SandboxPlotRegion(props) {
 
   // effect for prop change so when new prop is passed in from parent the graph is re-rendered
   React.useLayoutEffect(() => {
+    // Store original layout when it first comes in or when shapes/annotations are present
+    if (
+      !originalLayoutRef.current ||
+      (props.plotlyLayout.shapes && props.plotlyLayout.shapes.length > 0)
+    ) {
+      originalLayoutRef.current = JSON.parse(
+        JSON.stringify(props.plotlyLayout),
+      );
+      // Reset hidden scenarios when layout changes (e.g., switching states)
+      hiddenScenariosRef.current = new Set();
+    }
     setLayout(props.plotlyLayout);
     resizeChart();
   }, [props.plotlyLayout]);
@@ -95,6 +112,72 @@ export default function SandboxPlotRegion(props) {
     };
   }, []);
 
+  const handleLegendClick = (event) => {
+    // Get the trace that was clicked
+    const clickedTrace = plotlyData[event.curveNumber];
+    const traceName = clickedTrace.name;
+
+    // Determine which scenario was toggled
+    let scenario = null;
+    if (traceName === "SSP5-8.5") {
+      scenario = "SSP5-8.5";
+    } else if (traceName === "SSP2-4.5") {
+      scenario = "SSP2-4.5";
+    } else if (traceName === "SSP1-2.6") {
+      scenario = "SSP1-2.6";
+    } else if (traceName === "SSP3-7.0") {
+      scenario = "SSP3-7.0";
+    }
+
+    // If no matching scenario, allow default behavior
+    if (!scenario || !originalLayoutRef.current) {
+      return true;
+    }
+
+    // Check if the trace is currently visible
+    const isCurrentlyVisible =
+      clickedTrace.visible === undefined || clickedTrace.visible === true;
+    const willBeVisible = !isCurrentlyVisible;
+
+    // Update hidden scenarios set
+    if (!willBeVisible) {
+      hiddenScenariosRef.current.add(scenario);
+    } else {
+      hiddenScenariosRef.current.delete(scenario);
+    }
+
+    // Update layout after Plotly processes the click
+    setTimeout(() => {
+      // Always filter from the original layout to avoid losing shapes
+      if (!originalLayoutRef.current) {
+        console.warn(
+          "originalLayoutRef is null, skipping shape/annotation filtering",
+        );
+        return;
+      }
+
+      const updatedLayout = { ...layoutRef.current };
+
+      // Filter shapes to exclude all hidden scenarios
+      updatedLayout.shapes = originalLayoutRef.current.shapes.filter(
+        (shape) =>
+          !shape.meta || !hiddenScenariosRef.current.has(shape.meta.scenario),
+      );
+
+      // Filter annotations to exclude all hidden scenarios
+      updatedLayout.annotations = originalLayoutRef.current.annotations.filter(
+        (annotation) =>
+          !annotation.meta ||
+          !hiddenScenariosRef.current.has(annotation.meta.scenario),
+      );
+
+      setLayout(updatedLayout);
+    }, 10);
+
+    // Allow default toggle behavior
+    return true;
+  };
+
   return (
     <div
       {...{
@@ -106,6 +189,7 @@ export default function SandboxPlotRegion(props) {
         layout={layoutRef.current}
         config={config}
         revision={Math.floor(Math.random() * 100000)}
+        onLegendClick={handleLegendClick}
       />
     </div>
   );

@@ -426,6 +426,7 @@ export const getPredictedDataLayout = (options) => {
         textangle: -90,
         font: { color: "rgb(189,0,38)", size: 18, family: "Arial" },
         align: "left",
+        meta: { scenario: "SSP5-8.5" },
       },
       // Intermediate Emissions label
       {
@@ -438,6 +439,7 @@ export const getPredictedDataLayout = (options) => {
         textangle: -90,
         font: { color: "rgb(105,105,105)", size: 18, family: "Arial" },
         align: "left",
+        meta: { scenario: "SSP2-4.5" },
       },
       // Lower Emissions label
       {
@@ -450,6 +452,7 @@ export const getPredictedDataLayout = (options) => {
         textangle: -90,
         font: { color: "rgb(90,180,172)", size: 18, family: "Arial" },
         align: "left",
+        meta: { scenario: "SSP1-2.6" },
       },
     ],
     shapes: [
@@ -463,6 +466,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.0085,
         y1: yHigherBottom,
         line: { color: "rgb(189,0,38)", width: 5 },
+        meta: { scenario: "SSP5-8.5" },
       },
       {
         type: "line",
@@ -473,6 +477,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.01,
         y1: yHigherTop,
         line: { color: "rgb(189,0,38)", width: 5 },
+        meta: { scenario: "SSP5-8.5" },
       },
       {
         type: "line",
@@ -484,6 +489,7 @@ export const getPredictedDataLayout = (options) => {
         y1: yHigherBottom,
         line: { color: "rgb(189,0,38)", width: 5 },
         cap: "round",
+        meta: { scenario: "SSP5-8.5" },
       },
       // Intermediate Emissions bracket
       {
@@ -495,6 +501,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.0185,
         y1: yIntermediateBottom,
         line: { color: "rgb(105,105,105)", width: 5 },
+        meta: { scenario: "SSP2-4.5" },
       },
       {
         type: "line",
@@ -505,6 +512,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.02,
         y1: yIntermediateTop,
         line: { color: "rgb(105,105,105)", width: 5 },
+        meta: { scenario: "SSP2-4.5" },
       },
       {
         type: "line",
@@ -515,6 +523,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.02,
         y1: yIntermediateBottom,
         line: { color: "rgb(105,105,105)", width: 5 },
+        meta: { scenario: "SSP2-4.5" },
       },
       // Lower Emissions bracket
       {
@@ -526,6 +535,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.0285,
         y1: yLowerBottom,
         line: { color: "rgb(90,180,172)", width: 5 },
+        meta: { scenario: "SSP1-2.6" },
       },
       {
         type: "line",
@@ -536,6 +546,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.03,
         y1: yLowerTop,
         line: { color: "rgb(90,180,172)", width: 5 },
+        meta: { scenario: "SSP1-2.6" },
       },
       {
         type: "line",
@@ -546,6 +557,7 @@ export const getPredictedDataLayout = (options) => {
         x1: 1.03,
         y1: yLowerBottom,
         line: { color: "rgb(90,180,172)", width: 5 },
+        meta: { scenario: "SSP1-2.6" },
       },
       // Zero line and grid lines
       {
