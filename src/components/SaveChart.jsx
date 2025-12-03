@@ -40,8 +40,8 @@ const SaveChart = (props) => {
   } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
-  const [width, setWidth] = useState("1000");
-  const [height, setHeight] = useState("500");
+  const [width, setWidth] = useState("1600");
+  const [height, setHeight] = useState("1200");
   const [isCustomDims, setCustomDims] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -117,7 +117,12 @@ const SaveChart = (props) => {
             <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
               Have questions about the methodologies that went into the data in
               this chart?{" "}
-              <Link href="/tempData/sample-local-pdf.pdf" target="_blank" rel="noopener noreferrer" sx={{ color: "#1976d2" }}>
+              <Link
+                href="/tempData/sample-local-pdf.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ color: "#1976d2" }}
+              >
                 Learn more
               </Link>
             </Typography>
@@ -380,7 +385,6 @@ const SaveChart = (props) => {
                     chartTitle={chartTitle}
                     widthARG={width}
                     heightARG={height}
-                    screenSize={{ width: 1000, height: 500 }}
                   />
                 )}
                 {selectedFormat === "SVG" && (
