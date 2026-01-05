@@ -110,6 +110,8 @@ export default function SandboxPlotRegion(props) {
     return () => {
       window.removeEventListener("resize", resizeChart);
     };
+    // We only want it to fire on component mount and unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLegendClick = (event) => {
