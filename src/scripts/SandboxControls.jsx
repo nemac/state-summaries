@@ -685,7 +685,7 @@ export default function SandboxControls() {
                   color: "#5C5C5C",
                 }}
               >
-                State Summaries Data Explorer
+                State Climate Summaries Data Explorer
               </Typography>
             </Box>
           </Grid>

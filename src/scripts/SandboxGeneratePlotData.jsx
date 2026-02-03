@@ -92,15 +92,15 @@ class SandboxGeneratePlotData {
 
   // creates units days, °F, " for annotation on Average line
   textUnitsWords() {
-    // seasonal units for inches of precip and degrees farhnheit
+    // seasonal units for inches of precip and degrees Fahrenheit
     if (this.season !== "yearly") {
       return this.chartType === "Precipitation" ? "inches" : "°F";
     }
-    // threshold which is days in the regions locatipon
+    // threshold which is days in the regions location
     if (this.season === "yearly") {
       return "days";
     }
-    // deault to days
+    // default to days
     return "days";
   }
 

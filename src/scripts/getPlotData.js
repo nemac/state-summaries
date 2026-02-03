@@ -78,14 +78,17 @@ const convertToSeasons = (periodOfTime) => {
 };
 
 export const getHoverTemplate = (type, data, selectedSeason) => {
+  // Days/nights need a space before the unit; °F and inches do not
+  const unitSpace =
+    data.avgTextUnits === "days" || data.avgTextUnits === "nights" ? " " : "";
   switch (type) {
     case "scatter":
-      return ` In %{x} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
+      return ` In %{x} the ${data.tooltip} was %{y:0.2f}${unitSpace}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)} <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
     case "histogram":
-      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f} ${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
+      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f}${unitSpace}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
