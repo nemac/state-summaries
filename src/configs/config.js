@@ -10,7 +10,7 @@ const config = {
     Delaware: "DE",
     Florida: "FL",
     Georgia: "GA",
-    "Hawai'i": "HI",
+    Hawaiʻi: "HI",
     Idaho: "ID",
     Illinois: "IL",
     Indiana: "IN",
@@ -64,7 +64,7 @@ const config = {
     Southwest: "Southwest",
     "Upper Midwest": "Upper Midwest",
     West: "West",
-    "Hawai'i and US-Affiliated Pacific Islands": "Hawaii",
+    Hawaiʻi: "Hawaii",
     "US Caribbean": "Us_Caribbean",
     "Contiguous United States": "contiguous_united_states",
   },
@@ -231,7 +231,7 @@ const config = {
       },
     },
     {
-      label: "Hawai'i",
+      label: "Hawaiʻi",
       svg: "/svgs/states/Hawaii.svg",
       value: "Hawaii",
       type: "states",
@@ -679,6 +679,22 @@ const config = {
       },
     },
     {
+      label: "Puerto Rico",
+      svg: "/svgs/states/Puerto_Rico.svg",
+      value: "Puerto_Rico",
+      type: "states",
+      startDates: {
+        threshold: "1950",
+        temperature: "1950",
+        precipitation: "1950",
+      },
+      endDates: {
+        threshold: "2024",
+        temperature: "2024",
+        precipitation: "2024",
+      },
+    },
+    {
       label: "Rhode Island",
       svg: "/svgs/states/Rhode_Island.svg",
       value: "Rhode_Island",
@@ -891,9 +907,9 @@ const config = {
       },
     },
     {
-      label: "Hawai'i and US-Affiliated Pacific Islands",
+      label: "Hawaiʻi and US-Affiliated Pacific Islands",
       svg: "/svgs/regions/hawaii.svg",
-      description: "Hawai'i",
+      description: "Hawaiʻi",
       value: "hawaii",
       type: "regions",
     },
@@ -901,7 +917,7 @@ const config = {
       label: "Northeast",
       svg: "/svgs/regions/northeast.svg",
       description:
-        "Connecticut, Delaware, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, & Vermont",
+        "Connecticut, Delaware, Maine, Maryland, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, and Vermont",
       value: "northeast",
       type: "regions",
       startDates: {
@@ -918,7 +934,7 @@ const config = {
     {
       label: "Northern Rockies and Plains",
       svg: "/svgs/regions/northern_rockies_plains.svg",
-      description: "Montana, Nebraska, North Dakota, South Dakota, & Wyoming",
+      description: "Montana, Nebraska, North Dakota, South Dakota, and Wyoming",
       value: "northern_rockies_plains",
       type: "regions",
       startDates: {
@@ -935,7 +951,7 @@ const config = {
     {
       label: "Northwest",
       svg: "/svgs/regions/northwest.svg",
-      description: "Idaho, Oregon, & Washington",
+      description: "Idaho, Oregon, and Washington",
       value: "northwest",
       type: "regions",
       startDates: {
@@ -953,7 +969,7 @@ const config = {
       label: "Ohio Valley",
       svg: "/svgs/regions/ohio_valley.svg",
       description:
-        "Illinois, Indiana, Kentucky, Missouri, Ohio, Tennessee, & West Virginia",
+        "Illinois, Indiana, Kentucky, Missouri, Ohio, Tennessee, and West Virginia",
       value: "ohio_valley",
       type: "regions",
       startDates: {
@@ -971,7 +987,7 @@ const config = {
       label: "South",
       svg: "/svgs/regions/south.svg",
       description:
-        "Alabama, Arkansas, Louisiana, Mississippi, Oklahoma, & Texas",
+        "Alabama, Arkansas, Louisiana, Mississippi, Oklahoma, and Texas",
       value: "south",
       type: "regions",
       startDates: {
@@ -989,7 +1005,7 @@ const config = {
       label: "Southeast",
       svg: "/svgs/regions/southeast.svg",
       description:
-        "Florida, Georgia, North Carolina, South Carolina, & Virginia",
+        "Florida, Georgia, North Carolina, South Carolina, and Virginia",
       value: "southeast",
       type: "regions",
       startDates: {
@@ -1006,7 +1022,7 @@ const config = {
     {
       label: "Southwest",
       svg: "/svgs/regions/southwest.svg",
-      description: "Arizona, Colorado, New Mexico, & Utah",
+      description: "Arizona, Colorado, New Mexico, and Utah",
       value: "southwest",
       type: "regions",
       startDates: {
@@ -1023,7 +1039,7 @@ const config = {
     {
       label: "Upper Midwest",
       svg: "/svgs/regions/upper_midwest.svg",
-      description: "Iowa, Michigan, Minnesota, & Wisconsin",
+      description: "Iowa, Michigan, Minnesota, and Wisconsin",
       value: "upper_midwest",
       type: "regions",
       startDates: {
@@ -1040,7 +1056,7 @@ const config = {
     {
       label: "US Caribbean",
       svg: "/svgs/regions/us_caribbean.svg",
-      description: "Puerto Rico & U.S. Virgin Islands",
+      description: "Puerto Rico and US Virgin Islands",
       value: "us_caribbean",
       type: "regions",
     },

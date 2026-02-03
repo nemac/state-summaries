@@ -87,7 +87,7 @@ const SaveChart = (props) => {
         onClick={handleOpen}
         sx={sx}
       >
-        Save Chart
+        SAVE CHART/DATA
       </Button>
 
       <Modal
@@ -105,18 +105,17 @@ const SaveChart = (props) => {
                 component="h2"
                 sx={{ fontWeight: "bold", color: "#333" }}
               >
-                Save Chart
+                SAVE CHART/DATA
               </Typography>
               <Typography variant="body2" sx={{ color: "#666" }}>
-                Choose the height, width, or if you want the chart data
+                Choose the chart type and dimensions, or download data
               </Typography>
             </Box>
           </Box>
 
           <Box sx={{ p: 2 }}>
             <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
-              Have questions about the methodologies that went into the data in
-              this chart?{" "}
+              Questions about data and methodologies?{" "}
               <Link
                 href="/tempData/sample-local-pdf.pdf"
                 target="_blank"
