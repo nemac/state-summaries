@@ -93,19 +93,12 @@ const ClimateVariableAndSeasonality = (props) => {
             component="h2"
             sx={{ fontWeight: 700, color: "#0379C8", fontSize: "40px" }}
           >
-            Climate Variable and Seasonality
+            Climate Observations and Projections
           </Typography>
           <IconButton onClick={onClose} aria-label="close" size="small">
             <CloseIcon />
           </IconButton>
         </Box>
-
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 400, fontSize: "14px", mb: 2, color: "#5C5C5C" }}
-        >
-          Choose the Climate Variable and Seasonality
-        </Typography>
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>

@@ -94,20 +94,16 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         >
           <Typography
             id="mega-menu-modal-title"
-            variant="h5"
+            variant="h2"
             component="h2"
             sx={{ fontWeight: 600 }}
           >
-            State or Region
+            US States, Territories, and Regions
           </Typography>
           <IconButton onClick={onClose} aria-label="close" size="small">
             <CloseIcon />
           </IconButton>
         </Box>
-
-        <Typography variant="body2" sx={{ mb: 3, color: "#5C5C5C" }}>
-          Choose the State, or Region
-        </Typography>
 
         {/* Search Section */}
         <Box sx={{ mb: 3 }}>
@@ -141,21 +137,9 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
             <Typography
               sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
             >
-              States
+              States and Territories
             </Typography>
           </Box>
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 2,
-              color: "#5C5C5C",
-              fontWeight: "700",
-              ml: 2,
-              fontSize: "1.25rem",
-            }}
-          >
-            Select a state
-          </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredStates.map((option) => (
               <Button
@@ -197,18 +181,6 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               Regions
             </Typography>
           </Box>
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 2,
-              color: "#5C5C5C",
-              fontWeight: "700",
-              ml: 2,
-              fontSize: "1.25rem",
-            }}
-          >
-            Select a region
-          </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mx: 3 }}>
             {filteredRegions.map((option) => (
               <Button
