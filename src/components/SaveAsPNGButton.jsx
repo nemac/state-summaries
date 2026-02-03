@@ -2,172 +2,58 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
+import Plotly from "plotly.js-dist";
 
 const SaveAsPNGButton = (props) => {
-  const { chartTitle, svgSelector, widthARG, heightARG } = props;
+  const { chartTitle, widthARG = 1600, heightARG = 1200 } = props;
 
-  // convert svg base64 data to png
-  const convertToPng = (
-    svgSelector = ".js-plotly-plot .main-svg",
-    widthARG = 1000,
-    heightARG = 500,
-  ) => {
-    // get plotly div
-    const plotHolderDiv =
-      document.querySelector(".js-plotly-plot").parentElement;
-    const plotRegionDiv = document.querySelector(
-      ".user-select-none.svg-container",
-    );
-    const sizeChanged = checkSVGForSizeChange(svgSelector, widthARG, heightARG);
+  // Export plotly chart as PNG at specified dimensions without affecting display
+  const convertToPng = async () => {
+    try {
+      // Get the plotly div element
+      const plotlyDiv = document.querySelector(".js-plotly-plot");
 
-    // get default for heights and widths
-    const originalHolderWidth = plotHolderDiv.getAttribute("width");
-    const originalHolderHeight = plotHolderDiv.getAttribute("height");
-    const originalWidth = plotRegionDiv.getAttribute("width");
-    const originalHeight = plotRegionDiv.getAttribute("height");
+      if (!plotlyDiv) {
+        console.error("Plotly chart not found");
+        return;
+      }
 
-    // only do this of dimensions are different
-    if (sizeChanged) {
-      // set divs to fixed width for standard or custom suze
-      plotHolderDiv.style.width = `${widthARG}px`;
-      plotRegionDiv.style.width = `${widthARG}px`;
-      plotHolderDiv.style.height = `${heightARG}px`;
-      plotRegionDiv.style.height = `${heightARG}px`;
+      // Store original layout dimensions
+      const originalLayout = { ...plotlyDiv.layout };
 
-      // force window resize so plotly re-renders the chart at fixed dimensions
-      window.dispatchEvent(new Event("resize"));
-    }
-
-    setTimeout(() => {
-      // find and convert html all plotly chart nodes
-      // (plotly puts legends and the chart in separate nodes)
-      // to an JS array
-      const svgs = Array.from(document.querySelectorAll(svgSelector));
-      const width = svgs[0].getAttribute("width");
-      const height = svgs[0].getAttribute("height");
-
-      const mergedDiv = document.createElement("div");
-      mergedDiv.setAttribute("id", "merged-div");
-
-      // create a new svg element
-      const mergedSVG = document.createElement("svg");
-
-      // set new svg element getAttributes to match the first plotly svg element
-      // this will ensure width/height style and all the other settings match in the export
-      mergedSVG.setAttribute("xmlns", svgs[0].getAttribute("xmlns"));
-      mergedSVG.setAttribute(
-        "xmlns:xlink",
-        svgs[0].getAttribute("xmlns:xlink"),
-      );
-      mergedSVG.setAttribute("width", width);
-      mergedSVG.setAttribute("height", height);
-      mergedSVG.setAttribute("style", svgs[0].getAttribute("style"));
-      // append the svg to the div - this is needed to export the svg tet properly
-      mergedDiv.appendChild(mergedSVG);
-
-      // iterate all the plotly nodes and merge them into the same svg node
-      // this forces all the svg into one dom element to export correctly
-      svgs.forEach((svgnode) => {
-        const content = Array.from(svgnode.childNodes);
-        content.forEach((svgele) => {
-          const node = svgele.cloneNode(true);
-          const newNode = removeBreaks(node);
-          mergedSVG.appendChild(newNode);
-        });
+      // Temporarily update layout to export dimensions
+      await Plotly.relayout(plotlyDiv, {
+        width: widthARG,
+        height: heightARG,
       });
 
-      const blob = new Blob([mergedSVG.outerHTML], {
-        type: "image/svg+xml;charset=utf-8",
+      // Export at the new dimensions
+      const imgData = await Plotly.toImage(plotlyDiv, {
+        format: "png",
+        width: widthARG,
+        height: heightARG,
       });
-      const URL = window.URL || window.webkitURL || window;
-      const blobURL = URL.createObjectURL(blob);
 
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const context = canvas.getContext("2d");
-        context.drawImage(image, 0, 0, width, height);
-        const png = canvas.toDataURL();
-        downloadFile(png, "png");
+      // Restore original layout
+      await Plotly.relayout(plotlyDiv, {
+        width: originalLayout.width,
+        height: originalLayout.height,
+      });
 
-        if (sizeChanged) {
-          // reset dimensions back to original dimensions
-          plotHolderDiv.style.width = originalHolderWidth;
-          plotRegionDiv.style.width = originalWidth;
-          plotHolderDiv.style.height = originalHolderHeight;
-          plotRegionDiv.style.height = originalHeight;
-          // force window reszize so plotly re-renders the chart at fixed dimensions
-          window.dispatchEvent(new Event("resize"));
-        }
-      };
-      image.src = blobURL;
-    }, 500);
-  };
-
-  const checkSVGForSizeChange = (svgSelector, widthARG, heightARG) => {
-    const svgElem = document.querySelector(svgSelector);
-    if (svgElem) {
-      const svgwidth = svgElem.getAttribute("width");
-      const svgheight = svgElem.getAttribute("height");
-      if (
-        Number(svgwidth) === Number(widthARG) &&
-        Number(svgheight) === Number(heightARG)
-      )
-        return false;
+      // Download the image
+      downloadFile(imgData);
+    } catch (error) {
+      console.error("Error exporting chart:", error);
     }
-    return true;
   };
 
-  // removes <br> from title attribute (in SVG) so images are exported without error
-  //  used on small screens to create line breaks in chart tittle
-  //  the < and > is not allowed on svg to image so it needs to be removed
-  //  to allow for export
-  const removeBreaks = (node) => {
-    const titleSelector = ".infolayer .g-gtitle .gtitle";
-    const nodeTitle = node.querySelector(titleSelector);
-    if (nodeTitle) {
-      const nodeAttribute = nodeTitle.getAttribute("data-unformatted");
-      const newNodeAttribute = nodeAttribute
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "")
-        .replace("<br>", "");
-      node
-        .querySelector(titleSelector)
-        .setAttribute("data-unformatted", newNodeAttribute);
-      return node;
-    }
-    return node;
-  };
-
-  // take blob data and add it to a href, initiate a click so the file downloads
-  const downloadFile = (data, type = "svg") => {
-    // create a new a element
+  // Download the PNG file
+  const downloadFile = (data) => {
     const a = document.createElement("a");
-
-    // add click handler
-    const e = new MouseEvent("click");
-
-    a.download = `${chartTitle}`;
-
-    if (type === "svg") {
-      // add data to href so its "on the fly"
-      const b64start = "data:image/svg+xml;base64,";
-      a.href = `${b64start}${data}`;
-    } else {
-      a.href = data;
-    }
-
-    // force click
-    a.dispatchEvent(e);
-
-    // Remove a element
+    a.download = `${chartTitle}.png`;
+    a.href = data;
+    a.click();
     a.remove();
-    return null;
   };
 
   return (
@@ -180,7 +66,7 @@ const SaveAsPNGButton = (props) => {
             }}
           />
         }
-        onClick={() => convertToPng(svgSelector, widthARG, heightARG)}
+        onClick={convertToPng}
         variant="outlined"
         sx={{ backgroundColor: "#1976d2", color: "white" }}
       >

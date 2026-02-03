@@ -423,157 +423,8 @@ export default function SandboxControls() {
     }
 
     fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
-      // Define all data series to plot
-      const dataSeries = [
-        {
-          name: "Modeled Historical Lower",
-          key: "historical_lower",
-          line: {
-            color: "rgba(169, 169, 169, 0)",
-            width: 0,
-            shape: "linear",
-            simplify: true,
-            dash: "solid",
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "Modeled Historical Upper",
-          key: "historical_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(169, 169, 169, 0.5)",
-          line: {
-            color: "rgba(169, 169, 169, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate:
-            "<b>%{x}</b><br>Modeled Historical: %{y}<extra></extra>",
-          legendgroup: 1,
-          showlegend: true,
-        },
-        {
-          name: "SSP1-2.6 Lower",
-          key: "ssp126_lower",
-          line: {
-            color: "rgba(173, 216, 230, 0)",
-            width: 0,
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "SSP1-2.6 Upper",
-          key: "ssp126_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(173, 216, 230, 0.6)",
-          line: {
-            color: "rgba(173, 216, 230, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate: "<b>%{x}</b><br>Lower Emissions: %{y}<extra></extra>",
-          legendgroup: 2,
-          showlegend: true,
-        },
-
-        {
-          name: "SSP5-8.5 Lower",
-          key: "ssp585_lower",
-          line: {
-            color: "rgba(219, 112, 147, 0)",
-            width: 0,
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "SSP5-8.5 Upper",
-          key: "ssp585_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(219, 112, 147, 0.7)",
-          line: {
-            color: "rgba(219, 112, 147, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
-          legendgroup: 5,
-          showlegend: true,
-        },
-        {
-          name: "SSP3-7.0 Lower",
-          key: "ssp370_lower",
-          line: {
-            color: "rgba(247, 205, 166, 0)",
-            width: 0,
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "SSP3-7.0 Upper",
-          key: "ssp370_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(247, 205, 166, 0.7)",
-          line: {
-            color: "rgba(247, 205, 166, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate: "<b>%{x}</b><br>Higher Emissions: %{y}<extra></extra>",
-          legendgroup: 4,
-          showlegend: true,
-        },
-        {
-          name: "SSP2-4.5 Lower",
-          key: "ssp245_lower",
-          line: {
-            color: "rgba(105, 105, 105, 0)",
-            width: 0,
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          name: "SSP2-4.5 Upper",
-          key: "ssp245_upper",
-          fill: "tonexty",
-          fillcolor: "rgba(105, 105, 105, 0.6)",
-          line: {
-            color: "rgba(105, 105, 105, 0)",
-            width: 0,
-          },
-          hoverinfo: "x+y",
-          hovertemplate:
-            "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
-          legendgroup: 3,
-          showlegend: true,
-        },
-        {
-          name: "Observed",
-          key: "obs",
-          width: 2,
-          mode: "lines+markers",
-          line: {
-            color: "#000000",
-            width: 2,
-            dash: "solid",
-            shape: "linear",
-            simplify: true,
-          },
-          marker: {
-            color: "#000000",
-            size: 5,
-          },
-          connectgaps: false,
-          hoverinfo: "x+y",
-          hovertemplate: "<b>%{x}</b><br>Observed: %{y}<extra></extra>",
-          legendgroup: 0,
-          showlegend: true,
-        },
-      ];
+      // Grab all data series from config to plot
+      const dataSeries = config.plotlyPredictedPlots;
 
       // Loop through all data series and create plot data for each
       const chartDataList = dataSeries.map((series) => {
@@ -834,7 +685,7 @@ export default function SandboxControls() {
                   color: "#5C5C5C",
                 }}
               >
-                State Summaries Data Explorer
+                State Climate Summaries Data Explorer
               </Typography>
             </Box>
           </Grid>
