@@ -4,19 +4,15 @@ import {
   Box,
   Typography,
   Button,
-  ButtonGroup,
   TextField,
   Paper,
-  IconButton,
   Link,
-  Divider,
   Accordion,
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
 import {
   Download as DownloadIcon,
-  Close as CloseIcon,
   CropFree as CropFreeIcon,
   Monitor as MonitorIcon,
   ExpandMore as ExpandMoreIcon,
@@ -27,17 +23,7 @@ import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 
 const SaveChart = (props) => {
-  const {
-    selection,
-    climateOption,
-    chartTitle,
-    chartData,
-    region,
-    location,
-    climatevariable,
-    period,
-    sx,
-  } = props;
+  const { chartTitle, chartData, sx } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1600");
@@ -74,9 +60,6 @@ const SaveChart = (props) => {
     backgroundColor: selectedFormat === format ? "#1976d2" : "white",
     color: selectedFormat === format ? "white" : "#1976d2",
     border: "1px solid #1976d2",
-    // "&:hover": {
-    //   backgroundColor: selectedFormat === format ? "#1565c0" : "#f5f5f5",
-    // },
   });
 
   return (
@@ -213,30 +196,6 @@ const SaveChart = (props) => {
                   "&:before": {
                     display: "none",
                   },
-                  // "& .MuiAccordionSummary-root": {
-                  //   backgroundColor: isCustomDims ? "#1976d2" : "white",
-                  //   color: isCustomDims ? "#1976d2" : "white",
-                  //   minHeight: 56,
-                  //   "&.Mui-expanded": {
-                  //     minHeight: 56,
-                  //   },
-                  // },
-                  // "& .MuiAccordionSummary-content": {
-                  //   justifyContent: "center",
-                  //   alignItems: "center",
-                  //   margin: 0,
-                  //   "&.Mui-expanded": {
-                  //     margin: 0,
-                  //   },
-                  // },
-                  // "& .MuiAccordionDetails-root": {
-                  //   backgroundColor: "#1976d2",
-                  //   color: "white",
-                  //   paddingTop: 0,
-                  // },
-                  // "& .MuiSvgIcon-root": {
-                  //   color: isCustomDims ? "white" : "#1976d2",
-                  // },
                 }}
               >
                 <AccordionSummary
@@ -393,10 +352,6 @@ const SaveChart = (props) => {
                     chartTitle={chartTitle}
                     chartData={chartData}
                     screenSize={{ width: 1000, height: 500 }}
-                    region={region}
-                    location={location}
-                    climatevariable={climatevariable}
-                    period={period}
                   />
                 )}
                 {selectedFormat === "CSV" && (
