@@ -399,7 +399,7 @@ export const getPredictedDataLayout = (options) => {
       type: "linear",
       ticks: "outside",
       tickcolor: zeroLineColor,
-      tickwidth: "zerolinewidth",
+      tickwidth: zerolinewidth,
       autorange: false,
       showspikes: false,
       fixedrange: true,
