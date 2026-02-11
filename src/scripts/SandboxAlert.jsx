@@ -5,20 +5,6 @@ import Collapse from "@mui/material/Collapse";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { orange, red } from "@mui/material/colors";
 
-// const useStyles = makeStyles((theme) => ({
-//   sandboxAlertBox: {
-//     color: '#000000',
-//     position: 'absolute',
-//     zIndex: '1000',
-//     width: '100%'
-//   },
-//   sandboxAlertCollapse: {
-//     position: 'relative',
-//     width: 'calc(100% - 30px)',
-//     marginLeft: '-39px'
-//   }
-// }));
-
 export default function Alert(props) {
   const { chartErrorTitle, chartErrorMessage, errorType, shouldOpenAlert } =
     props;
