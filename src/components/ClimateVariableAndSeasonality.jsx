@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import config from "../configs/config.js";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import MegaMenuButton from "./MegaMenuButton.jsx";
@@ -343,22 +344,81 @@ const ClimateVariableAndSeasonality = (props) => {
                 </Select>
               </FormControl>
             </Box>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {config.mapsSeasonalityOptions.map((option) => (
-                <MegaMenuButton
-                  key={option.value}
-                  icon={
-                    <ThunderstormIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
-                    />
-                  }
-                  onClick={() => handleOptionSelect(option)}
+            <Box sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 2,
+                  marginLeft: "32px",
+                }}
+              >
+                <QueryBuilderIcon
+                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                />
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
                 >
-                  {option.getLabel
-                    ? option.getLabel(selectedSeason.label)
-                    : option.labelTemplate || option.label}
-                </MegaMenuButton>
-              ))}
+                  Mid Century
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                {config.mapsSeasonalityOptions.map((option) => (
+                  <MegaMenuButton
+                    key={option.value}
+                    icon={
+                      <ThunderstormIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    }
+                    onClick={() => handleOptionSelect(option)}
+                  >
+                    {option.getLabel
+                      ? option.getLabel(selectedSeason.label)
+                      : option.labelTemplate || option.label}
+                  </MegaMenuButton>
+                ))}
+              </Box>
+            </Box>
+            <Box sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 2,
+                  marginLeft: "32px",
+                }}
+              >
+                <QueryBuilderIcon
+                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                />
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                >
+                  Late Century
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                {config.mapsSeasonalityOptions.map((option) => (
+                  <MegaMenuButton
+                    key={option.value}
+                    icon={
+                      <ThunderstormIcon
+                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      />
+                    }
+                    onClick={() => handleOptionSelect(option)}
+                  >
+                    {option.getLabel
+                      ? option.getLabel(selectedSeason.label)
+                      : option.labelTemplate || option.label}
+                  </MegaMenuButton>
+                ))}
+              </Box>
             </Box>
           </Box>
         </Box>
