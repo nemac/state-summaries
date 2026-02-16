@@ -1419,7 +1419,22 @@ const config = {
 
   mapsSeasonalityOptions: [
     {
-      label: "Change in Annual Precipitation",
+      label: "Low Emissions Change in Precipitation",
+      value: "change_seasonal_precip",
+      type: "mappy_map",
+    },
+    {
+      label: "Medium Emissions Change in Precipitation",
+      value: "change_seasonal_precip",
+      type: "mappy_map",
+    },
+    {
+      label: "High Emissions Change in Precipitation",
+      value: "change_seasonal_precip",
+      type: "mappy_map",
+    },
+    {
+      label: "Very High Emissions Change in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
     },
