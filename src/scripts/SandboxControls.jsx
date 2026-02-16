@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -52,7 +51,7 @@ export default function SandboxControls() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const seasonOptions = [
-    { label: "Annual ", value: "ann" },
+    { label: "Annual", value: "ann" },
     { label: "Spring", value: "mam" },
     { label: "Summer", value: "jja" },
     { label: "Autumn", value: "son" },
@@ -535,11 +534,11 @@ export default function SandboxControls() {
 
       const y370Top =
         yLowerTop370Values.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerTopValues.filter((v) => v !== undefined))
+          ? Math.max(...yLowerTop370Values.filter((v) => v !== undefined))
           : 0;
       const y370Bottom =
         yLowerBottom370Values.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
+          ? Math.max(...yLowerBottom370Values.filter((v) => v !== undefined))
           : 0;
 
       setChartLayout(
@@ -692,6 +691,11 @@ export default function SandboxControls() {
 
           <Grid size={{ xs: 12, md: 5 }}>
             <Box
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") setMegaMenuOpen(true);
+              }}
               onClick={() => setMegaMenuOpen(true)}
               display="flex"
               sx={{
@@ -723,6 +727,12 @@ export default function SandboxControls() {
           </Grid>
           <Grid size={{ xs: 12, md: 5 }}>
             <Box
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ")
+                  setClimateMenuOpen(true);
+              }}
               onClick={() => setClimateMenuOpen(true)}
               display="flex"
               sx={{
@@ -760,8 +770,6 @@ export default function SandboxControls() {
             climateOption={climateOption}
             chartTitle={chartTitle}
             chartData={chartData}
-            region={"FIX THIS"}
-            climatevariable={"FIX THIS"}
             period={"1900-2024"}
             sx={{
               borderRadius: "4px",
@@ -780,7 +788,7 @@ export default function SandboxControls() {
             flexDirection: "column",
             flex: 1,
             height: "calc(100% - 250px)",
-            maxHeight: "calc(100% - 250x)",
+            maxHeight: "calc(100% - 250px)",
             minHeight: `400px`,
             [theme.breakpoints.down("sm")]: {
               height: `575px !important`,
@@ -859,8 +867,3 @@ export default function SandboxControls() {
     </>
   );
 }
-
-SandboxControls.propTypes = {
-  chartDataClimatevariable: PropTypes.string,
-  climateDataFilesJSONFile: PropTypes.object,
-};
