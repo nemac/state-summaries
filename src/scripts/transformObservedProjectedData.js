@@ -73,6 +73,7 @@ export function computeBracketData(rawData) {
 
 /**
  * Compute the y-axis domain [min, max] from the raw data.
+ * Matches the Plotly calculation: yMin - 2 for bottom, yMax + (yMax % 2) for top.
  */
 export function computeYDomain(rawData) {
   const obsVals = rawData.obs
@@ -85,5 +86,5 @@ export function computeYDomain(rawData) {
   const yMin = obsVals.length > 0 ? Math.min(...obsVals) : 0;
   const yMaxUpper = upperVals.length > 0 ? Math.max(...upperVals) : 0;
 
-  return [Math.floor(yMin) - 2, Math.ceil(yMaxUpper) + (Math.ceil(yMaxUpper) % 2)];
+  return [yMin - 2, yMaxUpper + (yMaxUpper % 2)];
 }

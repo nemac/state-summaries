@@ -93,11 +93,36 @@ const LEGEND_ORDER = [
 
 // Desired tooltip display order: use _upper keys to show actual values
 const TOOLTIP_ORDER = [
-  { scenarioKey: "obs", upperKey: "obs", name: "Observations", color: "#000000" },
-  { scenarioKey: "ssp585", upperKey: "ssp585_upper", name: "Very High Emissions (SSP5-8.5)", color: "rgba(219, 112, 147, 0.85)" },
-  { scenarioKey: "ssp370", upperKey: "ssp370_upper", name: "High Emissions (SSP3-7.0)", color: "rgba(247, 205, 166, 0.85)" },
-  { scenarioKey: "ssp245", upperKey: "ssp245_upper", name: "Intermediate Emissions (SSP2-4.5)", color: "rgba(105, 105, 105, 0.7)" },
-  { scenarioKey: "ssp126", upperKey: "ssp126_upper", name: "Low Emissions (SSP1-2.6)", color: "rgba(173, 216, 230, 0.8)" },
+  {
+    scenarioKey: "obs",
+    upperKey: "obs",
+    name: "Observations",
+    color: "#000000",
+  },
+  {
+    scenarioKey: "ssp585",
+    upperKey: "ssp585_upper",
+    name: "Very High Emissions (SSP5-8.5)",
+    color: "rgba(219, 112, 147, 0.85)",
+  },
+  {
+    scenarioKey: "ssp370",
+    upperKey: "ssp370_upper",
+    name: "High Emissions (SSP3-7.0)",
+    color: "rgba(247, 205, 166, 0.85)",
+  },
+  {
+    scenarioKey: "ssp245",
+    upperKey: "ssp245_upper",
+    name: "Intermediate Emissions (SSP2-4.5)",
+    color: "rgba(105, 105, 105, 0.7)",
+  },
+  {
+    scenarioKey: "ssp126",
+    upperKey: "ssp126_upper",
+    name: "Low Emissions (SSP1-2.6)",
+    color: "rgba(173, 216, 230, 0.8)",
+  },
 ];
 
 function CustomTooltip({ active, payload, label, hiddenScenarios }) {
@@ -161,10 +186,20 @@ export default function ObservedProjectedChart({
 
   // Generate tick values at 25-year intervals
   const xTicks = data
-    ? data
-        .map((d) => d.year)
-        .filter((year) => year % 25 === 0)
+    ? data.map((d) => d.year).filter((year) => year % 25 === 0)
     : [];
+
+  // Generate y-axis tick values at every 2 units (matching Plotly)
+  const yTicks = (() => {
+    if (!yDomain) return undefined;
+    const ticks = [];
+    const start = Math.ceil(yDomain[0] / 2) * 2;
+    const end = Math.floor(yDomain[1] / 2) * 2;
+    for (let v = start; v <= end; v += 2) {
+      ticks.push(v);
+    }
+    return ticks;
+  })();
 
   const CustomLegend = () => (
     <Box
@@ -172,8 +207,8 @@ export default function ObservedProjectedChart({
         display: "flex",
         flexDirection: "column",
         position: "absolute",
-        top: 60,
-        left: 90,
+        top: 80,
+        left: 110,
         backgroundColor: "rgba(255, 255, 255, 0.85)",
         border: "1px solid #000",
         padding: "6px 10px",
@@ -279,11 +314,13 @@ export default function ObservedProjectedChart({
               value: "Year",
               position: "insideBottom",
               offset: -15,
-              style: { fontSize: 12, fontFamily: "Arial" },
+              style: { fontSize: 16, fontFamily: "Arial", fontWeight: "bold" },
             }}
           />
           <YAxis
             domain={yDomain}
+            ticks={yTicks}
+            allowDataOverflow={true}
             tick={{ fontSize: 12, fontFamily: "Arial" }}
             tickLine={{ stroke: "#000" }}
             axisLine={{ stroke: "#000" }}
@@ -292,18 +329,19 @@ export default function ObservedProjectedChart({
               angle: -90,
               position: "insideLeft",
               offset: 5,
-              style: { fontSize: 12, fontFamily: "Arial", textAnchor: "middle" },
+              style: {
+                fontSize: 16,
+                fontFamily: "Arial",
+                fontWeight: "bold",
+                textAnchor: "middle",
+              },
             }}
           />
           <Tooltip
             content={<CustomTooltip hiddenScenarios={hiddenScenarios} />}
           />
 
-          <ReferenceLine
-            y={0}
-            stroke="#BFBFBF"
-            strokeWidth={4}
-          />
+          <ReferenceLine y={0} stroke="#BFBFBF" strokeWidth={4} />
 
           {/* Render scenario bands: each uses stacked areas */}
           {SCENARIO_BANDS.map((band) => {
@@ -328,11 +366,12 @@ export default function ObservedProjectedChart({
           {SCENARIO_BANDS.map((band) => {
             if (hiddenScenarios.has(band.key)) return null;
             const bandData = data.map((d) => {
-              if (
-                d[band.lower] === null ||
-                d[band.rangeKey] === null
-              ) {
-                return { ...d, [`${band.key}_base`]: null, [band.rangeKey]: null };
+              if (d[band.lower] === null || d[band.rangeKey] === null) {
+                return {
+                  ...d,
+                  [`${band.key}_base`]: null,
+                  [band.rangeKey]: null,
+                };
               }
               return {
                 ...d,
