@@ -344,80 +344,85 @@ const ClimateVariableAndSeasonality = (props) => {
                 </Select>
               </FormControl>
             </Box>
-            <Box sx={{ mb: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  mb: 2,
-                  marginLeft: "32px",
-                }}
-              >
-                <QueryBuilderIcon
-                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
-                />
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+            <Box sx={{ display: "flex", gap: 4, mb: 4 }}>
+              {/* Mid Century Column */}
+              <Box sx={{ flex: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mb: 2,
+                    marginLeft: "32px",
+                  }}
                 >
-                  Mid Century
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                {config.mapsSeasonalityOptions.map((option) => (
-                  <MegaMenuButton
-                    key={option.value}
-                    icon={
-                      <ThunderstormIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
-                      />
-                    }
-                    onClick={() => handleOptionSelect(option)}
+                  <QueryBuilderIcon
+                    sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
                   >
-                    {option.getLabel
-                      ? option.getLabel(selectedSeason.label)
-                      : option.labelTemplate || option.label}
-                  </MegaMenuButton>
-                ))}
+                    Mid Century
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {config.mapsSeasonalityOptions.map((option) => (
+                    <MegaMenuButton
+                      key={option.value}
+                      icon={
+                        <ThunderstormIcon
+                          sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        />
+                      }
+                      onClick={() => handleOptionSelect(option)}
+                    >
+                      {option.getLabel
+                        ? option.getLabel(selectedSeason.label)
+                        : option.labelTemplate || option.label}
+                    </MegaMenuButton>
+                  ))}
+                </Box>
               </Box>
-            </Box>
-            <Box sx={{ mb: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  mb: 2,
-                  marginLeft: "32px",
-                }}
-              >
-                <QueryBuilderIcon
-                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
-                />
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+
+              {/* Late Century Column */}
+              <Box sx={{ flex: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mb: 2,
+                    marginLeft: "32px",
+                  }}
                 >
-                  Late Century
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                {config.mapsSeasonalityOptions.map((option) => (
-                  <MegaMenuButton
-                    key={option.value}
-                    icon={
-                      <ThunderstormIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
-                      />
-                    }
-                    onClick={() => handleOptionSelect(option)}
+                  <QueryBuilderIcon
+                    sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
                   >
-                    {option.getLabel
-                      ? option.getLabel(selectedSeason.label)
-                      : option.labelTemplate || option.label}
-                  </MegaMenuButton>
-                ))}
+                    Late Century
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {config.mapsSeasonalityOptions.map((option) => (
+                    <MegaMenuButton
+                      key={option.value}
+                      icon={
+                        <ThunderstormIcon
+                          sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        />
+                      }
+                      onClick={() => handleOptionSelect(option)}
+                    >
+                      {option.getLabel
+                        ? option.getLabel(selectedSeason.label)
+                        : option.labelTemplate || option.label}
+                    </MegaMenuButton>
+                  ))}
+                </Box>
               </Box>
             </Box>
           </Box>
