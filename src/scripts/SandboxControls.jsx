@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Switch from "@mui/material/Switch";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,6 +16,8 @@ import config from "../configs/config.js";
 import SaveChart from "../components/SaveChart.jsx";
 import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
+import ObservedProjectedChart from "../components/ObservedProjectedChart.jsx";
+import ZoomableImage from "../components/ZoomableImage.jsx";
 import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -28,6 +31,11 @@ import {
   pretty,
 } from "./getPlotlyLayout.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
+import {
+  transformObservedProjectedData,
+  computeBracketData,
+  computeYDomain,
+} from "./transformObservedProjectedData.js";
 
 // Fetch sandbox data file and parse it
 const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
@@ -54,7 +62,7 @@ export default function SandboxControls() {
     { label: "Annual", value: "ann" },
     { label: "Spring", value: "mam" },
     { label: "Summer", value: "jja" },
-    { label: "Autumn", value: "son" },
+    { label: "Fall", value: "son" },
     { label: "Winter", value: "djf" },
   ];
 
@@ -146,13 +154,18 @@ export default function SandboxControls() {
   );
   const [chartTitle, setChartTitle] = useState("");
 
+  // Recharts state for observed/projected chart
+  const [chartType, setChartType] = useState("plotly"); // 'plotly' | 'recharts'
+  const [useRechartsRenderer, setUseRechartsRenderer] = useState(true);
+  const [rechartsData, setRechartsData] = useState(null);
+  const [rechartsBrackets, setRechartsBrackets] = useState(null);
+  const [rechartsYDomain, setRechartsYDomain] = useState(null);
+
   // END NEW STATE VARIABLES
 
   // set React state via React Hooks
   // used to open or close the alert box
   const [openError, setOpenError] = useState(false);
-  // chart error message
-  const [chartErrorMessage, setChartErrorMessage] = useState("Chart Error");
 
   // chart data from files in ../sandboxdata
   const [chartData, setChartData] = useState([{}]);
@@ -175,6 +188,7 @@ export default function SandboxControls() {
 
   // get chart data from current state = which should include
   const getChartData = (props) => {
+    setChartType("plotly");
     const { selection, climateDataFilesJSONFile, climateOption } = props;
 
     const selectionLabel = selection.label;
@@ -208,16 +222,13 @@ export default function SandboxControls() {
         if (areAllValuesNoData(chartDataFromFile[1]) === true) {
           setChartData([]);
           setChartLayout(layoutDefaults);
-          setChartErrorMessage(
-            "No data available for the selected area and climate option",
-          );
           setOpenError(true);
           return;
         }
         const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
-            ? `${selectionLabel} ${climateOption.getLabel(selectedSeason.label)}`
-            : `${selectionLabel} ${climateOption.labelTemplate || climateOption.label}`; // e.g. Contiguous United States Annual Average Temperature
+            ? `${selectionLabel}: ${climateOption.getLabel(selectedSeason.label)}`
+            : `${selectionLabel}: ${climateOption.labelTemplate || climateOption.label}`;
         setChartTitle(newChartTitle);
 
         const barChartHoverTemplate = getHoverTemplate(
@@ -302,7 +313,7 @@ export default function SandboxControls() {
           validYValues.reduce((a, b) => a + b, 0) / validYValues.length,
         );
 
-        setChartData([barChartData, lineChartData]);
+        setChartData([lineChartData, barChartData]);
         setChartLayout(
           getPlotlyLayout({
             chartTitle: newChartTitle,
@@ -416,12 +427,19 @@ export default function SandboxControls() {
     if (!hasPredictedData) {
       setChartData([]);
       setChartLayout(layoutDefaults);
-      setChartErrorMessage("No data available.");
+      setChartType("plotly");
       setOpenError(true);
       return;
     }
 
     fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
+      // Populate Recharts state
+      const title = `${megaMenuSelection.value.replace(/_/g, " ")}: ${climateOption.title}`;
+      setChartTitle(title);
+      setRechartsData(transformObservedProjectedData(data));
+      setRechartsBrackets(computeBracketData(data));
+      setRechartsYDomain(computeYDomain(data));
+      setChartType("recharts");
       // Grab all data series from config to plot
       const dataSeries = config.plotlyPredictedPlots;
 
@@ -543,7 +561,7 @@ export default function SandboxControls() {
 
       setChartLayout(
         getPredictedDataLayout({
-          chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")} - ${climateOption.title}`,
+          chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")}: ${climateOption.title}`,
           stateName: megaMenuSelection.value,
           xmin: parseInt(data.year[0]),
           xmax: parseInt(data.year[data.year.length - 1]),
@@ -779,6 +797,22 @@ export default function SandboxControls() {
               height: "48px",
             }}
           />
+
+          {chartType === "recharts" && (
+            <Box display="flex" alignItems="center" gap={0.5} ml={2}>
+              <Typography sx={{ fontSize: "14px", color: "#5C5C5C" }}>
+                Plotly
+              </Typography>
+              <Switch
+                checked={useRechartsRenderer}
+                onChange={(e) => setUseRechartsRenderer(e.target.checked)}
+                size="small"
+              />
+              <Typography sx={{ fontSize: "14px", color: "#5C5C5C" }}>
+                Recharts
+              </Typography>
+            </Box>
+          )}
         </Grid>
 
         <Grid
@@ -811,44 +845,67 @@ export default function SandboxControls() {
               <SandboxAlert
                 shouldOpenAlert={openError}
                 errorType={"Error"}
-                chartErrorTitle={"Error"}
-                chartErrorMessage={chartErrorMessage}
+                chartErrorTitle={
+                  "No data are currently available for this metric."
+                }
+                chartErrorMessage={"Please make another selection."}
               />
             </Box>
           )}
 
-          <Box
-            display="flex"
-            flexDirection="row"
-            m={1}
-            justifyContent="center"
-            flex={1}
-            flexGrow={3}
-            sx={{
-              height: "calc(100% - 10px)",
-              [theme.breakpoints.down("sm")]: {
-                height: "575px",
-              },
-            }}
-          >
-            {showMapImage ? (
-              <Box
-                component="img"
-                src="/tempData/gergMap.png"
-                alt="Change in Annual Precipitation Map"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                }}
-              />
-            ) : (
-              <SandboxPlotRegion
-                plotlyData={chartData}
-                plotlyLayout={chartLayout}
-              />
-            )}
-          </Box>
+          {!openError && (
+            <Box
+              display="flex"
+              flexDirection="row"
+              m={1}
+              justifyContent="center"
+              flex={1}
+              flexGrow={3}
+              sx={{
+                height: "calc(100% - 10px)",
+                [theme.breakpoints.down("sm")]: {
+                  height: "575px",
+                },
+              }}
+            >
+              {showMapImage ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Typography variant="h3" sx={{ fontWeight: 600, py: 4 }}>
+                    Title Placeholder
+                  </Typography>
+                  <Box sx={{ flex: 1, width: "85%", minHeight: 0 }}>
+                    <ZoomableImage
+                      src="/tempData/gergMap.png"
+                      alt="Change in Annual Precipitation Map"
+                    />
+                  </Box>
+                  <Typography variant="h4" sx={{ color: "#666", py: 4 }}>
+                    Legend Placeholder
+                  </Typography>
+                </Box>
+              ) : chartType === "recharts" && useRechartsRenderer ? (
+                <ObservedProjectedChart
+                  data={rechartsData}
+                  bracketData={rechartsBrackets}
+                  yDomain={rechartsYDomain}
+                  chartTitle={chartTitle}
+                />
+              ) : (
+                <SandboxPlotRegion
+                  plotlyData={chartData}
+                  plotlyLayout={chartLayout}
+                />
+              )}
+            </Box>
+          )}
         </Grid>
       </Box>
       <MegaMenu
