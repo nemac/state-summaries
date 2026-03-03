@@ -202,7 +202,7 @@ export const getPlotlyLayout = (options) => {
         x: xmax + 2.5,
         y: Number(yValsAvgAll.toFixed(1)),
         // Days/nights need a space before the unit; °F and inches do not
-        text: `Long-term average:<br>${yValsAvgAll.toFixed(1)}${
+        text: `Long-term <br>average:<br>${yValsAvgAll.toFixed(1)}${
           averageTextUnits === "days" || averageTextUnits === "nights"
             ? " " + averageTextUnits
             : averageTextUnits
