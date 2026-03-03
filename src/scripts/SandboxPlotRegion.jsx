@@ -121,13 +121,13 @@ export default function SandboxPlotRegion(props) {
 
     // Determine which scenario was toggled
     let scenario = null;
-    if (traceName === "SSP5-8.5") {
+    if (traceName === "Very High Emissions (SSP5-8.5)") {
       scenario = "SSP5-8.5";
-    } else if (traceName === "SSP2-4.5") {
+    } else if (traceName === "Intermediate Emissions (SSP2-4.5)") {
       scenario = "SSP2-4.5";
-    } else if (traceName === "SSP1-2.6") {
+    } else if (traceName === "Low Emissions (SSP1-2.6)") {
       scenario = "SSP1-2.6";
-    } else if (traceName === "SSP3-7.0") {
+    } else if (traceName === "High Emissions (SSP3-7.0)") {
       scenario = "SSP3-7.0";
     }
 
