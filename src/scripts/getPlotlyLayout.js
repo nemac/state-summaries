@@ -67,9 +67,9 @@ export const getPlotlyLayout = (options) => {
     legendBarLineX = window.innerWidth <= smallScreenWidth ? 0 : 0.65,
     legendBarLineY = window.innerWidth <= smallScreenWidth ? -0.15 : 1.125,
     font = "Arial",
-    fontSizeLabels = "12pt",
-    fontSizePrimary = "14pt",
-    fontSizeLabelsSecondary = "12pt",
+    fontSizeLabels = "14pt",
+    fontSizePrimary = "16pt",
+    fontSizeLabelsSecondary = "14pt",
     chartTitle = "",
     chartTitleX = window.innerWidth <= smallScreenWidth ? 0.5 : 0.4,
     xmin = 0,
@@ -96,6 +96,13 @@ export const getPlotlyLayout = (options) => {
     showlegend: showLegend,
     autosize: true,
     height: 1,
+    margin: {
+      l: window.innerWidth <= smallScreenWidth ? 35 : 80,
+      r: window.innerWidth <= smallScreenWidth ? 15 : 80,
+      t: window.innerWidth <= smallScreenWidth ? 50 : 100,
+      b: window.innerWidth <= smallScreenWidth ? 50 : 80,
+    },
+
     bargap: bargap,
     plot_bgcolor: chartBackgroundColor,
     paper_bgcolor: chartBackgroundColor,
@@ -178,8 +185,7 @@ export const getPlotlyLayout = (options) => {
       linewidth: zerolinewidth,
       zerolinecolor: zeroLineColor,
       zerolinewidth: zerolinewidth,
-      gridcolor: gridColor,
-      gridwidth: gridwidth,
+      showgrid: false,
       bargap: bargap,
     },
     template: {
@@ -196,11 +202,11 @@ export const getPlotlyLayout = (options) => {
         x: xmax + 2.5,
         y: Number(yValsAvgAll.toFixed(1)),
         // Days/nights need a space before the unit; °F and inches do not
-        text: `Average ${yValsAvgAll.toFixed(1)}${
+        text: `Long-term average: ${yValsAvgAll.toFixed(1)}${
           averageTextUnits === "days" || averageTextUnits === "nights"
-            ? " "
-            : ""
-        }${averageTextUnits}`,
+            ? " " + averageTextUnits
+            : averageTextUnits
+        }`,
         showarrow: true,
         arrowhead: 7,
         arrowsize: 2,
@@ -278,9 +284,9 @@ export const getPredictedDataLayout = (options) => {
     legendBarLineX = window.innerWidth <= smallScreenWidth ? 0 : 0.65,
     legendBarLineY = window.innerWidth <= smallScreenWidth ? -0.15 : 1.125,
     font = "Arial",
-    fontSizeLabels = "12",
-    fontSizePrimary = "14",
-    fontSizeLabelsSecondary = "12",
+    fontSizeLabels = "14",
+    fontSizePrimary = "16",
+    fontSizeLabelsSecondary = "14",
     chartTitle = "",
     chartTitleX = window.innerWidth <= smallScreenWidth ? 0.5 : 0.4,
     xmin = 0,
@@ -309,6 +315,8 @@ export const getPredictedDataLayout = (options) => {
     yIntermediateBottom,
     yLowerTop,
     yLowerBottom,
+    y370Top,
+    y370Bottom,
   } = options;
   const tickvals = xvals.filter((year) => Number(year) % 25 === 0);
 
@@ -320,7 +328,10 @@ export const getPredictedDataLayout = (options) => {
     plot_bgcolor: chartBackgroundColor,
     paper_bgcolor: chartBackgroundColor,
     margin: {
-      r: 150,
+      l: window.innerWidth <= smallScreenWidth ? 35 : undefined,
+      r: window.innerWidth <= smallScreenWidth ? 15 : 150,
+      t: window.innerWidth <= smallScreenWidth ? 50 : undefined,
+      b: window.innerWidth <= smallScreenWidth ? 50 : undefined,
     },
     legend: {
       orientation: "v",
@@ -393,7 +404,7 @@ export const getPredictedDataLayout = (options) => {
           size: fontSizeLabels,
         },
       },
-      showgrid: true,
+      showgrid: false,
       rangemode: "tozero",
       range: [yMin, yMax],
       type: "linear",
@@ -408,8 +419,6 @@ export const getPredictedDataLayout = (options) => {
       linewidth: zerolinewidth,
       zerolinecolor: "#BFBFBF",
       zerolinewidth: "5.0",
-      gridcolor: gridColor,
-      gridwidth: gridwidth,
       bargap: bargap,
     },
     template: {
@@ -420,13 +429,13 @@ export const getPredictedDataLayout = (options) => {
       },
     },
     annotations: [
-      // Higher Emissions label
+      // Very High Emissions label
       {
         x: 1.0375,
         y: (yIntermediateTop + yIntermediateBottom) / 1.1,
         xref: "paper",
         yref: "y",
-        text: "Higher\nEmissions",
+        text: "Very High",
         showarrow: false,
         textangle: -90,
         font: { color: "rgb(189,0,38)", size: 18, family: "Arial" },
@@ -439,20 +448,33 @@ export const getPredictedDataLayout = (options) => {
         y: (yIntermediateTop + yIntermediateBottom) / 2,
         xref: "paper",
         yref: "y",
-        text: "Intermediate\nEmissions",
+        text: "Intermediate",
         showarrow: false,
         textangle: -90,
         font: { color: "rgb(105,105,105)", size: 18, family: "Arial" },
         align: "left",
         meta: { scenario: "SSP2-4.5" },
       },
-      // Lower Emissions label
+      // High Emissions label
       {
         x: 1.0615,
+        y: (y370Top + y370Bottom) / 2,
+        xref: "paper",
+        yref: "y",
+        text: "High",
+        showarrow: false,
+        textangle: -90,
+        font: { color: "rgb(247,148,30)", size: 18, family: "Arial" },
+        align: "left",
+        meta: { scenario: "SSP3-7.0" },
+      },
+      // Low Emissions label
+      {
+        x: 1.0745,
         y: (yLowerTop + yLowerBottom) / 2,
         xref: "paper",
         yref: "y",
-        text: "Lower\nEmissions",
+        text: "Low",
         showarrow: false,
         textangle: -90,
         font: { color: "rgb(90,180,172)", size: 18, family: "Arial" },
@@ -530,14 +552,48 @@ export const getPredictedDataLayout = (options) => {
         line: { color: "rgb(105,105,105)", width: 5 },
         meta: { scenario: "SSP2-4.5" },
       },
-      // Lower Emissions bracket
+      // High Emissions bracket (SSP3-7.0)
       {
         type: "line",
         xref: "paper",
         yref: "y",
         x0: 1.0285,
-        y0: yLowerTop,
+        y0: y370Top,
         x1: 1.0285,
+        y1: y370Bottom,
+        line: { color: "rgb(247,148,30)", width: 5 },
+        meta: { scenario: "SSP3-7.0" },
+      },
+      {
+        type: "line",
+        xref: "paper",
+        yref: "y",
+        x0: 1.001,
+        y0: y370Top,
+        x1: 1.03,
+        y1: y370Top,
+        line: { color: "rgb(247,148,30)", width: 5 },
+        meta: { scenario: "SSP3-7.0" },
+      },
+      {
+        type: "line",
+        xref: "paper",
+        yref: "y",
+        x0: 1.001,
+        y0: y370Bottom,
+        x1: 1.03,
+        y1: y370Bottom,
+        line: { color: "rgb(247,148,30)", width: 5 },
+        meta: { scenario: "SSP3-7.0" },
+      },
+      // Low Emissions bracket (SSP1-2.6)
+      {
+        type: "line",
+        xref: "paper",
+        yref: "y",
+        x0: 1.0385,
+        y0: yLowerTop,
+        x1: 1.0385,
         y1: yLowerBottom,
         line: { color: "rgb(90,180,172)", width: 5 },
         meta: { scenario: "SSP1-2.6" },
@@ -548,7 +604,7 @@ export const getPredictedDataLayout = (options) => {
         yref: "y",
         x0: 1.001,
         y0: yLowerTop,
-        x1: 1.03,
+        x1: 1.04,
         y1: yLowerTop,
         line: { color: "rgb(90,180,172)", width: 5 },
         meta: { scenario: "SSP1-2.6" },
@@ -559,7 +615,7 @@ export const getPredictedDataLayout = (options) => {
         yref: "y",
         x0: 1.001,
         y0: yLowerBottom,
-        x1: 1.03,
+        x1: 1.04,
         y1: yLowerBottom,
         line: { color: "rgb(90,180,172)", width: 5 },
         meta: { scenario: "SSP1-2.6" },
