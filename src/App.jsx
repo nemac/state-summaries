@@ -28,7 +28,9 @@ function MobileDisclaimer() {
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Best Viewed on Desktop</DialogTitle>
+      <DialogTitle sx={{ fontWeight: 700 }}>
+        Best Viewed on Desktop or Landscape Mode
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           This site is best viewed on a desktop browser or in landscape mode on
