@@ -202,7 +202,7 @@ export const getPlotlyLayout = (options) => {
         x: xmax + 2.5,
         y: Number(yValsAvgAll.toFixed(1)),
         // Days/nights need a space before the unit; °F and inches do not
-        text: `Long-term average: ${yValsAvgAll.toFixed(1)}${
+        text: `Long-term average:<br>${yValsAvgAll.toFixed(1)}${
           averageTextUnits === "days" || averageTextUnits === "nights"
             ? " " + averageTextUnits
             : averageTextUnits
@@ -212,9 +212,9 @@ export const getPlotlyLayout = (options) => {
         arrowsize: 2,
         arrowwidth: 2,
         arrowcolor: AverageAllColor,
-        ay: -100,
-        ax: 10,
-        bgcolor: "#ffffff",
+        ay: window.innerWidth <= smallScreenWidth ? -80 : -150,
+        ax: window.innerWidth <= smallScreenWidth ? 25 : 45,
+        bgcolor: "rgba(255, 255, 255, 0.7)",
         font: {
           family: font,
           size: AverageAllFontSize,
