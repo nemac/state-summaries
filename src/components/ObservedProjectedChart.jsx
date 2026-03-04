@@ -189,13 +189,12 @@ export default function ObservedProjectedChart({
     ? data.map((d) => d.year).filter((year) => year % 25 === 0)
     : [];
 
-  // Generate y-axis tick values at every 2 units (matching Plotly)
   const yTicks = (() => {
     if (!yDomain) return undefined;
     const ticks = [];
-    const start = Math.ceil(yDomain[0] / 2) * 2;
-    const end = Math.floor(yDomain[1] / 2) * 2;
-    for (let v = start; v <= end; v += 2) {
+    const start = Math.ceil(yDomain[0] / 5) * 5;
+    const end = Math.floor(yDomain[1] / 5) * 5;
+    for (let v = start; v <= end; v += 5) {
       ticks.push(v);
     }
     return ticks;
@@ -301,7 +300,7 @@ export default function ObservedProjectedChart({
           data={data}
           margin={{ top: 10, right: 140, left: 20, bottom: 30 }}
         >
-          <CartesianGrid strokeDasharray="" stroke="#e0e0e0" />
+          <CartesianGrid vertical={false} trokeDasharray="" stroke="#e0e0e0" />
           <XAxis
             dataKey="year"
             type="number"
