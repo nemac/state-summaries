@@ -53,21 +53,18 @@ export function transformObservedProjectedData(rawData) {
  * These are used to draw the right-side bracket annotations.
  */
 export function computeBracketData(rawData) {
-  const filter = (arr) =>
-    arr
-      .map((v) => (v === -999 ? undefined : v))
-      .filter((v) => v !== undefined);
-
-  const max = (arr) => {
-    const f = filter(arr);
-    return f.length > 0 ? Math.max(...f) : 0;
+  const lastValid = (arr) => {
+    for (let i = arr.length - 1; i >= 0; i--) {
+      if (arr[i] !== -999 && arr[i] !== undefined) return arr[i];
+    }
+    return 0;
   };
 
   return {
-    ssp585: { top: max(rawData.ssp585_upper), bottom: max(rawData.ssp585_lower) },
-    ssp370: { top: max(rawData.ssp370_upper), bottom: max(rawData.ssp370_lower) },
-    ssp245: { top: max(rawData.ssp245_upper), bottom: max(rawData.ssp245_lower) },
-    ssp126: { top: max(rawData.ssp126_upper), bottom: max(rawData.ssp126_lower) },
+    ssp585: { top: lastValid(rawData.ssp585_upper), bottom: lastValid(rawData.ssp585_lower) },
+    ssp370: { top: lastValid(rawData.ssp370_upper), bottom: lastValid(rawData.ssp370_lower) },
+    ssp245: { top: lastValid(rawData.ssp245_upper), bottom: lastValid(rawData.ssp245_lower) },
+    ssp126: { top: lastValid(rawData.ssp126_upper), bottom: lastValid(rawData.ssp126_lower) },
   };
 }
 
