@@ -345,7 +345,6 @@ const ClimateVariableAndSeasonality = (props) => {
               </FormControl>
             </Box>
             <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
-              {/* Mid Century Column */}
               <Box sx={{ flex: "none" }}>
                 <Box
                   sx={{
@@ -363,7 +362,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     variant="body2"
                     sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
                   >
-                    Mid Century
+                    Midcentury
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -385,7 +384,6 @@ const ClimateVariableAndSeasonality = (props) => {
                 </Box>
               </Box>
 
-              {/* Late Century Column */}
               <Box sx={{ flex: "none" }}>
                 <Box
                   sx={{
