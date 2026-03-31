@@ -7,6 +7,8 @@ import Switch from "@mui/material/Switch";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { useNavigate } from "react-router-dom";
 
 import SandboxPlotRegion from "./SandboxPlotRegion.jsx";
 import SandboxAlert from "./SandboxAlert.jsx";
@@ -56,6 +58,7 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
 
 export default function SandboxControls() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const seasonOptions = [
@@ -191,10 +194,13 @@ export default function SandboxControls() {
     setChartType("plotly");
     const { selection, climateDataFilesJSONFile, climateOption } = props;
 
-    const selectionLabel = selection.label;
-
-    const locationType = selection.type;
-    const data = climateDataFilesJSONFile[locationType];
+    // Resolve data source overrides (e.g. Hawaii region uses state data,
+    // US Caribbean uses standalone data files)
+    const override = selection.dataOverride;
+    const selectionLabel = override?.label || selection.label;
+    const locationType = override?.locationType || selection.type;
+    const indexKey = override?.indexKey || selection.type;
+    const data = climateDataFilesJSONFile[indexKey];
 
     // Construct file type identifier, appending selected season if seasonality === true
     // e.g. value = prcp and if seasonId = ann this becomes prcp_ann
@@ -202,6 +208,14 @@ export default function SandboxControls() {
       ? climateOption.value + "_" + selectedSeason.value
       : climateOption.value;
     const chartType = climateOption.chartType;
+
+    // If no data index exists for this source, show error
+    if (!data) {
+      setChartData([]);
+      setChartLayout(layoutDefaults);
+      setOpenError(true);
+      return null;
+    }
 
     // Find the best matching file from the available data files
     // Filter files by location type and file type, then find the best date range match
@@ -213,9 +227,15 @@ export default function SandboxControls() {
         (file) => file.period === "1895-2024" || file.period === "1900-2024",
       ) || matchingFiles[0]; // fallback to first match if no preferred range found
 
-    const dataFile = preferredFile
-      ? preferredFile.name
-      : `${locationType}_${fileType}_1900-2024_SCS2025.txt`;
+    // If no matching file was found for this metric, show error
+    if (!preferredFile) {
+      setChartData([]);
+      setChartLayout(layoutDefaults);
+      setOpenError(true);
+      return null;
+    }
+
+    const dataFile = preferredFile.name;
 
     fetchSandboxDataFile(dataFile, locationType, selectionLabel)
       .then((chartDataFromFile) => {
@@ -684,26 +704,65 @@ export default function SandboxControls() {
             <Box
               display="flex"
               alignItems="center"
-              gap={1}
-              fontSize="h5.fontSize"
+              justifyContent="space-between"
+              width="100%"
             >
-              <InsertChartOutlinedIcon
-                sx={{
-                  color: "#5C5C5C",
-                  fontSize: "4.0rem",
-                  backgroundColor: "#ffffff",
-                  borderRadius: "30px",
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={1}
+                fontSize="h5.fontSize"
+              >
+                <InsertChartOutlinedIcon
+                  sx={{
+                    color: "#000000",
+                    fontSize: "2.5rem",
+                    backgroundColor: "#ffffff",
+                    borderRadius: "30px",
+                  }}
+                />
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: 400,
+                    color: "#000000",
+                  }}
+                >
+                  State Climate Summaries Data Explorer
+                </Typography>
+              </Box>
+              <Box
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate("/about")}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") navigate("/about");
                 }}
-              />
-              <Typography
-                variant="h3"
                 sx={{
-                  fontWeight: 400,
-                  color: "#5C5C5C",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  cursor: "pointer",
+                  color: "#0379C8",
+                  padding: "6px 12px",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: "#f0f4ff",
+                    textDecoration: "underline",
+                  },
                 }}
               >
-                State Climate Summaries Data Explorer
-              </Typography>
+                <InfoOutlinedIcon sx={{ fontSize: "1.3rem" }} />
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    color: "#0379C8",
+                  }}
+                >
+                  About
+                </Typography>
+              </Box>
             </Box>
           </Grid>
 

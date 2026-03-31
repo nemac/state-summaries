@@ -912,6 +912,22 @@ const config = {
       description: "Hawaiʻi",
       value: "hawaii",
       type: "regions",
+      // Override: use state-level Hawaii data for this region
+      dataOverride: {
+        indexKey: "states",
+        locationType: "states",
+        label: "Hawaiʻi",
+      },
+      startDates: {
+        threshold: "1950",
+        temperature: "1950",
+        precipitation: "1950",
+      },
+      endDates: {
+        threshold: "2024",
+        temperature: "2024",
+        precipitation: "2024",
+      },
     },
     {
       label: "Northeast",
@@ -1059,6 +1075,22 @@ const config = {
       description: "Puerto Rico and US Virgin Islands",
       value: "us_caribbean",
       type: "regions",
+      // Override: use state-level Puerto Rico data for this region
+      dataOverride: {
+        indexKey: "states",
+        locationType: "states",
+        label: "Puerto Rico",
+      },
+      startDates: {
+        threshold: "1950",
+        temperature: "1950",
+        precipitation: "1950",
+      },
+      endDates: {
+        threshold: "2024",
+        temperature: "2024",
+        precipitation: "2024",
+      },
     },
     {
       label: "West",
