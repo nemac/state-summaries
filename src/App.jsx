@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -11,6 +11,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import SandboxControls from "./scripts/SandboxControls.jsx";
+import About from "./components/About.jsx";
 
 const theme = createTheme({});
 
@@ -51,7 +52,10 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <MobileDisclaimer />
-        <SandboxControls />
+        <Routes>
+          <Route path="/" element={<SandboxControls />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   );
