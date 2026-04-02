@@ -1,3 +1,5 @@
+import { colors } from "../theme";
+
 // CONSTANTS
 const smallScreen = 768;
 const blue = "4, 90, 141";
@@ -97,9 +99,9 @@ export const getHoverTemplate = (type, data, selectedSeason) => {
 
 export const setChartColor = (chartType) => {
   if (chartType === "Precipitation") {
-    return "#5AB4AC";
+    return colors.precipitation;
   }
-  return "#FEB24C"; // Temperature
+  return colors.temperature; // Temperature
 };
 
 export const getPlotData = (data) => {

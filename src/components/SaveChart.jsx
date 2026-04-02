@@ -21,6 +21,7 @@ import {
 import SaveAsPNGButton from "./SaveAsPNGButton";
 import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
+import { colors } from "../theme";
 
 const SaveChart = (props) => {
   const { chartTitle, chartData, sx } = props;
@@ -40,7 +41,7 @@ const SaveChart = (props) => {
     transform: "translate(-50%, -50%)",
     width: 500,
     bgcolor: "background.paper",
-    border: "2px solid #1976d2",
+    border: `2px solid ${colors.buttonBlue}`,
     borderRadius: 2,
     boxShadow: 24,
     p: 0,
@@ -51,15 +52,15 @@ const SaveChart = (props) => {
     alignItems: "center",
     gap: 1,
     p: 2,
-    borderBottom: "1px solid #e0e0e0",
+    borderBottom: `1px solid ${colors.border}`,
   };
 
   const formatButtonStyle = (format) => ({
     flex: 1,
     py: 1.5,
-    backgroundColor: selectedFormat === format ? "#1976d2" : "white",
-    color: selectedFormat === format ? "white" : "#1976d2",
-    border: "1px solid #1976d2",
+    backgroundColor: selectedFormat === format ? colors.buttonBlue : colors.white,
+    color: selectedFormat === format ? colors.white : colors.buttonBlue,
+    border: `1px solid ${colors.buttonBlue}`,
   });
 
   return (
@@ -81,29 +82,29 @@ const SaveChart = (props) => {
       >
         <Box sx={modalStyle}>
           <Box sx={headerStyle}>
-            <DownloadIcon sx={{ color: "#666" }} />
+            <DownloadIcon sx={{ color: colors.textMuted }} />
             <Box sx={{ flex: 1 }}>
               <Typography
                 variant="h6"
                 component="h2"
-                sx={{ fontWeight: "bold", color: "#333" }}
+                sx={{ fontWeight: "bold", color: colors.textDark }}
               >
                 SAVE CHART/DATA
               </Typography>
-              <Typography variant="body2" sx={{ color: "#666" }}>
+              <Typography variant="body2" sx={{ color: colors.textMuted }}>
                 Choose the chart type and dimensions, or download data
               </Typography>
             </Box>
           </Box>
 
           <Box sx={{ p: 2 }}>
-            <Typography variant="body2" sx={{ mb: 2, color: "#666" }}>
+            <Typography variant="body2" sx={{ mb: 2, color: colors.textMuted }}>
               Questions about data and methodologies?{" "}
               <Link
                 href="/tempData/sample-local-pdf.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                sx={{ color: "#1976d2" }}
+                sx={{ color: colors.buttonBlue }}
               >
                 Learn more
               </Link>
@@ -159,23 +160,23 @@ const SaveChart = (props) => {
                   p: 2,
                   mb: 2,
                   textAlign: "center",
-                  border: "1px solid #e0e0e0",
+                  border: `1px solid ${colors.border}`,
                   cursor: "pointer",
-                  backgroundColor: isCustomDims ? "#f9f9f9" : "#1976d2",
+                  backgroundColor: isCustomDims ? colors.backgroundButton : colors.buttonBlue,
                   // "&:hover": { backgroundColor: "#f9f9f9" },
                 }}
               >
                 <MonitorIcon
                   sx={{
                     fontSize: 40,
-                    color: isCustomDims ? "#1976d2" : "white",
+                    color: isCustomDims ? colors.buttonBlue : colors.white,
                     mb: 1,
                   }}
                 />
                 <Typography
                   variant="body1"
                   sx={{
-                    color: isCustomDims ? "#1976d2" : "white",
+                    color: isCustomDims ? colors.buttonBlue : colors.white,
                     fontWeight: "bold",
                   }}
                 >
@@ -189,8 +190,8 @@ const SaveChart = (props) => {
                 defaultExpanded={false}
                 sx={{
                   mb: 3,
-                  backgroundColor: isCustomDims ? "#1976d2" : "white",
-                  color: "white",
+                  backgroundColor: isCustomDims ? colors.buttonBlue : colors.white,
+                  color: colors.white,
                   boxShadow: "none",
                   border: "none",
                   "&:before": {
@@ -222,7 +223,7 @@ const SaveChart = (props) => {
                       sx={{
                         variant: "body1",
                         fontWeight: "bold",
-                        color: isCustomDims ? "white" : "#1976d2",
+                        color: isCustomDims ? colors.white : colors.buttonBlue,
                       }}
                     >
                       CUSTOM DIMENSIONS
@@ -231,13 +232,13 @@ const SaveChart = (props) => {
                 </AccordionSummary>
 
                 <AccordionDetails
-                  sx={{ backgroundColor: isCustomDims ? "#1976d2" : "white" }}
+                  sx={{ backgroundColor: isCustomDims ? colors.buttonBlue : colors.white }}
                 >
                   <Box
                     sx={{
                       display: "flex",
                       gap: 2,
-                      backgroundColor: isCustomDims ? "#1976d2" : "white",
+                      backgroundColor: isCustomDims ? colors.buttonBlue : colors.white,
                     }}
                   >
                     <Box sx={{ flex: 1 }}>
@@ -246,7 +247,7 @@ const SaveChart = (props) => {
                         sx={{
                           mb: 1,
                           fontWeight: "bold",
-                          color: isCustomDims ? "white" : "#1976d2",
+                          color: isCustomDims ? colors.white : colors.buttonBlue,
                         }}
                       >
                         WIDTH
@@ -261,20 +262,20 @@ const SaveChart = (props) => {
                             endAdornment: (
                               <Typography
                                 variant="body2"
-                                sx={{ color: "rgba(255,255,255,0.7)" }}
+                                sx={{ color: colors.overlay.white70 }}
                               >
                                 pixels
                               </Typography>
                             ),
                             sx: {
-                              backgroundColor: "white",
+                              backgroundColor: colors.white,
                               borderRadius: 1,
                               "& input": {
                                 textAlign: "center",
                                 fontWeight: "bold",
                                 fontSize: "1.2rem",
-                                color: "#1976d2",
-                                "&:hover": { backgroundColor: "white" },
+                                color: colors.buttonBlue,
+                                "&:hover": { backgroundColor: colors.white },
                               },
                             },
                           },
@@ -289,7 +290,7 @@ const SaveChart = (props) => {
                         sx={{
                           mb: 1,
                           fontWeight: "bold",
-                          color: isCustomDims ? "white" : "#1976d2",
+                          color: isCustomDims ? colors.white : colors.buttonBlue,
                         }}
                       >
                         HEIGHT
@@ -304,20 +305,20 @@ const SaveChart = (props) => {
                             endAdornment: (
                               <Typography
                                 variant="body2"
-                                sx={{ color: "rgba(255,255,255,0.7)" }}
+                                sx={{ color: colors.overlay.white70 }}
                               >
                                 pixels
                               </Typography>
                             ),
                             sx: {
-                              backgroundColor: "white",
+                              backgroundColor: colors.white,
                               borderRadius: 1,
                               "& input": {
                                 textAlign: "center",
                                 fontWeight: "bold",
                                 fontSize: "1.2rem",
-                                color: "#1976d2",
-                                "&:hover": { backgroundColor: "white" },
+                                color: colors.buttonBlue,
+                                "&:hover": { backgroundColor: colors.white },
                               },
                             },
                           },
@@ -366,8 +367,8 @@ const SaveChart = (props) => {
                 variant="outlined"
                 onClick={handleClose}
                 sx={{
-                  color: "#1976d2",
-                  borderColor: "#1976d2",
+                  color: colors.buttonBlue,
+                  borderColor: colors.buttonBlue,
                   px: 3,
                   py: 1,
                 }}

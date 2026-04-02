@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Typography } from "@mui/material";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
+import { colors } from "../theme";
 
 const MegaMenuButton = ({ children, icon, onClick }) => {
   const buttonStyle = {
@@ -10,8 +11,8 @@ const MegaMenuButton = ({ children, icon, onClick }) => {
     borderRadius: "8px",
     width: "250px",
     height: "74px",
-    border: "1px solid #707070",
-    backgroundColor: "#FAFAFA",
+    border: `1px solid ${colors.borderMedium}`,
+    backgroundColor: colors.backgroundDropdown,
     textTransform: "none",
     justifyContent: "flex-start",
     display: "flex",
@@ -19,7 +20,7 @@ const MegaMenuButton = ({ children, icon, onClick }) => {
     textAlign: "left",
     gap: 1,
     "&:hover": {
-      backgroundColor: "#f0f0f0",
+      backgroundColor: colors.backgroundHover,
     },
     "@media (max-width: 768px)": {
       flexGrow: "1",
@@ -28,13 +29,13 @@ const MegaMenuButton = ({ children, icon, onClick }) => {
 
   return (
     <Button sx={buttonStyle} onClick={onClick}>
-      {icon || <ThermostatIcon sx={{ color: "#003366", fontSize: "1.5rem" }} />}
+      {icon || <ThermostatIcon sx={{ color: colors.navy, fontSize: "1.5rem" }} />}
       <Typography
         variant="body2"
         sx={{
           fontSize: "14px",
           fontWeight: 700,
-          color: "#124086",
+          color: colors.primaryDark,
         }}
       >
         {children}

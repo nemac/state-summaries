@@ -14,6 +14,7 @@ import {
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import BracketOverlay from "./BracketOverlay.jsx";
+import { colors, scenarioColor } from "../theme";
 
 // Scenario rendering config: order matters (largest band first, smallest last)
 // so smaller bands paint on top of larger ones.
@@ -24,70 +25,70 @@ const SCENARIO_BANDS = [
     lower: "historical_lower",
     rangeKey: "historical_range",
     name: "Modeled Historical",
-    fillColor: "rgba(169, 169, 169, 0.5)",
-    strokeColor: "rgba(169, 169, 169, 0)",
+    fillColor: scenarioColor("historical", 0.5),
+    strokeColor: scenarioColor("historical", 0),
   },
   {
     key: "ssp585",
     lower: "ssp585_lower",
     rangeKey: "ssp585_range",
     name: "Very High Emissions (SSP5-8.5)",
-    fillColor: "rgba(219, 112, 147, 0.7)",
-    strokeColor: "rgba(219, 112, 147, 0)",
+    fillColor: scenarioColor("ssp585", 0.7),
+    strokeColor: scenarioColor("ssp585", 0),
   },
   {
     key: "ssp370",
     lower: "ssp370_lower",
     rangeKey: "ssp370_range",
     name: "High Emissions (SSP3-7.0)",
-    fillColor: "rgba(247, 205, 166, 0.7)",
-    strokeColor: "rgba(247, 205, 166, 0)",
+    fillColor: scenarioColor("ssp370", 0.7),
+    strokeColor: scenarioColor("ssp370", 0),
   },
   {
     key: "ssp126",
     lower: "ssp126_lower",
     rangeKey: "ssp126_range",
     name: "Low Emissions (SSP1-2.6)",
-    fillColor: "rgba(173, 216, 230, 0.6)",
-    strokeColor: "rgba(173, 216, 230, 0)",
+    fillColor: scenarioColor("ssp126", 0.6),
+    strokeColor: scenarioColor("ssp126", 0),
   },
   {
     key: "ssp245",
     lower: "ssp245_lower",
     rangeKey: "ssp245_range",
     name: "Intermediate Emissions (SSP2-4.5)",
-    fillColor: "rgba(105, 105, 105, 0.6)",
-    strokeColor: "rgba(105, 105, 105, 0)",
+    fillColor: scenarioColor("ssp245", 0.6),
+    strokeColor: scenarioColor("ssp245", 0),
   },
 ];
 
 // Legend display order (different from render order)
 const LEGEND_ORDER = [
-  { key: "obs", name: "Observations", color: "#000000" },
+  { key: "obs", name: "Observations", color: colors.textPrimary },
   {
     key: "historical",
     name: "Modeled Historical",
-    color: "rgba(169, 169, 169, 0.7)",
+    color: scenarioColor("historical", 0.7),
   },
   {
     key: "ssp126",
     name: "Low Emissions (SSP1-2.6)",
-    color: "rgba(173, 216, 230, 0.8)",
+    color: scenarioColor("ssp126", 0.8),
   },
   {
     key: "ssp245",
     name: "Intermediate Emissions (SSP2-4.5)",
-    color: "rgba(105, 105, 105, 0.7)",
+    color: scenarioColor("ssp245", 0.7),
   },
   {
     key: "ssp370",
     name: "High Emissions (SSP3-7.0)",
-    color: "rgba(247, 205, 166, 0.85)",
+    color: scenarioColor("ssp370", 0.85),
   },
   {
     key: "ssp585",
     name: "Very High Emissions (SSP5-8.5)",
-    color: "rgba(219, 112, 147, 0.85)",
+    color: scenarioColor("ssp585", 0.85),
   },
 ];
 
@@ -97,31 +98,31 @@ const TOOLTIP_ORDER = [
     scenarioKey: "obs",
     upperKey: "obs",
     name: "Observations",
-    color: "#000000",
+    color: colors.textPrimary,
   },
   {
     scenarioKey: "ssp585",
     upperKey: "ssp585_upper",
     name: "Very High Emissions (SSP5-8.5)",
-    color: "rgba(219, 112, 147, 0.85)",
+    color: scenarioColor("ssp585", 0.85),
   },
   {
     scenarioKey: "ssp370",
     upperKey: "ssp370_upper",
     name: "High Emissions (SSP3-7.0)",
-    color: "rgba(247, 205, 166, 0.85)",
+    color: scenarioColor("ssp370", 0.85),
   },
   {
     scenarioKey: "ssp245",
     upperKey: "ssp245_upper",
     name: "Intermediate Emissions (SSP2-4.5)",
-    color: "rgba(105, 105, 105, 0.7)",
+    color: scenarioColor("ssp245", 0.7),
   },
   {
     scenarioKey: "ssp126",
     upperKey: "ssp126_upper",
     name: "Low Emissions (SSP1-2.6)",
-    color: "rgba(173, 216, 230, 0.8)",
+    color: scenarioColor("ssp126", 0.8),
   },
 ];
 
@@ -135,8 +136,8 @@ function CustomTooltip({ active, payload, label, hiddenScenarios }) {
   return (
     <Box
       sx={{
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        border: "1px solid #ccc",
+        backgroundColor: colors.overlay.white95,
+        border: `1px solid ${colors.borderLight}`,
         borderRadius: "4px",
         padding: "8px 12px",
         fontSize: "13px",
@@ -208,8 +209,8 @@ export default function ObservedProjectedChart({
         position: "absolute",
         top: 80,
         left: 110,
-        backgroundColor: "rgba(255, 255, 255, 0.85)",
-        border: "1px solid #000",
+        backgroundColor: colors.overlay.white85,
+        border: `1px solid ${colors.textPrimary}`,
         padding: "6px 10px",
         zIndex: 10,
         gap: "2px",
@@ -245,7 +246,7 @@ export default function ObservedProjectedChart({
                   width: 16,
                   height: 12,
                   backgroundColor: item.color,
-                  border: "1px solid rgba(0,0,0,0.15)",
+                  border: `1px solid ${colors.overlay.black15}`,
                 }}
               />
             )}
@@ -253,7 +254,7 @@ export default function ObservedProjectedChart({
               sx={{
                 fontSize: "12px",
                 fontFamily: "Arial",
-                color: "#333",
+                color: colors.textDark,
                 userSelect: "none",
               }}
             >
@@ -277,7 +278,7 @@ export default function ObservedProjectedChart({
         position: "relative",
         width: "100%",
         height: "100%",
-        backgroundColor: "#FBFCFE",
+        backgroundColor: colors.backgroundChart,
       }}
     >
       <Typography
@@ -287,7 +288,7 @@ export default function ObservedProjectedChart({
           fontSize: "24px",
           fontWeight: 400,
           padding: "8px 0 0 0",
-          color: "#333",
+          color: colors.textDark,
         }}
       >
         {chartTitle}
@@ -300,15 +301,15 @@ export default function ObservedProjectedChart({
           data={data}
           margin={{ top: 10, right: 140, left: 20, bottom: 30 }}
         >
-          <CartesianGrid vertical={false} trokeDasharray="" stroke="#e0e0e0" />
+          <CartesianGrid vertical={false} trokeDasharray="" stroke={colors.gridLine} />
           <XAxis
             dataKey="year"
             type="number"
             domain={["dataMin", "dataMax"]}
             ticks={xTicks}
             tick={{ fontSize: 12, fontFamily: "Arial" }}
-            tickLine={{ stroke: "#000" }}
-            axisLine={{ stroke: "#000" }}
+            tickLine={{ stroke: colors.textPrimary }}
+            axisLine={{ stroke: colors.textPrimary }}
             label={{
               value: "Year",
               position: "insideBottom",
@@ -321,8 +322,8 @@ export default function ObservedProjectedChart({
             ticks={yTicks}
             allowDataOverflow={true}
             tick={{ fontSize: 12, fontFamily: "Arial" }}
-            tickLine={{ stroke: "#000" }}
-            axisLine={{ stroke: "#000" }}
+            tickLine={{ stroke: colors.textPrimary }}
+            axisLine={{ stroke: colors.textPrimary }}
             label={{
               value: "Temperature Change (\u00B0F)",
               angle: -90,
@@ -340,7 +341,7 @@ export default function ObservedProjectedChart({
             content={<CustomTooltip hiddenScenarios={hiddenScenarios} />}
           />
 
-          <ReferenceLine y={0} stroke="#BFBFBF" strokeWidth={4} />
+          <ReferenceLine y={0} stroke={colors.referenceLine} strokeWidth={4} />
 
           {/* Render scenario bands: each uses stacked areas */}
           {SCENARIO_BANDS.map((band) => {
@@ -417,9 +418,9 @@ export default function ObservedProjectedChart({
             <Line
               dataKey="obs"
               type="linear"
-              stroke="#000000"
+              stroke={colors.textPrimary}
               strokeWidth={2}
-              dot={{ r: 2, fill: "#000000" }}
+              dot={{ r: 2, fill: colors.textPrimary }}
               connectNulls={false}
               isAnimationActive={false}
               legendType="none"

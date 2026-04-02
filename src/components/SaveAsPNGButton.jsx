@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 import Plotly from "plotly.js-dist";
+import { colors } from "../theme";
 
 const SaveAsPNGButton = (props) => {
   const { chartTitle, widthARG = 1600, heightARG = 1200 } = props;
@@ -68,7 +69,7 @@ const SaveAsPNGButton = (props) => {
         }
         onClick={convertToPng}
         variant="outlined"
-        sx={{ backgroundColor: "#1976d2", color: "white" }}
+        sx={{ backgroundColor: colors.buttonBlue, color: colors.white }}
       >
         Save Chart
       </Button>

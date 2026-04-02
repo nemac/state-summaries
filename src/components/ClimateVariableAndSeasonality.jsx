@@ -18,6 +18,7 @@ import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import config from "../configs/config.js";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import MegaMenuButton from "./MegaMenuButton.jsx";
+import { colors } from "../theme";
 
 const ClimateVariableAndSeasonality = (props) => {
   const {
@@ -61,14 +62,14 @@ const ClimateVariableAndSeasonality = (props) => {
 
   const cancelButtonStyle = {
     borderRadius: "1px",
-    border: "1px solid #0379C8",
+    border: `1px solid ${colors.primary}`,
     padding: "4px 8px",
     gap: "4px",
-    color: "#0379C8",
-    backgroundColor: "#FFFFFF",
+    color: colors.primary,
+    backgroundColor: colors.white,
     textTransform: "none",
     "&:hover": {
-      backgroundColor: "#f5f5f5",
+      backgroundColor: colors.backgroundButtonHover,
     },
   };
 
@@ -92,7 +93,7 @@ const ClimateVariableAndSeasonality = (props) => {
             id="climate-variable-modal-title"
             variant="h5"
             component="h2"
-            sx={{ fontWeight: 700, color: "#0379C8", fontSize: "40px" }}
+            sx={{ fontWeight: 700, color: colors.primary, fontSize: "40px" }}
           >
             Climate Observations and Projections
           </Typography>
@@ -104,10 +105,10 @@ const ClimateVariableAndSeasonality = (props) => {
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <InsertChartOutlinedIcon
-              sx={{ color: "#124086", fontSize: "50px" }}
+              sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
             >
               Charts
             </Typography>
@@ -118,7 +119,7 @@ const ClimateVariableAndSeasonality = (props) => {
               ml={2}
               mr={2}
               mb={2}
-              sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+              sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
             >
               Historical Annual Extremes
             </Typography>
@@ -133,10 +134,10 @@ const ClimateVariableAndSeasonality = (props) => {
                   marginLeft: "32px",
                 }}
               >
-                <ThermostatIcon sx={{ color: "#5C5C5C", fontSize: "1.2rem" }} />
+                <ThermostatIcon sx={{ color: colors.textSecondary, fontSize: "1.2rem" }} />
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                  sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
                 >
                   Temperature
                 </Typography>
@@ -147,7 +148,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     key={option.value}
                     icon={
                       <ThermostatIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        sx={{ color: colors.navy, fontSize: "1.5rem" }}
                       />
                     }
                     onClick={() => handleOptionSelect(option)}
@@ -169,11 +170,11 @@ const ClimateVariableAndSeasonality = (props) => {
                 }}
               >
                 <ThunderstormIcon
-                  sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                  sx={{ color: colors.textSecondary, fontSize: "1.2rem" }}
                 />
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                  sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
                 >
                   Precipitation
                 </Typography>
@@ -184,7 +185,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     key={option.value}
                     icon={
                       <ThunderstormIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        sx={{ color: colors.navy, fontSize: "1.5rem" }}
                       />
                     }
                     onClick={() =>
@@ -206,7 +207,7 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
               >
                 Historical Seasonality
               </Typography>
@@ -222,10 +223,10 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
-                    color: "#0379C8",
-                    backgroundColor: "#FAFAFA",
+                    color: colors.primary,
+                    backgroundColor: colors.backgroundDropdown,
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#707070",
+                      borderColor: colors.borderMedium,
                     },
                   }}
                 >
@@ -244,11 +245,11 @@ const ClimateVariableAndSeasonality = (props) => {
                   icon={
                     option.icon === "Precipitation" ? (
                       <ThunderstormIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        sx={{ color: colors.navy, fontSize: "1.5rem" }}
                       />
                     ) : (
                       <ThermostatIcon
-                        sx={{ color: "#003366", fontSize: "1.5rem" }}
+                        sx={{ color: colors.navy, fontSize: "1.5rem" }}
                       />
                     )
                   }
@@ -275,7 +276,7 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
               >
                 Observed and Projected
               </Typography>
@@ -286,7 +287,7 @@ const ClimateVariableAndSeasonality = (props) => {
                   key={option.value}
                   icon={
                     <ThermostatIcon
-                      sx={{ color: "#003366", fontSize: "1.5rem" }}
+                      sx={{ color: colors.navy, fontSize: "1.5rem" }}
                     />
                   }
                   onClick={() => handleOptionSelect(option)}
@@ -300,9 +301,9 @@ const ClimateVariableAndSeasonality = (props) => {
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <MapOutlinedIcon sx={{ color: "#124086", fontSize: "50px" }} />
+            <MapOutlinedIcon sx={{ color: colors.primaryDark, fontSize: "50px" }} />
             <Typography
-              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
             >
               Maps
             </Typography>
@@ -313,7 +314,7 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: "#5C5C5C", fontSize: "24px" }}
+                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
               >
                 Seasonality
               </Typography>
@@ -329,10 +330,10 @@ const ClimateVariableAndSeasonality = (props) => {
                     )
                   }
                   sx={{
-                    color: "#0379C8",
-                    backgroundColor: "#FAFAFA",
+                    color: colors.primary,
+                    backgroundColor: colors.backgroundDropdown,
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#707070",
+                      borderColor: colors.borderMedium,
                     },
                   }}
                 >
@@ -356,11 +357,11 @@ const ClimateVariableAndSeasonality = (props) => {
                   }}
                 >
                   <QueryBuilderIcon
-                    sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                    sx={{ color: colors.textSecondary, fontSize: "1.2rem" }}
                   />
                   <Typography
                     variant="body2"
-                    sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                    sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
                   >
                     Midcentury
                   </Typography>
@@ -371,7 +372,7 @@ const ClimateVariableAndSeasonality = (props) => {
                       key={option.value}
                       icon={
                         <ThunderstormIcon
-                          sx={{ color: "#003366", fontSize: "1.5rem" }}
+                          sx={{ color: colors.navy, fontSize: "1.5rem" }}
                         />
                       }
                       onClick={() => handleOptionSelect(option)}
@@ -395,11 +396,11 @@ const ClimateVariableAndSeasonality = (props) => {
                   }}
                 >
                   <QueryBuilderIcon
-                    sx={{ color: "#5C5C5C", fontSize: "1.2rem" }}
+                    sx={{ color: colors.textSecondary, fontSize: "1.2rem" }}
                   />
                   <Typography
                     variant="body2"
-                    sx={{ fontWeight: 700, color: "#444444", fontSize: "16px" }}
+                    sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
                   >
                     Late Century
                   </Typography>
@@ -410,7 +411,7 @@ const ClimateVariableAndSeasonality = (props) => {
                       key={option.value}
                       icon={
                         <ThunderstormIcon
-                          sx={{ color: "#003366", fontSize: "1.5rem" }}
+                          sx={{ color: colors.navy, fontSize: "1.5rem" }}
                         />
                       }
                       onClick={() => handleOptionSelect(option)}

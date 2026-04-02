@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
 import FileSaver from "file-saver";
+import { colors } from "../theme";
 
 const SaveAsCSVButton = (props) => {
   const { chartTitle, chartData } = props;
@@ -67,7 +68,7 @@ const SaveAsCSVButton = (props) => {
         }
         onClick={handleDownloadChartAsCSV}
         variant="outlined"
-        sx={{ backgroundColor: "#1976d2", color: "white" }}
+        sx={{ backgroundColor: colors.buttonBlue, color: colors.white }}
       >
         Save Chart
       </Button>

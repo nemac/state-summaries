@@ -1,3 +1,5 @@
+import { colors, scenarioColor } from "../theme";
+
 const config = {
   stateAbbreviations: {
     Alaska: "AK",
@@ -1527,7 +1529,7 @@ const config = {
       name: "Modeled Historical Lower",
       key: "historical_lower",
       line: {
-        color: "rgba(169, 169, 169, 0)",
+        color: scenarioColor("historical", 0),
         width: 0,
         shape: "linear",
         simplify: true,
@@ -1540,9 +1542,9 @@ const config = {
       name: "Modeled Historical",
       key: "historical_upper",
       fill: "tonexty",
-      fillcolor: "rgba(169, 169, 169, 0.5)",
+      fillcolor: scenarioColor("historical", 0.5),
       line: {
-        color: "rgba(169, 169, 169, 0)",
+        color: scenarioColor("historical", 0),
         width: 0,
       },
       hoverinfo: "x+y",
@@ -1555,7 +1557,7 @@ const config = {
       name: "Low Emissions (SSP1-2.6) Lower",
       key: "ssp126_lower",
       line: {
-        color: "rgba(173, 216, 230, 0)",
+        color: scenarioColor("ssp126", 0),
         width: 0,
       },
       hoverinfo: "skip",
@@ -1565,9 +1567,9 @@ const config = {
       name: "Low Emissions (SSP1-2.6)",
       key: "ssp126_upper",
       fill: "tonexty",
-      fillcolor: "rgba(173, 216, 230, 0.6)",
+      fillcolor: scenarioColor("ssp126", 0.6),
       line: {
-        color: "rgba(173, 216, 230, 0)",
+        color: scenarioColor("ssp126", 0),
         width: 0,
       },
       hoverinfo: "x+y",
@@ -1580,7 +1582,7 @@ const config = {
       name: "Very High Emissions (SSP5-8.5) Lower",
       key: "ssp585_lower",
       line: {
-        color: "rgba(219, 112, 147, 0)",
+        color: scenarioColor("ssp585", 0),
         width: 0,
       },
       hoverinfo: "skip",
@@ -1590,9 +1592,9 @@ const config = {
       name: "Very High Emissions (SSP5-8.5)",
       key: "ssp585_upper",
       fill: "tonexty",
-      fillcolor: "rgba(219, 112, 147, 0.7)",
+      fillcolor: scenarioColor("ssp585", 0.7),
       line: {
-        color: "rgba(219, 112, 147, 0)",
+        color: scenarioColor("ssp585", 0),
         width: 0,
       },
       hoverinfo: "x+y",
@@ -1605,7 +1607,7 @@ const config = {
       name: "High Emissions (SSP3-7.0) Lower",
       key: "ssp370_lower",
       line: {
-        color: "rgba(247, 205, 166, 0)",
+        color: scenarioColor("ssp370", 0),
         width: 0,
       },
       hoverinfo: "skip",
@@ -1615,9 +1617,9 @@ const config = {
       name: "High Emissions (SSP3-7.0)",
       key: "ssp370_upper",
       fill: "tonexty",
-      fillcolor: "rgba(247, 205, 166, 0.7)",
+      fillcolor: scenarioColor("ssp370", 0.7),
       line: {
-        color: "rgba(247, 205, 166, 0)",
+        color: scenarioColor("ssp370", 0),
         width: 0,
       },
       hoverinfo: "x+y",
@@ -1630,7 +1632,7 @@ const config = {
       name: "Intermediate Emissions (SSP2-4.5) Lower",
       key: "ssp245_lower",
       line: {
-        color: "rgba(105, 105, 105, 0)",
+        color: scenarioColor("ssp245", 0),
         width: 0,
       },
       hoverinfo: "skip",
@@ -1640,9 +1642,9 @@ const config = {
       name: "Intermediate Emissions (SSP2-4.5)",
       key: "ssp245_upper",
       fill: "tonexty",
-      fillcolor: "rgba(105, 105, 105, 0.6)",
+      fillcolor: scenarioColor("ssp245", 0.6),
       line: {
-        color: "rgba(105, 105, 105, 0)",
+        color: scenarioColor("ssp245", 0),
         width: 0,
       },
       hoverinfo: "x+y",
@@ -1658,14 +1660,14 @@ const config = {
       width: 2,
       mode: "lines+markers",
       line: {
-        color: "#000000",
+        color: colors.textPrimary,
         width: 2,
         dash: "solid",
         shape: "linear",
         simplify: true,
       },
       marker: {
-        color: "#000000",
+        color: colors.textPrimary,
         size: 5,
       },
       connectgaps: false,

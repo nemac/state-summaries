@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Dialog,
@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import SandboxControls from "./scripts/SandboxControls.jsx";
 import About from "./components/About.jsx";
-
-const theme = createTheme({});
+import { theme } from "./theme";
 
 function MobileDisclaimer() {
   const isMobilePortrait = useMediaQuery(

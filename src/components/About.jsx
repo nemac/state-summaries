@@ -4,6 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import { useNavigate } from "react-router-dom";
+import { colors } from "../theme";
 
 export default function About() {
   const theme = useTheme();
@@ -12,8 +13,8 @@ export default function About() {
   return (
     <Box
       sx={{
-        backgroundColor: "white",
-        color: "#5C5C5C",
+        backgroundColor: colors.white,
+        color: colors.textSecondary,
         height: "calc(100vh - 16px)",
         margin: "16px",
         overflowY: "auto",
@@ -46,7 +47,7 @@ export default function About() {
             alignItems: "center",
             gap: 1,
             cursor: "pointer",
-            color: "#0379C8",
+            color: colors.primary,
             "&:hover": {
               textDecoration: "underline",
             },
@@ -57,7 +58,7 @@ export default function About() {
             sx={{
               fontSize: "1.1rem",
               fontWeight: 500,
-              color: "#0379C8",
+              color: colors.primary,
             }}
           >
             Return to Data Explorer
@@ -73,14 +74,14 @@ export default function About() {
           gap: 1,
           margin: "0 16px",
           paddingBottom: "16px",
-          borderBottom: "2px solid #e0e0e0",
+          borderBottom: `2px solid ${colors.border}`,
         }}
       >
         <InsertChartOutlinedIcon
           sx={{
-            color: "#000000",
+            color: colors.textPrimary,
             fontSize: "2.5rem",
-            backgroundColor: "#ffffff",
+            backgroundColor: colors.white,
             borderRadius: "30px",
           }}
         />
@@ -88,7 +89,7 @@ export default function About() {
           variant="h5"
           sx={{
             fontWeight: 400,
-            color: "#000000",
+            color: colors.textPrimary,
           }}
         >
           About the State Climate Summaries Data Explorer
@@ -108,7 +109,7 @@ export default function About() {
           variant="h5"
           sx={{
             fontWeight: 600,
-            color: "#124086",
+            color: colors.primaryDark,
             marginBottom: "12px",
           }}
         >
@@ -119,7 +120,7 @@ export default function About() {
           sx={{
             lineHeight: 1.8,
             marginBottom: "32px",
-            color: "#5C5C5C",
+            color: colors.textSecondary,
           }}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -135,7 +136,7 @@ export default function About() {
           variant="h5"
           sx={{
             fontWeight: 600,
-            color: "#124086",
+            color: colors.primaryDark,
             marginBottom: "12px",
           }}
         >
@@ -146,7 +147,7 @@ export default function About() {
           sx={{
             lineHeight: 1.8,
             marginBottom: "32px",
-            color: "#5C5C5C",
+            color: colors.textSecondary,
           }}
         >
           Pellentesque habitant morbi tristique senectus et netus et malesuada
@@ -162,7 +163,7 @@ export default function About() {
           variant="h5"
           sx={{
             fontWeight: 600,
-            color: "#124086",
+            color: colors.primaryDark,
             marginBottom: "12px",
           }}
         >
@@ -173,7 +174,7 @@ export default function About() {
           sx={{
             lineHeight: 1.8,
             marginBottom: "32px",
-            color: "#5C5C5C",
+            color: colors.textSecondary,
           }}
         >
           Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam
@@ -189,7 +190,7 @@ export default function About() {
           variant="h5"
           sx={{
             fontWeight: 600,
-            color: "#124086",
+            color: colors.primaryDark,
             marginBottom: "12px",
           }}
         >
@@ -199,7 +200,7 @@ export default function About() {
           variant="body1"
           sx={{
             lineHeight: 1.8,
-            color: "#5C5C5C",
+            color: colors.textSecondary,
           }}
         >
           Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum

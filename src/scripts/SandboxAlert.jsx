@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { orange, red } from "@mui/material/colors";
+import { colors } from "../theme";
 
 export default function Alert(props) {
   const { chartErrorTitle, chartErrorMessage, errorType, shouldOpenAlert } =
@@ -49,7 +50,7 @@ export default function Alert(props) {
     >
       <Box
         sx={{
-          color: "#000000",
+          color: colors.textPrimary,
           position: "absolute",
           zIndex: "1000",
           width: "100%",

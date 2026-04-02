@@ -38,6 +38,7 @@ import {
   computeBracketData,
   computeYDomain,
 } from "./transformObservedProjectedData.js";
+import { colors } from "../theme";
 
 // Fetch sandbox data file and parse it
 const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
@@ -304,10 +305,10 @@ export default function SandboxControls() {
           xValues: chartDataFromFile[0],
           yValues: chartDataFromFile[1],
           marker: {
-            color: "#000000",
+            color: colors.textPrimary,
           },
           line: {
-            color: "#000000",
+            color: colors.textPrimary,
             width: 3,
             dash: "solid",
             shape: "linear",
@@ -677,8 +678,8 @@ export default function SandboxControls() {
     <>
       <Box
         sx={{
-          backgroundColor: "white",
-          color: "#5C5C5C",
+          backgroundColor: colors.white,
+          color: colors.textSecondary,
           height: "calc(100vh - 16px)",
           // width: "100%",
           margin: "16px",
@@ -698,7 +699,7 @@ export default function SandboxControls() {
             size={{ xs: 12 }}
             width="100%"
             sx={{
-              color: "#5C5C5C",
+              color: colors.textSecondary,
             }}
           >
             <Box
@@ -715,9 +716,9 @@ export default function SandboxControls() {
               >
                 <InsertChartOutlinedIcon
                   sx={{
-                    color: "#000000",
+                    color: colors.textPrimary,
                     fontSize: "2.5rem",
-                    backgroundColor: "#ffffff",
+                    backgroundColor: colors.white,
                     borderRadius: "30px",
                   }}
                 />
@@ -725,7 +726,7 @@ export default function SandboxControls() {
                   variant="h5"
                   sx={{
                     fontWeight: 400,
-                    color: "#000000",
+                    color: colors.textPrimary,
                   }}
                 >
                   State Climate Summaries Data Explorer
@@ -743,11 +744,11 @@ export default function SandboxControls() {
                   alignItems: "center",
                   gap: 0.5,
                   cursor: "pointer",
-                  color: "#0379C8",
+                  color: colors.primary,
                   padding: "6px 12px",
                   borderRadius: "4px",
                   "&:hover": {
-                    backgroundColor: "#f0f4ff",
+                    backgroundColor: colors.backgroundSelected,
                     textDecoration: "underline",
                   },
                 }}
@@ -757,7 +758,7 @@ export default function SandboxControls() {
                   sx={{
                     fontSize: "1rem",
                     fontWeight: 500,
-                    color: "#0379C8",
+                    color: colors.primary,
                   }}
                 >
                   About
@@ -777,7 +778,7 @@ export default function SandboxControls() {
               display="flex"
               sx={{
                 height: "30px",
-                border: "1px solid #0379C8",
+                border: `1px solid ${colors.primary}`,
                 borderRadius: "4px",
                 display: "flex",
                 alignItems: "center",
@@ -786,20 +787,20 @@ export default function SandboxControls() {
                 gap: "8px",
                 cursor: "pointer",
                 "&:hover": {
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: colors.backgroundButtonHover,
                 },
               }}
             >
               <Typography
                 sx={{
-                  color: "#0379C8",
+                  color: colors.primary,
                   fontSize: "16px",
                   fontWeight: 400,
                 }}
               >
                 {megaMenuSelection.label || "Region, State or Territory"}
               </Typography>
-              <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+              <ExpandMoreIcon sx={{ color: colors.primary }} />
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 5 }}>
@@ -814,7 +815,7 @@ export default function SandboxControls() {
               display="flex"
               sx={{
                 height: "30px",
-                border: "1px solid #0379C8",
+                border: `1px solid ${colors.primary}`,
                 borderRadius: "4px",
                 display: "flex",
                 alignItems: "center",
@@ -823,13 +824,13 @@ export default function SandboxControls() {
                 gap: "8px",
                 cursor: "pointer",
                 "&:hover": {
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: colors.backgroundButtonHover,
                 },
               }}
             >
               <Typography
                 sx={{
-                  color: "#0379C8",
+                  color: colors.primary,
                   fontSize: "16px",
                   fontWeight: 400,
                 }}
@@ -838,7 +839,7 @@ export default function SandboxControls() {
                   ? climateOption.getLabel(selectedSeason.label)
                   : climateOption.labelTemplate || climateOption.label}
               </Typography>
-              <ExpandMoreIcon sx={{ color: "#0379C8" }} />
+              <ExpandMoreIcon sx={{ color: colors.primary }} />
             </Box>
           </Grid>
 
@@ -850,16 +851,16 @@ export default function SandboxControls() {
             period={"1900-2024"}
             sx={{
               borderRadius: "4px",
-              border: "1px solid #0379C8",
+              border: `1px solid ${colors.primary}`,
               fontWeight: 500,
-              color: "#0379C8",
+              color: colors.primary,
               height: "48px",
             }}
           />
 
           {chartType === "recharts" && (
             <Box display="flex" alignItems="center" gap={0.5} ml={2}>
-              <Typography sx={{ fontSize: "14px", color: "#5C5C5C" }}>
+              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
                 Plotly
               </Typography>
               <Switch
@@ -867,7 +868,7 @@ export default function SandboxControls() {
                 onChange={(e) => setUseRechartsRenderer(e.target.checked)}
                 size="small"
               />
-              <Typography sx={{ fontSize: "14px", color: "#5C5C5C" }}>
+              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
                 Recharts
               </Typography>
             </Box>
@@ -946,7 +947,7 @@ export default function SandboxControls() {
                       alt="Change in Annual Precipitation Map"
                     />
                   </Box>
-                  <Typography variant="h4" sx={{ color: "#666", py: 4 }}>
+                  <Typography variant="h4" sx={{ color: colors.textMuted, py: 4 }}>
                     Legend Placeholder
                   </Typography>
                 </Box>

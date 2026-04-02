@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import { colors } from "../theme";
 
 const ZOOM_LEVELS = [1, 2, 3, 4, 5];
 
@@ -108,20 +109,20 @@ export default function ZoomableImage({ src, alt }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
-    color: "#333",
+    backgroundColor: colors.white,
+    color: colors.textDark,
     fontSize: "22px",
     fontWeight: 300,
     lineHeight: 1,
     cursor: "pointer",
     userSelect: "none",
     border: "none",
-    borderBottom: "1px solid #ccc",
-    "&:hover": { backgroundColor: "#f4f4f4" },
+    borderBottom: `1px solid ${colors.borderLight}`,
+    "&:hover": { backgroundColor: colors.backgroundHoverAlt },
     "&:disabled": {
-      color: "#bbb",
+      color: colors.borderDisabled,
       cursor: "default",
-      backgroundColor: "#f4f4f4",
+      backgroundColor: colors.backgroundHoverAlt,
     },
   };
 
@@ -165,7 +166,7 @@ export default function ZoomableImage({ src, alt }) {
           flexDirection: "column",
           borderRadius: "4px",
           overflow: "hidden",
-          boxShadow: "0 1px 5px rgba(0,0,0,0.4)",
+          boxShadow: `0 1px 5px ${colors.overlay.black40}`,
           zIndex: 10,
         }}
       >

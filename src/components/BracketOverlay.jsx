@@ -1,28 +1,29 @@
 import { useEffect, useRef, useState } from "react";
+import { colors } from "../theme";
 
 const BRACKET_CONFIGS = [
   {
     scenario: "ssp585",
     label: "Very High",
-    color: "rgb(189,0,38)",
+    color: colors.bracket.ssp585,
     xOffset: 0,
   },
   {
     scenario: "ssp245",
     label: "Intermediate",
-    color: "rgb(105,105,105)",
+    color: colors.bracket.ssp245,
     xOffset: 1,
   },
   {
     scenario: "ssp370",
     label: "High",
-    color: "rgb(247,148,30)",
+    color: colors.bracket.ssp370,
     xOffset: 2,
   },
   {
     scenario: "ssp126",
     label: "Low",
-    color: "rgb(90,180,172)",
+    color: colors.bracket.ssp126,
     xOffset: 3,
   },
 ];

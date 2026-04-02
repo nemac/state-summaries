@@ -11,6 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import config from "../configs/config.js";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
+import { colors } from "../theme";
 
 const MegaMenu = ({ open, onClose, onSelect }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -47,8 +48,8 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     borderRadius: "8px",
     width: "210px",
     height: "74px",
-    border: "1px solid #707070",
-    backgroundColor: "#FAFAFA",
+    border: `1px solid ${colors.borderMedium}`,
+    backgroundColor: colors.backgroundDropdown,
     textTransform: "none",
     justifyContent: "flex-start",
     display: "flex",
@@ -56,7 +57,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
     textAlign: "left",
     gap: "12px",
     "&:hover": {
-      backgroundColor: "#f0f0f0",
+      backgroundColor: colors.backgroundHover,
     },
   };
 
@@ -119,7 +120,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               minWidth: "250px",
               width: "940px",
               maxWidth: "100%",
-              backgroundColor: "#FAFAFA",
+              backgroundColor: colors.backgroundDropdown,
               borderRadius: "2px",
               "& .MuiOutlinedInput-root": {
                 padding: "8px",
@@ -132,10 +133,10 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <InsertChartOutlinedIcon
-              sx={{ color: "#124086", fontSize: "50px" }}
+              sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
             >
               States and Territories
             </Typography>
@@ -160,7 +161,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                 />
                 <Typography
                   variant="body2"
-                  sx={{ color: "#003366", fontWeight: 500 }}
+                  sx={{ color: colors.navy, fontWeight: 500 }}
                 >
                   {option.label}
                 </Typography>
@@ -173,10 +174,10 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
             <InsertChartOutlinedIcon
-              sx={{ color: "#124086", fontSize: "50px" }}
+              sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: "#124086", fontSize: "32px" }}
+              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
             >
               Regions
             </Typography>
@@ -190,15 +191,15 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                   borderRadius: "8px",
                   width: "300px",
                   height: "160px",
-                  border: "1px solid #707070",
-                  backgroundColor: "#FAFAFA",
+                  border: `1px solid ${colors.borderMedium}`,
+                  backgroundColor: colors.backgroundDropdown,
                   textTransform: "none",
                   justifyContent: "flex-start",
                   display: "flex",
                   alignItems: "flex-start",
                   gap: 2,
                   "&:hover": {
-                    backgroundColor: "#f0f0f0",
+                    backgroundColor: colors.backgroundHover,
                   },
                   "@media (max-width: 1036px)": {
                     flexGrow: "1",
@@ -248,7 +249,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                   <Typography
                     variant="h6"
                     sx={{
-                      color: "#124086",
+                      color: colors.primaryDark,
                       fontWeight: 700,
                       fontSize: "1.25rem",
                       lineHeight: 1.1,
@@ -260,7 +261,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
                   <Typography
                     variant="body2"
                     sx={{
-                      color: "#124086",
+                      color: colors.primaryDark,
                       fontSize: "0.875rem",
                       lineHeight: 1.1,
                       textAlign: "left",
@@ -279,14 +280,14 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <Button
             sx={{
               borderRadius: 1,
-              border: "1px solid #0379C8",
+              border: `1px solid ${colors.primary}`,
               padding: "4px 8px",
               gap: "4px",
-              color: "#0379C8",
-              backgroundColor: "#FFFFFF",
+              color: colors.primary,
+              backgroundColor: colors.white,
               textTransform: "none",
               "&:hover": {
-                backgroundColor: "#f5f5f5",
+                backgroundColor: colors.backgroundButtonHover,
               },
             }}
             onClick={onClose}
