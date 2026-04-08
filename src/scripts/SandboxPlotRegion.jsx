@@ -54,7 +54,7 @@ export default function SandboxPlotRegion(props) {
     const copiedLayout = layoutRef.current;
     copiedLayout.width = el.parentNode.getBoundingClientRect().width;
     copiedLayout.height = el.getBoundingClientRect().height - 24;
-    const angle = window.innerWidth <= 1000 ? 90 : 0;
+    const angle = window.innerWidth <= 768 ? 0 : 45;
     const dtick = window.innerWidth <= 768 ? 10 : 5;
     const titleX = window.innerWidth <= 768 ? 0.5 : 0.4;
 
@@ -66,8 +66,11 @@ export default function SandboxPlotRegion(props) {
 
     // only change legend if the object exists
     if (copiedLayout.legend) {
-      copiedLayout.legend.x = window.innerWidth <= 768 ? 0 : 0.65;
-      copiedLayout.legend.y = window.innerWidth <= 768 ? -0.15 : 1.125;
+      const chartHeight = el.getBoundingClientRect().height - 24;
+      copiedLayout.legend.x = 0.5;
+      // Keep legend a fixed 50px above the chart top regardless of zoom
+      const topMargin = window.innerWidth <= 768 ? 130 : 170;
+      copiedLayout.legend.y = chartHeight > 0 ? 1 + (topMargin - 80) / chartHeight : 1.25;
     }
 
     // only change title if the object exists
@@ -78,7 +81,7 @@ export default function SandboxPlotRegion(props) {
       const shortTitle = splitTitle(chartTitle);
       copiedLayout.title.text =
         window.innerWidth <= 768 ? shortTitle : chartTitle;
-      copiedLayout.title.x = titleX;
+      copiedLayout.title.x = 0.5;
     }
 
     setLayout({ ...copiedLayout });
