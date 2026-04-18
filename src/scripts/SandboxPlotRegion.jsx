@@ -54,14 +54,12 @@ export default function SandboxPlotRegion(props) {
     const copiedLayout = layoutRef.current;
     copiedLayout.width = el.parentNode.getBoundingClientRect().width;
     copiedLayout.height = el.getBoundingClientRect().height - 24;
-    const angle = window.innerWidth <= 768 ? 0 : 45;
     const dtick = window.innerWidth <= 768 ? 10 : 5;
-    const titleX = window.innerWidth <= 768 ? 0.5 : 0.4;
 
     // only change xaxis if the object exists
     if (copiedLayout.xaxis) {
-      copiedLayout.xaxis.tickangle = angle;
-      copiedLayout.xaxis.dtick = dtick;
+      copiedLayout.xaxis.tickangle = originalLayoutRef.current?.xaxis?.tickangle ?? -90;
+      copiedLayout.xaxis.dtick = originalLayoutRef.current?.xaxis?.dtick ?? dtick;
     }
 
     // only change legend if the object exists
@@ -70,7 +68,8 @@ export default function SandboxPlotRegion(props) {
       copiedLayout.legend.x = 0.5;
       // Keep legend a fixed 50px above the chart top regardless of zoom
       const topMargin = window.innerWidth <= 768 ? 130 : 170;
-      copiedLayout.legend.y = chartHeight > 0 ? 1 + (topMargin - 80) / chartHeight : 1.25;
+      copiedLayout.legend.y =
+        chartHeight > 0 ? 1 + (topMargin - 80) / chartHeight : 1.25;
     }
 
     // only change title if the object exists
@@ -81,7 +80,7 @@ export default function SandboxPlotRegion(props) {
       const shortTitle = splitTitle(chartTitle);
       copiedLayout.title.text =
         window.innerWidth <= 768 ? shortTitle : chartTitle;
-      copiedLayout.title.x = 0.5;
+      copiedLayout.title.x = originalLayoutRef.current?.title?.x ?? 0.5;
     }
 
     setLayout({ ...copiedLayout });

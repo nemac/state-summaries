@@ -860,7 +860,9 @@ export default function SandboxControls() {
 
           {chartType === "recharts" && (
             <Box display="flex" alignItems="center" gap={0.5} ml={2}>
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
+              <Typography
+                sx={{ fontSize: "14px", color: colors.textSecondary }}
+              >
                 Plotly
               </Typography>
               <Switch
@@ -868,7 +870,9 @@ export default function SandboxControls() {
                 onChange={(e) => setUseRechartsRenderer(e.target.checked)}
                 size="small"
               />
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
+              <Typography
+                sx={{ fontSize: "14px", color: colors.textSecondary }}
+              >
                 Recharts
               </Typography>
             </Box>
@@ -881,8 +885,8 @@ export default function SandboxControls() {
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            height: "calc(100% - 250px)",
-            maxHeight: "calc(100% - 250px)",
+            height: "calc(100% - 100px)",
+            maxHeight: "calc(100% - 100px)",
             minHeight: `400px`,
             [theme.breakpoints.down("sm")]: {
               height: `575px !important`,
@@ -947,7 +951,10 @@ export default function SandboxControls() {
                       alt="Change in Annual Precipitation Map"
                     />
                   </Box>
-                  <Typography variant="h4" sx={{ color: colors.textMuted, py: 4 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: colors.textMuted, py: 4 }}
+                  >
                     Legend Placeholder
                   </Typography>
                 </Box>

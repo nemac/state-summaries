@@ -79,7 +79,7 @@ export const getPlotlyLayout = (options) => {
     zeroLineColor = colors.zeroLine,
     zerolinewidth = 1.25,
     dtick = window.innerWidth <= smallScreenWidth ? 10 : 5,
-    textAngle = window.innerWidth <= 1000 ? 90 : 0,
+    textAngle = -90,
     periodGroups = 5,
     yAxisText = "",
     yRange = [0, 100],
@@ -335,7 +335,7 @@ export const getPredictedDataLayout = (options) => {
   return {
     displayModeBar: false,
     showlegend: showLegend,
-    autosize: true,
+    autosize: false,
     bargap: bargap,
     plot_bgcolor: chartBackgroundColor,
     paper_bgcolor: chartBackgroundColor,
