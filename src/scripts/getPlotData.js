@@ -97,11 +97,14 @@ export const getHoverTemplate = (type, data, selectedSeason) => {
   }
 };
 
-export const setChartColor = (chartType) => {
+export const setChartColor = (chartType, climateOption) => {
   if (chartType === "Precipitation") {
     return colors.precipitation;
   }
-  return colors.temperature; // Temperature
+  if (climateOption?.direction === "cold") {
+    return colors.temperatureCold;
+  }
+  return colors.temperatureWarm;
 };
 
 export const getPlotData = (data) => {

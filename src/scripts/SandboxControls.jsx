@@ -288,10 +288,10 @@ export default function SandboxControls() {
           bargroupgap: 5,
           marker: {
             line: {
-              color: setChartColor(chartType),
+              color: setChartColor(chartType, climateOption),
               width: 1,
             },
-            color: setChartColor(chartType),
+            color: setChartColor(chartType, climateOption),
           },
           hoverinfo: "x+y",
           hoverTemplate: barChartHoverTemplate,

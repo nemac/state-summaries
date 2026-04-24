@@ -36,7 +36,8 @@ export const colors = {
 
   // === Observed Data Chart Colors ===
   precipitation: "#5AB4AC",
-  temperature: "#FEB24C",
+  temperatureCold: "#91BFDB",
+  temperatureWarm: "#FBB14D",
 
   // === Emissions Scenarios (base RGB for alpha variants) ===
   scenario: {
