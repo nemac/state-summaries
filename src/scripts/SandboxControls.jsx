@@ -20,6 +20,7 @@ import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
 import ObservedProjectedChart from "../components/ObservedProjectedChart.jsx";
 import ZoomableImage from "../components/ZoomableImage.jsx";
+import MapsComponent from "../components/MapsComponent.jsx";
 import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -918,60 +919,17 @@ export default function SandboxControls() {
           )}
 
           {!openError && (
-            <Box
-              display="flex"
-              flexDirection="row"
-              m={1}
-              justifyContent="center"
-              flex={1}
-              flexGrow={3}
-              sx={{
-                height: "calc(100% - 10px)",
-                [theme.breakpoints.down("sm")]: {
-                  height: "575px",
-                },
-              }}
-            >
-              {showMapImage ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <Typography variant="h3" sx={{ fontWeight: 600, py: 4 }}>
-                    Title Placeholder
-                  </Typography>
-                  <Box sx={{ flex: 1, width: "85%", minHeight: 0 }}>
-                    <ZoomableImage
-                      src="/tempData/gergMap.png"
-                      alt="Change in Annual Precipitation Map"
-                    />
-                  </Box>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: colors.textMuted, py: 4 }}
-                  >
-                    Legend Placeholder
-                  </Typography>
-                </Box>
-              ) : chartType === "recharts" && useRechartsRenderer ? (
-                <ObservedProjectedChart
-                  data={rechartsData}
-                  bracketData={rechartsBrackets}
-                  yDomain={rechartsYDomain}
-                  chartTitle={chartTitle}
-                />
-              ) : (
-                <SandboxPlotRegion
-                  plotlyData={chartData}
-                  plotlyLayout={chartLayout}
-                />
-              )}
-            </Box>
+            <MapsComponent
+              showMapImage={showMapImage}
+              chartType={chartType}
+              useRechartsRenderer={useRechartsRenderer}
+              rechartsData={rechartsData}
+              rechartsBrackets={rechartsBrackets}
+              rechartsYDomain={rechartsYDomain}
+              chartTitle={chartTitle}
+              chartData={chartData}
+              chartLayout={chartLayout}
+            />
           )}
         </Grid>
       </Box>
