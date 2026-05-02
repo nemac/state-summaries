@@ -274,6 +274,7 @@ export default function ObservedProjectedChart({
   return (
     <Box
       ref={chartContainerRef}
+      className="chart-export-target"
       sx={{
         position: "relative",
         width: "100%",

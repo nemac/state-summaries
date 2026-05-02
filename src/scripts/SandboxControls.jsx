@@ -849,6 +849,11 @@ export default function SandboxControls() {
             climateOption={climateOption}
             chartTitle={chartTitle}
             chartData={chartData}
+            chartType={
+              chartType === "recharts" && useRechartsRenderer
+                ? "recharts"
+                : "plotly"
+            }
             period={"1900-2024"}
             sx={{
               borderRadius: "4px",
