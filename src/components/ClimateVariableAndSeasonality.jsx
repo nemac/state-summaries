@@ -409,7 +409,7 @@ const ClimateVariableAndSeasonality = (props) => {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {config.mapsSeasonalityOptions.map((option) => (
                     <MegaMenuButton
-                      key={option.value}
+                      key={option.label}
                       icon={
                         <ThunderstormIcon
                           sx={{ color: colors.navy, fontSize: "1.5rem" }}
@@ -452,7 +452,7 @@ const ClimateVariableAndSeasonality = (props) => {
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {config.mapsSeasonalityOptions.map((option) => (
                     <MegaMenuButton
-                      key={option.value}
+                      key={option.label}
                       icon={
                         <ThunderstormIcon
                           sx={{ color: colors.navy, fontSize: "1.5rem" }}
