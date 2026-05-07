@@ -108,7 +108,11 @@ const ClimateVariableAndSeasonality = (props) => {
               sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
+              sx={{
+                fontWeight: 600,
+                color: colors.primaryDark,
+                fontSize: "32px",
+              }}
             >
               Charts
             </Typography>
@@ -119,7 +123,11 @@ const ClimateVariableAndSeasonality = (props) => {
               ml={2}
               mr={2}
               mb={2}
-              sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
+              sx={{
+                fontWeight: 600,
+                color: colors.textSecondary,
+                fontSize: "24px",
+              }}
             >
               Historical Annual Extremes
             </Typography>
@@ -134,10 +142,16 @@ const ClimateVariableAndSeasonality = (props) => {
                   marginLeft: "32px",
                 }}
               >
-                <ThermostatIcon sx={{ color: colors.textSecondary, fontSize: "1.2rem" }} />
+                <ThermostatIcon
+                  sx={{ color: colors.textSecondary, fontSize: "1.2rem" }}
+                />
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
+                  sx={{
+                    fontWeight: 700,
+                    color: colors.textTertiary,
+                    fontSize: "16px",
+                  }}
                 >
                   Temperature
                 </Typography>
@@ -174,7 +188,11 @@ const ClimateVariableAndSeasonality = (props) => {
                 />
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
+                  sx={{
+                    fontWeight: 700,
+                    color: colors.textTertiary,
+                    fontSize: "16px",
+                  }}
                 >
                   Precipitation
                 </Typography>
@@ -207,7 +225,11 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
+                sx={{
+                  fontWeight: 600,
+                  color: colors.textSecondary,
+                  fontSize: "24px",
+                }}
               >
                 Historical Seasonality
               </Typography>
@@ -276,9 +298,13 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
+                sx={{
+                  fontWeight: 600,
+                  color: colors.textSecondary,
+                  fontSize: "24px",
+                }}
               >
-                Observed and Projected
+                Temperature Projections
               </Typography>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
@@ -301,9 +327,15 @@ const ClimateVariableAndSeasonality = (props) => {
 
         <Box sx={{ mb: 3 }}>
           <Box sx={sectionTitleStyle}>
-            <MapOutlinedIcon sx={{ color: colors.primaryDark, fontSize: "50px" }} />
+            <MapOutlinedIcon
+              sx={{ color: colors.primaryDark, fontSize: "50px" }}
+            />
             <Typography
-              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
+              sx={{
+                fontWeight: 600,
+                color: colors.primaryDark,
+                fontSize: "32px",
+              }}
             >
               Maps
             </Typography>
@@ -314,9 +346,13 @@ const ClimateVariableAndSeasonality = (props) => {
               <Typography
                 ml={2}
                 mr={2}
-                sx={{ fontWeight: 600, color: colors.textSecondary, fontSize: "24px" }}
+                sx={{
+                  fontWeight: 600,
+                  color: colors.textSecondary,
+                  fontSize: "24px",
+                }}
               >
-                Seasonality
+                Precipitation Projections: Seasonality
               </Typography>
               <FormControl sx={{ minWidth: 250 }}>
                 <Select
@@ -361,7 +397,11 @@ const ClimateVariableAndSeasonality = (props) => {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
+                    sx={{
+                      fontWeight: 700,
+                      color: colors.textTertiary,
+                      fontSize: "16px",
+                    }}
                   >
                     Midcentury
                   </Typography>
@@ -400,7 +440,11 @@ const ClimateVariableAndSeasonality = (props) => {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ fontWeight: 700, color: colors.textTertiary, fontSize: "16px" }}
+                    sx={{
+                      fontWeight: 700,
+                      color: colors.textTertiary,
+                      fontSize: "16px",
+                    }}
                   >
                     Late Century
                   </Typography>
