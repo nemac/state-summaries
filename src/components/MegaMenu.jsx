@@ -95,9 +95,9 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
         >
           <Typography
             id="mega-menu-modal-title"
-            variant="h2"
+            variant="h5"
             component="h2"
-            sx={{ fontWeight: 600 }}
+            sx={{ fontWeight: 700, color: colors.primary, fontSize: "40px" }}
           >
             US States, Territories, and Regions
           </Typography>
