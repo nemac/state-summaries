@@ -8,7 +8,7 @@ const green = "127, 188, 65";
 const brown = "153, 52, 4";
 
 /**
- * Generates an array of 5-year range strings (e.g., "1930—1934", "1935—1939")
+ * Generates an array of 5-year range strings (e.g., "1930–1934", "1935–1939")
  * between a given start and end year.
  *
  * The groups are aligned to the standard half-decade boundaries (years ending in 0 or 5).
@@ -50,8 +50,8 @@ export const createFiveYearGroups = (startYear, endYear) => {
 
     // 5. Only push the group if the adjusted start is valid (e.g., prevents "2024—2023")
     if (groupStart <= groupEnd) {
-      // Use the '—' (em dash) separator as requested
-      groups.push(`${groupStart}—${groupEnd}`);
+      // Use the '–' (en dash) separator as requested
+      groups.push(`${groupStart}–${groupEnd}`);
     }
 
     // Move to the next 5-year block
