@@ -114,7 +114,7 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
           <TextField
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
-            placeholder="Search for state, territory, or Region"
+            placeholder="Search for a state, territory, or region"
             variant="outlined"
             sx={{
               minWidth: "250px",
@@ -136,7 +136,11 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
+              sx={{
+                fontWeight: 600,
+                color: colors.primaryDark,
+                fontSize: "32px",
+              }}
             >
               States and Territories
             </Typography>
@@ -177,7 +181,11 @@ const MegaMenu = ({ open, onClose, onSelect }) => {
               sx={{ color: colors.primaryDark, fontSize: "50px" }}
             />
             <Typography
-              sx={{ fontWeight: 600, color: colors.primaryDark, fontSize: "32px" }}
+              sx={{
+                fontWeight: 600,
+                color: colors.primaryDark,
+                fontSize: "32px",
+              }}
             >
               Regions
             </Typography>
