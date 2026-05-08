@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -119,17 +120,54 @@ export default function About() {
           variant="body1"
           sx={{
             lineHeight: 1.8,
+            marginBottom: "16px",
+            color: colors.textSecondary,
+          }}
+        >
+          This Data Explorer is a companion to the{" "}
+          <Link
+            href="https://statesummaries.ncics.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            State Climate Summaries
+          </Link>
+          , which provide information to support climate-related
+          decision-making. Created to meet a demand for state-level information
+          following the publication of the Third National Climate Assessment
+          (2014), the State Climate Summaries first appeared in 2017, with a
+          second version published in 2022. The Data Explorer was created to
+          accompany the third version, released in the summer of 2026.
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
             marginBottom: "32px",
             color: colors.textSecondary,
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          The State Climate Summaries are produced by the{" "}
+          <Link
+            href="https://ncics.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            North Carolina Institute for Climate Studies (NCICS)
+          </Link>
+          , which is part of North Carolina State University. The Data Explorer
+          was developed by NCICS in collaboration with the{" "}
+          <Link
+            href="https://go.unca.edu/nemac/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            National Environmental Mapping and Applications Center (NEMAC)
+          </Link>{" "}
+          at UNC Asheville.
         </Typography>
 
         <Typography
@@ -146,17 +184,91 @@ export default function About() {
           variant="body1"
           sx={{
             lineHeight: 1.8,
+            marginBottom: "16px",
+            color: colors.textSecondary,
+          }}
+        >
+          The Data Explorer allows users to generate customized figures by
+          selecting a desired metric and geographic area.
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
+            marginBottom: "8px",
+            color: colors.textSecondary,
+          }}
+        >
+          The tool features a suite of observed temperature and precipitation
+          metrics presented in a similar format to charts featured in the State
+          Climate Summaries, including the following:
+        </Typography>
+        <Box
+          component="ul"
+          sx={{
+            lineHeight: 1.8,
+            marginTop: 0,
+            marginBottom: "16px",
+            paddingLeft: "24px",
+            color: colors.textSecondary,
+          }}
+        >
+          <Typography component="li" variant="body1" sx={{ lineHeight: 1.8 }}>
+            annual and seasonal average temperature, as well as average minimum
+            and maximum temperature;
+          </Typography>
+          <Typography component="li" variant="body1" sx={{ lineHeight: 1.8 }}>
+            annual number of days or nights that reach certain temperature
+            thresholds (such as days 100°F or warmer, nights 0°F or colder, or
+            nights when the temperature did not drop below 80°F);
+          </Typography>
+          <Typography component="li" variant="body1" sx={{ lineHeight: 1.8 }}>
+            total annual and seasonal precipitation;
+          </Typography>
+          <Typography component="li" variant="body1" sx={{ lineHeight: 1.8 }}>
+            and annual number of extreme precipitation events (such as the
+            number of days with at least 3 inches of precipitation).
+          </Typography>
+        </Box>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
+            marginBottom: "16px",
+            color: colors.textSecondary,
+          }}
+        >
+          In addition to these historical metrics, the tool also allows users to
+          view future climate projections by generating annual average
+          temperature charts and annual and seasonal precipitation maps under
+          four possible scenarios associated with different levels of future
+          greenhouse gas emissions—low, intermediate, higher, and very high
+          emissions.
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
             marginBottom: "32px",
             color: colors.textSecondary,
           }}
         >
-          Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
-          ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-          egestas semper. Aenean ultricies mi vitae est. Mauris placerat
-          eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
-          Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit
-          amet, wisi.
+          Data are available for all 50 states plus Puerto Rico. The tool also
+          allows users to generate data by{" "}
+          <Link
+            href="https://www.ncei.noaa.gov/access/monitoring/reference-maps/us-climate-regions"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            US Climate Region
+          </Link>
+          , as well as for the contiguous United States as a whole. Note that
+          some metrics are not available for all regions due to data limitations
+          and the fact that some thresholds are not applicable at certain
+          locations (e.g., 100°F days are extremely rare in Alaska). In some
+          cases, data may not exactly match the figures as shown in the State
+          Climate Summaries due to dataset and quality control updates.
         </Typography>
 
         <Typography
@@ -167,7 +279,21 @@ export default function About() {
             marginBottom: "12px",
           }}
         >
-          Getting Started
+          Get Started
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
+            marginBottom: "16px",
+            color: colors.textSecondary,
+          }}
+        >
+          The best way to see what the Data Explorer offers is to try it out:
+          choose a state or region from the first drop-down menu and a metric
+          from the second; the chart or map will immediately appear. When you
+          hover over a line or bar on a graph, precise data for a particular
+          year or date range will pop up.
         </Typography>
         <Typography
           variant="body1"
@@ -177,13 +303,8 @@ export default function About() {
             color: colors.textSecondary,
           }}
         >
-          Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam
-          varius, turpis et commodo pharetra, est eros bibendum elit, nec
-          luctus magna felis sollicitudin mauris. Integer in mauris eu nibh
-          euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec
-          lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula ut
-          dictum pharetra, nisi nunc fringilla magna, in commodo elit erat
-          nec turpis.
+          If you click on the “Save Chart/Data” button, you can download the
+          chart or map as a PNG or SVG file or the underlying data as a CSV.
         </Typography>
 
         <Typography
@@ -200,15 +321,49 @@ export default function About() {
           variant="body1"
           sx={{
             lineHeight: 1.8,
+            marginBottom: "16px",
             color: colors.textSecondary,
           }}
         >
-          Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-          nibh, ut fermentum massa justo sit amet risus. Maecenas sed diam
-          eget risus varius blandit sit amet non magna. Nullam quis risus
-          eget urna mollis ornare vel eu leo. Cras mattis consectetur purus
-          sit amet fermentum. Praesent commodo cursus magna, vel scelerisque
-          nisl consectetur et.
+          For more information about data, methods, scenarios, and more, please
+          view the technical details{" "}
+          <Link
+            href="https://data-explorer.nemac.org/tempData/sample-local-pdf.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            here
+          </Link>
+          . For additional questions please contact{" "}
+          <Link
+            href="mailto:info-state-summaries@ncics.org"
+            sx={{ color: colors.primary }}
+          >
+            info-state-summaries@ncics.org
+          </Link>
+          .
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
+            color: colors.textSecondary,
+          }}
+        >
+          Terms of Reuse: Figures generated by the Data Explorer are copyright
+          protected. Reuse is permitted under the terms of CC BY-SA 4.0, the
+          Creative Commons Attribution–ShareAlike 4.0 International license.
+          Visit{" "}
+          <Link
+            href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: colors.primary }}
+          >
+            https://creativecommons.org/licenses/by-sa/4.0/legalcode.en
+          </Link>{" "}
+          for more information on this license.
         </Typography>
       </Box>
     </Box>
