@@ -854,6 +854,20 @@ export default function SandboxControls() {
                 : "plotly"
             }
             period={"1900-2024"}
+            renderExportChart={
+              chartType === "recharts" && useRechartsRenderer
+                ? (w, h) => (
+                    <Box sx={{ width: `${w}px`, height: `${h}px` }}>
+                      <ObservedProjectedChart
+                        data={rechartsData}
+                        bracketData={rechartsBrackets}
+                        yDomain={rechartsYDomain}
+                        chartTitle={chartTitle}
+                      />
+                    </Box>
+                  )
+                : undefined
+            }
             sx={{
               borderRadius: "4px",
               border: `1px solid ${colors.primary}`,

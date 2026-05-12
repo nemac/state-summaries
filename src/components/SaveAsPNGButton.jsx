@@ -1,4 +1,5 @@
 import React from "react";
+import { createRoot } from "react-dom/client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -13,6 +14,7 @@ const SaveAsPNGButton = (props) => {
     heightARG = 1200,
     chartType = "plotly",
     chartRef,
+    renderExportChart,
   } = props;
 
   const exportPlotly = async () => {
@@ -45,30 +47,61 @@ const SaveAsPNGButton = (props) => {
     downloadFile(imgData);
   };
 
+  // Off-screen re-render: mount a fresh copy of the chart at the exact
+  // target dimensions, wait for Recharts/ResponsiveContainer to settle,
+  // then rasterize at pixelRatio: 1 for exact output size.
   const exportRecharts = async () => {
-    const root = chartRef?.current ?? document;
-    const target = root.querySelector(".chart-export-target");
-
-    if (!target) {
-      console.error("Recharts chart not found");
+    if (typeof renderExportChart !== "function") {
+      console.error(
+        "Recharts PNG export requires a renderExportChart render prop",
+      );
       return;
     }
 
-    const renderedWidth = target.offsetWidth || widthARG;
-    const renderedHeight = target.offsetHeight || heightARG;
-    const pixelRatio = Math.max(
-      widthARG / renderedWidth,
-      heightARG / renderedHeight,
-    );
+    const w = Number(widthARG);
+    const h = Number(heightARG);
 
-    const imgData = await toPng(target, {
-      backgroundColor: "#ffffff",
-      pixelRatio,
-      width: renderedWidth,
-      height: renderedHeight,
-    });
+    const offscreen = document.createElement("div");
+    offscreen.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: -100000px;
+      width: ${w}px;
+      height: ${h}px;
+      background-color: #ffffff;
+      overflow: hidden;
+      pointer-events: none;
+    `;
+    document.body.appendChild(offscreen);
 
-    downloadFile(imgData);
+    const reactRoot = createRoot(offscreen);
+
+    try {
+      reactRoot.render(renderExportChart(w, h));
+
+      // Wait for layout: ResponsiveContainer uses ResizeObserver, which
+      // fires asynchronously, and BracketOverlay measures on the next
+      // animation frame. 250ms is comfortably past both.
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      const target = offscreen.firstElementChild;
+      if (!target) {
+        console.error("Off-screen chart failed to mount");
+        return;
+      }
+
+      const imgData = await toPng(target, {
+        backgroundColor: "#ffffff",
+        pixelRatio: 1,
+        width: w,
+        height: h,
+      });
+
+      downloadFile(imgData);
+    } finally {
+      reactRoot.unmount();
+      offscreen.remove();
+    }
   };
 
   const convertToPng = async () => {

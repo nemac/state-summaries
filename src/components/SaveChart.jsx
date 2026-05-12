@@ -24,7 +24,7 @@ import SaveAsSVGButton from "./SaveAsSVGButton";
 import { colors } from "../theme";
 
 const SaveChart = (props) => {
-  const { chartTitle, chartData, chartType, sx } = props;
+  const { chartTitle, chartData, chartType, sx, renderExportChart } = props;
   const [open, setOpen] = useState(false);
   const [selectedFormat, setSelectedFormat] = useState("PNG");
   const [width, setWidth] = useState("1600");
@@ -345,15 +345,16 @@ const SaveChart = (props) => {
                     widthARG={width}
                     heightARG={height}
                     chartType={chartType}
+                    renderExportChart={renderExportChart}
                   />
                 )}
                 {selectedFormat === "SVG" && (
                   <SaveAsSVGButton
-                    width={width}
-                    height={height}
+                    widthARG={width}
+                    heightARG={height}
                     chartTitle={chartTitle}
                     chartData={chartData}
-                    screenSize={{ width: 1000, height: 500 }}
+                    chartType={chartType}
                   />
                 )}
                 {selectedFormat === "CSV" && (
