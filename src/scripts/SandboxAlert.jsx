@@ -1,43 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { orange, red } from "@mui/material/colors";
-import { colors } from "../theme";
 
-export default function Alert(props) {
+// Maps the legacy errorType prop ("Error" / "Warning") to MUI's severity.
+const toSeverity = (errorType) => {
+  switch (errorType) {
+    case "Error":
+      return "error";
+    case "Warning":
+      return "warning";
+    default:
+      return "warning";
+  }
+};
+
+export default function SandboxAlert(props) {
   const { chartErrorTitle, chartErrorMessage, errorType, shouldOpenAlert } =
     props;
-
-  const errorBgColor = red[500];
-  const errorBorderColor = red[900];
-  const warningBgColor = orange[500];
-  const warningBorderColor = orange[800];
-
-  // get the background color for error type
-  const backgroundColor = (theErrorType) => {
-    switch (theErrorType) {
-      case "Error":
-        return errorBgColor;
-      case "Warning":
-        return warningBgColor;
-      default:
-        return warningBgColor;
-    }
-  };
-
-  // get the border color for error type
-  const borderColor = (theErrorType) => {
-    switch (theErrorType) {
-      case "Error":
-        return errorBorderColor;
-      case "Warning":
-        return warningBorderColor;
-      default:
-        return warningBorderColor;
-    }
-  };
 
   return (
     <Collapse
@@ -48,41 +29,25 @@ export default function Alert(props) {
         marginLeft: "-39px",
       }}
     >
-      <Box
+      <Alert
+        severity={toSeverity(errorType)}
+        variant="standard"
         sx={{
-          color: colors.textPrimary,
           position: "absolute",
-          zIndex: "1000",
+          zIndex: 1000,
           width: "100%",
+          mr: 2,
+          borderRadius: 4,
         }}
-        bgcolor={backgroundColor(errorType)}
-        color="text.primary"
-        p={1}
-        mr={2}
-        borderRadius={4}
-        border={1}
-        borderColor={borderColor(errorType)}
       >
-        <Box fontWeight="fontWeightBold" py={1} display="flex">
-          <div
-            style={{
-              display: "flex",
-              padding: "7px 0",
-              fontSize: "22px",
-              marginRight: "12px",
-            }}
-          >
-            <ErrorOutlineIcon />
-          </div>
-          <div style={{ padding: "10px 0" }}>{chartErrorTitle}</div>
-        </Box>
+        <AlertTitle sx={{ fontWeight: "bold" }}>{chartErrorTitle}</AlertTitle>
         {chartErrorMessage}
-      </Box>
+      </Alert>
     </Collapse>
   );
 }
 
-Alert.propTypes = {
+SandboxAlert.propTypes = {
   chartErrorTitle: PropTypes.string,
   chartErrorMessage: PropTypes.string,
   errorType: PropTypes.string,
