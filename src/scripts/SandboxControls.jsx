@@ -1031,20 +1031,36 @@ export default function SandboxControls() {
                     flexDirection: "column",
                     alignItems: "center",
                     width: "100%",
-                    height: "100%",
+                    // The MUI Grid container has no definite height, so a % height
+                    // here collapses. Anchor to the viewport so the map fills the
+                    // space below the header/controls.
+                    height: "calc(100vh - 180px)",
+                    minHeight: 440,
                   }}
                 >
                   <Typography
-                    variant="h3"
-                    sx={{ fontWeight: 600, pt: 4, pb: 3, textAlign: "center" }}
+                    variant="h5"
+                    sx={{ fontWeight: 600, pt: 1, pb: 1, textAlign: "center" }}
                   >
                     {mapEntry
-                      ? mapEntry.subtitle
+                      ? [
+                          megaMenuSelection.label,
+                          ...mapEntry.subtitle.split(", ").slice(1),
+                        ].join(", ")
                       : `${megaMenuSelection.label}, ${climateOption.label}`}
                   </Typography>
                   {mapEntry ? (
                     <>
-                      <Box sx={{ flex: 1, width: "85%", minHeight: 0 }}>
+                      {/* Explicit height (not flex) so ZoomableImage's 100% height
+                          resolves; the map is landscape/height-limited, so this
+                          height drives how large it renders. */}
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "calc(100vh - 380px)",
+                          minHeight: 320,
+                        }}
+                      >
                         <ZoomableImage
                           src={mapEntry.src}
                           alt={mapEntry.subtitle}
@@ -1055,10 +1071,11 @@ export default function SandboxControls() {
                         src="/precip/PrecipLegend.svg"
                         alt="Change in Total Precipitation (%) legend"
                         sx={{
-                          height: 120,
+                          height: 130,
                           maxWidth: "95%",
                           objectFit: "contain",
-                          py: 3,
+                          mt: "auto",
+                          py: 1,
                         }}
                       />
                     </>

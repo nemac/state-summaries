@@ -51,6 +51,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The manifest build crops the white padding off the CONUS maps with
+      # ImageMagick. If it were ever missing the build falls back to untrimmed
+      # images, but we install it so production always gets the cropped maps.
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
       # Unit tests (manifest-normalization logic). A failure fails the deploy.
       - name: Run tests
         run: npm test

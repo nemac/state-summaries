@@ -114,3 +114,6 @@ pyvenv.cfg
 # archive; only the JPG previews the app uses are committed.
 public/Precip_Organized/**/*.ai
 public/Precip_Organized/**/*.aix
+
+# Generated at build time (CONUS previews cropped of their white padding).
+public/precip/conus/

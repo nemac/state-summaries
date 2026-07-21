@@ -2,29 +2,29 @@
 //
 // The manifest (src/data/precipMapManifest.json) is generated at build time
 // from public/Precip_Organized/INDEX.csv by scripts/buildPrecipManifest.mjs.
-// It is keyed by a canonical region key -> century -> scenario -> season.
+// It is keyed by region -> century -> scenario -> season, and the collection
+// only holds four regions: Alaska, Hawaii, Puerto Rico/USVI, and the
+// contiguous U.S. (CONUS).
 //
-// This module maps an app selection value to that canonical region key. It
-// MUST stay in sync with indexRegionToKey in scripts/precipManifestLib.mjs.
+// Per the map authors: contiguous-U.S. states all show the single CONUS-wide
+// map for the chosen season/scenario (no per-state cutout or outline). Only the
+// three out-of-CONUS areas have their own maps. So any selection that isn't
+// Alaska / Hawaii / Puerto Rico-USVI resolves to CONUS.
 
-// Region selections whose value differs from the canonical manifest key.
-// State selections use their full name, which already matches the manifest.
-const SELECTION_TO_REGION_KEY = {
-  CONUS: "CONUS",
+// Selections that map to their own (non-CONUS) region. Everything else -> CONUS.
+const OCONUS_REGION_KEY = {
+  Alaska: "Alaska",
   alaska_region: "Alaska",
+  Hawaii: "Hawaii",
   hawaii: "Hawaii",
-  us_caribbean: "PRUSVI",
   Puerto_Rico: "PRUSVI",
+  us_caribbean: "PRUSVI",
 };
 
 /** App selection.value -> canonical manifest region key. */
 export function selectionValueToRegionKey(value) {
   if (!value) return null;
-  // Explicit aliases (regions, PR) win first.
-  if (SELECTION_TO_REGION_KEY[value]) return SELECTION_TO_REGION_KEY[value];
-  // Multi-word state values use underscores (e.g. "North_Dakota") while the
-  // manifest keys come from INDEX and use spaces ("North Dakota").
-  return value.replace(/_/g, " ");
+  return OCONUS_REGION_KEY[value] || "CONUS";
 }
 
 /**

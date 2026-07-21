@@ -1,1586 +1,728 @@
 {
   "Alaska": {
     "late": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_AK_Annual_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_AK_SON_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_AK_MAM_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_AK_JJA_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_AK_DJF_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
           "src": "/Precip_Organized/Late-Century/Annual/LC_SSP245_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
           "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP245_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP245_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP245_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP245_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Late Century, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_AK_Annual_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_AK_SON_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_AK_MAM_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_AK_JJA_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_AK_DJF_Precip_070526.jpg",
+          "subtitle": "Alaska, Late Century, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
           "src": "/Precip_Organized/Late-Century/Annual/LC_SSP585_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Late Century, Very high emissions (SSP5-8.5)"
         },
         "son": {
           "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP585_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Late Century, Very high emissions (SSP5-8.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP585_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Late Century, Very high emissions (SSP5-8.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP585_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Late Century, Very high emissions (SSP5-8.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP585_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Late Century, Very high emissions (SSP5-8.5)"
         }
       }
     },
     "mid": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_AK_Annual_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_AK_SON_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_AK_MAM_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_AK_JJA_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_AK_DJF_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
           "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_AK_Annual_Precip_012226.jpg",
-          "subtitle": "Alaska, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
           "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_AK_SON_Precip_012226.jpg",
-          "subtitle": "Alaska, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_AK_MAM_Precip_012226.jpg",
-          "subtitle": "Alaska, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_AK_JJA_Precip_012226.jpg",
-          "subtitle": "Alaska, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_AK_DJF_Precip_012226.jpg",
-          "subtitle": "Alaska, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_AK_Annual_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_AK_SON_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_AK_MAM_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_AK_JJA_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_AK_DJF_Precip_070526.jpg",
+          "subtitle": "Alaska, Midcentury, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
           "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP585_AK_Annual_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "son": {
           "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP585_AK_SON_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP585_AK_MAM_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP585_AK_JJA_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Alaska, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP585_AK_DJF_Precip_070526.jpg",
-          "subtitle": "Alaska, Mid-Century, Very high emissions (SSP5-8.5)"
-        }
-      }
-    }
-  },
-  "Arkansas": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Arkansas.png",
-          "subtitle": "Arkansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Arkansas.png",
-          "subtitle": "Arkansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Arkansas.png",
-          "subtitle": "Arkansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Arkansas.png",
-          "subtitle": "Arkansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Arkansas.png",
-          "subtitle": "Arkansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "PRUSVI": {
-    "late": {
-      "ssp370": {
-        "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, High emissions (SSP3-7.0)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, High emissions (SSP3-7.0)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, High emissions (SSP3-7.0)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, High emissions (SSP3-7.0)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, High emissions (SSP3-7.0)"
-        }
-      },
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP245_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP245_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP245_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP245_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP245_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      },
-      "ssp126": {
-        "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Low emissions (SSP1-2.6)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Low emissions (SSP1-2.6)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Low emissions (SSP1-2.6)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Low emissions (SSP1-2.6)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Low emissions (SSP1-2.6)"
-        }
-      },
-      "ssp585": {
-        "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP585_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Very high emissions (SSP5-8.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP585_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Very high emissions (SSP5-8.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP585_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Very high emissions (SSP5-8.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP585_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Very high emissions (SSP5-8.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP585_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Late-Century, Very high emissions (SSP5-8.5)"
-        }
-      }
-    },
-    "mid": {
-      "ssp370": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, High emissions (SSP3-7.0)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, High emissions (SSP3-7.0)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, High emissions (SSP3-7.0)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, High emissions (SSP3-7.0)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, High emissions (SSP3-7.0)"
-        }
-      },
-      "ssp126": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Low emissions (SSP1-2.6)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Low emissions (SSP1-2.6)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Low emissions (SSP1-2.6)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Low emissions (SSP1-2.6)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Low emissions (SSP1-2.6)"
-        }
-      },
-      "ssp585": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP585_Caribbean_Annual_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Very high emissions (SSP5-8.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP585_Caribbean_SON_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Very high emissions (SSP5-8.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP585_Caribbean_MAM_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Very high emissions (SSP5-8.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP585_Caribbean_JJA_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Very high emissions (SSP5-8.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP585_Caribbean_DJF_Precip_070626.jpg",
-          "subtitle": "Caribbean (Puerto Rico & U.S. Virgin Islands), Mid-Century, Very high emissions (SSP5-8.5)"
-        }
-      },
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_PRUSVI_Annual_Precip_031326.jpg",
-          "subtitle": "Puerto Rico & U.S. Virgin Islands, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_PRUSVI_SON_Precip_031326.jpg",
-          "subtitle": "Puerto Rico & U.S. Virgin Islands, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_PRUSVI_MAM_Precip_031326.jpg",
-          "subtitle": "Puerto Rico & U.S. Virgin Islands, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_PRUSVI_JJA_Precip_031326.jpg",
-          "subtitle": "Puerto Rico & U.S. Virgin Islands, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_PRUSVI_DJF_Precip_070626.jpg",
-          "subtitle": "Puerto Rico & U.S. Virgin Islands, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Colorado": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_CO_Annual_Precip_052725.jpg",
-          "subtitle": "Colorado, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_CO_SON_Precip_052725.jpg",
-          "subtitle": "Colorado, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_CO_MAM_Precip_052725.jpg",
-          "subtitle": "Colorado, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_CO_JJA_Precip_052725.jpg",
-          "subtitle": "Colorado, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_CO_DJF_Precip_052725.jpg",
-          "subtitle": "Colorado, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Connecticut": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Connecticut.png",
-          "subtitle": "Connecticut, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Connecticut.png",
-          "subtitle": "Connecticut, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Connecticut.png",
-          "subtitle": "Connecticut, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Connecticut.png",
-          "subtitle": "Connecticut, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Connecticut.png",
-          "subtitle": "Connecticut, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Alaska, Midcentury, Very high emissions (SSP5-8.5)"
         }
       }
     }
   },
   "CONUS": {
     "late": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/LC_SSP126_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/LC_SSP126_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/LC_SSP126_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/LC_SSP126_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/LC_SSP126_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP245_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/LC_SSP245_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP245_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/LC_SSP245_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP245_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/LC_SSP245_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP245_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/LC_SSP245_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP245_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/LC_SSP245_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/LC_SSP370_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/LC_SSP370_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/LC_SSP370_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/LC_SSP370_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/LC_SSP370_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP585_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/LC_SSP585_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP585_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/LC_SSP585_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP585_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/LC_SSP585_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP585_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/LC_SSP585_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP585_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Late-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/LC_SSP585_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"
         }
       }
     },
     "mid": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/MC_SSP126_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/MC_SSP126_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/MC_SSP126_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/MC_SSP126_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/precip/conus/MC_SSP126_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_CONUS_Annual_Precip_121525.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP245_CONUS_Annual_Precip_121525.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_CONUS_SON_Precip_121525.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP245_CONUS_SON_Precip_121525.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_CONUS_MAM_Precip_121525.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP245_CONUS_MAM_Precip_121525.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_CONUS_JJA_Precip_121525.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP245_CONUS_JJA_Precip_121525.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_CONUS_DJF_Precip_121525.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP245_CONUS_DJF_Precip_121525.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/MC_SSP370_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_SON_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/MC_SSP370_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_MAM_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/MC_SSP370_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_JJA_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/MC_SSP370_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_DJF_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/precip/conus/MC_SSP370_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP585_CONUS_Annual_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/MC_SSP585_CONUS_Annual_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Very high emissions (SSP5-8.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP585_CONUS_SON_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/MC_SSP585_CONUS_SON_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Very high emissions (SSP5-8.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP585_CONUS_MAM_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/MC_SSP585_CONUS_MAM_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Very high emissions (SSP5-8.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP585_CONUS_JJA_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Very high emissions (SSP5-8.5)"
+          "src": "/precip/conus/MC_SSP585_CONUS_JJA_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Very high emissions (SSP5-8.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP585_CONUS_DJF_Precip_062926.jpg",
-          "subtitle": "Contiguous U.S. (CONUS), Mid-Century, Very high emissions (SSP5-8.5)"
-        }
-      }
-    }
-  },
-  "Delaware": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Delaware.png",
-          "subtitle": "Delaware, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Delaware.png",
-          "subtitle": "Delaware, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Delaware.png",
-          "subtitle": "Delaware, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Delaware.png",
-          "subtitle": "Delaware, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Delaware.png",
-          "subtitle": "Delaware, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/precip/conus/MC_SSP585_CONUS_DJF_Precip_062926.jpg",
+          "subtitle": "Contiguous U.S. (CONUS), Midcentury, Very high emissions (SSP5-8.5)"
         }
       }
     }
   },
   "Hawaii": {
     "late": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_HI_Annual_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_HI_SON_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_HI_MAM_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_HI_JJA_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_HI_DJF_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
           "src": "/Precip_Organized/Late-Century/Annual/LC_SSP245_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
           "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP245_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP245_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP245_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP245_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_HI_Annual_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_HI_SON_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_HI_MAM_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_HI_JJA_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_HI_DJF_Precip_070626.jpg",
+          "subtitle": "Hawaii, Late Century, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
           "src": "/Precip_Organized/Late-Century/Annual/LC_SSP585_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Late Century, Very high emissions (SSP5-8.5)"
         },
         "son": {
           "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP585_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Late Century, Very high emissions (SSP5-8.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP585_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Late Century, Very high emissions (SSP5-8.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP585_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Late Century, Very high emissions (SSP5-8.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP585_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Late-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Late Century, Very high emissions (SSP5-8.5)"
         }
       }
     },
     "mid": {
-      "ssp370": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_HI_Annual_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_HI_SON_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_HI_MAM_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_HI_JJA_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, High emissions (SSP3-7.0)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_HI_DJF_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, Low emissions (SSP1-2.6)"
         }
       },
       "ssp245": {
         "ann": {
           "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
           "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "subtitle": "Hawaii, Midcentury, Intermediate emissions (SSP2-4.5)"
         }
       },
-      "ssp126": {
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_HI_Annual_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_HI_SON_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_HI_MAM_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_HI_JJA_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Low emissions (SSP1-2.6)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_HI_DJF_Precip_070626.jpg",
+          "subtitle": "Hawaii, Midcentury, High emissions (SSP3-7.0)"
         }
       },
       "ssp585": {
         "ann": {
           "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP585_HI_Annual_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "son": {
           "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP585_HI_SON_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "mam": {
           "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP585_HI_MAM_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "jja": {
           "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP585_HI_JJA_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "djf": {
           "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP585_HI_DJF_Precip_070626.jpg",
-          "subtitle": "Hawaii, Mid-Century, Very high emissions (SSP5-8.5)"
+          "subtitle": "Hawaii, Midcentury, Very high emissions (SSP5-8.5)"
         }
       }
     }
   },
-  "Illinois": {
-    "mid": {
-      "ssp245": {
+  "PRUSVI": {
+    "late": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_IL_Annual_Precip_052725.jpg",
-          "subtitle": "Illinois, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP126_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_IL_SON_Precip_052725.jpg",
-          "subtitle": "Illinois, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP126_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_IL_MAM_Precip_052725.jpg",
-          "subtitle": "Illinois, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP126_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_IL_JJA_Precip_052725.jpg",
-          "subtitle": "Illinois, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP126_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_IL_DJF_Precip_052725.jpg",
-          "subtitle": "Illinois, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP126_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Low emissions (SSP1-2.6)"
+        }
+      },
+      "ssp245": {
+        "ann": {
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP245_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Intermediate emissions (SSP2-4.5)"
+        },
+        "son": {
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP245_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Intermediate emissions (SSP2-4.5)"
+        },
+        "mam": {
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP245_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Intermediate emissions (SSP2-4.5)"
+        },
+        "jja": {
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP245_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Intermediate emissions (SSP2-4.5)"
+        },
+        "djf": {
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP245_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Intermediate emissions (SSP2-4.5)"
+        }
+      },
+      "ssp370": {
+        "ann": {
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP370_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, High emissions (SSP3-7.0)"
+        },
+        "son": {
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP370_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, High emissions (SSP3-7.0)"
+        },
+        "mam": {
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP370_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, High emissions (SSP3-7.0)"
+        },
+        "jja": {
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP370_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, High emissions (SSP3-7.0)"
+        },
+        "djf": {
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP370_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, High emissions (SSP3-7.0)"
+        }
+      },
+      "ssp585": {
+        "ann": {
+          "src": "/Precip_Organized/Late-Century/Annual/LC_SSP585_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Very high emissions (SSP5-8.5)"
+        },
+        "son": {
+          "src": "/Precip_Organized/Late-Century/Fall%20(SON)/LC_SSP585_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Very high emissions (SSP5-8.5)"
+        },
+        "mam": {
+          "src": "/Precip_Organized/Late-Century/Spring%20(MAM)/LC_SSP585_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Very high emissions (SSP5-8.5)"
+        },
+        "jja": {
+          "src": "/Precip_Organized/Late-Century/Summer%20(JJA)/LC_SSP585_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Very high emissions (SSP5-8.5)"
+        },
+        "djf": {
+          "src": "/Precip_Organized/Late-Century/Winter%20(DJF)/LC_SSP585_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Late Century, Very high emissions (SSP5-8.5)"
         }
       }
-    }
-  },
-  "Indiana": {
+    },
     "mid": {
-      "ssp245": {
+      "ssp126": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_IN_Annual_Precip_052725.jpg",
-          "subtitle": "Indiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP126_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Low emissions (SSP1-2.6)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_IN_SON_Precip_052725.jpg",
-          "subtitle": "Indiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP126_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Low emissions (SSP1-2.6)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_IN_MAM_Precip_052725.jpg",
-          "subtitle": "Indiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP126_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Low emissions (SSP1-2.6)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_IN_JJA_Precip_052725.jpg",
-          "subtitle": "Indiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP126_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Low emissions (SSP1-2.6)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_IN_DJF_Precip_052725.jpg",
-          "subtitle": "Indiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP126_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Low emissions (SSP1-2.6)"
         }
-      }
-    }
-  },
-  "Iowa": {
-    "mid": {
+      },
       "ssp245": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_IA_Annual_Precip_052725.jpg",
-          "subtitle": "Iowa, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_PRUSVI_Annual_Precip_031326.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_IA_SON_Precip_052725.jpg",
-          "subtitle": "Iowa, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_PRUSVI_SON_Precip_031326.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_IA_MAM_Precip_052725.jpg",
-          "subtitle": "Iowa, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_PRUSVI_MAM_Precip_031326.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_IA_JJA_Precip_052725.jpg",
-          "subtitle": "Iowa, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_PRUSVI_JJA_Precip_031326.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Intermediate emissions (SSP2-4.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_IA_DJF_Precip_052725.jpg",
-          "subtitle": "Iowa, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Intermediate emissions (SSP2-4.5)"
         }
-      }
-    }
-  },
-  "Kansas": {
-    "mid": {
-      "ssp245": {
+      },
+      "ssp370": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_KS_Annual_Precip_052725.jpg",
-          "subtitle": "Kansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP370_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, High emissions (SSP3-7.0)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_KS_SON_Precip_052725.jpg",
-          "subtitle": "Kansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP370_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, High emissions (SSP3-7.0)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_KS_MAM_Precip_052725.jpg",
-          "subtitle": "Kansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP370_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, High emissions (SSP3-7.0)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_KS_JJA_Precip_052725.jpg",
-          "subtitle": "Kansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP370_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, High emissions (SSP3-7.0)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_KS_DJF_Precip_052725.jpg",
-          "subtitle": "Kansas, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP370_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, High emissions (SSP3-7.0)"
         }
-      }
-    }
-  },
-  "Kentucky": {
-    "mid": {
-      "ssp245": {
+      },
+      "ssp585": {
         "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_KY_Annual_Precip_052725.jpg",
-          "subtitle": "Kentucky, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP585_PRUSVI_Annual_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_KY_SON_Precip_052725.jpg",
-          "subtitle": "Kentucky, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP585_PRUSVI_SON_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_KY_MAM_Precip_052725.jpg",
-          "subtitle": "Kentucky, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP585_PRUSVI_MAM_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_KY_JJA_Precip_052725.jpg",
-          "subtitle": "Kentucky, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP585_PRUSVI_JJA_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Very high emissions (SSP5-8.5)"
         },
         "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_KY_DJF_Precip_052725.jpg",
-          "subtitle": "Kentucky, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Louisiana": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Louisiana.png",
-          "subtitle": "Louisiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Louisiana.png",
-          "subtitle": "Louisiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Louisiana.png",
-          "subtitle": "Louisiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Louisiana.png",
-          "subtitle": "Louisiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Louisiana.png",
-          "subtitle": "Louisiana, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Maine": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Maine.png",
-          "subtitle": "Maine, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Maine.png",
-          "subtitle": "Maine, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Maine.png",
-          "subtitle": "Maine, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Maine.png",
-          "subtitle": "Maine, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Maine.png",
-          "subtitle": "Maine, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Maryland": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Maryland.png",
-          "subtitle": "Maryland, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Maryland.png",
-          "subtitle": "Maryland, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Maryland.png",
-          "subtitle": "Maryland, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Maryland.png",
-          "subtitle": "Maryland, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Maryland.png",
-          "subtitle": "Maryland, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Massachusetts": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Massachusetts.png",
-          "subtitle": "Massachusetts, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Massachusetts.png",
-          "subtitle": "Massachusetts, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Massachusetts.png",
-          "subtitle": "Massachusetts, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Massachusetts.png",
-          "subtitle": "Massachusetts, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Massachusetts.png",
-          "subtitle": "Massachusetts, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Michigan": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_MI_Annual_Precip_052725.jpg",
-          "subtitle": "Michigan, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_MI_SON_Precip_052725.jpg",
-          "subtitle": "Michigan, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_MI_MAM_Precip_052725.jpg",
-          "subtitle": "Michigan, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_MI_JJA_Precip_052725.jpg",
-          "subtitle": "Michigan, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_MI_DJF_Precip_052725.jpg",
-          "subtitle": "Michigan, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Minnesota": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_MN_Annual_Precip_052725.jpg",
-          "subtitle": "Minnesota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_MN_SON_Precip_052725.jpg",
-          "subtitle": "Minnesota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_MN_MAM_Precip_052725.jpg",
-          "subtitle": "Minnesota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_MN_JJA_Precip_052725.jpg",
-          "subtitle": "Minnesota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_MN_DJF_Precip_052725.jpg",
-          "subtitle": "Minnesota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Mississippi": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Mississippi.png",
-          "subtitle": "Mississippi, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Mississippi.png",
-          "subtitle": "Mississippi, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Mississippi.png",
-          "subtitle": "Mississippi, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Mississippi.png",
-          "subtitle": "Mississippi, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Mississippi.png",
-          "subtitle": "Mississippi, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Missouri": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_MO_Annual_Precip_052725.jpg",
-          "subtitle": "Missouri, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_MO_SON_Precip_052725.jpg",
-          "subtitle": "Missouri, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_MO_MAM_Precip_052725.jpg",
-          "subtitle": "Missouri, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_MO_JJA_Precip_052725.jpg",
-          "subtitle": "Missouri, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_MO_DJF_Precip_052725.jpg",
-          "subtitle": "Missouri, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Nebraska": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_NE_Annual_Precip_052725.jpg",
-          "subtitle": "Nebraska, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_NE_SON_Precip_052725.jpg",
-          "subtitle": "Nebraska, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_NE_MAM_Precip_052725.jpg",
-          "subtitle": "Nebraska, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_NE_JJA_Precip_052725.jpg",
-          "subtitle": "Nebraska, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_NE_DJF_Precip_052725.jpg",
-          "subtitle": "Nebraska, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "New Hampshire": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_New%20Hampshire.png",
-          "subtitle": "New Hampshire, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_New%20Hampshire.png",
-          "subtitle": "New Hampshire, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_New%20Hampshire.png",
-          "subtitle": "New Hampshire, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_New%20Hampshire.png",
-          "subtitle": "New Hampshire, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_New%20Hampshire.png",
-          "subtitle": "New Hampshire, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "New Jersey": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_New%20Jersey.png",
-          "subtitle": "New Jersey, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_New%20Jersey.png",
-          "subtitle": "New Jersey, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_New%20Jersey.png",
-          "subtitle": "New Jersey, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_New%20Jersey.png",
-          "subtitle": "New Jersey, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_New%20Jersey.png",
-          "subtitle": "New Jersey, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "New York": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_New%20York.png",
-          "subtitle": "New York, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_New%20York.png",
-          "subtitle": "New York, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_New%20York.png",
-          "subtitle": "New York, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_New%20York.png",
-          "subtitle": "New York, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_New%20York.png",
-          "subtitle": "New York, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "North Dakota": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_ND_Annual_Precip_052725.jpg",
-          "subtitle": "North Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_ND_SON_Precip_052725.jpg",
-          "subtitle": "North Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_ND_MAM_Precip_052725.jpg",
-          "subtitle": "North Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_ND_JJA_Precip_052725.jpg",
-          "subtitle": "North Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_ND_DJF_Precip_052725.jpg",
-          "subtitle": "North Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Ohio": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_OH_Annual_Precip_052725.jpg",
-          "subtitle": "Ohio, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_OH_SON_Precip_052725.jpg",
-          "subtitle": "Ohio, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_OH_MAM_Precip_052725.jpg",
-          "subtitle": "Ohio, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_OH_JJA_Precip_052725.jpg",
-          "subtitle": "Ohio, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_OH_DJF_Precip_052725.jpg",
-          "subtitle": "Ohio, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Oklahoma": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Oklahoma.png",
-          "subtitle": "Oklahoma, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Oklahoma.png",
-          "subtitle": "Oklahoma, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Oklahoma.png",
-          "subtitle": "Oklahoma, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Oklahoma.png",
-          "subtitle": "Oklahoma, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Oklahoma.png",
-          "subtitle": "Oklahoma, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Pennsylvania": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Pennsylvania.png",
-          "subtitle": "Pennsylvania, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Pennsylvania.png",
-          "subtitle": "Pennsylvania, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Pennsylvania.png",
-          "subtitle": "Pennsylvania, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Pennsylvania.png",
-          "subtitle": "Pennsylvania, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Pennsylvania.png",
-          "subtitle": "Pennsylvania, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Rhode Island": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Rhode%20Island.png",
-          "subtitle": "Rhode Island, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Rhode%20Island.png",
-          "subtitle": "Rhode Island, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Rhode%20Island.png",
-          "subtitle": "Rhode Island, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Rhode%20Island.png",
-          "subtitle": "Rhode Island, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Rhode%20Island.png",
-          "subtitle": "Rhode Island, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "South Dakota": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_SD_Annual_Precip_052725.jpg",
-          "subtitle": "South Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_SD_SON_Precip_052725.jpg",
-          "subtitle": "South Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_SD_MAM_Precip_052725.jpg",
-          "subtitle": "South Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_SD_JJA_Precip_052725.jpg",
-          "subtitle": "South Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_SD_DJF_Precip_052725.jpg",
-          "subtitle": "South Dakota, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Tennessee": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Tennessee.png",
-          "subtitle": "Tennessee, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Tennessee.png",
-          "subtitle": "Tennessee, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Tennessee.png",
-          "subtitle": "Tennessee, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Tennessee.png",
-          "subtitle": "Tennessee, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Tennessee.png",
-          "subtitle": "Tennessee, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Texas": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Texas.png",
-          "subtitle": "Texas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Texas.png",
-          "subtitle": "Texas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Texas.png",
-          "subtitle": "Texas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Texas.png",
-          "subtitle": "Texas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Texas.png",
-          "subtitle": "Texas, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Vermont": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_Vermont.png",
-          "subtitle": "Vermont, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_Vermont.png",
-          "subtitle": "Vermont, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_Vermont.png",
-          "subtitle": "Vermont, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_Vermont.png",
-          "subtitle": "Vermont, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_Vermont.png",
-          "subtitle": "Vermont, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "West Virginia": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_Precip_Annual_West%20Virginia.png",
-          "subtitle": "West Virginia, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_Precip_Fall_West%20Virginia.png",
-          "subtitle": "West Virginia, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_Precip_Spring_West%20Virginia.png",
-          "subtitle": "West Virginia, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_Precip_Summer_West%20Virginia.png",
-          "subtitle": "West Virginia, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_Precip_Winter_West%20Virginia.png",
-          "subtitle": "West Virginia, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Wisconsin": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_WI_Annual_Precip_052725.jpg",
-          "subtitle": "Wisconsin, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_WI_SON_Precip_052725.jpg",
-          "subtitle": "Wisconsin, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_WI_MAM_Precip_052725.jpg",
-          "subtitle": "Wisconsin, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_WI_JJA_Precip_052725.jpg",
-          "subtitle": "Wisconsin, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_WI_DJF_Precip_052725.jpg",
-          "subtitle": "Wisconsin, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        }
-      }
-    }
-  },
-  "Wyoming": {
-    "mid": {
-      "ssp245": {
-        "ann": {
-          "src": "/Precip_Organized/Mid-Century/Annual/MC_SSP245_WY_Annual_Precip_052725.jpg",
-          "subtitle": "Wyoming, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "son": {
-          "src": "/Precip_Organized/Mid-Century/Fall%20(SON)/MC_SSP245_WY_SON_Precip_052725.jpg",
-          "subtitle": "Wyoming, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "mam": {
-          "src": "/Precip_Organized/Mid-Century/Spring%20(MAM)/MC_SSP245_WY_MAM_Precip_052725.jpg",
-          "subtitle": "Wyoming, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "jja": {
-          "src": "/Precip_Organized/Mid-Century/Summer%20(JJA)/MC_SSP245_WY_JJA_Precip_052725.jpg",
-          "subtitle": "Wyoming, Mid-Century, Intermediate emissions (SSP2-4.5)"
-        },
-        "djf": {
-          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP245_WY_DJF_Precip_052725.jpg",
-          "subtitle": "Wyoming, Mid-Century, Intermediate emissions (SSP2-4.5)"
+          "src": "/Precip_Organized/Mid-Century/Winter%20(DJF)/MC_SSP585_PRUSVI_DJF_Precip_070626.jpg",
+          "subtitle": "Puerto Rico & U.S. Virgin Islands, Midcentury, Very high emissions (SSP5-8.5)"
         }
       }
     }

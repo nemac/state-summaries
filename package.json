@@ -4,6 +4,7 @@
   "private": false,
   "type": "module",
   "scripts": {
+    "predev": "npm run build:precip-manifest",
     "dev": "vite",
     "test": "node --test scripts/*.test.mjs",
     "build:precip-manifest": "node scripts/buildPrecipManifest.mjs",
