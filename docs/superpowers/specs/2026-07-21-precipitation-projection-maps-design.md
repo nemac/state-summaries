@@ -38,12 +38,13 @@ Located in `public/Precip_Organized/`:
   `MC_SSP126_AK_Annual_Precip_070526.jpg`), so paths cannot be built by
   convention — the file must be looked up via `INDEX.csv`.
 - **PR/USVI labeling discrepancy:** mid-century files use `PRUSVI`, late-century
-  files use `Caribbean`. **Decision: century-specific labels** — mid-century
-  resolves from `PRUSVI`-labeled rows, late-century from `Caribbean`-labeled
-  rows, exactly as the raw folders are named.
-  *Trade-off:* any mid-century map present only under the newer "Caribbean"
-  label will be treated as unavailable. The build script will log which slots
-  this affects so we can revisit if needed.
+  files use `Caribbean`. Per April's email these two labels are the **same
+  region**, just named differently across file generations. **Decision: merge
+  both labels into one PR/USVI region series.** For any given
+  century/scenario/season slot, the file may appear under either label; take
+  whichever exists, and when both exist keep the **newest by file-modified
+  date** (Caribbean/July-2026 wins, consistent with the collection's existing
+  "most-recent" dedup rule). This loses no maps.
 - **Irregular CONUS filenames** (two season tokens) are already resolved in the
   `Season` column of `INDEX.csv`, so keying off that column handles them.
 
@@ -69,7 +70,7 @@ full-name identity; regions and PR need aliases:
 | `CONUS` | `Contiguous U.S. (CONUS)` |
 | `alaska_region` | `Alaska` |
 | `hawaii` | `Hawaii` |
-| `us_caribbean`, `Puerto_Rico` | PR/USVI (century-specific: `PRUSVI` mid / `Caribbean` late) |
+| `us_caribbean`, `Puerto_Rico` | PR/USVI — merged from **both** `PRUSVI` and `Caribbean (...)` rows |
 | `Alabama`, `Texas`, … (state names) | identity |
 
 ## Architecture
@@ -100,9 +101,9 @@ manifest[regionKey][century][scenario][season] = {
   `"Alaska, Late-Century, High emissions (SSP3-7.0), Annual"` →
   `"Alaska, Late-Century, High emissions (SSP3-7.0)"`. The script validates the
   removed clause matches the row's `Season` before dropping it.
-- **PR/USVI:** write mid-century entries only from `PRUSVI` rows and
-  late-century entries only from `Caribbean` rows. Log any slot dropped by this
-  rule.
+- **PR/USVI:** map both `PRUSVI` and `Caribbean (...)` rows to the same
+  `regionKey`. When two rows collide on the same century/scenario/season slot,
+  keep the one with the newer `Date (file modified)`.
 - Parsing/normalization logic lives in a **pure, importable module**
   (`scripts/precipManifestLib.mjs`) so it can be unit-tested independently of
   file I/O.
@@ -139,8 +140,9 @@ the "friendly message" decision).
   Re-resolve when the **region** or **season** changes while a map is showing
   (the existing `handleMegaMenuSelect` and the season-change path).
 - **Render** (replaces the hardcoded block at ~lines 950–971):
-  - **Title** (h3): `${selection.label}: ${option.label}`
-    (e.g. "Alabama: Low Emissions: Projected Changes in Precipitation").
+  - **Title** (h3): `${selection.label}, ${option.label}`
+    (e.g. "Alabama, Low Emissions: Projected Changes in Precipitation") — the
+    state is joined with a comma, not a colon, to avoid a double colon.
   - **Subtitle** (muted): `mapSubtitle`.
   - **Map:** `<ZoomableImage src={mapSrc} alt={mapSubtitle} />`, OR when no
     manifest entry exists, a **friendly message** — "No projection map is
@@ -164,7 +166,7 @@ No test runner is configured today. Add **vitest** and a `test` script, and
 unit-test the pure manifest module (`scripts/precipManifestLib.mjs`):
 - season-clause stripping produces the correct subtitle
 - dimension normalization (century/scenario/season) is correct
-- region alias mapping (incl. PR/USVI century-specific rule)
+- region alias mapping (incl. PR/USVI merge — newest file wins on collision)
 - a missing slot resolves to "not found"
 
 UI wiring (modal click → correct map, missing-map message, legend render) is
