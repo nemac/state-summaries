@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --test scripts/*.test.mjs",
+    "build:precip-manifest": "node scripts/buildPrecipManifest.mjs",
+    "prebuild": "npm run build:precip-manifest",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",

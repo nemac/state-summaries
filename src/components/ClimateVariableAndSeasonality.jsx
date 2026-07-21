@@ -415,7 +415,9 @@ const ClimateVariableAndSeasonality = (props) => {
                           sx={{ color: colors.navy, fontSize: "1.5rem" }}
                         />
                       }
-                      onClick={() => handleOptionSelect(option)}
+                      onClick={() =>
+                        handleOptionSelect({ ...option, century: "mid" })
+                      }
                     >
                       {option.getLabel
                         ? option.getLabel(selectedSeason.label)
@@ -458,7 +460,9 @@ const ClimateVariableAndSeasonality = (props) => {
                           sx={{ color: colors.navy, fontSize: "1.5rem" }}
                         />
                       }
-                      onClick={() => handleOptionSelect(option)}
+                      onClick={() =>
+                        handleOptionSelect({ ...option, century: "late" })
+                      }
                     >
                       {option.getLabel
                         ? option.getLabel(selectedSeason.label)

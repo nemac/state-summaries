@@ -40,31 +40,47 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      # Unit tests (manifest-normalization logic). A failure fails the deploy.
+      - name: Run tests
+        run: npm test
+
+      # Regenerate the precipitation map manifest from INDEX.csv. Called out as
+      # its own step so a data/parse problem shows up here rather than being
+      # buried in the build. (`npm run build` also runs this via `prebuild`;
+      # the second run is idempotent.)
+      - name: Generate precipitation map manifest
+        run: npm run build:precip-manifest
+
       - name: Build
         run: npm run build
 
       - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ env.AWS_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       # Sync the build output to the bucket. `--delete` removes files from the
-      # bucket that are no longer produced by the build.
+      # bucket that are no longer produced by the build. The excludes keep the
+      # heavy map source files (Illustrator .ai / ArcGIS .aix) and macOS junk
+      # out of the public bucket — only the JPG previews the app uses are served.
       - name: Sync to S3
         run: |
-          aws s3 sync dist/ "s3://${S3_BUCKET}" --delete
+          aws s3 sync dist/ "s3://${S3_BUCKET}" --delete \
+            --exclude "*.ai" \
+            --exclude "*.aix" \
+            --exclude "*.DS_Store"
 
       - name: Invalidate CloudFront
         id: invalidate

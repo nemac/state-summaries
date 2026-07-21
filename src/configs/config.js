@@ -1456,21 +1456,25 @@ const config = {
       label: "Low Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
+      scenario: "ssp126",
     },
     {
       label: "Intermediate Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
+      scenario: "ssp245",
     },
     {
       label: "Higher Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
+      scenario: "ssp370",
     },
     {
       label: "Very High Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
+      scenario: "ssp585",
     },
   ],
   hasPredictedData: [

@@ -20,6 +20,10 @@ import MegaMenu from "../components/MegaMenu.jsx";
 import ClimateVariableAndSeasonality from "../components/ClimateVariableAndSeasonality.jsx";
 import ObservedProjectedChart from "../components/ObservedProjectedChart.jsx";
 import ZoomableImage from "../components/ZoomableImage.jsx";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import precipMapManifest from "../data/precipMapManifest.json";
+import { lookupPrecipMap } from "../utils/precipMaps.js";
 import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -122,8 +126,24 @@ export default function SandboxControls() {
     return config.regionsOptions.find((region) => region.value === "CONUS");
   };
 
+  // Rebuild a seasonality map option from URL params (scenario + century),
+  // since all four map options share the same `value`.
+  const getMapOptionFromParams = (scenarioParam, centuryParam) => {
+    const base = config.mapsSeasonalityOptions.find(
+      (o) => o.scenario === scenarioParam,
+    );
+    return base ? { ...base, century: centuryParam } : null;
+  };
+
   const getInitialClimateOption = () => {
     const optionParam = searchParams.get("option");
+    if (optionParam === "change_seasonal_precip") {
+      const mapOption = getMapOptionFromParams(
+        searchParams.get("scenario"),
+        searchParams.get("century"),
+      );
+      if (mapOption) return mapOption;
+    }
     if (optionParam) {
       const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
       if (foundOption) return foundOption;
@@ -152,7 +172,10 @@ export default function SandboxControls() {
   );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
-  const [showMapImage, setShowMapImage] = useState(false);
+  const [showMapImage, setShowMapImage] = useState(
+    () => searchParams.get("option") === "change_seasonal_precip",
+  );
+  const [mapEntry, setMapEntry] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(() =>
     getInitialSeason(),
   );
@@ -365,6 +388,13 @@ export default function SandboxControls() {
       const responseData = await response.json();
       setClimateDataFilesJSON(responseData);
 
+      // Map options (e.g. a shared map link on first load) don't use chart data;
+      // the map-resolution effect handles display. Skip the chart/data path so
+      // it doesn't false-trigger the "no data" error.
+      if (climateOption.type === "mappy_map") {
+        return responseData;
+      }
+
       if (climateOption.type === "observed_projected") {
         handleObservedPredicted(megaMenuSelection, climateOption);
         return;
@@ -403,11 +433,26 @@ export default function SandboxControls() {
       }
     }
 
-    // Update option if URL changed
-    if (optionParam && optionParam !== climateOption.value) {
+    // Update option if URL changed (maps are rebuilt from scenario + century)
+    if (optionParam === "change_seasonal_precip") {
+      const scenarioParam = searchParams.get("scenario");
+      const centuryParam = searchParams.get("century");
+      if (
+        climateOption.value !== "change_seasonal_precip" ||
+        climateOption.scenario !== scenarioParam ||
+        climateOption.century !== centuryParam
+      ) {
+        const mapOption = getMapOptionFromParams(scenarioParam, centuryParam);
+        if (mapOption) {
+          setClimateOption(mapOption);
+          setShowMapImage(true);
+        }
+      }
+    } else if (optionParam && optionParam !== climateOption.value) {
       const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
       if (foundOption) {
         setClimateOption(foundOption);
+        setShowMapImage(false);
       }
     }
 
@@ -441,6 +486,32 @@ export default function SandboxControls() {
       climateOption: climateOption,
     });
   }, [megaMenuSelection, climateOption, selectedSeason]);
+
+  // Resolve the precipitation map and keep the URL shareable whenever a map is
+  // being shown. Re-runs on region / century / scenario / season changes.
+  useEffect(() => {
+    if (!showMapImage) return;
+    setMapEntry(
+      lookupPrecipMap(
+        precipMapManifest,
+        megaMenuSelection.value,
+        climateOption.century,
+        climateOption.scenario,
+        selectedSeason.value,
+      ),
+    );
+    setSearchParams(
+      {
+        selection: megaMenuSelection.value,
+        option: climateOption.value,
+        century: climateOption.century ?? "",
+        scenario: climateOption.scenario ?? "",
+        season: selectedSeason.value,
+      },
+      { replace: true },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showMapImage, megaMenuSelection, climateOption, selectedSeason]);
 
   // handles plotting of observed and predicted data
   const handleObservedPredicted = (megaMenuSelection, climateOption) => {
@@ -619,6 +690,9 @@ export default function SandboxControls() {
     setSearchParams({
       selection: megaMenuSelection.value,
       option: newOption.value,
+      ...(newOption.type === "mappy_map"
+        ? { century: newOption.century, scenario: newOption.scenario }
+        : {}),
       season: selectedSeason.value,
     });
 
@@ -653,6 +727,9 @@ export default function SandboxControls() {
     setSearchParams({
       selection: selection.value,
       option: climateOption.value,
+      ...(climateOption.type === "mappy_map"
+        ? { century: climateOption.century, scenario: climateOption.scenario }
+        : {}),
       season: selectedSeason.value,
     });
 
@@ -957,18 +1034,57 @@ export default function SandboxControls() {
                     height: "100%",
                   }}
                 >
-                  <Typography variant="h3" sx={{ fontWeight: 600, py: 4 }}>
-                    Title Placeholder
+                  <Typography
+                    variant="h3"
+                    sx={{ fontWeight: 600, pt: 4, pb: 3, textAlign: "center" }}
+                  >
+                    {mapEntry
+                      ? mapEntry.subtitle
+                      : `${megaMenuSelection.label}, ${climateOption.label}`}
                   </Typography>
-                  <Box sx={{ flex: 1, width: "85%", minHeight: 0 }}>
-                    <ZoomableImage
-                      src="/tempData/gergMap.png"
-                      alt="Change in Annual Precipitation Map"
-                    />
-                  </Box>
-                  <Typography variant="h4" sx={{ color: colors.textMuted, py: 4 }}>
-                    Legend Placeholder
-                  </Typography>
+                  {mapEntry ? (
+                    <>
+                      <Box sx={{ flex: 1, width: "85%", minHeight: 0 }}>
+                        <ZoomableImage
+                          src={mapEntry.src}
+                          alt={mapEntry.subtitle}
+                        />
+                      </Box>
+                      <Box
+                        component="img"
+                        src="/precip/PrecipLegend.svg"
+                        alt="Change in Total Precipitation (%) legend"
+                        sx={{
+                          height: 120,
+                          maxWidth: "95%",
+                          objectFit: "contain",
+                          py: 3,
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <Box
+                      sx={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <Alert
+                        severity="info"
+                        variant="standard"
+                        sx={{ borderRadius: 4, maxWidth: 520 }}
+                      >
+                        <AlertTitle sx={{ fontWeight: "bold" }}>
+                          No map available
+                        </AlertTitle>
+                        No projection map is available for this selection. Try a
+                        different state, century, scenario, or season.
+                      </Alert>
+                    </Box>
+                  )}
                 </Box>
               ) : chartType === "recharts" && useRechartsRenderer ? (
                 <ObservedProjectedChart
