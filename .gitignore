@@ -108,3 +108,9 @@ dist
 lib/
 bin/
 pyvenv.cfg
+
+# Precipitation map source files — not served (excluded from the S3 sync) and
+# can't be rendered without Illustrator. Originals live in April's source
+# archive; only the JPG previews the app uses are committed.
+public/Precip_Organized/**/*.ai
+public/Precip_Organized/**/*.aix
