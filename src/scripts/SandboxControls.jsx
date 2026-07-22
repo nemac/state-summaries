@@ -1040,7 +1040,7 @@ export default function SandboxControls() {
                 >
                   <Typography
                     variant="h5"
-                    sx={{ fontWeight: 600, pt: 1, pb: 1, textAlign: "center" }}
+                    sx={{ fontWeight: 600, pt: 4, pb: 1, textAlign: "center" }}
                   >
                     {mapEntry
                       ? [
@@ -1057,7 +1057,7 @@ export default function SandboxControls() {
                       <Box
                         sx={{
                           width: "100%",
-                          height: "calc(100vh - 380px)",
+                          height: "calc(100vh - 404px)",
                           minHeight: 320,
                         }}
                       >
