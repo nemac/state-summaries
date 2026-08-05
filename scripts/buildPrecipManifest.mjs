@@ -18,6 +18,7 @@ import {
   normalizeScenario,
   normalizeSeason,
   stripSeasonFromDescription,
+  titleCaseEmissions,
   isNewer,
 } from "./precipManifestLib.mjs";
 
@@ -142,7 +143,7 @@ function main() {
       if (trimmed) { src = trimmed; conusTrimmed++; }
       else conusFallback++;
     }
-    const entry = { src, subtitle: stripped.subtitle };
+    const entry = { src, subtitle: titleCaseEmissions(stripped.subtitle) };
 
     manifest[regionKey] ??= {};
     manifest[regionKey][century] ??= {};

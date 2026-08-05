@@ -1068,7 +1068,7 @@ export default function SandboxControls() {
                       </Box>
                       <Box
                         component="img"
-                        src="/precip/PrecipLegend.svg"
+                        src="/precip/PrecipLegend.png"
                         alt="Change in Total Precipitation (%) legend"
                         sx={{
                           height: 130,

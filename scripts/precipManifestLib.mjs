@@ -72,6 +72,19 @@ export function stripSeasonFromDescription(description, seasonRaw) {
   return { subtitle: desc, matched: false };
 }
 
+/**
+ * Title-case the emissions clause of a subtitle so headings read consistently,
+ * e.g. "Very high emissions (SSP5-8.5)" -> "Very High Emissions (SSP5-8.5)".
+ * The INDEX descriptions sentence-case this clause; everything else in them
+ * (region, century) is already title case.
+ */
+export function titleCaseEmissions(text) {
+  return (text || "").replace(
+    /\b(?:very\s+)?(?:high|intermediate|low)\s+emissions\b/gi,
+    (clause) => clause.replace(/\b\w/g, (ch) => ch.toUpperCase()),
+  );
+}
+
 /** Newer (by "Date (file modified)") wins when two rows collide on a slot. */
 export function isNewer(dateA, dateB) {
   const a = Date.parse(dateA);

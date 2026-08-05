@@ -6,6 +6,7 @@ import {
   normalizeSeason,
   indexRegionToKey,
   stripSeasonFromDescription,
+  titleCaseEmissions,
   isNewer,
 } from "./precipManifestLib.mjs";
 
@@ -64,6 +65,30 @@ test("stripSeasonFromDescription leaves description alone when season mismatches
   const r = stripSeasonFromDescription("Some, description", "Annual");
   assert.equal(r.subtitle, "Some, description");
   assert.equal(r.matched, false);
+});
+
+test("titleCaseEmissions capitalizes the emissions clause", () => {
+  assert.equal(
+    titleCaseEmissions("Contiguous U.S. (CONUS), Late Century, Very high emissions (SSP5-8.5)"),
+    "Contiguous U.S. (CONUS), Late Century, Very High Emissions (SSP5-8.5)",
+  );
+  assert.equal(
+    titleCaseEmissions("Alaska, Midcentury, High emissions (SSP3-7.0)"),
+    "Alaska, Midcentury, High Emissions (SSP3-7.0)",
+  );
+  assert.equal(
+    titleCaseEmissions("Hawaii, Late Century, Intermediate emissions (SSP2-4.5)"),
+    "Hawaii, Late Century, Intermediate Emissions (SSP2-4.5)",
+  );
+  assert.equal(
+    titleCaseEmissions("Texas, Midcentury, Low emissions (SSP1-2.6)"),
+    "Texas, Midcentury, Low Emissions (SSP1-2.6)",
+  );
+  // Already title-cased input is left unchanged.
+  assert.equal(
+    titleCaseEmissions("Texas, Midcentury, Low Emissions (SSP1-2.6)"),
+    "Texas, Midcentury, Low Emissions (SSP1-2.6)",
+  );
 });
 
 test("isNewer compares modified dates", () => {
