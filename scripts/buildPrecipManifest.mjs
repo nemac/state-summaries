@@ -19,7 +19,7 @@ import {
   normalizeSeason,
   stripSeasonFromDescription,
   titleCaseEmissions,
-  isNewer,
+  shouldReplace,
 } from "./precipManifestLib.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -155,10 +155,8 @@ function main() {
     const prev = meta[regionKey][century][scenario][season];
     if (prev) {
       collisions++;
-      // Prefer a JPEG over a PNG; within the same format, keep the newer file.
-      const preferPng = isPng(format) && !isPng(prev.format);
-      const sameFormatOlder = isPng(format) === isPng(prev.format) && !isNewer(r[iDate], prev.date);
-      if (preferPng || sameFormatOlder) continue;
+      // Prefer the high-res PNG program over legacy JPEGs; else keep newest.
+      if (!shouldReplace(prev, { format, date: r[iDate] })) continue;
     }
     manifest[regionKey][century][scenario][season] = entry;
     meta[regionKey][century][scenario][season] = { format, date: r[iDate] };
@@ -180,7 +178,7 @@ function main() {
   console.log(`  regions: ${regions.join(", ")}`);
   if (im) console.log(`  CONUS previews trimmed with ${im}: ${conusTrimmed}${conusFallback ? `, ${conusFallback} fallback(s) to untrimmed` : ""}`);
   else console.log(`  WARNING: ImageMagick not found; ${conusFallback} CONUS preview(s) served untrimmed (with white padding)`);
-  if (collisions) console.log(`  ${collisions} slot collision(s) resolved (jpg preferred, else newest)`);
+  if (collisions) console.log(`  ${collisions} slot collision(s) resolved (png preferred, else newest)`);
   if (seasonMismatches.length) {
     console.log(`  ${seasonMismatches.length} description(s) without a trailing season clause (kept verbatim)`);
   }

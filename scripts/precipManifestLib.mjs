@@ -93,3 +93,15 @@ export function isNewer(dateA, dateB) {
   if (Number.isNaN(b)) return true;
   return a > b;
 }
+
+/**
+ * When two preview rows collide on the same region/century/scenario/season
+ * slot, should `next` replace `prev`? The 400-DPI PNGs rendered from the map
+ * authors' PDF exports (2026+) beat the legacy ~1000px JPEG previews; within
+ * the same format, the newer file wins. Each is {format, date}.
+ */
+export function shouldReplace(prev, next) {
+  const isPng = (f) => f === "PNG preview image";
+  if (isPng(next.format) !== isPng(prev.format)) return isPng(next.format);
+  return isNewer(next.date, prev.date);
+}

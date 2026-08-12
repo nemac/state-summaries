@@ -86,6 +86,7 @@ jobs:
           aws s3 sync dist/ "s3://${S3_BUCKET}" --delete \
             --exclude "*.ai" \
             --exclude "*.aix" \
+            --exclude "*.pdf" \
             --exclude "*.DS_Store"
 
       - name: Invalidate CloudFront

@@ -8,6 +8,7 @@ import {
   stripSeasonFromDescription,
   titleCaseEmissions,
   isNewer,
+  shouldReplace,
 } from "./precipManifestLib.mjs";
 
 test("normalizeCentury", () => {
@@ -95,6 +96,18 @@ test("isNewer compares modified dates", () => {
   assert.equal(isNewer("2026-07-06", "2026-01-22"), true);
   assert.equal(isNewer("2026-01-22", "2026-07-06"), false);
   assert.equal(isNewer("2026-07-06", "not a date"), true);
+});
+
+test("shouldReplace prefers PNG over JPEG, else the newer file", () => {
+  const jpg = (date) => ({ format: "JPEG preview image", date });
+  const png = (date) => ({ format: "PNG preview image", date });
+  // The 400-DPI PNG program wins over legacy JPEG previews regardless of date
+  assert.equal(shouldReplace(jpg("2026-07-06"), png("2025-12-15")), true);
+  assert.equal(shouldReplace(png("2025-12-15"), jpg("2026-07-06")), false);
+  // Same format: newer wins
+  assert.equal(shouldReplace(png("2026-01-01"), png("2026-07-06")), true);
+  assert.equal(shouldReplace(png("2026-07-06"), png("2026-01-01")), false);
+  assert.equal(shouldReplace(jpg("2026-01-01"), jpg("2026-07-06")), true);
 });
 
 test("indexRegionToKey handles the PNG-only alt region descriptions", () => {
