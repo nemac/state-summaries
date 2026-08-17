@@ -1038,16 +1038,23 @@ export default function SandboxControls() {
                     minHeight: 440,
                   }}
                 >
+                  {/* Two-line figure title (map authors' requested format):
+                      [State] Projected Changes in Total [Season] Precipitation
+                      [Time Period], [Scenario] */}
                   <Typography
                     variant="h5"
                     sx={{ fontWeight: 600, pt: 4, pb: 1, textAlign: "center" }}
                   >
-                    {mapEntry
-                      ? [
-                          megaMenuSelection.label,
-                          ...mapEntry.subtitle.split(", ").slice(1),
-                        ].join(", ")
-                      : `${megaMenuSelection.label}, ${climateOption.label}`}
+                    {mapEntry ? (
+                      <>
+                        {`${megaMenuSelection.label} Projected Changes in Total ${selectedSeason.label} Precipitation`}
+                        <Box component="span" sx={{ display: "block" }}>
+                          {mapEntry.subtitle.split(", ").slice(1).join(", ")}
+                        </Box>
+                      </>
+                    ) : (
+                      `${megaMenuSelection.label}, ${climateOption.label}`
+                    )}
                   </Typography>
                   {mapEntry ? (
                     <>

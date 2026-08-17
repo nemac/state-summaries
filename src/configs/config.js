@@ -1465,7 +1465,7 @@ const config = {
       scenario: "ssp245",
     },
     {
-      label: "Higher Emissions: Projected Changes in Precipitation",
+      label: "High Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
       scenario: "ssp370",
