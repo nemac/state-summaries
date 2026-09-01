@@ -45,12 +45,13 @@ function detectImageMagick() {
 
 // Crop the white border off a CONUS preview into CONUS_TRIM_DIR. Returns the
 // served path, or null on failure (caller falls back to the original).
+// The 2px shave drops page-edge crop residue that would otherwise stop -trim.
 function trimConus(im, name, rel) {
   if (!im) return null;
   const out = resolve(CONUS_TRIM_DIR, name);
   const r = spawnSync(
     im,
-    [resolve(DATA_DIR, rel), "-fuzz", "7%", "-trim", "+repage",
+    [resolve(DATA_DIR, rel), "-shave", "2x2", "-fuzz", "7%", "-trim", "+repage",
       "-bordercolor", "white", "-border", "24", out],
     { stdio: "ignore" },
   );

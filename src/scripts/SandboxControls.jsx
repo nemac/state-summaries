@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Switch from "@mui/material/Switch";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -23,7 +22,10 @@ import ZoomableImage from "../components/ZoomableImage.jsx";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import precipMapManifest from "../data/precipMapManifest.json";
-import { lookupPrecipMap } from "../utils/precipMaps.js";
+import {
+  lookupPrecipMap,
+  selectionValueToRegionDisplayName,
+} from "../utils/precipMaps.js";
 import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -183,7 +185,6 @@ export default function SandboxControls() {
 
   // Recharts state for observed/projected chart
   const [chartType, setChartType] = useState("plotly"); // 'plotly' | 'recharts'
-  const [useRechartsRenderer, setUseRechartsRenderer] = useState(true);
   const [rechartsData, setRechartsData] = useState(null);
   const [rechartsBrackets, setRechartsBrackets] = useState(null);
   const [rechartsYDomain, setRechartsYDomain] = useState(null);
@@ -925,14 +926,10 @@ export default function SandboxControls() {
             climateOption={climateOption}
             chartTitle={chartTitle}
             chartData={chartData}
-            chartType={
-              chartType === "recharts" && useRechartsRenderer
-                ? "recharts"
-                : "plotly"
-            }
+            chartType={chartType}
             period={"1900-2024"}
             renderExportChart={
-              chartType === "recharts" && useRechartsRenderer
+              chartType === "recharts"
                 ? (w, h) => (
                     <Box sx={{ width: `${w}px`, height: `${h}px` }}>
                       <ObservedProjectedChart
@@ -954,21 +951,6 @@ export default function SandboxControls() {
             }}
           />
 
-          {chartType === "recharts" && (
-            <Box display="flex" alignItems="center" gap={0.5} ml={2}>
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
-                Plotly
-              </Typography>
-              <Switch
-                checked={useRechartsRenderer}
-                onChange={(e) => setUseRechartsRenderer(e.target.checked)}
-                size="small"
-              />
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
-                Recharts
-              </Typography>
-            </Box>
-          )}
         </Grid>
 
         <Grid
@@ -1038,8 +1020,9 @@ export default function SandboxControls() {
                     minHeight: 440,
                   }}
                 >
-                  {/* Two-line figure title (map authors' requested format):
-                      [State] Projected Changes in Total [Season] Precipitation
+                  {/* Two-line figure title (map authors' requested format),
+                      named for the region the map covers, not the selection:
+                      [Map Region] Projected Changes in Total [Season] Precipitation
                       [Time Period], [Scenario] */}
                   <Typography
                     variant="h5"
@@ -1047,7 +1030,7 @@ export default function SandboxControls() {
                   >
                     {mapEntry ? (
                       <>
-                        {`${megaMenuSelection.label} Projected Changes in Total ${selectedSeason.label} Precipitation`}
+                        {`${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`}
                         <Box component="span" sx={{ display: "block" }}>
                           {mapEntry.subtitle.split(", ").slice(1).join(", ")}
                         </Box>
@@ -1110,7 +1093,7 @@ export default function SandboxControls() {
                     </Box>
                   )}
                 </Box>
-              ) : chartType === "recharts" && useRechartsRenderer ? (
+              ) : chartType === "recharts" ? (
                 <ObservedProjectedChart
                   data={rechartsData}
                   bracketData={rechartsBrackets}
