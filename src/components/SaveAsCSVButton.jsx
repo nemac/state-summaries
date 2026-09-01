@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 import { colors } from "../theme";
 
 const SaveAsCSVButton = (props) => {
-  const { chartTitle, chartData } = props;
+  const { chartTitle, chartData, chartType = "plotly" } = props;
 
   // This is what actually creates and saves the file.
   const saveFile = (content, filename, filetype) => {
@@ -45,6 +45,32 @@ const SaveAsCSVButton = (props) => {
   // chart data has years in one array and values in another
   // csv conversion makes it {year: value} so its easier to convert to csv
   const convertChartDataToJSON = () => {
+    // The observed/projected chart's series all share one year axis; export
+    // one named column per series. Other charts keep the year,value format
+    // (their bar and line traces duplicate the same values).
+    const namedSeries = chartData.filter(
+      (series) =>
+        series?.name && Array.isArray(series.x) && Array.isArray(series.y),
+    );
+    const sharedX =
+      chartType === "recharts" &&
+      namedSeries.length === chartData.length &&
+      namedSeries.length > 1 &&
+      namedSeries.every(
+        (series) =>
+          series.x.length === namedSeries[0].x.length &&
+          series.x.every((x, i) => x === namedSeries[0].x[i]),
+      );
+    if (sharedX) {
+      return namedSeries[0].x.map((year, index) => {
+        const row = { year };
+        namedSeries.forEach((series) => {
+          row[series.name] = series.y[index] ?? null;
+        });
+        return row;
+      });
+    }
+
     const years = chartData[0].x;
     const values = chartData[0].y;
 

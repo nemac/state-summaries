@@ -203,6 +203,7 @@ export default function ObservedProjectedChart({
 
   const CustomLegend = () => (
     <Box
+      className="chart-export-legend"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -283,6 +284,7 @@ export default function ObservedProjectedChart({
       }}
     >
       <Typography
+        className="chart-export-title"
         sx={{
           textAlign: "center",
           fontFamily: "Arial",
@@ -362,25 +364,6 @@ export default function ObservedProjectedChart({
                 hide
               />
             );
-          })}
-
-          {SCENARIO_BANDS.map((band) => {
-            if (hiddenScenarios.has(band.key)) return null;
-            const bandData = data.map((d) => {
-              if (d[band.lower] === null || d[band.rangeKey] === null) {
-                return {
-                  ...d,
-                  [`${band.key}_base`]: null,
-                  [band.rangeKey]: null,
-                };
-              }
-              return {
-                ...d,
-                [`${band.key}_base`]: d[band.lower],
-              };
-            });
-            // We render the actual Area elements using the data directly
-            return null;
           })}
 
           {/* Render each scenario as a pair: invisible base + visible range area */}

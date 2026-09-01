@@ -101,6 +101,7 @@ export default function BracketOverlay({
   return (
     <svg
       ref={svgRef}
+      className="chart-export-brackets"
       style={{
         position: "absolute",
         top: 0,
