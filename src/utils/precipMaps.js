@@ -27,6 +27,22 @@ export function selectionValueToRegionKey(value) {
   return OCONUS_REGION_KEY[value] || "CONUS";
 }
 
+// Figure-title names for each map region. Titles name the region the map
+// actually covers, not the selected state — every contiguous state shows the
+// same CONUS-wide map, and the PRUSVI map covers the wider Caribbean.
+const REGION_DISPLAY_NAME = {
+  CONUS: "Contiguous United States",
+  Alaska: "Alaska",
+  Hawaii: "Hawaiʻi",
+  PRUSVI: "Caribbean",
+};
+
+/** App selection.value -> display name of the map region it resolves to. */
+export function selectionValueToRegionDisplayName(value) {
+  const regionKey = selectionValueToRegionKey(value);
+  return regionKey ? REGION_DISPLAY_NAME[regionKey] : null;
+}
+
 /**
  * Resolve the map entry for a selection + century + scenario + season.
  * Returns { src, subtitle } or null when no map exists for that combination.

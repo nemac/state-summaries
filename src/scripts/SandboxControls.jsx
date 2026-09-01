@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Switch from "@mui/material/Switch";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -23,7 +22,10 @@ import ZoomableImage from "../components/ZoomableImage.jsx";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import precipMapManifest from "../data/precipMapManifest.json";
-import { lookupPrecipMap } from "../utils/precipMaps.js";
+import {
+  lookupPrecipMap,
+  selectionValueToRegionDisplayName,
+} from "../utils/precipMaps.js";
 import parseFile, { areAllValuesNoData } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -31,11 +33,7 @@ import {
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
-import {
-  getPlotlyLayout,
-  getPredictedDataLayout,
-  pretty,
-} from "./getPlotlyLayout.js";
+import { getPlotlyLayout, pretty } from "./getPlotlyLayout.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 import {
   transformObservedProjectedData,
@@ -183,7 +181,6 @@ export default function SandboxControls() {
 
   // Recharts state for observed/projected chart
   const [chartType, setChartType] = useState("plotly"); // 'plotly' | 'recharts'
-  const [useRechartsRenderer, setUseRechartsRenderer] = useState(true);
   const [rechartsData, setRechartsData] = useState(null);
   const [rechartsBrackets, setRechartsBrackets] = useState(null);
   const [rechartsYDomain, setRechartsYDomain] = useState(null);
@@ -532,147 +529,28 @@ export default function SandboxControls() {
       setRechartsBrackets(computeBracketData(data));
       setRechartsYDomain(computeYDomain(data));
       setChartType("recharts");
-      // Grab all data series from config to plot
-      const dataSeries = config.plotlyPredictedPlots;
-
-      // Loop through all data series and create plot data for each
-      const chartDataList = dataSeries.map((series) => {
-        return {
-          mode: series.mode ? series.mode : "line",
+      // chartData for this chart feeds only the CSV export (the chart itself
+      // renders from rechartsData): observations first, then scenario bands.
+      // Column names must stay comma-free for the CSV header.
+      const csvSeries = [
+        { name: "Observations", key: "obs" },
+        { name: "Modeled Historical Lower", key: "historical_lower" },
+        { name: "Modeled Historical Upper", key: "historical_upper" },
+        { name: "Low Emissions (SSP1-2.6) Lower", key: "ssp126_lower" },
+        { name: "Low Emissions (SSP1-2.6) Upper", key: "ssp126_upper" },
+        { name: "Intermediate Emissions (SSP2-4.5) Lower", key: "ssp245_lower" },
+        { name: "Intermediate Emissions (SSP2-4.5) Upper", key: "ssp245_upper" },
+        { name: "High Emissions (SSP3-7.0) Lower", key: "ssp370_lower" },
+        { name: "High Emissions (SSP3-7.0) Upper", key: "ssp370_upper" },
+        { name: "Very High Emissions (SSP5-8.5) Lower", key: "ssp585_lower" },
+        { name: "Very High Emissions (SSP5-8.5) Upper", key: "ssp585_upper" },
+      ];
+      setChartData(
+        csvSeries.map((series) => ({
           name: series.name,
-          type: "scatter",
           x: data.year,
           y: data[series.key].map((item) => (item === -999 ? null : item)),
-          ...(series.fill && { fill: series.fill }),
-          ...(series.fillcolor && { fillcolor: series.fillcolor }),
-          line: series.line,
-          ...(series.marker && { marker: series.marker }),
-          ...(series.hoverTemplate && { hoverTemplate: series.hovertemplate }),
-          ...(series.connectgaps && { connectgaps: series.connectgaps }),
-          hoverinfo: series.hoverinfo,
-          ...(series.legendgroup && { legendgroup: series.legendgroup }),
-          showlegend: series.showlegend,
-          hovertemplate: series.hovertemplate,
-        };
-      });
-
-      // Set the chart data with all 9 series
-      setChartData(chartDataList);
-
-      // use lowest observed and highest ssp585_upper to get range of y-axis
-      const yValuesObserved = data.obs.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const validYValuesObserved = yValuesObserved.filter(
-        (val) => val !== undefined,
-      );
-      const yValuesUpper = data.ssp585_upper.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const validYValuesUpper = yValuesUpper.filter((val) => val !== undefined);
-
-      const yMin =
-        validYValuesObserved.length > 0 ? Math.min(...validYValuesObserved) : 0;
-      const yMax =
-        validYValuesUpper.length > 0 ? Math.max(...validYValuesObserved) : 0;
-
-      const prettyRange = pretty([yMin, yMax]);
-      const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
-      const yValuesAverageAll = Math.max(
-        0,
-        validYValuesObserved.reduce((a, b) => a + b, 0) /
-          validYValuesObserved.length,
-      );
-
-      const yHigherTopValues = data.ssp585_upper.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yHigherBottomValues = data.ssp585_lower.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yIntermediateTopValues = data.ssp245_upper.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yIntermediateBottomValues = data.ssp245_lower.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yLowerTopValues = data.ssp126_upper.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yLowerBottomValues = data.ssp126_lower.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yLowerTop370Values = data.ssp370_upper.map((item) =>
-        item === -999 ? undefined : item,
-      );
-      const yLowerBottom370Values = data.ssp370_lower.map((item) =>
-        item === -999 ? undefined : item,
-      );
-
-      // Find max of top and bottom for high, intermediate, and low
-      // 1. Filters the array to remove undefined values
-      // 2. Checks if the filtered array has any elements
-      // 3. If yes, applies Math.max() or Math.min() to the filtered values
-      // 4. If no, returns 0 as the default value
-
-      const yHigherTop =
-        yHigherTopValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yHigherTopValues.filter((v) => v !== undefined))
-          : 0;
-      const yHigherBottom =
-        yHigherBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yHigherBottomValues.filter((v) => v !== undefined))
-          : 0;
-      const yIntermediateTop =
-        yIntermediateTopValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yIntermediateTopValues.filter((v) => v !== undefined))
-          : 0;
-      const yIntermediateBottom =
-        yIntermediateBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(
-              ...yIntermediateBottomValues.filter((v) => v !== undefined),
-            )
-          : 0;
-      const yLowerTop =
-        yLowerTopValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerTopValues.filter((v) => v !== undefined))
-          : 0;
-      const yLowerBottom =
-        yLowerBottomValues.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerBottomValues.filter((v) => v !== undefined))
-          : 0;
-
-      const y370Top =
-        yLowerTop370Values.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerTop370Values.filter((v) => v !== undefined))
-          : 0;
-      const y370Bottom =
-        yLowerBottom370Values.filter((v) => v !== undefined).length > 0
-          ? Math.max(...yLowerBottom370Values.filter((v) => v !== undefined))
-          : 0;
-
-      setChartLayout(
-        getPredictedDataLayout({
-          chartTitle: `${megaMenuSelection.value.replace(/_/g, " ")}: ${climateOption.title}`,
-          stateName: megaMenuSelection.value,
-          xmin: parseInt(data.year[0]),
-          xmax: parseInt(data.year[data.year.length - 1]),
-          xvals: data.year,
-          yHigherTop: yHigherTop,
-          yHigherBottom: yHigherBottom,
-          yIntermediateTop: yIntermediateTop,
-          yIntermediateBottom: yIntermediateBottom,
-          yLowerTop: yLowerTop,
-          yLowerBottom: yLowerBottom,
-          y370Bottom: y370Bottom,
-          y370Top: y370Top,
-          yMin: yMin - 2,
-          yMax: ((n) => n + (n % 2))(yHigherTop),
-          yRange: yRange,
-          yAxisText: climateOption.yAxisText,
-          yValues: validYValuesObserved,
-          yValsAvgAll: yValuesAverageAll,
-        }),
+        })),
       );
     });
   };
@@ -925,14 +803,10 @@ export default function SandboxControls() {
             climateOption={climateOption}
             chartTitle={chartTitle}
             chartData={chartData}
-            chartType={
-              chartType === "recharts" && useRechartsRenderer
-                ? "recharts"
-                : "plotly"
-            }
+            chartType={chartType}
             period={"1900-2024"}
             renderExportChart={
-              chartType === "recharts" && useRechartsRenderer
+              chartType === "recharts"
                 ? (w, h) => (
                     <Box sx={{ width: `${w}px`, height: `${h}px` }}>
                       <ObservedProjectedChart
@@ -954,21 +828,6 @@ export default function SandboxControls() {
             }}
           />
 
-          {chartType === "recharts" && (
-            <Box display="flex" alignItems="center" gap={0.5} ml={2}>
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
-                Plotly
-              </Typography>
-              <Switch
-                checked={useRechartsRenderer}
-                onChange={(e) => setUseRechartsRenderer(e.target.checked)}
-                size="small"
-              />
-              <Typography sx={{ fontSize: "14px", color: colors.textSecondary }}>
-                Recharts
-              </Typography>
-            </Box>
-          )}
         </Grid>
 
         <Grid
@@ -1038,8 +897,9 @@ export default function SandboxControls() {
                     minHeight: 440,
                   }}
                 >
-                  {/* Two-line figure title (map authors' requested format):
-                      [State] Projected Changes in Total [Season] Precipitation
+                  {/* Two-line figure title (map authors' requested format),
+                      named for the region the map covers, not the selection:
+                      [Map Region] Projected Changes in Total [Season] Precipitation
                       [Time Period], [Scenario] */}
                   <Typography
                     variant="h5"
@@ -1047,7 +907,7 @@ export default function SandboxControls() {
                   >
                     {mapEntry ? (
                       <>
-                        {`${megaMenuSelection.label} Projected Changes in Total ${selectedSeason.label} Precipitation`}
+                        {`${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`}
                         <Box component="span" sx={{ display: "block" }}>
                           {mapEntry.subtitle.split(", ").slice(1).join(", ")}
                         </Box>
@@ -1110,7 +970,7 @@ export default function SandboxControls() {
                     </Box>
                   )}
                 </Box>
-              ) : chartType === "recharts" && useRechartsRenderer ? (
+              ) : chartType === "recharts" ? (
                 <ObservedProjectedChart
                   data={rechartsData}
                   bracketData={rechartsBrackets}

@@ -1,4 +1,3 @@
-import { colors, scenarioColor } from "../theme";
 
 const config = {
   stateAbbreviations: {
@@ -58,7 +57,7 @@ const config = {
   ncaRegionAbbreviations: {
     Alaska: "Alaska",
     Northeast: "Northeast",
-    "Northern Rockies and Plains": "Northern Rockies And Plains",
+    "Northern Rockies and Plains": "Northern Rockies and Plains",
     Northwest: "Northwest",
     "Ohio Valley": "Ohio Valley",
     South: "South",
@@ -897,10 +896,17 @@ const config = {
       description: "Alaska",
       value: "alaska_region",
       type: "regions",
+      // Override: the 2026 regions data drop has no Alaska column, so this
+      // region uses the state-level Alaska data (like Hawaii / US Caribbean)
+      dataOverride: {
+        indexKey: "states",
+        locationType: "states",
+        label: "Alaska",
+      },
       startDates: {
         threshold: "1930",
-        temperature: "1900",
-        precipitation: "1900",
+        temperature: "1925",
+        precipitation: "1925",
       },
       endDates: {
         threshold: "2024",
@@ -940,8 +946,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -957,8 +963,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -974,8 +980,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -992,8 +998,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1010,8 +1016,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1028,8 +1034,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1045,8 +1051,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1062,8 +1068,8 @@ const config = {
       type: "regions",
       startDates: {
         threshold: "1900",
-        temperature: "1895",
-        precipitation: "1895",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1100,10 +1106,12 @@ const config = {
       description: "California, Nevada",
       value: "west",
       type: "regions",
+      // The 2026 data drop has real West threshold values back to 1900
+      // (the older delivery was -999 before 1930)
       startDates: {
-        threshold: "1930",
-        temperature: "1895",
-        precipitation: "1895",
+        threshold: "1900",
+        temperature: "1900",
+        precipitation: "1900",
       },
       endDates: {
         threshold: "2024",
@@ -1527,160 +1535,6 @@ const config = {
     "West Virginia",
     "Wisconsin",
     "Wyoming",
-  ],
-  plotlyPredictedPlots: [
-    {
-      name: "Modeled Historical Lower",
-      key: "historical_lower",
-      line: {
-        color: scenarioColor("historical", 0),
-        width: 0,
-        shape: "linear",
-        simplify: true,
-        dash: "solid",
-      },
-      hoverinfo: "skip",
-      showlegend: false,
-    },
-    {
-      name: "Modeled Historical",
-      key: "historical_upper",
-      fill: "tonexty",
-      fillcolor: scenarioColor("historical", 0.5),
-      line: {
-        color: scenarioColor("historical", 0),
-        width: 0,
-      },
-      hoverinfo: "x+y",
-      hovertemplate: "<b>%{x}</b><br>Modeled Historical: %{y}<extra></extra>",
-      legendgroup: 1,
-      legendrank: 2,
-      showlegend: true,
-    },
-    {
-      name: "Low Emissions (SSP1-2.6) Lower",
-      key: "ssp126_lower",
-      line: {
-        color: scenarioColor("ssp126", 0),
-        width: 0,
-      },
-      hoverinfo: "skip",
-      showlegend: false,
-    },
-    {
-      name: "Low Emissions (SSP1-2.6)",
-      key: "ssp126_upper",
-      fill: "tonexty",
-      fillcolor: scenarioColor("ssp126", 0.6),
-      line: {
-        color: scenarioColor("ssp126", 0),
-        width: 0,
-      },
-      hoverinfo: "x+y",
-      hovertemplate: "<b>%{x}</b><br>Low Emissions: %{y}<extra></extra>",
-      legendgroup: 2,
-      legendrank: 3,
-      showlegend: true,
-    },
-    {
-      name: "Very High Emissions (SSP5-8.5) Lower",
-      key: "ssp585_lower",
-      line: {
-        color: scenarioColor("ssp585", 0),
-        width: 0,
-      },
-      hoverinfo: "skip",
-      showlegend: false,
-    },
-    {
-      name: "Very High Emissions (SSP5-8.5)",
-      key: "ssp585_upper",
-      fill: "tonexty",
-      fillcolor: scenarioColor("ssp585", 0.7),
-      line: {
-        color: scenarioColor("ssp585", 0),
-        width: 0,
-      },
-      hoverinfo: "x+y",
-      hovertemplate: "<b>%{x}</b><br>Very High Emissions: %{y}<extra></extra>",
-      legendgroup: 5,
-      legendrank: 6,
-      showlegend: true,
-    },
-    {
-      name: "High Emissions (SSP3-7.0) Lower",
-      key: "ssp370_lower",
-      line: {
-        color: scenarioColor("ssp370", 0),
-        width: 0,
-      },
-      hoverinfo: "skip",
-      showlegend: false,
-    },
-    {
-      name: "High Emissions (SSP3-7.0)",
-      key: "ssp370_upper",
-      fill: "tonexty",
-      fillcolor: scenarioColor("ssp370", 0.7),
-      line: {
-        color: scenarioColor("ssp370", 0),
-        width: 0,
-      },
-      hoverinfo: "x+y",
-      hovertemplate: "<b>%{x}</b><br>High Emissions: %{y}<extra></extra>",
-      legendgroup: 4,
-      legendrank: 5,
-      showlegend: true,
-    },
-    {
-      name: "Intermediate Emissions (SSP2-4.5) Lower",
-      key: "ssp245_lower",
-      line: {
-        color: scenarioColor("ssp245", 0),
-        width: 0,
-      },
-      hoverinfo: "skip",
-      showlegend: false,
-    },
-    {
-      name: "Intermediate Emissions (SSP2-4.5)",
-      key: "ssp245_upper",
-      fill: "tonexty",
-      fillcolor: scenarioColor("ssp245", 0.6),
-      line: {
-        color: scenarioColor("ssp245", 0),
-        width: 0,
-      },
-      hoverinfo: "x+y",
-      hovertemplate:
-        "<b>%{x}</b><br>Intermediate Emissions: %{y}<extra></extra>",
-      legendgroup: 3,
-      legendrank: 4,
-      showlegend: true,
-    },
-    {
-      name: "Observations",
-      key: "obs",
-      width: 2,
-      mode: "lines+markers",
-      line: {
-        color: colors.textPrimary,
-        width: 2,
-        dash: "solid",
-        shape: "linear",
-        simplify: true,
-      },
-      marker: {
-        color: colors.textPrimary,
-        size: 5,
-      },
-      connectgaps: false,
-      hoverinfo: "x+y",
-      hovertemplate: "<b>%{x}</b><br>Observations: %{y}<extra></extra>",
-      legendgroup: 0,
-      legendrank: 1,
-      showlegend: true,
-    },
   ],
 };
 

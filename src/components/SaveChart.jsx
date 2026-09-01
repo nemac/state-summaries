@@ -361,6 +361,7 @@ const SaveChart = (props) => {
                   <SaveAsCSVButton
                     chartTitle={chartTitle}
                     chartData={chartData}
+                    chartType={chartType}
                   />
                 )}
               </Box>
