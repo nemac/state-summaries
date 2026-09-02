@@ -21,10 +21,6 @@ jsonFile = 'index.json'
 COLUMN_RENAMES = {
     ' Year': 'Year',
     'year': 'Year',
-    # 2021-era abbreviated regions delivery
-    'AK': 'Alaska', 'HI': 'Hawaii', 'MW': 'Midwest', 'NE': 'Northeast',
-    'NGP': 'Northern Great Plains', 'NW': 'Northwest', 'SE': 'Southeast',
-    'SGP': 'Southern Great Plains', 'SW': 'Southwest',
     # 2025/2026 regions delivery, underscore style (threshold files)
     'Northern_Rockies_Plains': 'Northern Rockies and Plains',
     'Ohio_Valley': 'Ohio Valley',
@@ -39,6 +35,14 @@ COLUMN_RENAMES = {
     'SOUTHWEST': 'Southwest',
     'UPPER MIDWEST': 'Upper Midwest',
     'WEST': 'West',
+}
+
+# 2021-era abbreviated regions delivery. Only applied to regions_ files:
+# AK/HI/NE are also real state codes in states_ files.
+REGION_ABBREV_RENAMES = {
+    'AK': 'Alaska', 'HI': 'Hawaii', 'MW': 'Midwest', 'NE': 'Northeast',
+    'NGP': 'Northern Great Plains', 'NW': 'Northwest', 'SE': 'Southeast',
+    'SGP': 'Southern Great Plains', 'SW': 'Southwest',
 }
 
 removeFields = ['#grids']
@@ -58,6 +62,8 @@ def ingest_new_csvs():
 
         df = pd.read_csv(fn)
         df.rename(columns=COLUMN_RENAMES, inplace=True)
+        if fn.startswith('regions_'):
+            df.rename(columns=REGION_ABBREV_RENAMES, inplace=True)
         for colName in list(df.columns):
             for deleteField in removeFields:
                 if deleteField in colName:
