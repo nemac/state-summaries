@@ -23,10 +23,7 @@ function parseFile(data, type, parseRegion) {
     colIndex = 1;
   } else if (type === "regions" || type === "states") {
     for (let h = 1; h < headers.length; h += 1) {
-      if (
-        (type === "states" ? headers[h].toUpperCase() : headers[h]) ===
-        (type === "states" ? parseRegion.toUpperCase() : parseRegion)
-      ) {
+      if (headers[h].toUpperCase() === parseRegion.toUpperCase()) {
         colIndex = h;
         break;
       }

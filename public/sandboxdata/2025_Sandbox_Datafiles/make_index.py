@@ -1,102 +1,127 @@
 #!/usr/bin/env python3
-import os, glob
+# Ingest raw data deliveries and (re)build index.json.
+#
+# Usage: run from this directory. Any *.csv files present are treated as a new
+# delivery: they are renamed to .txt, trailing tar NUL padding is stripped, and
+# their headers are normalized to the column names the app matches against
+# (config.ncaRegionAbbreviations / stateAbbreviations in src/configs/config.js).
+# Existing .txt files are left byte-for-byte untouched.
+#
+# index.json is then rebuilt from every CONUS_/regions_/states_ .txt file. The
+# start/end years come from the actual Year column, not the filename — some
+# deliveries are named 1895-2024 but contain 1900-2024.
+import os
+import json
 import pandas as pd
-import argparse
 
 jsonFile = 'index.json'
-processingFile =  'make_index.py'
-htmlFile =  'index.html'
-dsStore = '.DS_Store'
 
-EXCLUDED = [htmlFile, processingFile, jsonFile, dsStore]
+# Header spellings seen across deliveries -> canonical app column names.
+# Regions must match config.ncaRegionAbbreviations values exactly.
+COLUMN_RENAMES = {
+    ' Year': 'Year',
+    'year': 'Year',
+    # 2021-era abbreviated regions delivery
+    'AK': 'Alaska', 'HI': 'Hawaii', 'MW': 'Midwest', 'NE': 'Northeast',
+    'NGP': 'Northern Great Plains', 'NW': 'Northwest', 'SE': 'Southeast',
+    'SGP': 'Southern Great Plains', 'SW': 'Southwest',
+    # 2025/2026 regions delivery, underscore style (threshold files)
+    'Northern_Rockies_Plains': 'Northern Rockies and Plains',
+    'Ohio_Valley': 'Ohio Valley',
+    'Upper_Midwest': 'Upper Midwest',
+    # 2025/2026 regions delivery, ALL-CAPS style (seasonal/annual files)
+    'NORTHEAST': 'Northeast',
+    'NORTHERN ROCKIES PLAINS': 'Northern Rockies and Plains',
+    'NORTHWEST': 'Northwest',
+    'OHIO VALLEY': 'Ohio Valley',
+    'SOUTH': 'South',
+    'SOUTHEAST': 'Southeast',
+    'SOUTHWEST': 'Southwest',
+    'UPPER MIDWEST': 'Upper Midwest',
+    'WEST': 'West',
+}
 
 removeFields = ['#grids']
 
-# May need to do "pip install mako"
-from mako.template import Template
-import json
 
-def main():
-    fnames = [fname for fname in sorted(os.listdir('.')) if fname not in EXCLUDED]
-    for fn in fnames:
-       oldbase = os.path.splitext(fn)
-       newname = fn.replace('.csv', '.txt')
-       os.rename(fn, newname)
-       df = pd.read_csv(newname)
+def ingest_new_csvs():
+    for fn in sorted(os.listdir('.')):
+        if not fn.endswith('.csv') or not os.path.isfile(fn):
+            continue
+        newname = fn[:-4] + '.txt'
 
-       # make file headers consistent
-       for colName in df.columns:
-           df.rename(columns={' Year': 'Year', 'year': 'Year'}, inplace=True)
-           if 'regions' in newname:
-               df.rename(columns={'AK': 'Alaska', 'HI': 'Hawaii', 'MW': 'Midwest', 'NE': 'Northeast', 'NGP': 'Northern Great Plains', 'NW': 'Northwest', 'SE': 'Southeast', 'SGP': 'Southern Great Plains', 'SW': 'Southwest'}, inplace=True)
+        # Strip trailing tar block padding (NUL bytes) some deliveries carry.
+        with open(fn, 'rb') as fd:
+            raw = fd.read().rstrip(b'\x00')
+        with open(fn, 'wb') as fd:
+            fd.write(raw)
 
-           for deleteField in removeFields:
-               if deleteField in colName:
-                   df.drop(columns = [colName], inplace= True)
+        df = pd.read_csv(fn)
+        df.rename(columns=COLUMN_RENAMES, inplace=True)
+        for colName in list(df.columns):
+            for deleteField in removeFields:
+                if deleteField in colName:
+                    df.drop(columns=[colName], inplace=True)
+        df.to_csv(newname, index=False)
+        if newname != fn:
+            os.remove(fn)
+        print(f'ingested {fn} -> {newname}')
 
-       df.to_csv(newname, index=False)
 
+def build_index():
     data = {
-        'CONUS' : [],
-        'regions' : [],
-        'states' : [],
+        'CONUS': [],
+        'regions': [],
+        'states': [],
     }
 
-    fnames = [fname for fname in sorted(os.listdir('.')) if fname not in EXCLUDED]
-    for fn in fnames:
+    season_mapping = {
+        'ann': 'yearly',
+        'djf': 'djf',
+        'mam': 'mam',
+        'jja': 'jja',
+        'son': 'son',
+    }
+
+    for fn in sorted(os.listdir('.')):
+        if not fn.endswith('.txt') or not os.path.isfile(fn):
+            continue
         parts = fn.split('_')
         for ft in data.keys():
-            if fn.startswith(ft):
-                robust = False
-                
-                # New format: CONUS_prcp_1inch_1900-2024_SCS2025.txt
-                # parts[0] = data area (CONUS/regions/states)
-                # parts[1] = data type high level (prcp/tmax/tmean/tmin)  
-                # parts[2] = data type specific (1inch/2inch/ann/djf/etc)
-                # parts[3] = years (1900-2024)
-                
-                data_type = parts[1] + "_" + parts[2]  # e.g., "prcp1inch" or "tmaxann"
-                
-                # Parse year range from format like "1900-2024"
-                year_part = parts[3]
-                year_range = year_part.split('-')
-                startYear = int(year_range[0])
-                endYear = int(year_range[1])
-                
-                # Determine season from data type specific part
-                season_mapping = {
-                    'ann': 'yearly',
-                    'djf': 'djf', 
-                    'mam': 'mam',
-                    'jja': 'jja', 
-                    'son': 'son'
-                }
-                
-                # Check if it's a seasonal file
-                season = 'yearly'  # default
-                for season_key, season_value in season_mapping.items():
-                    if parts[2] == season_key:
-                        season = season_value
-                        break
-                
-                # Set robust flag if data starts from 1950
-                if startYear == 1950:
-                    robust = True
+            if not fn.startswith(ft + '_'):
+                continue
 
-                data[ft].append({
-                    "name": fn,
-                    "type": data_type,
-                    "start": startYear,
-                    "end": endYear,
-                    "robust": robust,
-                    "period": str(startYear) + '-2024',
-                    "season": season,
-                })
-                break;
+            # Format: <area>_<var>_<detail>_<years>_SCS2025.txt
+            # e.g. regions_prcp_1inch_1900-2024_SCS2025.txt
+            data_type = parts[1] + '_' + parts[2]
+            season = season_mapping.get(parts[2], 'yearly')
 
-    data['regions'] = data.pop('regions')
+            # Year range from the data itself; filenames can be wrong
+            # (e.g. named 1895-2024 but starting at 1900).
+            years = pd.read_csv(fn, usecols=['Year'])['Year']
+            startYear = int(years.min())
+            endYear = int(years.max())
+
+            data[ft].append({
+                'name': fn,
+                'type': data_type,
+                'start': startYear,
+                'end': endYear,
+                'robust': startYear == 1950,
+                'period': f'{startYear}-{endYear}',
+                'season': season,
+            })
+            break
+
     with open(jsonFile, 'w+') as fd:
         fd.write(json.dumps(data, sort_keys=True, indent=4))
+    counts = ', '.join(f'{k}: {len(v)}' for k, v in data.items())
+    print(f'wrote {jsonFile} ({counts})')
+
+
+def main():
+    ingest_new_csvs()
+    build_index()
 
 
 if __name__ == '__main__':
