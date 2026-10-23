@@ -328,7 +328,7 @@ export default function About() {
           For more information about data, methods, scenarios, and more, please
           view the technical details{" "}
           <Link
-            href="https://data-explorer.nemac.org/tempData/sample-local-pdf.pdf"
+            href="/technical-details.pdf"
             target="_blank"
             rel="noopener noreferrer"
             sx={{ color: colors.primary }}

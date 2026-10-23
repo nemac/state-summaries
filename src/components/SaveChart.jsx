@@ -101,7 +101,7 @@ const SaveChart = (props) => {
             <Typography variant="body2" sx={{ mb: 2, color: colors.textMuted }}>
               Questions about data and methodologies?{" "}
               <Link
-                href="/tempData/sample-local-pdf.pdf"
+                href="/technical-details.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ color: colors.buttonBlue }}
