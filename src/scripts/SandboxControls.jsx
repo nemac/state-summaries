@@ -26,7 +26,10 @@ import {
   lookupPrecipMap,
   selectionValueToRegionDisplayName,
 } from "../utils/precipMaps.js";
-import parseFile, { areAllValuesNoData } from "./utils.js";
+import parseFile, {
+  areAllValuesNoData,
+  orderFilesByPreference,
+} from "./utils.js";
 import {
   createFiveYearGroups,
   getHoverTemplate,
@@ -57,6 +60,22 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
       ? config.stateAbbreviations[selectionLabel]
       : config.ncaRegionAbbreviations[selectionLabel],
   );
+};
+
+// Try each candidate file in order and return the first whose column holds
+// real data; null when every candidate is all -999.
+const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
+  for (const file of files) {
+    const chartDataFromFile = await fetchSandboxDataFile(
+      file.name,
+      locationType,
+      selectionLabel,
+    );
+    if (!areAllValuesNoData(chartDataFromFile[1])) {
+      return chartDataFromFile;
+    }
+  }
+  return null;
 };
 
 export default function SandboxControls() {
@@ -238,29 +257,24 @@ export default function SandboxControls() {
       return null;
     }
 
-    // Find the best matching file from the available data files
-    // Filter files by location type and file type, then find the best date range match
-    const matchingFiles = data.filter((file) => file.type === fileType);
-
-    // Prefer files with date ranges 1895-2024 or 1900-2024 over 1950-2024
-    const preferredFile =
-      matchingFiles.find(
-        (file) => file.period === "1895-2024" || file.period === "1900-2024",
-      ) || matchingFiles[0]; // fallback to first match if no preferred range found
+    // Files for this series, long 1895/1900 file first. Some deliveries leave
+    // a column all -999 in the long file while a shorter one has data, so the
+    // fetch falls back through the rest before giving up.
+    const candidateFiles = orderFilesByPreference(
+      data.filter((file) => file.type === fileType),
+    );
 
     // If no matching file was found for this metric, show error
-    if (!preferredFile) {
+    if (candidateFiles.length === 0) {
       setChartData([]);
       setChartLayout(layoutDefaults);
       setOpenError(true);
       return null;
     }
 
-    const dataFile = preferredFile.name;
-
-    fetchSandboxDataFile(dataFile, locationType, selectionLabel)
+    fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
       .then((chartDataFromFile) => {
-        if (areAllValuesNoData(chartDataFromFile[1]) === true) {
+        if (chartDataFromFile === null) {
           setChartData([]);
           setChartLayout(layoutDefaults);
           setOpenError(true);

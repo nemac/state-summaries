@@ -51,4 +51,14 @@ export function areAllValuesNoData(values) {
   return values.every((value) => value === -999);
 }
 
+// Order index entries for one series: the long 1895/1900 file first, then the
+// rest by start year, so a caller can fall back when a column is all -999.
+export function orderFilesByPreference(files) {
+  const isLongPeriod = (file) =>
+    file.period === "1895-2024" || file.period === "1900-2024";
+  return [...files].sort(
+    (a, b) => Number(isLongPeriod(b)) - Number(isLongPeriod(a)) || a.start - b.start,
+  );
+}
+
 export default parseFile;
