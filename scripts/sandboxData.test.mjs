@@ -10,7 +10,10 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import parseFile, { areAllValuesNoData } from "../src/scripts/utils.js";
+import parseFile, {
+  areAllValuesNoData,
+  orderFilesByPreference,
+} from "../src/scripts/utils.js";
 import config from "../src/configs/config.js";
 
 const DATA_DIR = resolve(
@@ -82,6 +85,23 @@ test("parseFile reads CONUS files from the second column", () => {
 test("areAllValuesNoData flags all--999 series only", () => {
   assert.equal(areAllValuesNoData([-999, -999]), true);
   assert.equal(areAllValuesNoData([-999, 3.2]), false);
+});
+
+test("orderFilesByPreference puts the 1895/1900 file first, then earlier starts", () => {
+  const files = [
+    { name: "c", period: "1950-2024", start: 1950 },
+    { name: "a", period: "1900-2024", start: 1900 },
+    { name: "b", period: "1930-2024", start: 1930 },
+  ];
+  assert.deepEqual(
+    orderFilesByPreference(files).map((f) => f.name),
+    ["a", "b", "c"],
+  );
+  assert.deepEqual(
+    orderFilesByPreference(files.slice(0, 1).concat(files.slice(2))).map((f) => f.name),
+    ["b", "c"],
+  );
+  assert.deepEqual(orderFilesByPreference([]), []);
 });
 
 // ---------------------------------------------------------------------------
@@ -299,11 +319,10 @@ test("annual values are consistent with seasonal values", () => {
 // Known cases where the app-preferred (longest-period) file has an all--999
 // column even though a shorter-period sibling has real data. These trace to
 // the upstream delivery (e.g. states_prcp_4inch_1900-2024 is hollow for most
-// states) plus the app's preference rule, which does not yet fall back past
-// an empty column. Fixing that in getChartData should shrink this list, as
-// did the 2026-10-26 regenerated threshold files (AZ/CA/MI/NM/NV 4inch); a
-// NEW entry here means a future delivery hollowed out a column — investigate
-// before repinning.
+// states). getChartData falls back through the shorter files, so these still
+// plot; the pin tracks delivery quality. The 2026-10-26 regenerated threshold
+// files removed AZ/CA/MI/NM/NV 4inch. A NEW entry here means a future delivery
+// hollowed out a column — investigate before repinning.
 const KNOWN_HOLLOW_PREFERRED = new Set([
   "regions/tmin_-30F/Southeast",
   ...[
@@ -349,6 +368,19 @@ test("app-preferred files only go hollow where already known", () => {
     [...KNOWN_HOLLOW_PREFERRED].sort(),
     "hollow-preferred-column set changed — see comment above KNOWN_HOLLOW_PREFERRED",
   );
+});
+
+test("the fallback order rescues every known hollow-preferred column", () => {
+  for (const entry of KNOWN_HOLLOW_PREFERRED) {
+    const [key, type, col] = entry.split("/");
+    const ordered = orderFilesByPreference(
+      index[key].filter((e) => e.type === type),
+    );
+    const rescued = ordered
+      .slice(1)
+      .some((e) => !readColumns(e.name).columns[col].every((v) => v === NO_DATA));
+    assert.ok(rescued, `${entry}: no later file has data`);
+  }
 });
 
 // Options whose seasonal/annual series are known to be absent from the
