@@ -47,8 +47,11 @@ import { colors } from "../theme";
 
 // Fetch sandbox data file and parse it
 const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
+  // no-cache: revalidate against the server so a new delivery is never
+  // masked by a browser's cached copy of the old file.
   const response = await fetch(
     `./sandboxdata/2025_Sandbox_Datafiles/${dataFile}`,
+    { cache: "no-cache" },
   );
   const data = await response.text();
 
@@ -395,6 +398,7 @@ export default function SandboxControls() {
     try {
       const response = await fetch(
         "./sandboxdata/2025_Sandbox_Datafiles/index.json",
+        { cache: "no-cache" },
       );
       const responseData = await response.json();
       setClimateDataFilesJSON(responseData);
