@@ -300,16 +300,17 @@ test("annual values are consistent with seasonal values", () => {
 // column even though a shorter-period sibling has real data. These trace to
 // the upstream delivery (e.g. states_prcp_4inch_1900-2024 is hollow for most
 // states) plus the app's preference rule, which does not yet fall back past
-// an empty column. Fixing that in getChartData should shrink this list; a
+// an empty column. Fixing that in getChartData should shrink this list, as
+// did the 2026-10-26 regenerated threshold files (AZ/CA/MI/NM/NV 4inch); a
 // NEW entry here means a future delivery hollowed out a column — investigate
 // before repinning.
 const KNOWN_HOLLOW_PREFERRED = new Set([
   "regions/tmin_-30F/Southeast",
   ...[
-    "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "GA", "IA", "ID", "IL",
-    "IN", "KS", "KY", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC",
-    "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI",
-    "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY",
+    "AK", "AL", "AR", "CO", "CT", "DE", "GA", "IA", "ID", "IL", "IN", "KS",
+    "KY", "MA", "MD", "ME", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH",
+    "NJ", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
+    "VA", "VT", "WA", "WI", "WV", "WY",
   ].map((s) => `states/prcp_4inch/${s}`),
   "states/tmax_0F/NM",
   "states/tmax_0F/OK",
@@ -350,16 +351,10 @@ test("app-preferred files only go hollow where already known", () => {
   );
 });
 
-// HI/PR (and the region options that alias them) have no statewide
-// seasonal/annual temperature or precipitation data in the delivery at all
-// (nClimDiv does not cover them); their startDates are meaningful only for
-// threshold series, which do have data from 1950.
-const KNOWN_MISSING_ANNUAL = new Set([
-  "Hawaiʻi",
-  "Puerto Rico",
-  "Hawaiʻi and US-Affiliated Pacific Islands",
-  "US Caribbean",
-]);
+// Options whose seasonal/annual series are known to be absent from the
+// delivery. HI/PR left this list with the 2026-10-26 delivery, whose HI+PR
+// single-state files are merged into the states_ files from 1950.
+const KNOWN_MISSING_ANNUAL = new Set([]);
 
 test("configured startDates land on a year with real data", () => {
   const valueAt = (name, column, year) => {
