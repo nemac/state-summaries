@@ -77,20 +77,32 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # Sync the build output to the bucket. `--delete` removes files from the
-      # bucket that are no longer produced by the build. The excludes keep the
-      # heavy map source files (Illustrator .ai / ArcGIS .aix) and macOS junk
-      # out of the public bucket — only the PNG previews the app uses are served.
-      # The one PDF the app links to (technical details) is re-included after
-      # the blanket PDF exclude; later filters win in `aws s3 sync`.
+      # Sync the build output to the bucket in two passes so each object gets
+      # the right Cache-Control. Vite's hashed bundles in assets/ get a new name
+      # on every build, so browsers may keep them for a year. Everything else
+      # (index.html, the sandboxdata files, map images) keeps a stable name, so
+      # browsers must revalidate on each visit (max-age=0; the ETag makes that a
+      # cheap 304), while CloudFront may keep its copy for a day (s-maxage; the
+      # invalidation below flushes it on deploy). Without these headers Chrome
+      # applied heuristic freshness and served stale data files for days after
+      # a deploy. `--delete` removes files from the bucket that are no longer
+      # produced by the build. The excludes keep the heavy map source files
+      # (Illustrator .ai / ArcGIS .aix) and macOS junk out of the public bucket
+      # — only the PNG previews the app uses are served. The one PDF the app
+      # links to (technical details) is re-included after the blanket PDF
+      # exclude; later filters win in `aws s3 sync`.
       - name: Sync to S3
         run: |
+          aws s3 sync dist/assets/ "s3://${S3_BUCKET}/assets" --delete \
+            --cache-control "public, max-age=31536000, immutable"
           aws s3 sync dist/ "s3://${S3_BUCKET}" --delete \
+            --exclude "assets/*" \
             --exclude "*.ai" \
             --exclude "*.aix" \
             --exclude "*.pdf" \
             --include "technical-details.pdf" \
-            --exclude "*.DS_Store"
+            --exclude "*.DS_Store" \
+            --cache-control "public, max-age=0, must-revalidate, s-maxage=86400"
 
       - name: Invalidate CloudFront
         id: invalidate
