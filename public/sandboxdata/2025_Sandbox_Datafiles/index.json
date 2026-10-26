@@ -1914,6 +1914,15 @@
         },
         {
             "end": 2024,
+            "name": "states_tmin_65F_1950-2024_SCS2025.txt",
+            "period": "1950-2024",
+            "robust": true,
+            "season": "yearly",
+            "start": 1950,
+            "type": "tmin_65F"
+        },
+        {
+            "end": 2024,
             "name": "states_tmin_70F_1900-2024_SCS2025.txt",
             "period": "1900-2024",
             "robust": false,

@@ -5,7 +5,9 @@
 # delivery: they are renamed to .txt, trailing tar NUL padding is stripped, and
 # their headers are normalized to the column names the app matches against
 # (config.ncaRegionAbbreviations / stateAbbreviations in src/configs/config.js).
-# Existing .txt files are left byte-for-byte untouched.
+# Single-state seasonal files (the HI+PR folder, e.g. HI_prcp_ann_1950-2024_SCS2025.csv)
+# are merged into the matching states_ .txt file, which carries -999 for those states.
+# Other existing .txt files are left byte-for-byte untouched.
 #
 # index.json is then rebuilt from every CONUS_/regions_/states_ .txt file. The
 # start/end years come from the actual Year column, not the filename — some
@@ -47,18 +49,28 @@ REGION_ABBREV_RENAMES = {
 
 removeFields = ['#grids']
 
+# Deliveries that hold one state per file; merged into states_ files, not ingested as-is.
+SINGLE_STATE_PREFIXES = ('HI_', 'PR_')
+
+
+def strip_tar_padding(fn):
+    # Strip trailing tar block padding (NUL bytes) some deliveries carry.
+    with open(fn, 'rb') as fd:
+        raw = fd.read().rstrip(b'\x00')
+    with open(fn, 'wb') as fd:
+        fd.write(raw)
+
+
+def is_delivered_csv(fn):
+    return fn.endswith('.csv') and os.path.isfile(fn)
+
 
 def ingest_new_csvs():
     for fn in sorted(os.listdir('.')):
-        if not fn.endswith('.csv') or not os.path.isfile(fn):
+        if not is_delivered_csv(fn) or fn.startswith(SINGLE_STATE_PREFIXES):
             continue
         newname = fn[:-4] + '.txt'
-
-        # Strip trailing tar block padding (NUL bytes) some deliveries carry.
-        with open(fn, 'rb') as fd:
-            raw = fd.read().rstrip(b'\x00')
-        with open(fn, 'wb') as fd:
-            fd.write(raw)
+        strip_tar_padding(fn)
 
         df = pd.read_csv(fn)
         df.rename(columns=COLUMN_RENAMES, inplace=True)
@@ -72,6 +84,30 @@ def ingest_new_csvs():
         if newname != fn:
             os.remove(fn)
         print(f'ingested {fn} -> {newname}')
+
+
+def states_file_for(var, season):
+    matches = [fn for fn in os.listdir('.') if fn.startswith(f'states_{var}_{season}_') and fn.endswith('.txt')]
+    if len(matches) != 1:
+        raise SystemExit(f'expected one states_{var}_{season}_ file, found {matches}')
+    return matches[0]
+
+
+def merge_single_state_csvs():
+    for fn in sorted(os.listdir('.')):
+        if not is_delivered_csv(fn) or not fn.startswith(SINGLE_STATE_PREFIXES):
+            continue
+        state, var, season = fn.split('_')[:3]
+        target = states_file_for(var, season)
+        strip_tar_padding(fn)
+        single = pd.read_csv(fn).rename(columns=COLUMN_RENAMES).set_index('Year')[state]
+        states = pd.read_csv(target)
+        states[state] = states[state].astype(float)
+        rows = states['Year'].isin(single.index)
+        states.loc[rows, state] = single.loc[states.loc[rows, 'Year']].values
+        states.to_csv(target, index=False)
+        os.remove(fn)
+        print(f'merged {fn} -> {target} ({int(rows.sum())} years)')
 
 
 def build_index():
@@ -127,6 +163,7 @@ def build_index():
 
 def main():
     ingest_new_csvs()
+    merge_single_state_csvs()
     build_index()
 
 
