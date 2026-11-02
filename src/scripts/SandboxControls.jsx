@@ -65,6 +65,17 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
   );
 };
 
+const logSelectedFile = (file, files, locationType, selectionLabel) => {
+  const skippedFiles = files.slice(0, files.indexOf(file)).map((f) => f.name);
+  const fallbackNote =
+    skippedFiles.length > 0
+      ? ` (fell back: column all -999 in ${skippedFiles.join(", ")})`
+      : "";
+  console.debug(
+    `[data] ${selectionLabel} (${locationType}): ${file.name}${fallbackNote}`,
+  );
+};
+
 // Try each candidate file in order and return the first whose column holds
 // real data; null when every candidate is all -999.
 const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
@@ -75,9 +86,13 @@ const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
       selectionLabel,
     );
     if (!areAllValuesNoData(chartDataFromFile[1])) {
+      logSelectedFile(file, files, locationType, selectionLabel);
       return chartDataFromFile;
     }
   }
+  console.debug(
+    `[data] ${selectionLabel} (${locationType}): no file has data; tried ${files.map((f) => f.name).join(", ")}`,
+  );
   return null;
 };
 

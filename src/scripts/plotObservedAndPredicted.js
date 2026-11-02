@@ -1,11 +1,10 @@
 export const fetchObservedAndProjectedData = async (megaMenuSelectionValue) => {
   const valueWithoutSpaces = megaMenuSelectionValue.replace(/[\s_]+/g, '');
+  const fileUrl = `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${valueWithoutSpaces}_FIG1_SCS2025.csv`;
+  console.debug(`[data] ${megaMenuSelectionValue} (observed/projected): ${fileUrl}`);
   // no-cache: revalidate against the server so a new delivery is never
   // masked by a browser's cached copy of the old file.
-  const response = await fetch(
-    `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${valueWithoutSpaces}_FIG1_SCS2025.csv`,
-    { cache: "no-cache" },
-  );
+  const response = await fetch(fileUrl, { cache: "no-cache" });
   const csvText = await response.text();
 
   // Parse CSV
