@@ -1106,10 +1106,8 @@ const config = {
       description: "California, Nevada",
       value: "west",
       type: "regions",
-      // The 2026 data drop has real West threshold values back to 1900
-      // (the older delivery was -999 before 1930)
       startDates: {
-        threshold: "1900",
+        threshold: "1950",
         temperature: "1900",
         precipitation: "1900",
       },

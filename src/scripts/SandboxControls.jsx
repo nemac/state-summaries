@@ -26,10 +26,7 @@ import {
   lookupPrecipMap,
   selectionValueToRegionDisplayName,
 } from "../utils/precipMaps.js";
-import parseFile, {
-  areAllValuesNoData,
-  orderFilesByPreference,
-} from "./utils.js";
+import parseFile, { areAllValuesNoData, candidateDataFiles } from "./utils.js";
 import {
   createFiveYearGroups,
   getHoverTemplate,
@@ -65,6 +62,17 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
   );
 };
 
+const logSelectedFile = (file, files, locationType, selectionLabel) => {
+  const skippedFiles = files.slice(0, files.indexOf(file)).map((f) => f.name);
+  const fallbackNote =
+    skippedFiles.length > 0
+      ? ` (fell back: column all -999 in ${skippedFiles.join(", ")})`
+      : "";
+  console.debug(
+    `[data] ${selectionLabel} (${locationType}): ${file.name}${fallbackNote}`,
+  );
+};
+
 // Try each candidate file in order and return the first whose column holds
 // real data; null when every candidate is all -999.
 const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
@@ -75,9 +83,13 @@ const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
       selectionLabel,
     );
     if (!areAllValuesNoData(chartDataFromFile[1])) {
+      logSelectedFile(file, files, locationType, selectionLabel);
       return chartDataFromFile;
     }
   }
+  console.debug(
+    `[data] ${selectionLabel} (${locationType}): no file has data; tried ${files.map((f) => f.name).join(", ")}`,
+  );
   return null;
 };
 
@@ -260,11 +272,18 @@ export default function SandboxControls() {
       return null;
     }
 
+    // use type from climateOption (e.g. temperature) to find start and end dates
+    const startDate = parseInt(selection.startDates[climateOption.type]);
+    const endDate = parseInt(selection.endDates[climateOption.type]);
+
     // Files for this series, long 1895/1900 file first. Some deliveries leave
     // a column all -999 in the long file while a shorter one has data, so the
     // fetch falls back through the rest before giving up.
-    const candidateFiles = orderFilesByPreference(
-      data.filter((file) => file.type === fileType),
+    const candidateFiles = candidateDataFiles(
+      data,
+      fileType,
+      locationType,
+      startDate,
     );
 
     // If no matching file was found for this metric, show error
@@ -299,10 +318,6 @@ export default function SandboxControls() {
           climateOption,
           selectedSeason,
         );
-
-        // use type from climateOption (e.g. temperature) to find start and end dates
-        const startDate = parseInt(selection.startDates[climateOption.type]);
-        const endDate = parseInt(selection.endDates[climateOption.type]);
 
         const barChartFiveYearHoverGroups = createFiveYearGroups(
           startDate,
