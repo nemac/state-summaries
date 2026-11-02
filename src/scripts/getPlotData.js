@@ -1,11 +1,6 @@
 import { colors } from "../theme";
 
 // CONSTANTS
-const smallScreen = 768;
-const blue = "4, 90, 141";
-const red = "189, 0, 38";
-const green = "127, 188, 65";
-const brown = "153, 52, 4";
 
 /**
  * Generates an array of 5-year range strings (e.g., "1930–1934", "1935–1939")

@@ -269,7 +269,7 @@ export default function SandboxControls() {
       setChartData([]);
       setChartLayout(layoutDefaults);
       setOpenError(true);
-      return null;
+      return;
     }
 
     // use type from climateOption (e.g. temperature) to find start and end dates
@@ -291,7 +291,7 @@ export default function SandboxControls() {
       setChartData([]);
       setChartLayout(layoutDefaults);
       setOpenError(true);
-      return null;
+      return;
     }
 
     fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
@@ -305,7 +305,7 @@ export default function SandboxControls() {
         const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel}: ${climateOption.getLabel(selectedSeason.label)}`
-            : `${selectionLabel}: ${climateOption.labelTemplate || climateOption.label}`;
+            : `${selectionLabel}: ${climateOption.label}`;
         setChartTitle(newChartTitle);
 
         const barChartHoverTemplate = getHoverTemplate(
@@ -404,7 +404,6 @@ export default function SandboxControls() {
       .catch((error) => {
         console.error(`SandboxControls.updatePlotData() error=${error}`);
       });
-    return null;
   };
 
   // function loads the index.json file to find the correct data.txt file based on the variables
@@ -422,7 +421,7 @@ export default function SandboxControls() {
       // the map-resolution effect handles display. Skip the chart/data path so
       // it doesn't false-trigger the "no data" error.
       if (climateOption.type === "mappy_map") {
-        return responseData;
+        return;
       }
 
       if (climateOption.type === "observed_projected") {
@@ -435,11 +434,8 @@ export default function SandboxControls() {
         climateDataFilesJSONFile: responseData,
         climateOption: climateOption,
       });
-      return responseData;
     } catch (error) {
-      // handle error
       console.error(`SandboxControls loadData error: ${error}`);
-      return [""];
     }
   };
 
@@ -825,7 +821,7 @@ export default function SandboxControls() {
               >
                 {climateOption.seasonality && climateOption.getLabel
                   ? climateOption.getLabel(selectedSeason.label)
-                  : climateOption.labelTemplate || climateOption.label}
+                  : climateOption.label}
               </Typography>
               <ExpandMoreIcon sx={{ color: colors.primary }} />
             </Box>

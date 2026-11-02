@@ -528,6 +528,34 @@ test("config selection entries are internally consistent", () => {
   }
 });
 
+// The UI labels a seasonal option with getLabel(season) and any other option
+// with its label, so each option needs the one it will be shown with.
+test("every climate option has a label the UI can show", () => {
+  const climateOptions = [
+    ...config.temperatureOptions,
+    ...config.precipitationOptions,
+    ...config.historicalSeasonalityOptions,
+    ...config.observedProjectedOptions,
+    ...config.mapsAnnualOptions,
+    ...config.mapsSeasonalityOptions,
+  ];
+  for (const option of climateOptions) {
+    if (option.seasonality) {
+      assert.equal(
+        typeof option.getLabel,
+        "function",
+        `${option.value}: seasonal option has no getLabel`,
+      );
+      for (const season of ["Annual", "Spring", "Summer", "Fall", "Winter"]) {
+        const seasonalLabel = option.getLabel(season);
+        assert.ok(seasonalLabel, `${option.value}: empty label for ${season}`);
+      }
+    } else {
+      assert.ok(option.label, `${option.value}: non-seasonal option has no label`);
+    }
+  }
+});
+
 // ---------------------------------------------------------------------------
 // Delivery integrity: a NOAA delivery is well-formed, and the charts still match
 // NOAA's start-year sheet and published chapters.

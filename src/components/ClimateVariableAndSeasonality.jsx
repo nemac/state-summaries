@@ -287,7 +287,7 @@ const ClimateVariableAndSeasonality = (props) => {
                 >
                   {option.getLabel
                     ? option.getLabel(selectedSeason.label)
-                    : option.labelTemplate || option.label}
+                    : option.label}
                 </MegaMenuButton>
               ))}
             </Box>
@@ -421,7 +421,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     >
                       {option.getLabel
                         ? option.getLabel(selectedSeason.label)
-                        : option.labelTemplate || option.label}
+                        : option.label}
                     </MegaMenuButton>
                   ))}
                 </Box>
@@ -466,7 +466,7 @@ const ClimateVariableAndSeasonality = (props) => {
                     >
                       {option.getLabel
                         ? option.getLabel(selectedSeason.label)
-                        : option.labelTemplate || option.label}
+                        : option.label}
                     </MegaMenuButton>
                   ))}
                 </Box>
