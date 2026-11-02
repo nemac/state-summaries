@@ -48,9 +48,8 @@ export default function SandboxPlotRegion(props) {
   };
 
   const resizeChart = () => {
-    const elREF = responsiveChartRef.current;
-    if (!elREF) return null;
-    const el = elREF;
+    const el = responsiveChartRef.current;
+    if (!el) return;
     const copiedLayout = layoutRef.current;
     copiedLayout.width = el.parentNode.getBoundingClientRect().width;
     copiedLayout.height = el.getBoundingClientRect().height - 24;
@@ -72,9 +71,7 @@ export default function SandboxPlotRegion(props) {
 
     // only change title if the object exists
     if (copiedLayout.title) {
-      const chartTitle = copiedLayout
-        ? unSplitTitle(copiedLayout.title.text)
-        : "";
+      const chartTitle = unSplitTitle(copiedLayout.title.text);
       const shortTitle = splitTitle(chartTitle);
       copiedLayout.title.text =
         window.innerWidth <= 768 ? shortTitle : chartTitle;
@@ -83,7 +80,6 @@ export default function SandboxPlotRegion(props) {
 
     setLayout({ ...copiedLayout });
     window.dispatchEvent(new Event("resizedone"));
-    return null;
   };
 
   // effect for prop change so when new prop is passed in from parent the graph is re-rendered

@@ -267,9 +267,6 @@ export default function ObservedProjectedChart({
     </Box>
   );
 
-  // Map hidden scenarios to bracket-compatible set (using ssp key format)
-  const hiddenBracketScenarios = hiddenScenarios;
-
   if (!data || data.length === 0) return null;
 
   return (
@@ -421,7 +418,7 @@ export default function ObservedProjectedChart({
         bracketData={bracketData}
         yDomain={yDomain}
         chartRef={chartContainerRef}
-        hiddenScenarios={hiddenBracketScenarios}
+        hiddenScenarios={hiddenScenarios}
       />
     </Box>
   );

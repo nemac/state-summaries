@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "../theme";
 
 const BRACKET_CONFIGS = [
@@ -38,7 +38,6 @@ export default function BracketOverlay({
   chartRef,
   hiddenScenarios,
 }) {
-  const svgRef = useRef(null);
   const [dims, setDims] = useState(null);
 
   useEffect(() => {
@@ -100,7 +99,6 @@ export default function BracketOverlay({
 
   return (
     <svg
-      ref={svgRef}
       className="chart-export-brackets"
       style={{
         position: "absolute",
@@ -162,11 +160,7 @@ export default function BracketOverlay({
               textAnchor="middle"
               transform={`rotate(-90, ${x + 14}, ${midY})`}
             >
-              {config.label.split("\n").map((line, i) => (
-                <tspan key={i} x={x + 14} dy={i === 0 ? 0 : "1.1em"}>
-                  {line}
-                </tspan>
-              ))}
+              {config.label}
             </text>
           </g>
         );

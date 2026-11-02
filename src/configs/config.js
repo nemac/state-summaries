@@ -1380,7 +1380,6 @@ const config = {
   ],
   historicalSeasonalityOptions: [
     {
-      labelTemplate: "Observed Total Precipitation",
       getLabel: (season) => `Observed Total ${season} Precipitation`,
       value: "prcp",
       icon: "Precipitation",
@@ -1395,7 +1394,6 @@ const config = {
       seasonality: true,
     },
     {
-      labelTemplate: "Observed Average Temperature",
       getLabel: (season) => `Observed ${season} Average Temperature`,
       value: "tmean",
       icon: "Temperature",
@@ -1410,7 +1408,6 @@ const config = {
       seasonality: true,
     },
     {
-      labelTemplate: "Observed Average Maximum Temperature",
       getLabel: (season) => `Observed ${season} Average Maximum Temperature`,
       value: "tmax",
       icon: "Temperature",
@@ -1425,7 +1422,6 @@ const config = {
       seasonality: true,
     },
     {
-      labelTemplate: "Observed Average Minimum Temperature",
       getLabel: (season) => `Observed ${season} Average Minimum Temperature`,
       value: "tmin",
       icon: "Temperature",
