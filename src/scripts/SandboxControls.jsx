@@ -26,11 +26,7 @@ import {
   lookupPrecipMap,
   selectionValueToRegionDisplayName,
 } from "../utils/precipMaps.js";
-import parseFile, {
-  areAllValuesNoData,
-  orderFilesByPreference,
-  regionFilesFrom,
-} from "./utils.js";
+import parseFile, { areAllValuesNoData, candidateDataFiles } from "./utils.js";
 import {
   createFiveYearGroups,
   getHoverTemplate,
@@ -280,16 +276,15 @@ export default function SandboxControls() {
     const startDate = parseInt(selection.startDates[climateOption.type]);
     const endDate = parseInt(selection.endDates[climateOption.type]);
 
-    const seriesFiles = data.filter((file) => file.type === fileType);
-    const eligibleFiles =
-      locationType === "regions"
-        ? regionFilesFrom(seriesFiles, startDate)
-        : seriesFiles;
-
     // Files for this series, long 1895/1900 file first. Some deliveries leave
     // a column all -999 in the long file while a shorter one has data, so the
     // fetch falls back through the rest before giving up.
-    const candidateFiles = orderFilesByPreference(eligibleFiles);
+    const candidateFiles = candidateDataFiles(
+      data,
+      fileType,
+      locationType,
+      startDate,
+    );
 
     // If no matching file was found for this metric, show error
     if (candidateFiles.length === 0) {

@@ -67,4 +67,12 @@ export function regionFilesFrom(files, startYear) {
   return files.filter((file) => file.start >= startYear);
 }
 
+// Index entries a chart tries for one series, in the order getChartData fetches them.
+export function candidateDataFiles(indexEntries, fileType, locationType, startYear) {
+  const seriesFiles = indexEntries.filter((file) => file.type === fileType);
+  const eligibleFiles =
+    locationType === "regions" ? regionFilesFrom(seriesFiles, startYear) : seriesFiles;
+  return orderFilesByPreference(eligibleFiles);
+}
+
 export default parseFile;

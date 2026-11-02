@@ -12,9 +12,11 @@ import { fileURLToPath } from "node:url";
 
 import parseFile, {
   areAllValuesNoData,
+  candidateDataFiles,
   orderFilesByPreference,
   regionFilesFrom,
 } from "../src/scripts/utils.js";
+import { fig1FileName } from "../src/scripts/plotObservedAndPredicted.js";
 import config from "../src/configs/config.js";
 
 const DATA_DIR = resolve(
@@ -455,9 +457,8 @@ test("West threshold charts read the complete 1950 regional file", () => {
     .filter((o) => o.type === "threshold")
     .map((o) => o.value);
   for (const type of thresholdTypes) {
-    const files = index.regions.filter((e) => e.type === type);
-    const [first] = orderFilesByPreference(regionFilesFrom(files, 1950));
-    assert.equal(first?.period, "1950-2024", `West ${type} reads ${first?.name}`);
+    const [first] = candidateDataFiles(index.regions, type, "regions", 1950);
+    assert.equal(first?.start, 1950, `West ${type} reads ${first?.name}`);
     const { years, columns } = readColumns(first.name);
     const missing = years.filter((year, i) => columns.West[i] === NO_DATA);
     assert.deepEqual(missing, [], `West ${type}: -999 in ${first.name}`);
@@ -525,4 +526,584 @@ test("config selection entries are internally consistent", () => {
       );
     }
   }
+});
+
+// ---------------------------------------------------------------------------
+// Delivery integrity: a NOAA delivery is well-formed, and the charts still match
+// NOAA's start-year sheet and published chapters.
+
+const FIG1_DIR = resolve(DATA_DIR, "observed_and_projected");
+const FIG1_SUFFIX = "_FIG1_SCS2025.csv";
+const FIG1_HEADER =
+  "year,obs,historical_lower,historical_upper,ssp126_lower,ssp126_upper," +
+  "ssp245_lower,ssp245_upper,ssp370_lower,ssp370_upper,ssp585_lower,ssp585_upper";
+
+const fig1Files = () => readdirSync(FIG1_DIR).filter((f) => f.endsWith(FIG1_SUFFIX));
+
+const MENU_AREAS = [...config.statesOptions, ...config.regionsOptions];
+
+// Every chart series in the menus, with the startDates key that sets its window.
+const UI_SERIES = [
+  ...[...config.temperatureOptions, ...config.precipitationOptions].map((o) => ({
+    type: o.value,
+    dateType: o.type,
+  })),
+  ...config.historicalSeasonalityOptions
+    .filter((o) => o.seasonality)
+    .flatMap((o) =>
+      ["ann", ...SEASONS].map((s) => ({ type: `${o.value}_${s}`, dateType: o.type })),
+    ),
+];
+
+const dateTypeOf = (type) => UI_SERIES.find((s) => s.type === type).dateType;
+
+// The data source a menu selection reads, as getChartData resolves it.
+function dataSource(opt) {
+  const indexKey = opt.dataOverride?.indexKey || opt.type;
+  const locationType = opt.dataOverride?.locationType || opt.type;
+  const label = opt.dataOverride?.label || opt.label;
+  const column =
+    locationType === "states"
+      ? config.stateAbbreviations[label]
+      : config.ncaRegionAbbreviations[label];
+  return { indexKey, locationType, column };
+}
+
+// Parsed once per file and column: the gap and published-figure tests read ~5,000 series.
+const seriesCache = new Map();
+
+// [year, value] pairs for one selection's column, read with the app's parseFile.
+function seriesValues(opt, fileName) {
+  const { locationType, column } = dataSource(opt);
+  const key = `${fileName}|${locationType}|${column}`;
+  if (!seriesCache.has(key)) {
+    const [years, values] = parseFile(read(fileName), locationType, column);
+    seriesCache.set(key, years.map((year, i) => [year, values[i]]));
+  }
+  return seriesCache.get(key);
+}
+
+// The file a chart plots: the first candidate whose column has data, else undefined.
+function plottedFile(opt, type, startYear) {
+  const { indexKey, locationType } = dataSource(opt);
+  return candidateDataFiles(index[indexKey], type, locationType, startYear).find(
+    (f) => !areAllValuesNoData(seriesValues(opt, f.name).map(([, v]) => v)),
+  );
+}
+
+// [1916, 1917, 1919] -> "1916-1917, 1919"
+function yearRanges(years) {
+  const runs = [];
+  for (const year of years) {
+    const last = runs.at(-1);
+    if (last && year === last[1] + 1) {
+      last[1] = year;
+    } else {
+      runs.push([year, year]);
+    }
+  }
+  return runs.map(([a, b]) => (a === b ? `${a}` : `${a}-${b}`)).join(", ");
+}
+
+// Window years a chart has no value for; a DJF chart's first year needs the
+// previous December, so it never has one.
+function missingWindowYears(opt, type, file) {
+  const dateType = dateTypeOf(type);
+  const startYear = parseInt(opt.startDates[dateType], 10);
+  const endYear = parseInt(opt.endDates[dateType], 10);
+  const shown = new Set(
+    seriesValues(opt, file.name)
+      .filter(([, v]) => v !== NO_DATA)
+      .map(([year]) => year),
+  );
+  const missing = [];
+  for (let year = startYear; year <= endYear; year += 1) {
+    const isFirstWinter = type.endsWith("_djf") && year === startYear;
+    if (!shown.has(year) && !isFirstWinter) missing.push(year);
+  }
+  return missing;
+}
+
+test("every data cell is a plain number", () => {
+  const problems = [];
+  for (const prefix of ["CONUS", "regions", "states"]) {
+    for (const name of dataFiles(prefix)) {
+      const rows = read(name).trim().split(/\r?\n/).slice(1);
+      const bad = rows.flatMap((row) =>
+        row.split(",").filter((cell) => !/^-?\d+(\.\d+)?$/.test(cell.trim())),
+      );
+      if (bad.length > 0) problems.push(`${name}: ${bad.length} bad cells, e.g. "${bad[0]}"`);
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+test("every data file has one row per year, ending at config's end year", () => {
+  const configEndYears = new Set(
+    MENU_AREAS.flatMap((opt) => Object.values(opt.endDates).map(Number)),
+  );
+  const fileEndYears = new Set();
+  const problems = [];
+  for (const prefix of ["CONUS", "regions", "states"]) {
+    for (const name of dataFiles(prefix)) {
+      const { years } = readColumns(name);
+      years.forEach((year, i) => {
+        if (i > 0 && year !== years[i - 1] + 1) {
+          problems.push(`${name}: ${year} follows ${years[i - 1]}`);
+        }
+      });
+      fileEndYears.add(years.at(-1));
+    }
+  }
+  assert.deepEqual(problems, []);
+  assert.deepEqual(fileEndYears, configEndYears, "data end years vs config endDates");
+});
+
+// Loose physical limits: a value outside them is a unit mix-up or a corrupt row.
+function valueLimits(type) {
+  if (/_-?\d+(F|inch)$/.test(type)) return [0, 366];
+  if (type.startsWith("prcp_")) return [0, 400];
+  return [-40, 110];
+}
+
+test("every value falls inside physical limits for its series", () => {
+  const problems = [];
+  for (const entry of [...index.CONUS, ...index.regions, ...index.states]) {
+    const [low, high] = valueLimits(entry.type);
+    const { years, columns } = readColumns(entry.name);
+    for (const [column, values] of Object.entries(columns)) {
+      const outside = values
+        .map((v, i) => [years[i], v])
+        .filter(([, v]) => v !== NO_DATA && !(v >= low && v <= high));
+      if (outside.length > 0) {
+        const [year, v] = outside[0];
+        problems.push(`${entry.name} ${column}: ${outside.length} outside ${low}..${high}, e.g. ${year}=${v}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+test("observed/projected files use LF, one header, full numeric rows and consecutive years", () => {
+  const width = FIG1_HEADER.split(",").length;
+  const problems = [];
+  for (const name of fig1Files()) {
+    const text = read(`observed_and_projected/${name}`);
+    if (text.includes("\r")) problems.push(`${name}: CRLF line endings (the chart parser needs LF)`);
+    const lines = text.trim().split(/\r?\n/);
+    if (lines[0].trim() !== FIG1_HEADER) problems.push(`${name}: header ${lines[0]}`);
+    const rows = lines.slice(1).map((line) => line.split(","));
+    rows.forEach((row, i) => {
+      if (row.length !== width) problems.push(`${name}: ${row[0]} has ${row.length} cells, not ${width}`);
+      if (row.some((v) => v.trim() === "" || !Number.isFinite(Number(v)))) {
+        problems.push(`${name}: non-numeric value in ${row[0]}`);
+      }
+      if (i > 0 && Number(row[0]) !== Number(rows[i - 1][0]) + 1) {
+        problems.push(`${name}: ${row[0]} follows ${rows[i - 1][0]}`);
+      }
+    });
+  }
+  assert.deepEqual(problems, []);
+});
+
+// Known app bug: the Alaska region requests alaskaregion_FIG1_SCS2025.csv, which doesn't exist.
+const KNOWN_MISSING_FIG1 = new Set(["alaska_region"]);
+
+const offersObservedProjected = (opt) => config.hasPredictedData.includes(opt.label);
+
+test("every area offering observed/projected has its file", () => {
+  const files = new Set(fig1Files());
+  const missing = MENU_AREAS.filter(offersObservedProjected)
+    .filter((opt) => !files.has(fig1FileName(opt.value)))
+    .map((opt) => opt.value)
+    .sort();
+  assert.deepEqual(
+    missing,
+    [...KNOWN_MISSING_FIG1].sort(),
+    "update KNOWN_MISSING_FIG1 if an area gained or lost its observed/projected file",
+  );
+});
+
+test("every observed/projected file is offered by some area", () => {
+  const offered = new Set(
+    MENU_AREAS.filter(offersObservedProjected).map((opt) => fig1FileName(opt.value)),
+  );
+  const unoffered = fig1Files().filter((name) => !offered.has(name));
+  assert.deepEqual(unoffered, [], "a delivered observed/projected file has no menu entry");
+});
+
+// Window years each chart has nothing to show for ("no data": all -999 in every
+// candidate file); NOAA leaves these blank, so a change means a delivery changed.
+const KNOWN_CHART_GAPS = {
+  "Alabama/tmax_0F": "no data",
+  "Alabama/tmin_-30F": "no data",
+  "Alabama/prcp_4inch": "1900-1929",
+  "Alaska/tmax_100F": "no data",
+  "Alaska/tmin_70F": "1943-1944, 1949, 1972-1975",
+  "Alaska/tmin_75F": "no data",
+  "Alaska/tmin_80F": "no data",
+  "Arizona/tmax_0F": "no data",
+  "Arizona/tmin_-30F": "1988, 1994, 2001-2003, 2017-2023",
+  "Arkansas/tmax_0F": "1904, 2003-2011, 2013-2020, 2022-2024",
+  "Arkansas/tmin_-30F": "no data",
+  "Arkansas/prcp_4inch": "1900-1929",
+  "California/tmin_-30F": "1930-1949, 1997-2001",
+  "Colorado/prcp_4inch": "1900-1929",
+  "Connecticut/tmin_-30F": "no data",
+  "Delaware/tmax_80F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmax_87F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmax_90F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmax_95F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmax_100F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmin_60F": "1916-1919, 2020-2021",
+  "Delaware/tmin_65F": "1916-1919, 2020-2021",
+  "Delaware/tmin_70F": "1916-1919, 2020-2021",
+  "Delaware/tmin_75F": "1916-1919, 2020-2021",
+  "Delaware/tmin_80F": "1916-1919, 2020-2021",
+  "Delaware/tmax_32F": "1916-1919, 2009, 2020-2021",
+  "Delaware/tmax_0F": "no data",
+  "Delaware/tmin_32F": "1916-1919, 2020-2021",
+  "Delaware/tmin_20F": "1916-1919, 2020-2021",
+  "Delaware/tmin_0F": "1916-1919, 2020-2021",
+  "Delaware/tmin_-30F": "no data",
+  "Delaware/prcp_1inch": "1916-1919, 1923, 1927, 2020-2024",
+  "Delaware/prcp_2inch": "1916-1919, 1923, 1927, 2020-2024",
+  "Delaware/prcp_3inch": "1916-1919, 1923, 1927, 2020-2024",
+  "Delaware/prcp_4inch": "1910-1929",
+  "Florida/tmax_32F": "1989, 2018-2020",
+  "Florida/tmax_0F": "no data",
+  "Florida/tmin_0F": "no data",
+  "Florida/tmin_-30F": "no data",
+  "Georgia/tmax_0F": "no data",
+  "Georgia/tmin_-30F": "no data",
+  "Georgia/prcp_4inch": "1900-1929",
+  "Hawaii/tmax_100F": "no data",
+  "Hawaii/tmax_32F": "no data",
+  "Hawaii/tmax_0F": "no data",
+  "Hawaii/tmin_32F": "no data",
+  "Hawaii/tmin_20F": "no data",
+  "Hawaii/tmin_0F": "no data",
+  "Hawaii/tmin_-30F": "no data",
+  "Idaho/prcp_4inch": "1900-1929, 1972-1974, 1995, 2023",
+  "Illinois/prcp_4inch": "1900-1929",
+  "Indiana/tmin_-30F": "1901",
+  "Indiana/prcp_4inch": "1900-1929",
+  "Iowa/prcp_4inch": "1900-1929",
+  "Kansas/tmin_-30F": "1901",
+  "Kansas/prcp_4inch": "1900-1929",
+  "Kentucky/tmin_-30F": "no data",
+  "Kentucky/prcp_4inch": "1900-1929",
+  "Louisiana/tmax_0F": "no data",
+  "Louisiana/tmin_0F": "2023-2024",
+  "Louisiana/tmin_-30F": "no data",
+  "Maine/tmin_80F": "1900-1929, 2010, 2019-2024",
+  "Maine/prcp_4inch": "1900-1929",
+  "Maryland/tmin_-30F": "no data",
+  "Massachusetts/tmin_-30F": "no data",
+  "Minnesota/prcp_4inch": "1900-1929",
+  "Mississippi/tmax_0F": "no data",
+  "Mississippi/tmin_-30F": "no data",
+  "Mississippi/prcp_4inch": "1900-1929",
+  "Missouri/prcp_4inch": "1900-1929",
+  "Montana/tmin_80F": "1901",
+  "Montana/prcp_4inch": "1900-1929",
+  "Nebraska/prcp_4inch": "1900-1929",
+  "New_Hampshire/tmin_80F": "1979-1980, 1994, 2007",
+  "New_Jersey/tmax_0F": "2008-2009",
+  "New_Jersey/tmin_-30F": "no data",
+  "New_Jersey/prcp_4inch": "1900-1929",
+  "New_Mexico/tmax_0F": "1900-1929",
+  "New_Mexico/tmin_-30F": "1900-1904, 2017",
+  "New_York/prcp_4inch": "1900-1929",
+  "North_Carolina/tmax_0F": "1904-1909, 1921-1923, 1929, 1974-1975, 1977, 2003",
+  "North_Carolina/tmin_-30F": "1900-1929, 1947, 1997-2007",
+  "North_Carolina/prcp_4inch": "1900-1929",
+  "North_Dakota/tmax_80F": "1900-1929",
+  "North_Dakota/tmax_87F": "1900-1929",
+  "North_Dakota/tmax_90F": "1900-1929",
+  "North_Dakota/tmax_100F": "1900-1929",
+  "North_Dakota/tmin_60F": "1900-1929",
+  "North_Dakota/prcp_4inch": "1900-1929",
+  "Ohio/prcp_4inch": "1900-1929",
+  "Oklahoma/tmax_80F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_87F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_90F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_95F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_100F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_60F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_65F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_70F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_75F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_80F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_32F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmax_0F": "1900-1949",
+  "Oklahoma/tmin_32F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_20F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_0F": "1900-1902, 1906-1907, 1947",
+  "Oklahoma/tmin_-30F": "no data",
+  "Oklahoma/prcp_4inch": "1900-1929",
+  "Oregon/tmin_80F": "1919-1920, 2004",
+  "Oregon/tmax_0F": "1900",
+  "Oregon/prcp_4inch": "1900-1929",
+  "Pennsylvania/tmin_80F": "1901",
+  "Pennsylvania/prcp_4inch": "1900-1929",
+  "Puerto_Rico/tmax_80F": "1951",
+  "Puerto_Rico/tmax_87F": "1951",
+  "Puerto_Rico/tmax_90F": "1951",
+  "Puerto_Rico/tmax_95F": "1951",
+  "Puerto_Rico/tmax_100F": "1951, 2017",
+  "Puerto_Rico/tmin_60F": "1951",
+  "Puerto_Rico/tmin_65F": "1951",
+  "Puerto_Rico/tmin_70F": "1951",
+  "Puerto_Rico/tmin_75F": "1951",
+  "Puerto_Rico/tmin_80F": "1951",
+  "Puerto_Rico/tmax_32F": "no data",
+  "Puerto_Rico/tmax_0F": "no data",
+  "Puerto_Rico/tmin_32F": "no data",
+  "Puerto_Rico/tmin_20F": "no data",
+  "Puerto_Rico/tmin_0F": "no data",
+  "Puerto_Rico/tmin_-30F": "no data",
+  "Puerto_Rico/prcp_1inch": "1951",
+  "Puerto_Rico/prcp_2inch": "1951",
+  "Puerto_Rico/prcp_3inch": "1951",
+  "Puerto_Rico/prcp_4inch": "1951",
+  "Puerto_Rico/prcp_ann": "1951",
+  "Rhode_Island/tmin_80F": "no data",
+  "Rhode_Island/tmax_0F": "no data",
+  "Rhode_Island/tmin_-30F": "no data",
+  "South_Carolina/tmax_0F": "no data",
+  "South_Carolina/tmin_-30F": "no data",
+  "South_Carolina/prcp_4inch": "1900-1929",
+  "South_Dakota/prcp_4inch": "1900-1929",
+  "Tennessee/tmin_-30F": "no data",
+  "Tennessee/prcp_4inch": "1900-1929",
+  "Texas/tmax_0F": "1900-1949, 2001-2005",
+  "Texas/tmin_-30F": "no data",
+  "Texas/prcp_4inch": "1900-1929",
+  "Utah/prcp_3inch": "1912",
+  "Utah/prcp_4inch": "1900-1929",
+  "Virginia/tmin_-30F": "no data",
+  "Virginia/prcp_4inch": "1900-1929",
+  "Washington/tmin_80F": "1900-1902",
+  "Washington/prcp_4inch": "1900-1929",
+  "West_Virginia/tmax_100F": "1904",
+  "West_Virginia/tmax_0F": "1904",
+  "West_Virginia/prcp_4inch": "1900-1929",
+  "Wisconsin/prcp_4inch": "1900-1929",
+  "Wyoming/tmin_80F": "1950-1952, 1978",
+  "alaska_region/tmax_100F": "no data",
+  "alaska_region/tmin_70F": "1943-1944, 1949, 1972-1975",
+  "alaska_region/tmin_75F": "no data",
+  "alaska_region/tmin_80F": "no data",
+  "hawaii/tmax_100F": "no data",
+  "hawaii/tmax_32F": "no data",
+  "hawaii/tmax_0F": "no data",
+  "hawaii/tmin_32F": "no data",
+  "hawaii/tmin_20F": "no data",
+  "hawaii/tmin_0F": "no data",
+  "hawaii/tmin_-30F": "no data",
+  "south/tmin_-30F": "no data",
+  "southeast/tmin_-30F": "1900-1929, 1947, 1997-2007",
+  "us_caribbean/tmax_80F": "1951",
+  "us_caribbean/tmax_87F": "1951",
+  "us_caribbean/tmax_90F": "1951",
+  "us_caribbean/tmax_95F": "1951",
+  "us_caribbean/tmax_100F": "1951, 2017",
+  "us_caribbean/tmin_60F": "1951",
+  "us_caribbean/tmin_65F": "1951",
+  "us_caribbean/tmin_70F": "1951",
+  "us_caribbean/tmin_75F": "1951",
+  "us_caribbean/tmin_80F": "1951",
+  "us_caribbean/tmax_32F": "no data",
+  "us_caribbean/tmax_0F": "no data",
+  "us_caribbean/tmin_32F": "no data",
+  "us_caribbean/tmin_20F": "no data",
+  "us_caribbean/tmin_0F": "no data",
+  "us_caribbean/tmin_-30F": "no data",
+  "us_caribbean/prcp_1inch": "1951",
+  "us_caribbean/prcp_2inch": "1951",
+  "us_caribbean/prcp_3inch": "1951",
+  "us_caribbean/prcp_4inch": "1951",
+  "us_caribbean/prcp_ann": "1951",
+};
+
+// Gaps for every chart in the menus, in the same shape as KNOWN_CHART_GAPS.
+function currentChartGaps() {
+  const gaps = {};
+  for (const opt of MENU_AREAS) {
+    for (const { type, dateType } of UI_SERIES) {
+      const file = plottedFile(opt, type, parseInt(opt.startDates[dateType], 10));
+      const key = `${opt.value}/${type}`;
+      if (!file) {
+        gaps[key] = "no data";
+        continue;
+      }
+      const missing = missingWindowYears(opt, type, file);
+      if (missing.length > 0) gaps[key] = yearRanges(missing);
+    }
+  }
+  return gaps;
+}
+
+// One line per chart whose gaps differ from the pin.
+function gapChanges(gaps) {
+  const keys = new Set([...Object.keys(gaps), ...Object.keys(KNOWN_CHART_GAPS)]);
+  const changes = [];
+  for (const key of keys) {
+    const now = gaps[key] ?? "complete";
+    const pinned = KNOWN_CHART_GAPS[key] ?? "complete";
+    if (now !== pinned) changes.push(`${key}: now ${now}, pinned ${pinned}`);
+  }
+  return changes;
+}
+
+test("chart gaps only where already known", () => {
+  assert.deepEqual(
+    gapChanges(currentChartGaps()),
+    [],
+    "chart gaps changed; check the delivery, then update KNOWN_CHART_GAPS",
+  );
+});
+
+// Figures from NOAA's published chapters (statesummaries.ncics.org/chapter/<st>/
+// image descriptions); a failure means the data no longer reproduces them.
+const PUBLISHED = [
+  {
+    area: "Connecticut", type: "prcp_2inch",
+    min: "0.2", max: "5.7", average: "2.4", fiveYear: { 1960: "1.2", 2010: "3.4" },
+  },
+  {
+    area: "Alabama", type: "prcp_3inch",
+    min: "0.1", max: "3.0", average: "1.1",
+    fiveYear: { 1985: "0.6", 1960: "1.68", 2020: "1.66" },
+  },
+  {
+    area: "Louisiana", type: "prcp_4inch",
+    min: "0", max: "2.2", average: "0.7", fiveYear: { 1915: "0.4", 1935: "0.4", 2015: "1.3" },
+  },
+  {
+    area: "Florida", type: "prcp_4inch",
+    min: "0", max: "1.6", average: "0.5", fiveYear: { 1990: "0.2", 2020: "0.7" },
+  },
+  {
+    area: "Maryland", type: "tmax_95F",
+    min: "0.1", max: "20.6", average: "6.2",
+    fiveYear: { 1970: "1.5", 1995: "10.0", 2010: "10.7" },
+  },
+];
+
+const PUBLISHED_THROUGH = 2024;
+
+// The chapters round plotted values, some twice (CT 2010-14 is 3.348, printed 3.4).
+function matchesPublished(actual, published) {
+  const decimals = Math.max(1, (published.split(".")[1] || "").length);
+  const roundedOnce = Number(actual.toFixed(decimals + 1));
+  return Math.abs(roundedOnce - Number(published)) <= 0.5 * 10 ** -decimals + 1e-9;
+}
+
+const average = (values) => values.reduce((a, b) => a + b, 0) / values.length;
+
+// [year, value] pairs a published chart shows, from its start year through 2024.
+function publishedWindow(opt, type) {
+  const startYear = parseInt(opt.startDates[dateTypeOf(type)], 10);
+  return seriesValues(opt, plottedFile(opt, type, startYear).name).filter(
+    ([year, v]) => year >= startYear && year <= PUBLISHED_THROUGH && v !== NO_DATA,
+  );
+}
+
+function fiveYearAverage(shown, firstYear) {
+  return average(
+    shown.filter(([year]) => year >= firstYear && year < firstYear + 5).map(([, v]) => v),
+  );
+}
+
+// [label, value the chart shows, value the chapter prints] for one figure.
+function publishedComparisons(figure, shown) {
+  const values = shown.map(([, v]) => v);
+  const comparisons = [
+    ["min", Math.min(...values), figure.min],
+    ["max", Math.max(...values), figure.max],
+    ["average", average(values), figure.average],
+  ];
+  for (const [first, published] of Object.entries(figure.fiveYear)) {
+    const firstYear = Number(first);
+    comparisons.push([`${firstYear}-${firstYear + 4}`, fiveYearAverage(shown, firstYear), published]);
+  }
+  return comparisons;
+}
+
+test("charts match the figures in NOAA's published chapters", () => {
+  const problems = [];
+  for (const figure of PUBLISHED) {
+    const opt = config.statesOptions.find((o) => o.label === figure.area);
+    const shown = publishedWindow(opt, figure.type);
+    for (const [label, actual, published] of publishedComparisons(figure, shown)) {
+      if (!matchesPublished(actual, published)) {
+        problems.push(`${figure.area} ${figure.type} ${label}: ${actual} vs published ${published}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+// NOAA's "State Climate Summaries Bar Chart Start Years" sheet (2026-11-02):
+// [threshold, annual/seasonal]; unlisted states start [1900, 1895].
+const SHEET_STATES = {
+  AK: [1930, 1925], AZ: [1930, 1895], CA: [1930, 1895], CT: [1950, 1895],
+  DE: [1910, 1895], HI: [1950, 1950], MD: [1950, 1895], MA: [1950, 1895],
+  NV: [1950, 1895], NH: [1950, 1895], PR: [1950, 1950], RI: [1950, 1895],
+  VT: [1950, 1895], WY: [1950, 1895],
+};
+const SHEET_STATE_DEFAULT = [1900, 1895];
+const SHEET_REGIONS = {
+  Northeast: [1950, 1895], "Northern Rockies and Plains": [1950, 1895],
+  Northwest: [1900, 1895], "Ohio Valley": [1900, 1895], South: [1900, 1895],
+  Southeast: [1900, 1895], Southwest: [1930, 1895], "Upper Midwest": [1900, 1895],
+  West: [1950, 1895],
+};
+// Not on the sheet: CONUS matches its published panels (thresholds) and data (1895).
+const CONUS_START_YEARS = [1900, 1895];
+
+// Where config waits on NOAA: three region thresholds, and region annual/seasonal
+// (the delivered region files start in 1900).
+function pendingStartYear(opt, dateType) {
+  if (dataSource(opt).indexKey !== "regions") return undefined;
+  if (dateType !== "threshold") return 1900;
+  return ["Northeast", "Northern Rockies and Plains", "Southwest"].includes(opt.label)
+    ? 1900
+    : undefined;
+}
+
+// Override regions (Alaska, Hawaii, US Caribbean) follow their state's row.
+function sheetStartYear(opt, dateType) {
+  const { indexKey, column } = dataSource(opt);
+  let years;
+  if (indexKey === "CONUS") {
+    years = CONUS_START_YEARS;
+  } else if (indexKey === "regions") {
+    years = SHEET_REGIONS[column];
+  } else {
+    years = SHEET_STATES[column] || SHEET_STATE_DEFAULT;
+  }
+  return dateType === "threshold" ? years[0] : years[1];
+}
+
+test("config start years match NOAA's start-year sheet, except where pending", () => {
+  const mismatches = [];
+  for (const opt of MENU_AREAS) {
+    for (const dateType of ["threshold", "temperature", "precipitation"]) {
+      const actual = parseInt(opt.startDates[dateType], 10);
+      const sheet = sheetStartYear(opt, dateType);
+      const pending = pendingStartYear(opt, dateType);
+      if (pending !== undefined && actual !== pending) {
+        mismatches.push(
+          `${opt.label} ${dateType}: config ${actual}, pinned pending ${pending} (sheet ${sheet}); ` +
+            "if NOAA confirmed the sheet, update pendingStartYear",
+        );
+      } else if (pending === undefined && actual !== sheet) {
+        mismatches.push(`${opt.label} ${dateType}: config ${actual}, sheet ${sheet}`);
+      }
+    }
+  }
+  assert.deepEqual(mismatches, []);
 });

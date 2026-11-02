@@ -57,7 +57,7 @@ jobs:
       - name: Install ImageMagick
         run: sudo apt-get update && sudo apt-get install -y imagemagick
 
-      # Unit tests (manifest-normalization logic). A failure fails the deploy.
+      # Unit and data-integrity tests (scripts/*.test.mjs). A failure fails the deploy.
       - name: Run tests
         run: npm test
 
