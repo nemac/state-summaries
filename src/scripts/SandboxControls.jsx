@@ -534,9 +534,9 @@ export default function SandboxControls() {
       return;
     }
 
-    fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
+    fetchObservedAndProjectedData(megaMenuSelection).then((data) => {
       // Populate Recharts state
-      const title = `${megaMenuSelection.value.replace(/_/g, " ")}: ${climateOption.title}`;
+      const title = `${megaMenuSelection.label}: ${climateOption.title}`;
       setChartTitle(title);
       setRechartsData(transformObservedProjectedData(data));
       setRechartsBrackets(computeBracketData(data));
@@ -565,6 +565,12 @@ export default function SandboxControls() {
           y: data[series.key].map((item) => (item === -999 ? null : item)),
         })),
       );
+    }).catch((error) => {
+      console.error(`SandboxControls.handleObservedPredicted() error=${error}`);
+      setChartData([]);
+      setChartLayout(layoutDefaults);
+      setChartType("plotly");
+      setOpenError(true);
     });
   };
 

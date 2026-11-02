@@ -736,27 +736,24 @@ test("observed/projected files use LF, one header, full numeric rows and consecu
   assert.deepEqual(problems, []);
 });
 
-// Known app bug: the Alaska region requests alaskaregion_FIG1_SCS2025.csv, which doesn't exist.
-const KNOWN_MISSING_FIG1 = new Set(["alaska_region"]);
-
 const offersObservedProjected = (opt) => config.hasPredictedData.includes(opt.label);
 
 test("every area offering observed/projected has its file", () => {
   const files = new Set(fig1Files());
   const missing = MENU_AREAS.filter(offersObservedProjected)
-    .filter((opt) => !files.has(fig1FileName(opt.value)))
-    .map((opt) => opt.value)
-    .sort();
-  assert.deepEqual(
-    missing,
-    [...KNOWN_MISSING_FIG1].sort(),
-    "update KNOWN_MISSING_FIG1 if an area gained or lost its observed/projected file",
-  );
+    .filter((opt) => !files.has(fig1FileName(opt)))
+    .map((opt) => opt.value);
+  assert.deepEqual(missing, [], "an area offers observed/projected but has no file");
+});
+
+test("the Alaska region charts the state-level Alaska file", () => {
+  const alaskaRegion = config.regionsOptions.find((o) => o.value === "alaska_region");
+  assert.equal(fig1FileName(alaskaRegion), "Alaska_FIG1_SCS2025.csv");
 });
 
 test("every observed/projected file is offered by some area", () => {
   const offered = new Set(
-    MENU_AREAS.filter(offersObservedProjected).map((opt) => fig1FileName(opt.value)),
+    MENU_AREAS.filter(offersObservedProjected).map((opt) => fig1FileName(opt)),
   );
   const unoffered = fig1Files().filter((name) => !offered.has(name));
   assert.deepEqual(unoffered, [], "a delivered observed/projected file has no menu entry");
