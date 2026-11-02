@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import parseFile, {
   areAllValuesNoData,
   orderFilesByPreference,
+  regionFilesFrom,
 } from "../src/scripts/utils.js";
 import config from "../src/configs/config.js";
 
@@ -102,6 +103,16 @@ test("orderFilesByPreference puts the 1895/1900 file first, then earlier starts"
     ["b", "c"],
   );
   assert.deepEqual(orderFilesByPreference([]), []);
+});
+
+test("regionFilesFrom drops variants that start before the region's start year", () => {
+  const files = [
+    { name: "a", start: 1900 },
+    { name: "b", start: 1930 },
+    { name: "c", start: 1950 },
+  ];
+  assert.deepEqual(regionFilesFrom(files, 1900).map((f) => f.name), ["a", "b", "c"]);
+  assert.deepEqual(regionFilesFrom(files, 1950).map((f) => f.name), ["c"]);
 });
 
 // ---------------------------------------------------------------------------
@@ -433,6 +444,24 @@ test("Alaska state data really starts 1925 (annual) / 1930 (threshold)", () => {
     firstRealYear(preferredFile("states", "tmax_90F").name, "AK"),
     1930,
   );
+});
+
+// NOAA's start-year sheet (2026-11-02) starts West thresholds in 1950. Its 1900
+// regional file falls outside the CA-NV range in about a third of years.
+test("West threshold charts read the complete 1950 regional file", () => {
+  const west = config.regionsOptions.find((o) => o.value === "west");
+  assert.equal(west.startDates.threshold, "1950");
+  const thresholdTypes = [...config.temperatureOptions, ...config.precipitationOptions]
+    .filter((o) => o.type === "threshold")
+    .map((o) => o.value);
+  for (const type of thresholdTypes) {
+    const files = index.regions.filter((e) => e.type === type);
+    const [first] = orderFilesByPreference(regionFilesFrom(files, 1950));
+    assert.equal(first?.period, "1950-2024", `West ${type} reads ${first?.name}`);
+    const { years, columns } = readColumns(first.name);
+    const missing = years.filter((year, i) => columns.West[i] === NO_DATA);
+    assert.deepEqual(missing, [], `West ${type}: -999 in ${first.name}`);
+  }
 });
 
 test("every UI-reachable series exists in all three indexes, app-preferred", () => {

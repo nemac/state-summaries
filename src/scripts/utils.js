@@ -61,4 +61,10 @@ export function orderFilesByPreference(files) {
   );
 }
 
+// Region files, unlike state composites, hold data before a region's start
+// year, so a region only reads variants that start on or after it.
+export function regionFilesFrom(files, startYear) {
+  return files.filter((file) => file.start >= startYear);
+}
+
 export default parseFile;

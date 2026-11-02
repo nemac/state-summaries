@@ -29,6 +29,7 @@ import {
 import parseFile, {
   areAllValuesNoData,
   orderFilesByPreference,
+  regionFilesFrom,
 } from "./utils.js";
 import {
   createFiveYearGroups,
@@ -275,12 +276,20 @@ export default function SandboxControls() {
       return null;
     }
 
+    // use type from climateOption (e.g. temperature) to find start and end dates
+    const startDate = parseInt(selection.startDates[climateOption.type]);
+    const endDate = parseInt(selection.endDates[climateOption.type]);
+
+    const seriesFiles = data.filter((file) => file.type === fileType);
+    const eligibleFiles =
+      locationType === "regions"
+        ? regionFilesFrom(seriesFiles, startDate)
+        : seriesFiles;
+
     // Files for this series, long 1895/1900 file first. Some deliveries leave
     // a column all -999 in the long file while a shorter one has data, so the
     // fetch falls back through the rest before giving up.
-    const candidateFiles = orderFilesByPreference(
-      data.filter((file) => file.type === fileType),
-    );
+    const candidateFiles = orderFilesByPreference(eligibleFiles);
 
     // If no matching file was found for this metric, show error
     if (candidateFiles.length === 0) {
@@ -314,10 +323,6 @@ export default function SandboxControls() {
           climateOption,
           selectedSeason,
         );
-
-        // use type from climateOption (e.g. temperature) to find start and end dates
-        const startDate = parseInt(selection.startDates[climateOption.type]);
-        const endDate = parseInt(selection.endDates[climateOption.type]);
 
         const barChartFiveYearHoverGroups = createFiveYearGroups(
           startDate,
