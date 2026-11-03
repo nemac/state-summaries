@@ -63,7 +63,8 @@ jobs:
       # an X-Robots-Tag: noindex header on every response; this file covers
       # search engines that read robots.txt first.
       - name: Block search engines
-        run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v6
