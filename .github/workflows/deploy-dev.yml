@@ -1,0 +1,108 @@
+name: Deploy to dev (S3 + CloudFront)
+
+# Every merge into `develop` updates the dev site, so changes can be checked
+# there before a develop → master pull request ships them to production.
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+# A push that arrives during a deploy waits for it to finish.
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+# `id-token: write` lets the job sign in to AWS through GitHub OIDC, so no AWS
+# keys are stored in this repo. (OIDC is a way for GitHub to prove to AWS which
+# repo and environment a job is running for.)
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  AWS_ROLE: arn:aws:iam::104538610210:role/state-summaries-github-actions-dev
+  S3_BUCKET: data-explorer-dev.nemac.org
+  CF_DISTRIBUTION_ID: E2YF1UPTLKU986
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # The AWS role only trusts jobs in the `development` environment, and that
+    # environment only accepts the `develop` branch.
+    environment:
+      name: development
+      url: https://data-explorer-dev.nemac.org
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The map manifest build uses ImageMagick to crop the CONUS maps, the same as production.
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # The dev site must not show up in search results. CloudFront also sends
+      # an X-Robots-Tag: noindex header on every response; this file covers
+      # search engines that read robots.txt first.
+      - name: Block search engines
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.AWS_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Same two passes and cache rules as production (see deploy-prod.yml for why).
+      - name: Sync to S3
+        run: |
+          aws s3 sync dist/assets/ "s3://${S3_BUCKET}/assets" --delete \
+            --cache-control "public, max-age=31536000, immutable"
+          aws s3 sync dist/ "s3://${S3_BUCKET}" --delete \
+            --exclude "assets/*" \
+            --exclude "*.ai" \
+            --exclude "*.aix" \
+            --exclude "*.pdf" \
+            --include "technical-details.pdf" \
+            --exclude "*.DS_Store" \
+            --cache-control "public, max-age=0, must-revalidate, s-maxage=86400"
+
+      - name: Invalidate CloudFront
+        id: invalidate
+        run: |
+          ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --paths "/*" \
+            --query 'Invalidation.Id' --output text)
+          echo "invalidation_id=$ID" >> "$GITHUB_OUTPUT"
+          echo "Created invalidation $ID for /*"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Dev deploy summary"
+            echo "- Site: https://data-explorer-dev.nemac.org"
+            echo "- Bucket: \`s3://${S3_BUCKET}\`"
+            echo "- CloudFront: \`${CF_DISTRIBUTION_ID}\` (invalidation \`${{ steps.invalidate.outputs.invalidation_id }}\`)"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
