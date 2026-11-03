@@ -117,3 +117,8 @@ public/Precip_Organized/**/*.aix
 
 # Generated at build time (CONUS previews cropped of their white padding).
 public/precip/conus/
+
+# Docs are local working notes by default. To commit one, add a "!docs/<file>"
+# line below; only top-level files can be allowed, so subfolders stay local.
+docs/*
+!docs/*[Tt][Oo][Dd][Oo]*.md
