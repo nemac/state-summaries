@@ -13,9 +13,11 @@ import { fileURLToPath } from "node:url";
 import parseFile, {
   areAllValuesNoData,
   candidateDataFiles,
+  fiveYearAverages,
   orderFilesByPreference,
   regionFilesFrom,
 } from "../src/scripts/utils.js";
+import { pretty } from "../src/scripts/axisTicks.js";
 import { fig1FileName } from "../src/scripts/plotObservedAndPredicted.js";
 import config from "../src/configs/config.js";
 
@@ -1134,4 +1136,43 @@ test("config start years match NOAA's start-year sheet, except where pending", (
     }
   }
   assert.deepEqual(mismatches, []);
+});
+
+// ---------------------------------------------------------------------------
+// Chart drawing: the y-axis and 5-year bars match NOAA's published charts.
+
+test("the y-axis starts at 0 near zero and drops below zero for negative values", () => {
+  assert.equal(pretty([0.4, 12])[0], 0);
+  const coldWinterTicks = pretty([-6.4, 8.9]);
+  assert.ok(coldWinterTicks[0] <= -6.4, `first tick ${coldWinterTicks[0]} is above -6.4`);
+  assert.ok(coldWinterTicks.at(-1) >= 8.9, `last tick ${coldWinterTicks.at(-1)} is below 8.9`);
+});
+
+test("fiveYearAverages skips -999 and leaves out blocks with no data", () => {
+  const years = [1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911];
+  const values = [1, 3, -999, 5, 7, -999, -999, -999, -999, -999, 10, -999];
+  assert.deepEqual(fiveYearAverages(years, values, 1900, 1911), [
+    { label: "1900–1904", firstYear: 1900, lastYear: 1904, average: 4 },
+    { label: "1910–1911", firstYear: 1910, lastYear: 1911, average: 10 },
+  ]);
+});
+
+test("every chart's y-axis covers its lowest and highest values", () => {
+  const clipped = [];
+  for (const opt of MENU_AREAS) {
+    for (const { type, dateType } of UI_SERIES) {
+      const file = plottedFile(opt, type, parseInt(opt.startDates[dateType], 10));
+      if (!file) continue;
+      const shown = seriesValues(opt, file.name)
+        .map(([, value]) => value)
+        .filter((value) => value !== NO_DATA);
+      const lowest = Math.min(...shown);
+      const highest = Math.max(...shown);
+      const ticks = pretty([lowest, highest]);
+      if (ticks[0] > lowest || ticks.at(-1) < highest) {
+        clipped.push(`${opt.value}/${type}: values ${lowest}..${highest}, axis ${ticks[0]}..${ticks.at(-1)}`);
+      }
+    }
+  }
+  assert.deepEqual(clipped, []);
 });
