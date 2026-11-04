@@ -945,7 +945,7 @@ const config = {
       value: "northeast",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1950",
         temperature: "1900",
         precipitation: "1900",
       },
@@ -962,7 +962,7 @@ const config = {
       value: "northern_rockies_plains",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1950",
         temperature: "1900",
         precipitation: "1900",
       },
@@ -1050,7 +1050,7 @@ const config = {
       value: "southwest",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1930",
         temperature: "1900",
         precipitation: "1900",
       },

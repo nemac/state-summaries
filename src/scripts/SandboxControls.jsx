@@ -79,7 +79,7 @@ const logSelectedFile = (file, files, locationType, selectionLabel) => {
 };
 
 // Try each candidate file in order and return the first whose column holds
-// real data; null when every candidate is all -999.
+// real data, with that file; null when every candidate is all -999.
 const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
   for (const file of files) {
     const chartDataFromFile = await fetchSandboxDataFile(
@@ -89,7 +89,7 @@ const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
     );
     if (!areAllValuesNoData(chartDataFromFile[1])) {
       logSelectedFile(file, files, locationType, selectionLabel);
-      return chartDataFromFile;
+      return { file, chartDataFromFile };
     }
   }
   console.debug(
@@ -300,13 +300,17 @@ export default function SandboxControls() {
     }
 
     fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
-      .then((chartDataFromFile) => {
-        if (chartDataFromFile === null) {
+      .then((result) => {
+        if (result === null) {
           setChartData([]);
           setChartLayout(layoutDefaults);
           setOpenError(true);
           return;
         }
+        const { file, chartDataFromFile } = result;
+        // A fallback file can start after the configured year, so the chart
+        // starts where that file's data starts.
+        const chartStartDate = Math.max(startDate, file.start);
         const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel}: ${climateOption.getLabel(selectedSeason.label)}`
@@ -341,7 +345,7 @@ export default function SandboxControls() {
           blocks: fiveYearAverages(
             chartDataFromFile[0],
             chartDataFromFile[1],
-            startDate,
+            chartStartDate,
             endDate,
           ),
           axisBottom: yRange[0],
@@ -374,7 +378,7 @@ export default function SandboxControls() {
         setChartLayout(
           getPlotlyLayout({
             chartTitle: newChartTitle,
-            xmin: startDate,
+            xmin: chartStartDate,
             xmax: endDate,
             yRange: yRange,
             yAxisText: climateOption.yAxisText,

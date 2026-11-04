@@ -1091,14 +1091,12 @@ const SHEET_REGIONS = {
 // Not on the sheet: CONUS matches its published panels (thresholds) and data (1895).
 const CONUS_START_YEARS = [1900, 1895];
 
-// Where config waits on NOAA: three region thresholds, and region annual/seasonal
-// (the delivered region files start in 1900).
+// Where config waits on NOAA: region annual/seasonal charts start in 1900, because
+// the delivered region files start in 1900 even though the sheet says 1895.
 function pendingStartYear(opt, dateType) {
   if (dataSource(opt).indexKey !== "regions") return undefined;
   if (dateType !== "threshold") return 1900;
-  return ["Northeast", "Northern Rockies and Plains", "Southwest"].includes(opt.label)
-    ? 1900
-    : undefined;
+  return undefined;
 }
 
 // Override regions (Alaska, Hawaii, US Caribbean) follow their state's row.
@@ -1133,6 +1131,26 @@ test("config start years match NOAA's start-year sheet, except where pending", (
     }
   }
   assert.deepEqual(mismatches, []);
+});
+
+// A fallback file from a different station set must not add years before the
+// chart's start; it would also shift the long-term average.
+test("no chart plots data from before its start year", () => {
+  const earlyData = [];
+  for (const opt of MENU_AREAS) {
+    for (const { type, dateType } of UI_SERIES) {
+      const startYear = parseInt(opt.startDates[dateType], 10);
+      const file = plottedFile(opt, type, startYear);
+      if (!file) continue;
+      const earlyYears = seriesValues(opt, file.name)
+        .filter(([year, value]) => year < startYear && value !== NO_DATA)
+        .map(([year]) => year);
+      if (earlyYears.length > 0) {
+        earlyData.push(`${opt.value}/${type}: ${file.name} has data from ${earlyYears[0]}`);
+      }
+    }
+  }
+  assert.deepEqual(earlyData, []);
 });
 
 // ---------------------------------------------------------------------------
