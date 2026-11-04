@@ -18,6 +18,7 @@ import parseFile, {
   regionFilesFrom,
 } from "../src/scripts/utils.js";
 import { pretty } from "../src/scripts/axisTicks.js";
+import { readView, viewToParams } from "../src/scripts/viewFromUrl.js";
 import { fig1FileName } from "../src/scripts/plotObservedAndPredicted.js";
 import config from "../src/configs/config.js";
 
@@ -1172,4 +1173,43 @@ test("every chart's y-axis covers its lowest and highest values", () => {
     }
   }
   assert.deepEqual(clipped, []);
+});
+
+// ---------------------------------------------------------------------------
+// URL: the page shows exactly what the URL says, with defaults for anything else.
+
+const viewFor = (query) => readView(new URLSearchParams(query));
+const describeView = (view) =>
+  `${view.selection.value}/${view.option.value}/${view.season.value}/${view.showMap ? "map" : "chart"}`;
+
+test("a bare or broken URL shows the default view", () => {
+  for (const query of [
+    "",
+    "selection=nowhere&option=nothing&season=never",
+    "option=change_seasonal_precip&scenario=bogus&century=mid",
+    "option=change_seasonal_precip&scenario=ssp245",
+    "option=change_seasonal_precip&scenario=ssp245&century=early",
+  ]) {
+    assert.equal(describeView(viewFor(query)), "CONUS/tmean/ann/chart", `for "${query}"`);
+  }
+});
+
+test("a valid map link shows that map", () => {
+  const view = viewFor("selection=Alaska&option=change_seasonal_precip&century=late&scenario=ssp585&season=jja");
+  assert.equal(describeView(view), "Alaska/change_seasonal_precip/jja/map");
+  assert.equal(view.option.century, "late");
+  assert.equal(view.option.scenario, "ssp585");
+});
+
+test("viewToParams writes a URL that reads back to the same view", () => {
+  for (const query of [
+    "selection=Texas&option=prcp_2inch&season=ann",
+    "selection=northeast&option=tmax&season=djf",
+    "selection=alaska_region&option=temperature_obs_proj&season=ann",
+    "selection=Alaska&option=change_seasonal_precip&century=mid&scenario=ssp126&season=son",
+  ]) {
+    const view = viewFor(query);
+    const roundTrip = viewFor(new URLSearchParams(viewToParams(view)).toString());
+    assert.equal(describeView(roundTrip), describeView(view), `for "${query}"`);
+  }
 });
