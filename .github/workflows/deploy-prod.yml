@@ -36,7 +36,7 @@ jobs:
     # this file (Settings → Environments → production).
     environment:
       name: production
-      url: https://state-summaries.nemac.org
+      url: https://data-explorer.nemac.org
 
     steps:
       - name: Checkout
