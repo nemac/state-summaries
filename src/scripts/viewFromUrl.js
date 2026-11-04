@@ -10,6 +10,8 @@ export const SEASON_OPTIONS = [
   { label: "Winter", value: "djf" },
 ];
 
+export const ANNUAL_SEASON = SEASON_OPTIONS[0];
+
 const MAP_CENTURIES = ["mid", "late"];
 
 const CHART_OPTION_LISTS = [
@@ -48,7 +50,7 @@ function findSeason(value) {
 
 const DEFAULT_SELECTION = findSelection("CONUS");
 const DEFAULT_OPTION = findChartOption("tmean");
-const DEFAULT_SEASON = SEASON_OPTIONS[0];
+const DEFAULT_SEASON = ANNUAL_SEASON;
 
 // Any missing or unknown value falls back to the default view: CONUS, average
 // temperature, Annual.

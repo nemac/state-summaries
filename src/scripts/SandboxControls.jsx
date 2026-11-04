@@ -39,7 +39,12 @@ import {
 } from "./getPlotData.js";
 import { getPlotlyLayout } from "./getPlotlyLayout.js";
 import { pretty } from "./axisTicks.js";
-import { readView, SEASON_OPTIONS, viewToParams } from "./viewFromUrl.js";
+import {
+  ANNUAL_SEASON,
+  readView,
+  SEASON_OPTIONS,
+  viewToParams,
+} from "./viewFromUrl.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 import {
   transformObservedProjectedData,
@@ -151,6 +156,7 @@ export default function SandboxControls() {
   const [chartLayout, setChartLayout] = useState(layoutDefaults);
   // index.json lists the data files for every series; null until it loads.
   const [dataIndex, setDataIndex] = useState(null);
+  const [dataIndexFailed, setDataIndexFailed] = useState(false);
 
   const mapEntry = useMemo(() => {
     if (!view.showMap) return null;
@@ -164,8 +170,7 @@ export default function SandboxControls() {
   }, [view]);
 
   // Save Chart/Data only makes sense while a loaded chart is on screen.
-  const isChartShowing =
-    !showMapImage && !openError && chartData.length > 0 && chartData[0].x !== undefined;
+  const isChartShowing = !showMapImage && !openError && chartData.length > 0;
 
   const showError = (kind) => {
     setChartData([]);
@@ -179,10 +184,10 @@ export default function SandboxControls() {
     return config.hasPredictedData.includes(selection.label);
   };
 
-  // Builds the Plotly chart for one view. isCurrent() turns false once the view
-  // changes, so a late response for an old view changes nothing.
+  // Builds the Plotly chart for one view. isViewCurrent() turns false once the
+  // view changes, so a late response for an old view changes nothing.
   const getChartData = (props) => {
-    const { selection, dataIndex, climateOption, season, isCurrent } = props;
+    const { selection, climateOption, season, isViewCurrent } = props;
 
     // Resolve data source overrides (e.g. Hawaii region uses state data,
     // US Caribbean uses standalone data files)
@@ -227,7 +232,7 @@ export default function SandboxControls() {
 
     fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
       .then((result) => {
-        if (!isCurrent()) return;
+        if (!isViewCurrent()) return;
         if (result === null) {
           showError("no-data");
           return;
@@ -243,7 +248,7 @@ export default function SandboxControls() {
         setChartTitle(newChartTitle);
 
         // Threshold counts cover the whole year, whatever season is picked.
-        const hoverSeason = climateOption.seasonality ? season : SEASON_OPTIONS[0];
+        const hoverSeason = climateOption.seasonality ? season : ANNUAL_SEASON;
         const barChartHoverTemplate = getHoverTemplate(
           "bar",
           climateOption,
@@ -317,7 +322,7 @@ export default function SandboxControls() {
         );
       })
       .catch((error) => {
-        if (!isCurrent()) return;
+        if (!isViewCurrent()) return;
         console.error(`SandboxControls.getChartData() error=${error}`);
         showError("load-failed");
       });
@@ -325,7 +330,7 @@ export default function SandboxControls() {
 
   // Load index.json once. It lists the data files for every series.
   useEffect(() => {
-    let isCurrent = true;
+    let isMounted = true;
     fetch("./sandboxdata/2025_Sandbox_Datafiles/index.json", { cache: "no-cache" })
       .then((response) => {
         if (!response.ok) {
@@ -334,51 +339,54 @@ export default function SandboxControls() {
         return response.json();
       })
       .then((index) => {
-        if (isCurrent) setDataIndex(index);
+        if (isMounted) setDataIndex(index);
       })
       .catch((error) => {
-        if (!isCurrent) return;
+        if (!isMounted) return;
         console.error(`SandboxControls index.json error=${error}`);
-        showError("load-failed");
+        setDataIndexFailed(true);
       });
     return () => {
-      isCurrent = false;
+      isMounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Load the chart for the current view. This is the only place charts load,
   // so each change loads once. A run's cleanup marks it out of date, so a slow
   // response for an older view can't replace the chart for a newer one.
   useEffect(() => {
+    // Maps don't need index.json, so they show even when it failed to load.
     if (view.showMap) {
       setErrorKind(null);
       return undefined;
     }
+    if (dataIndexFailed) {
+      showError("load-failed");
+      return undefined;
+    }
     if (dataIndex === null) return undefined;
 
-    let isCurrent = true;
-    const stillCurrent = () => isCurrent;
+    let isLatestView = true;
+    const isViewCurrent = () => isLatestView;
     setErrorKind(null);
     if (view.option.type === "observed_projected") {
-      handleObservedPredicted(view.selection, view.option, stillCurrent);
+      handleObservedPredicted(view.selection, view.option, isViewCurrent);
     } else {
       getChartData({
         selection: view.selection,
-        dataIndex,
         climateOption: view.option,
         season: view.season,
-        isCurrent: stillCurrent,
+        isViewCurrent,
       });
     }
     return () => {
-      isCurrent = false;
+      isLatestView = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view, dataIndex]);
+  }, [view, dataIndex, dataIndexFailed]);
 
   // handles plotting of observed and predicted data
-  const handleObservedPredicted = (megaMenuSelection, climateOption, isCurrent) => {
+  const handleObservedPredicted = (megaMenuSelection, climateOption, isViewCurrent) => {
     const hasPredictedData = checkForPredictedData(megaMenuSelection);
     if (!hasPredictedData) {
       showError("no-data");
@@ -386,7 +394,7 @@ export default function SandboxControls() {
     }
 
     fetchObservedAndProjectedData(megaMenuSelection).then((data) => {
-      if (!isCurrent()) return;
+      if (!isViewCurrent()) return;
       // Populate Recharts state
       const title = `${megaMenuSelection.label}: ${climateOption.title}`;
       setChartTitle(title);
@@ -418,7 +426,7 @@ export default function SandboxControls() {
         })),
       );
     }).catch((error) => {
-      if (!isCurrent()) return;
+      if (!isViewCurrent()) return;
       console.error(`SandboxControls.handleObservedPredicted() error=${error}`);
       showError("load-failed");
     });
@@ -427,8 +435,9 @@ export default function SandboxControls() {
   // Menu picks only change the URL; the load effect above draws the new view.
   // Each pick adds a browser history entry, so Back returns to the view before.
   const goToView = (nextView) => {
-    const nextParams = new URLSearchParams(viewToParams(nextView));
-    if (nextParams.toString() === searchParams.toString()) return;
+    const currentParams = new URLSearchParams(viewToParams(view)).toString();
+    const nextParams = new URLSearchParams(viewToParams(nextView)).toString();
+    if (nextParams === currentParams) return;
     setSearchParams(nextParams);
   };
 
@@ -447,8 +456,6 @@ export default function SandboxControls() {
   const handleSeasonChange = (season) => {
     setSearchParams(viewToParams({ ...view, season }), { replace: true });
   };
-
-  // END NEW HANDLERS
 
   return (
     <>
