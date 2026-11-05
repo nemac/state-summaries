@@ -46,8 +46,8 @@ const SaveAsCSVButton = (props) => {
   // csv conversion makes it {year: value} so its easier to convert to csv
   const convertChartDataToJSON = () => {
     // The observed/projected chart's series all share one year axis; export
-    // one named column per series. Other charts keep the year,value format
-    // (their bar and line traces duplicate the same values).
+    // one named column per series. Other charts export only the yearly line,
+    // because the bar trace holds bar heights, not data values.
     const namedSeries = chartData.filter(
       (series) =>
         series?.name && Array.isArray(series.x) && Array.isArray(series.y),
