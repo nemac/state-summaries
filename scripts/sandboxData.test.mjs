@@ -19,6 +19,7 @@ import parseFile, {
 } from "../src/scripts/utils.js";
 import { pretty } from "../src/scripts/axisTicks.js";
 import { readView, viewToParams } from "../src/scripts/viewFromUrl.js";
+import { tabNameForView } from "../src/scripts/tabTitle.js";
 import { fig1FileName } from "../src/scripts/plotObservedAndPredicted.js";
 import config from "../src/configs/config.js";
 
@@ -1212,4 +1213,38 @@ test("viewToParams writes a URL that reads back to the same view", () => {
     const roundTrip = viewFor(new URLSearchParams(viewToParams(view)).toString());
     assert.equal(describeView(roundTrip), describeView(view), `for "${query}"`);
   }
+});
+
+test("every view the menus offer gets a short tab title with no gaps", () => {
+  const locations = [...config.regionsOptions, ...config.statesOptions];
+  const chartOptions = [
+    ...config.historicalSeasonalityOptions,
+    ...config.temperatureOptions,
+    ...config.precipitationOptions,
+    ...config.observedProjectedOptions,
+  ];
+  const broken = [];
+  for (const location of locations) {
+    const urls = chartOptions.map((option) => `selection=${location.value}&option=${option.value}&season=djf`);
+    for (const map of config.mapsSeasonalityOptions) {
+      for (const century of ["mid", "late"]) {
+        urls.push(`selection=${location.value}&option=${map.value}&scenario=${map.scenario}&century=${century}&season=djf`);
+      }
+    }
+    for (const url of urls) {
+      const name = tabNameForView(readView(new URLSearchParams(url)));
+      if (/undefined|null/.test(name)) broken.push(`${url} -> ${name}`);
+    }
+  }
+  assert.deepEqual(broken, []);
+  assert.equal(
+    tabNameForView(readView(new URLSearchParams("selection=Alaska&option=tmean&season=djf"))),
+    "Alaska · Winter Avg Temp",
+  );
+  assert.equal(
+    tabNameForView(
+      readView(new URLSearchParams("selection=CONUS&option=change_seasonal_precip&scenario=ssp585&century=late&season=djf")),
+    ),
+    "CONUS · Winter Precip Change · Late, SSP5-8.5",
+  );
 });
