@@ -1,61 +1,5 @@
 import { colors } from "../theme";
 
-// CONSTANTS
-
-/**
- * Generates an array of 5-year range strings (e.g., "1930–1934", "1935–1939")
- * between a given start and end year.
- *
- * The groups are aligned to the standard half-decade boundaries (years ending in 0 or 5).
- * The first and last groups are adjusted to strictly adhere to the provided startYear and endYear.
- *
- * @param {number} startYear The starting year for the ranges.
- * @param {number} endYear The ending year for the ranges.
- * @returns {string[]} An array of formatted range strings.
- */
-export const createFiveYearGroups = (startYear, endYear) => {
-  if (startYear > endYear) {
-    console.error("Start year must be less than or equal to the end year.");
-    return [];
-  }
-
-  const groups = [];
-  // 1. Determine the starting year for the first 5-year block boundary.
-  // E.g., if startYear is 1932, blockStart becomes 1930. If it's 1930, it remains 1930.
-  let blockStart = Math.floor(startYear / 5) * 5;
-
-  // 2. Loop through 5-year blocks until the block starts past the end year.
-  while (blockStart <= endYear) {
-    // Standard end of the 5-year block
-    let blockEnd = blockStart + 4;
-
-    // Initialize the group bounds to the block bounds
-    let groupStart = blockStart;
-    let groupEnd = blockEnd;
-
-    // 3. Adjust the groupStart to match the input startYear if the block starts earlier.
-    if (groupStart < startYear) {
-      groupStart = startYear;
-    }
-
-    // 4. Adjust the groupEnd to match the input endYear if the block extends past it.
-    if (groupEnd > endYear) {
-      groupEnd = endYear;
-    }
-
-    // 5. Only push the group if the adjusted start is valid (e.g., prevents "2024—2023")
-    if (groupStart <= groupEnd) {
-      // Use the '–' (en dash) separator as requested
-      groups.push(`${groupStart}–${groupEnd}`);
-    }
-
-    // Move to the next 5-year block
-    blockStart += 5;
-  }
-
-  return groups;
-};
-
 // converts strings to annually, spring, summer, fall, or winter
 const convertToSeasons = (periodOfTime) => {
   switch (periodOfTime) {
@@ -84,8 +28,10 @@ export const getHoverTemplate = (type, data, selectedSeason) => {
         / {2}/g,
         " ",
       );
-    case "histogram":
-      return ` Between %{customdata} the ${data.tooltip} was %{y:0.2f}${unitSpace}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
+    // A bar's height runs from the bottom of the axis, so its y is not the
+    // average. customdata holds [years label, average] for each bar.
+    case "bar":
+      return ` Between %{customdata[0]} the ${data.tooltip} was %{customdata[1]:0.2f}${unitSpace}${data.avgTextUnits} ${convertToSeasons(selectedSeason.value)}  <extra></extra>`.replace(
         / {2}/g,
         " ",
       );
@@ -99,17 +45,46 @@ export const setChartColor = (chartType) => {
   return colors.temperature; // Temperature
 };
 
+// Each bar fills 85% of its 5 years, which keeps the gap between bars the
+// chart had before.
+const BAR_SHARE_OF_BLOCK = 0.85;
+
+// Bars rise from the bottom of the axis, as on NOAA's charts, so a 5-year
+// average below zero still shows as a short bar instead of hanging below 0.
+export const getFiveYearBarData = ({ blocks, axisBottom, name, color, hoverTemplate }) => {
+  const middleYears = [];
+  const heights = [];
+  const widths = [];
+  const hoverDetails = [];
+  for (const block of blocks) {
+    const yearsInBlock = block.lastYear - block.firstYear + 1;
+    middleYears.push(block.firstYear + yearsInBlock / 2);
+    heights.push(block.average - axisBottom);
+    widths.push(yearsInBlock * BAR_SHARE_OF_BLOCK);
+    hoverDetails.push([block.label, block.average]);
+  }
+  return getPlotData({
+    name,
+    type: "bar",
+    xValues: middleYears,
+    yValues: heights,
+    base: axisBottom,
+    width: widths,
+    marker: { line: { color, width: 1 }, color },
+    hoverTemplate,
+    customdata: hoverDetails,
+  });
+};
+
 export const getPlotData = (data) => {
   return {
     mode: data.mode,
     name: data.name,
     type: data.type,
-    ...(data.histfunc && { histfunc: data.histfunc }),
-    ...(data.xbins && { xbins: data.xbins }),
-    ...(data.nbinsx && { nbinsx: data.nbinsx }),
     x: data.xValues,
     y: data.yValues.map((item) => (item === -999 ? null : item)),
-    ...(data.bargroupgap && { bargroupgap: data.bargroupgap }),
+    ...(data.base !== undefined && { base: data.base }),
+    ...(data.width && { width: data.width }),
     ...(data.marker && { marker: data.marker }),
     ...(data.line && { line: data.line }),
     ...(data.fill && { fill: data.fill }),

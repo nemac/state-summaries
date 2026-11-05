@@ -75,4 +75,44 @@ export function candidateDataFiles(indexEntries, fileType, locationType, startYe
   return orderFilesByPreference(eligibleFiles);
 }
 
+// The values from firstYear through lastYear, leaving out -999 (no data).
+function valuesBetweenYears(years, values, firstYear, lastYear) {
+  const valuesInRange = [];
+  for (let index = 0; index < years.length; index += 1) {
+    const year = years[index];
+    const value = values[index];
+    if (year >= firstYear && year <= lastYear && value !== -999) {
+      valuesInRange.push(value);
+    }
+  }
+  return valuesInRange;
+}
+
+function average(values) {
+  let total = 0;
+  for (const value of values) {
+    total += value;
+  }
+  return total / values.length;
+}
+
+// Splits startYear-endYear into 5-year blocks and averages each block, for the
+// chart's bars. A block with no data at all gets no bar.
+export function fiveYearAverages(years, values, startYear, endYear) {
+  const blocks = [];
+  for (let firstYear = startYear; firstYear <= endYear; firstYear += 5) {
+    const lastYear = Math.min(firstYear + 4, endYear);
+    const blockValues = valuesBetweenYears(years, values, firstYear, lastYear);
+    if (blockValues.length > 0) {
+      blocks.push({
+        label: `${firstYear}–${lastYear}`,
+        firstYear,
+        lastYear,
+        average: average(blockValues),
+      });
+    }
+  }
+  return blocks;
+}
+
 export default parseFile;

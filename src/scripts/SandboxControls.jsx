@@ -26,14 +26,19 @@ import {
   lookupPrecipMap,
   selectionValueToRegionDisplayName,
 } from "../utils/precipMaps.js";
-import parseFile, { areAllValuesNoData, candidateDataFiles } from "./utils.js";
+import parseFile, {
+  areAllValuesNoData,
+  candidateDataFiles,
+  fiveYearAverages,
+} from "./utils.js";
 import {
-  createFiveYearGroups,
+  getFiveYearBarData,
   getHoverTemplate,
   getPlotData,
   setChartColor,
 } from "./getPlotData.js";
-import { getPlotlyLayout, pretty } from "./getPlotlyLayout.js";
+import { getPlotlyLayout } from "./getPlotlyLayout.js";
+import { pretty } from "./axisTicks.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 import {
   transformObservedProjectedData,
@@ -309,7 +314,7 @@ export default function SandboxControls() {
         setChartTitle(newChartTitle);
 
         const barChartHoverTemplate = getHoverTemplate(
-          "histogram",
+          "bar",
           climateOption,
           selectedSeason,
         );
@@ -319,36 +324,30 @@ export default function SandboxControls() {
           selectedSeason,
         );
 
-        const barChartFiveYearHoverGroups = createFiveYearGroups(
-          startDate,
-          endDate,
+        // find yRange for layout
+        const yValues = chartDataFromFile[1].map((item) =>
+          item === -999 ? undefined : item,
         );
+        const validYValues = yValues.filter((val) => val !== undefined);
+        const yMin = validYValues.length > 0 ? Math.min(...validYValues) : 0;
+        const yMax = validYValues.length > 0 ? Math.max(...validYValues) : 0;
 
-        const barChartData = getPlotData({
+        const prettyRange = pretty([yMin, yMax]);
+        const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
+        const yValuesAverageAll =
+          validYValues.reduce((a, b) => a + b, 0) / validYValues.length;
+
+        const barChartData = getFiveYearBarData({
+          blocks: fiveYearAverages(
+            chartDataFromFile[0],
+            chartDataFromFile[1],
+            startDate,
+            endDate,
+          ),
+          axisBottom: yRange[0],
           name: climateOption.barChartLegend,
-          type: "histogram",
-          histfunc: "avg",
-          xbins: {
-            start: startDate,
-            end: endDate,
-            size: 5,
-          },
-          nbinsx: 0,
-          xValues: chartDataFromFile[0],
-          yValues: chartDataFromFile[1],
-          bargroupgap: 5,
-          marker: {
-            line: {
-              color: setChartColor(chartType),
-              width: 1,
-            },
-            color: setChartColor(chartType),
-          },
-          hoverinfo: "x+y",
+          color: setChartColor(chartType),
           hoverTemplate: barChartHoverTemplate,
-          customdata: barChartFiveYearHoverGroups,
-          legendgroup: 1,
-          orientation: "v",
         });
 
         const lineChartData = getPlotData({
@@ -370,21 +369,6 @@ export default function SandboxControls() {
           connectgaps: true,
           hoverinfo: "x+y",
         });
-
-        // find yRange for layout
-        const yValues = chartDataFromFile[1].map((item) =>
-          item === -999 ? undefined : item,
-        );
-        const validYValues = yValues.filter((val) => val !== undefined);
-        const yMin = validYValues.length > 0 ? Math.min(...validYValues) : 0;
-        const yMax = validYValues.length > 0 ? Math.max(...validYValues) : 0;
-
-        const prettyRange = pretty([yMin, yMax]);
-        const yRange = [prettyRange[0], prettyRange[prettyRange.length - 1]];
-        const yValuesAverageAll = Math.max(
-          0,
-          validYValues.reduce((a, b) => a + b, 0) / validYValues.length,
-        );
 
         setChartData([lineChartData, barChartData]);
         setChartLayout(
