@@ -96,6 +96,16 @@ jobs:
             --exclude "*.pdf" \
             --include "technical-details.pdf" \
             --exclude "*.DS_Store" \
+            --exclude "about" \
+            --cache-control "public, max-age=0, must-revalidate, s-maxage=86400"
+
+      # The app is a single page, so /about has no file of its own and a reload
+      # there got a 404. A copy of index.html at "about" lets the app load and
+      # show the About page. The sync above skips "about" so it never deletes it.
+      - name: Upload the About page
+        run: |
+          aws s3 cp dist/index.html "s3://${S3_BUCKET}/about" \
+            --content-type "text/html" \
             --cache-control "public, max-age=0, must-revalidate, s-maxage=86400"
 
       - name: Invalidate CloudFront
