@@ -38,6 +38,5 @@ jobs:
         run: npm test
 
       # The tests never import the React components, so only a build catches JSX errors.
-      # No ImageMagick here, so the manifest step warns and leaves CONUS maps untrimmed.
       - name: Build
         run: npm run build
