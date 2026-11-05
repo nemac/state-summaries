@@ -916,6 +916,8 @@ const config = {
     },
     {
       label: "Hawaiʻi and US-Affiliated Pacific Islands",
+      // Short name for the browser tab title.
+      tabLabel: "Hawaiʻi & Pacific Islands",
       svg: "/svgs/regions/hawaii.svg",
       description: "Hawaiʻi",
       value: "hawaii",
@@ -945,7 +947,7 @@ const config = {
       value: "northeast",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1950",
         temperature: "1900",
         precipitation: "1900",
       },
@@ -957,12 +959,14 @@ const config = {
     },
     {
       label: "Northern Rockies and Plains",
+      // Short name for the browser tab title.
+      tabLabel: "N. Rockies & Plains",
       svg: "/svgs/regions/northern_rockies_plains.svg",
       description: "Montana, Nebraska, North Dakota, South Dakota, and Wyoming",
       value: "northern_rockies_plains",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1950",
         temperature: "1900",
         precipitation: "1900",
       },
@@ -1050,7 +1054,7 @@ const config = {
       value: "southwest",
       type: "regions",
       startDates: {
-        threshold: "1900",
+        threshold: "1930",
         temperature: "1900",
         precipitation: "1900",
       },
@@ -1119,6 +1123,8 @@ const config = {
     },
     {
       label: "Contiguous United States",
+      // Short name for the browser tab title.
+      tabLabel: "CONUS",
       svg: "/svgs/contiguous_usa.svg",
       value: "CONUS",
       type: "CONUS",
@@ -1138,6 +1144,7 @@ const config = {
     {
       label: "Observed Number of Warm Days (Tmax ≥ 80ºF)",
       value: "tmax_80F",
+      tabLabel: "Highs ≥ 80°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 80°F",
@@ -1150,6 +1157,7 @@ const config = {
     {
       label: "Observed Number of Warm Days (Tmax ≥ 87ºF)",
       value: "tmax_87F",
+      tabLabel: "Highs ≥ 87°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 87°F",
@@ -1162,6 +1170,7 @@ const config = {
     {
       label: "Observed Number of Hot Days (Tmax ≥ 90ºF)",
       value: "tmax_90F",
+      tabLabel: "Highs ≥ 90°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 90°F",
@@ -1174,6 +1183,7 @@ const config = {
     {
       label: "Observed Number of Very Hot Days (Tmax ≥ 95ºF)",
       value: "tmax_95F",
+      tabLabel: "Highs ≥ 95°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 95°F",
@@ -1186,6 +1196,7 @@ const config = {
     {
       label: "Observed Number of Very Hot Days (Tmax ≥ 100ºF)",
       value: "tmax_100F",
+      tabLabel: "Highs ≥ 100°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature At or Above 100°F",
@@ -1198,6 +1209,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 60ºF)",
       value: "tmin_60F",
+      tabLabel: "Lows ≥ 60°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 60°F",
@@ -1210,6 +1222,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 65ºF)",
       value: "tmin_65F",
+      tabLabel: "Lows ≥ 65°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 65°F",
@@ -1222,6 +1235,7 @@ const config = {
     {
       label: "Observed Number of Warm Nights (Tmin ≥ 70ºF)",
       value: "tmin_70F",
+      tabLabel: "Lows ≥ 70°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 70°F",
@@ -1234,6 +1248,7 @@ const config = {
     {
       label: "Observed Number of Very Warm Nights (Tmin ≥ 75ºF)",
       value: "tmin_75F",
+      tabLabel: "Lows ≥ 75°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 75°F",
@@ -1246,6 +1261,7 @@ const config = {
     {
       label: "Observed Number of Extremely Warm Nights (Tmin ≥ 80ºF)",
       value: "tmin_80F",
+      tabLabel: "Lows ≥ 80°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature At or Above 80°F",
@@ -1258,6 +1274,7 @@ const config = {
     {
       label: "Observed Number of Freezing Days (Tmax ≤ 32ºF)",
       value: "tmax_32F",
+      tabLabel: "Highs ≤ 32°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature Below 32°F",
@@ -1270,6 +1287,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Days (Tmax ≤ 0ºF)",
       value: "tmax_0F",
+      tabLabel: "Highs ≤ 0°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Maximum Temperature Below 0°F",
@@ -1282,6 +1300,7 @@ const config = {
     {
       label: "Observed Number of Freezing Nights (Tmin ≤ 32ºF)",
       value: "tmin_32F",
+      tabLabel: "Lows ≤ 32°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 32°F",
@@ -1294,6 +1313,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Nights (Tmin ≤ 20ºF)",
       value: "tmin_20F",
+      tabLabel: "Lows ≤ 20°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 20°F",
@@ -1306,6 +1326,7 @@ const config = {
     {
       label: "Observed Number of Very Cold Nights (Tmin ≤ 0ºF)",
       value: "tmin_0F",
+      tabLabel: "Lows ≤ 0°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below 0°F",
@@ -1318,6 +1339,7 @@ const config = {
     {
       label: "Observed Number of Extremely Cold Nights (Tmin ≤ –30ºF)",
       value: "tmin_-30F",
+      tabLabel: "Lows ≤ –30°F",
       type: "threshold",
       chartType: "Temperature",
       tooltip: "Days with Minimum Temperature Below -30°F",
@@ -1332,6 +1354,7 @@ const config = {
     {
       label: "Observed Number of 1-Inch Extreme Precipitation Events",
       value: "prcp_1inch",
+      tabLabel: "1-Inch Precip Events",
       type: "threshold",
       chartType: "Precipitation",
       tooltip: "Days with Precipitation Greater than 1 inch",
@@ -1344,6 +1367,7 @@ const config = {
     {
       label: "Observed Number of 2-Inch Extreme Precipitation Events",
       value: "prcp_2inch",
+      tabLabel: "2-Inch Precip Events",
       type: "threshold",
       chartType: "Precipitation",
       tooltip: "Days with Precipitation Greater than 2 inch",
@@ -1356,6 +1380,7 @@ const config = {
     {
       label: "Observed Number of 3-Inch Extreme Precipitation Events",
       value: "prcp_3inch",
+      tabLabel: "3-Inch Precip Events",
       type: "threshold",
       chartType: "Precipitation",
       tooltip: "Days with Precipitation Greater than 3 inch",
@@ -1368,6 +1393,7 @@ const config = {
     {
       label: "Observed Number of 4-Inch Extreme Precipitation Events",
       value: "prcp_4inch",
+      tabLabel: "4-Inch Precip Events",
       type: "threshold",
       chartType: "Precipitation",
       tooltip: "Days with Precipitation Greater than 4 inch",
@@ -1381,6 +1407,7 @@ const config = {
   historicalSeasonalityOptions: [
     {
       getLabel: (season) => `Observed Total ${season} Precipitation`,
+      getTabLabel: (season) => `${season} Precip`,
       value: "prcp",
       icon: "Precipitation",
       type: "precipitation",
@@ -1395,6 +1422,7 @@ const config = {
     },
     {
       getLabel: (season) => `Observed ${season} Average Temperature`,
+      getTabLabel: (season) => `${season} Avg Temp`,
       value: "tmean",
       icon: "Temperature",
       type: "temperature",
@@ -1409,6 +1437,7 @@ const config = {
     },
     {
       getLabel: (season) => `Observed ${season} Average Maximum Temperature`,
+      getTabLabel: (season) => `${season} Avg Max Temp`,
       value: "tmax",
       icon: "Temperature",
       type: "temperature",
@@ -1423,6 +1452,7 @@ const config = {
     },
     {
       getLabel: (season) => `Observed ${season} Average Minimum Temperature`,
+      getTabLabel: (season) => `${season} Avg Min Temp`,
       value: "tmin",
       icon: "Temperature",
       type: "temperature",
@@ -1440,6 +1470,7 @@ const config = {
     {
       label: "Observed and Projected Temperature",
       value: "temperature_obs_proj",
+      tabLabel: "Observed & Projected Temp",
       type: "observed_projected",
       title: "Observed and Projected Temperature Change",
       yAxisText: "Temperature Change (ºF)",
@@ -1459,24 +1490,28 @@ const config = {
       value: "change_seasonal_precip",
       type: "mappy_map",
       scenario: "ssp126",
+      tabLabel: "SSP1-2.6",
     },
     {
       label: "Intermediate Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
       scenario: "ssp245",
+      tabLabel: "SSP2-4.5",
     },
     {
       label: "High Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
       scenario: "ssp370",
+      tabLabel: "SSP3-7.0",
     },
     {
       label: "Very High Emissions: Projected Changes in Precipitation",
       value: "change_seasonal_precip",
       type: "mappy_map",
       scenario: "ssp585",
+      tabLabel: "SSP5-8.5",
     },
   ],
   hasPredictedData: [

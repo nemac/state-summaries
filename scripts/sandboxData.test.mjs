@@ -18,6 +18,8 @@ import parseFile, {
   regionFilesFrom,
 } from "../src/scripts/utils.js";
 import { pretty } from "../src/scripts/axisTicks.js";
+import { readView, viewToParams } from "../src/scripts/viewFromUrl.js";
+import { tabNameForView } from "../src/scripts/tabTitle.js";
 import { fig1FileName } from "../src/scripts/plotObservedAndPredicted.js";
 import config from "../src/configs/config.js";
 
@@ -736,27 +738,24 @@ test("observed/projected files use LF, one header, full numeric rows and consecu
   assert.deepEqual(problems, []);
 });
 
-// Known app bug: the Alaska region requests alaskaregion_FIG1_SCS2025.csv, which doesn't exist.
-const KNOWN_MISSING_FIG1 = new Set(["alaska_region"]);
-
 const offersObservedProjected = (opt) => config.hasPredictedData.includes(opt.label);
 
 test("every area offering observed/projected has its file", () => {
   const files = new Set(fig1Files());
   const missing = MENU_AREAS.filter(offersObservedProjected)
-    .filter((opt) => !files.has(fig1FileName(opt.value)))
-    .map((opt) => opt.value)
-    .sort();
-  assert.deepEqual(
-    missing,
-    [...KNOWN_MISSING_FIG1].sort(),
-    "update KNOWN_MISSING_FIG1 if an area gained or lost its observed/projected file",
-  );
+    .filter((opt) => !files.has(fig1FileName(opt)))
+    .map((opt) => opt.value);
+  assert.deepEqual(missing, [], "an area offers observed/projected but has no file");
+});
+
+test("the Alaska region charts the state-level Alaska file", () => {
+  const alaskaRegion = config.regionsOptions.find((o) => o.value === "alaska_region");
+  assert.equal(fig1FileName(alaskaRegion), "Alaska_FIG1_SCS2025.csv");
 });
 
 test("every observed/projected file is offered by some area", () => {
   const offered = new Set(
-    MENU_AREAS.filter(offersObservedProjected).map((opt) => fig1FileName(opt.value)),
+    MENU_AREAS.filter(offersObservedProjected).map((opt) => fig1FileName(opt)),
   );
   const unoffered = fig1Files().filter((name) => !offered.has(name));
   assert.deepEqual(unoffered, [], "a delivered observed/projected file has no menu entry");
@@ -1094,14 +1093,12 @@ const SHEET_REGIONS = {
 // Not on the sheet: CONUS matches its published panels (thresholds) and data (1895).
 const CONUS_START_YEARS = [1900, 1895];
 
-// Where config waits on NOAA: three region thresholds, and region annual/seasonal
-// (the delivered region files start in 1900).
+// Where config waits on NOAA: region annual/seasonal charts start in 1900, because
+// the delivered region files start in 1900 even though the sheet says 1895.
 function pendingStartYear(opt, dateType) {
   if (dataSource(opt).indexKey !== "regions") return undefined;
   if (dateType !== "threshold") return 1900;
-  return ["Northeast", "Northern Rockies and Plains", "Southwest"].includes(opt.label)
-    ? 1900
-    : undefined;
+  return undefined;
 }
 
 // Override regions (Alaska, Hawaii, US Caribbean) follow their state's row.
@@ -1136,6 +1133,26 @@ test("config start years match NOAA's start-year sheet, except where pending", (
     }
   }
   assert.deepEqual(mismatches, []);
+});
+
+// A fallback file from a different station set must not add years before the
+// chart's start; it would also shift the long-term average.
+test("no chart plots data from before its start year", () => {
+  const earlyData = [];
+  for (const opt of MENU_AREAS) {
+    for (const { type, dateType } of UI_SERIES) {
+      const startYear = parseInt(opt.startDates[dateType], 10);
+      const file = plottedFile(opt, type, startYear);
+      if (!file) continue;
+      const earlyYears = seriesValues(opt, file.name)
+        .filter(([year, value]) => year < startYear && value !== NO_DATA)
+        .map(([year]) => year);
+      if (earlyYears.length > 0) {
+        earlyData.push(`${opt.value}/${type}: ${file.name} has data from ${earlyYears[0]}`);
+      }
+    }
+  }
+  assert.deepEqual(earlyData, []);
 });
 
 // ---------------------------------------------------------------------------
@@ -1175,4 +1192,77 @@ test("every chart's y-axis covers its lowest and highest values", () => {
     }
   }
   assert.deepEqual(clipped, []);
+});
+
+// ---------------------------------------------------------------------------
+// URL: the page shows exactly what the URL says, with defaults for anything else.
+
+const viewFor = (query) => readView(new URLSearchParams(query));
+const describeView = (view) =>
+  `${view.selection.value}/${view.option.value}/${view.season.value}/${view.showMap ? "map" : "chart"}`;
+
+test("a bare or broken URL shows the default view", () => {
+  for (const query of [
+    "",
+    "selection=nowhere&option=nothing&season=never",
+    "option=change_seasonal_precip&scenario=bogus&century=mid",
+    "option=change_seasonal_precip&scenario=ssp245",
+    "option=change_seasonal_precip&scenario=ssp245&century=early",
+  ]) {
+    assert.equal(describeView(viewFor(query)), "CONUS/tmean/ann/chart", `for "${query}"`);
+  }
+});
+
+test("a valid map link shows that map", () => {
+  const view = viewFor("selection=Alaska&option=change_seasonal_precip&century=late&scenario=ssp585&season=jja");
+  assert.equal(describeView(view), "Alaska/change_seasonal_precip/jja/map");
+  assert.equal(view.option.century, "late");
+  assert.equal(view.option.scenario, "ssp585");
+});
+
+test("viewToParams writes a URL that reads back to the same view", () => {
+  for (const query of [
+    "selection=Texas&option=prcp_2inch&season=ann",
+    "selection=northeast&option=tmax&season=djf",
+    "selection=alaska_region&option=temperature_obs_proj&season=ann",
+    "selection=Alaska&option=change_seasonal_precip&century=mid&scenario=ssp126&season=son",
+  ]) {
+    const view = viewFor(query);
+    const roundTrip = viewFor(new URLSearchParams(viewToParams(view)).toString());
+    assert.equal(describeView(roundTrip), describeView(view), `for "${query}"`);
+  }
+});
+
+test("every view the menus offer gets a short tab title with no gaps", () => {
+  const locations = [...config.regionsOptions, ...config.statesOptions];
+  const chartOptions = [
+    ...config.historicalSeasonalityOptions,
+    ...config.temperatureOptions,
+    ...config.precipitationOptions,
+    ...config.observedProjectedOptions,
+  ];
+  const broken = [];
+  for (const location of locations) {
+    const urls = chartOptions.map((option) => `selection=${location.value}&option=${option.value}&season=djf`);
+    for (const map of config.mapsSeasonalityOptions) {
+      for (const century of ["mid", "late"]) {
+        urls.push(`selection=${location.value}&option=${map.value}&scenario=${map.scenario}&century=${century}&season=djf`);
+      }
+    }
+    for (const url of urls) {
+      const name = tabNameForView(readView(new URLSearchParams(url)));
+      if (/undefined|null/.test(name)) broken.push(`${url} -> ${name}`);
+    }
+  }
+  assert.deepEqual(broken, []);
+  assert.equal(
+    tabNameForView(readView(new URLSearchParams("selection=Alaska&option=tmean&season=djf"))),
+    "Alaska · Winter Avg Temp",
+  );
+  assert.equal(
+    tabNameForView(
+      readView(new URLSearchParams("selection=CONUS&option=change_seasonal_precip&scenario=ssp585&century=late&season=djf")),
+    ),
+    "CONUS · Winter Precip Change · Late, SSP5-8.5",
+  );
 });

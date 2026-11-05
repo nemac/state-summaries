@@ -51,11 +51,12 @@ export function areAllValuesNoData(values) {
   return values.every((value) => value === -999);
 }
 
+const isLongPeriod = (file) =>
+  file.period === "1895-2024" || file.period === "1900-2024";
+
 // Order index entries for one series: the long 1895/1900 file first, then the
 // rest by start year, so a caller can fall back when a column is all -999.
 export function orderFilesByPreference(files) {
-  const isLongPeriod = (file) =>
-    file.period === "1895-2024" || file.period === "1900-2024";
   return [...files].sort(
     (a, b) => Number(isLongPeriod(b)) - Number(isLongPeriod(a)) || a.start - b.start,
   );
@@ -67,11 +68,20 @@ export function regionFilesFrom(files, startYear) {
   return files.filter((file) => file.start >= startYear);
 }
 
+// A state's long file is a composite that is -999 before the state's start
+// year, so it is safe to read. Any other file must start on or after that
+// year, or a fallback would pull in a different station set's early years.
+export function stateFilesFrom(files, startYear) {
+  return files.filter((file) => isLongPeriod(file) || file.start >= startYear);
+}
+
 // Index entries a chart tries for one series, in the order getChartData fetches them.
 export function candidateDataFiles(indexEntries, fileType, locationType, startYear) {
   const seriesFiles = indexEntries.filter((file) => file.type === fileType);
   const eligibleFiles =
-    locationType === "regions" ? regionFilesFrom(seriesFiles, startYear) : seriesFiles;
+    locationType === "regions"
+      ? regionFilesFrom(seriesFiles, startYear)
+      : stateFilesFrom(seriesFiles, startYear);
   return orderFilesByPreference(eligibleFiles);
 }
 

@@ -114,3 +114,8 @@ pyvenv.cfg
 # archive; only the JPG previews the app uses are committed.
 public/Precip_Organized/**/*.ai
 public/Precip_Organized/**/*.aix
+
+# Docs are local working notes by default. To commit one, add a "!docs/<file>"
+# line below; only top-level files can be allowed, so subfolders stay local.
+docs/*
+!docs/*[Tt][Oo][Dd][Oo]*.md

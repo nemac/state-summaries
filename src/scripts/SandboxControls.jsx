@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -39,13 +39,32 @@ import {
 } from "./getPlotData.js";
 import { getPlotlyLayout } from "./getPlotlyLayout.js";
 import { pretty } from "./axisTicks.js";
+import {
+  ANNUAL_SEASON,
+  readView,
+  SEASON_OPTIONS,
+  viewToParams,
+} from "./viewFromUrl.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
+import { usePageTitle } from "./usePageTitle.js";
+import { tabNameForView } from "./tabTitle.js";
 import {
   transformObservedProjectedData,
   computeBracketData,
   computeYDomain,
 } from "./transformObservedProjectedData.js";
 import { colors } from "../theme";
+
+const ERROR_TEXT = {
+  "no-data": {
+    title: "No data are currently available for this metric.",
+    message: "Please make another selection.",
+  },
+  "load-failed": {
+    title: "The data could not be loaded.",
+    message: "Check your internet connection, then reload the page.",
+  },
+};
 
 // Fetch sandbox data file and parse it
 const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
@@ -55,6 +74,9 @@ const fetchSandboxDataFile = async (dataFile, locationType, selectionLabel) => {
     `./sandboxdata/2025_Sandbox_Datafiles/${dataFile}`,
     { cache: "no-cache" },
   );
+  if (!response.ok) {
+    throw new Error(`${dataFile} returned ${response.status}`);
+  }
   const data = await response.text();
 
   // parse the csv text file
@@ -79,7 +101,7 @@ const logSelectedFile = (file, files, locationType, selectionLabel) => {
 };
 
 // Try each candidate file in order and return the first whose column holds
-// real data; null when every candidate is all -999.
+// real data, with that file; null when every candidate is all -999.
 const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
   for (const file of files) {
     const chartDataFromFile = await fetchSandboxDataFile(
@@ -89,7 +111,7 @@ const fetchFirstFileWithData = async (files, locationType, selectionLabel) => {
     );
     if (!areAllValuesNoData(chartDataFromFile[1])) {
       logSelectedFile(file, files, locationType, selectionLabel);
-      return chartDataFromFile;
+      return { file, chartDataFromFile };
     }
   }
   console.debug(
@@ -103,119 +125,14 @@ export default function SandboxControls() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const seasonOptions = [
-    { label: "Annual", value: "ann" },
-    { label: "Spring", value: "mam" },
-    { label: "Summer", value: "jja" },
-    { label: "Fall", value: "son" },
-    { label: "Winter", value: "djf" },
-  ];
+  const view = useMemo(() => readView(searchParams), [searchParams]);
+  const megaMenuSelection = view.selection;
+  const climateOption = view.option;
+  const selectedSeason = view.season;
+  const showMapImage = view.showMap;
 
-  const getMegaMenuSelectionFromSearchParams = (selectionParam) => {
-    let foundSelection = config.regionsOptions.find(
-      (region) => region.value === selectionParam,
-    );
-    if (!foundSelection && config.statesOptions) {
-      foundSelection = config.statesOptions.find(
-        (state) => state.value === selectionParam,
-      );
-    }
-    return foundSelection;
-  };
-
-  const getClimateChangeOptionFromSearchParams = (optionParam) => {
-    let foundOption = config.historicalSeasonalityOptions.find(
-      (option) => option.value === optionParam,
-    );
-    if (!foundOption && config.temperatureOptions) {
-      foundOption = config.temperatureOptions.find(
-        (option) => option.value === optionParam,
-      );
-    }
-    if (!foundOption && config.precipitationOptions) {
-      foundOption = config.precipitationOptions.find(
-        (option) => option.value === optionParam,
-      );
-    }
-    if (!foundOption && config.observedProjectedOptions) {
-      foundOption = config.observedProjectedOptions.find(
-        (option) => option.value === optionParam,
-      );
-    }
-    return foundOption;
-  };
-
-  // Initialize state from URL parameters or defaults
-  const getInitialSelection = () => {
-    const selectionParam = searchParams.get("selection");
-    if (selectionParam) {
-      // Search in both regionsOptions and statesOptions
-      let foundSelection = config.regionsOptions.find(
-        (region) => region.value === selectionParam,
-      );
-      if (!foundSelection && config.statesOptions) {
-        foundSelection = config.statesOptions.find(
-          (state) => state.value === selectionParam,
-        );
-      }
-      if (foundSelection) return foundSelection;
-    }
-    return config.regionsOptions.find((region) => region.value === "CONUS");
-  };
-
-  // Rebuild a seasonality map option from URL params (scenario + century),
-  // since all four map options share the same `value`.
-  const getMapOptionFromParams = (scenarioParam, centuryParam) => {
-    const base = config.mapsSeasonalityOptions.find(
-      (o) => o.scenario === scenarioParam,
-    );
-    return base ? { ...base, century: centuryParam } : null;
-  };
-
-  const getInitialClimateOption = () => {
-    const optionParam = searchParams.get("option");
-    if (optionParam === "change_seasonal_precip") {
-      const mapOption = getMapOptionFromParams(
-        searchParams.get("scenario"),
-        searchParams.get("century"),
-      );
-      if (mapOption) return mapOption;
-    }
-    if (optionParam) {
-      const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
-      if (foundOption) return foundOption;
-    }
-    return config.historicalSeasonalityOptions.find(
-      (option) => option.value === "tmean",
-    );
-  };
-
-  const getInitialSeason = () => {
-    const seasonParam = searchParams.get("season");
-    if (seasonParam) {
-      const foundSeason = seasonOptions.find(
-        (season) => season.value === seasonParam,
-      );
-      if (foundSeason) return foundSeason;
-    }
-    return { label: "Annual", value: "ann" };
-  };
-
-  const [megaMenuSelection, setMegaMenuSelection] = useState(() =>
-    getInitialSelection(),
-  );
-  const [climateOption, setClimateOption] = useState(() =>
-    getInitialClimateOption(),
-  );
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [climateMenuOpen, setClimateMenuOpen] = useState(false);
-  const [showMapImage, setShowMapImage] = useState(
-    () => searchParams.get("option") === "change_seasonal_precip",
-  );
-  const [mapEntry, setMapEntry] = useState(null);
-  const [selectedSeason, setSelectedSeason] = useState(() =>
-    getInitialSeason(),
-  );
   const [chartTitle, setChartTitle] = useState("");
 
   // Recharts state for observed/projected chart
@@ -224,14 +141,12 @@ export default function SandboxControls() {
   const [rechartsBrackets, setRechartsBrackets] = useState(null);
   const [rechartsYDomain, setRechartsYDomain] = useState(null);
 
-  // END NEW STATE VARIABLES
-
-  // set React state via React Hooks
-  // used to open or close the alert box
-  const [openError, setOpenError] = useState(false);
+  // null, "no-data" or "load-failed". Any value hides the chart and shows an alert.
+  const [errorKind, setErrorKind] = useState(null);
+  const openError = errorKind !== null;
 
   // chart data from files in ../sandboxdata
-  const [chartData, setChartData] = useState([{}]);
+  const [chartData, setChartData] = useState([]);
   // plotly chart layout defaults
   const layoutDefaults = {
     title: {
@@ -241,18 +156,53 @@ export default function SandboxControls() {
   };
   // plotly chart layout
   const [chartLayout, setChartLayout] = useState(layoutDefaults);
-  // chart data json file
-  const [climateDataFilesJSON, setClimateDataFilesJSON] = useState([""]);
+  // index.json lists the data files for every series; null until it loads.
+  const [dataIndex, setDataIndex] = useState(null);
+  const [dataIndexFailed, setDataIndexFailed] = useState(false);
+
+  const mapEntry = useMemo(() => {
+    if (!view.showMap) return null;
+    return lookupPrecipMap(
+      precipMapManifest,
+      view.selection.value,
+      view.option.century,
+      view.option.scenario,
+      view.season.value,
+    );
+  }, [view]);
+
+  // Save Chart/Data only makes sense while a loaded chart is on screen.
+  const isChartShowing = !showMapImage && !openError && chartData.length > 0;
+
+  const shownOptionLabel =
+    climateOption.seasonality && climateOption.getLabel
+      ? climateOption.getLabel(selectedSeason.label)
+      : climateOption.label;
+  // A map heading is named for the region the map covers, not the selection.
+  const mapHeading = mapEntry
+    ? `${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`
+    : null;
+  const mapPeriodAndScenario = mapEntry
+    ? mapEntry.subtitle.split(", ").slice(1).join(", ")
+    : null;
+  usePageTitle(tabNameForView(view));
+
+  const showError = (kind) => {
+    setChartData([]);
+    setChartLayout(layoutDefaults);
+    setChartType("plotly");
+    setErrorKind(kind);
+  };
 
   // check if the selection has predicted data available
   const checkForPredictedData = (selection) => {
     return config.hasPredictedData.includes(selection.label);
   };
 
-  // get chart data from current state = which should include
+  // Builds the Plotly chart for one view. isViewCurrent() turns false once the
+  // view changes, so a late response for an old view changes nothing.
   const getChartData = (props) => {
-    setChartType("plotly");
-    const { selection, climateDataFilesJSONFile, climateOption } = props;
+    const { selection, climateOption, season, isViewCurrent } = props;
 
     // Resolve data source overrides (e.g. Hawaii region uses state data,
     // US Caribbean uses standalone data files)
@@ -260,20 +210,18 @@ export default function SandboxControls() {
     const selectionLabel = override?.label || selection.label;
     const locationType = override?.locationType || selection.type;
     const indexKey = override?.indexKey || selection.type;
-    const data = climateDataFilesJSONFile[indexKey];
+    const data = dataIndex[indexKey];
 
     // Construct file type identifier, appending selected season if seasonality === true
     // e.g. value = prcp and if seasonId = ann this becomes prcp_ann
     const fileType = climateOption.seasonality
-      ? climateOption.value + "_" + selectedSeason.value
+      ? climateOption.value + "_" + season.value
       : climateOption.value;
     const chartType = climateOption.chartType;
 
     // If no data index exists for this source, show error
     if (!data) {
-      setChartData([]);
-      setChartLayout(layoutDefaults);
-      setOpenError(true);
+      showError("no-data");
       return;
     }
 
@@ -293,35 +241,38 @@ export default function SandboxControls() {
 
     // If no matching file was found for this metric, show error
     if (candidateFiles.length === 0) {
-      setChartData([]);
-      setChartLayout(layoutDefaults);
-      setOpenError(true);
+      showError("no-data");
       return;
     }
 
     fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
-      .then((chartDataFromFile) => {
-        if (chartDataFromFile === null) {
-          setChartData([]);
-          setChartLayout(layoutDefaults);
-          setOpenError(true);
+      .then((result) => {
+        if (!isViewCurrent()) return;
+        if (result === null) {
+          showError("no-data");
           return;
         }
+        const { file, chartDataFromFile } = result;
+        // A fallback file can start after the configured year, so the chart
+        // starts where that file's data starts.
+        const chartStartDate = Math.max(startDate, file.start);
         const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
-            ? `${selectionLabel}: ${climateOption.getLabel(selectedSeason.label)}`
+            ? `${selectionLabel}: ${climateOption.getLabel(season.label)}`
             : `${selectionLabel}: ${climateOption.label}`;
         setChartTitle(newChartTitle);
 
+        // Threshold counts cover the whole year, whatever season is picked.
+        const hoverSeason = climateOption.seasonality ? season : ANNUAL_SEASON;
         const barChartHoverTemplate = getHoverTemplate(
           "bar",
           climateOption,
-          selectedSeason,
+          hoverSeason,
         );
         const lineChartHoverTemplate = getHoverTemplate(
           "scatter",
           climateOption,
-          selectedSeason,
+          hoverSeason,
         );
 
         // find yRange for layout
@@ -341,7 +292,7 @@ export default function SandboxControls() {
           blocks: fiveYearAverages(
             chartDataFromFile[0],
             chartDataFromFile[1],
-            startDate,
+            chartStartDate,
             endDate,
           ),
           axisBottom: yRange[0],
@@ -370,11 +321,12 @@ export default function SandboxControls() {
           hoverinfo: "x+y",
         });
 
+        setChartType("plotly");
         setChartData([lineChartData, barChartData]);
         setChartLayout(
           getPlotlyLayout({
             chartTitle: newChartTitle,
-            xmin: startDate,
+            xmin: chartStartDate,
             xmax: endDate,
             yRange: yRange,
             yAxisText: climateOption.yAxisText,
@@ -384,159 +336,82 @@ export default function SandboxControls() {
           }),
         );
       })
-      // handle errors
       .catch((error) => {
-        console.error(`SandboxControls.updatePlotData() error=${error}`);
+        if (!isViewCurrent()) return;
+        console.error(`SandboxControls.getChartData() error=${error}`);
+        showError("load-failed");
       });
   };
 
-  // function loads the index.json file to find the correct data.txt file based on the variables
-  // the user chooses or from URL parameters
-  const loadData = async () => {
-    try {
-      const response = await fetch(
-        "./sandboxdata/2025_Sandbox_Datafiles/index.json",
-        { cache: "no-cache" },
-      );
-      const responseData = await response.json();
-      setClimateDataFilesJSON(responseData);
-
-      // Map options (e.g. a shared map link on first load) don't use chart data;
-      // the map-resolution effect handles display. Skip the chart/data path so
-      // it doesn't false-trigger the "no data" error.
-      if (climateOption.type === "mappy_map") {
-        return;
-      }
-
-      if (climateOption.type === "observed_projected") {
-        handleObservedPredicted(megaMenuSelection, climateOption);
-        return;
-      }
-
-      getChartData({
-        selection: megaMenuSelection,
-        climateDataFilesJSONFile: responseData,
-        climateOption: climateOption,
-      });
-    } catch (error) {
-      console.error(`SandboxControls loadData error: ${error}`);
-    }
-  };
-
-  // call loadData during startup
+  // Load index.json once. It lists the data files for every series.
   useEffect(() => {
-    loadData();
+    let isMounted = true;
+    fetch("./sandboxdata/2025_Sandbox_Datafiles/index.json", { cache: "no-cache" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`index.json returned ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((index) => {
+        if (isMounted) setDataIndex(index);
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        console.error(`SandboxControls index.json error=${error}`);
+        setDataIndexFailed(true);
+      });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Sync state with URL parameter changes (for browser back/forward navigation)
+  // Load the chart for the current view. This is the only place charts load,
+  // so each change loads once. A run's cleanup marks it out of date, so a slow
+  // response for an older view can't replace the chart for a newer one.
   useEffect(() => {
-    const selectionParam = searchParams.get("selection");
-    const optionParam = searchParams.get("option");
-    const seasonParam = searchParams.get("season");
-
-    // Update selection if URL changed
-    if (selectionParam && selectionParam !== megaMenuSelection.value) {
-      const foundSelection =
-        getMegaMenuSelectionFromSearchParams(selectionParam);
-      if (foundSelection) {
-        setMegaMenuSelection(foundSelection);
-      }
+    // Maps don't need index.json, so they show even when it failed to load.
+    if (view.showMap) {
+      setErrorKind(null);
+      return undefined;
     }
-
-    // Update option if URL changed (maps are rebuilt from scenario + century)
-    if (optionParam === "change_seasonal_precip") {
-      const scenarioParam = searchParams.get("scenario");
-      const centuryParam = searchParams.get("century");
-      if (
-        climateOption.value !== "change_seasonal_precip" ||
-        climateOption.scenario !== scenarioParam ||
-        climateOption.century !== centuryParam
-      ) {
-        const mapOption = getMapOptionFromParams(scenarioParam, centuryParam);
-        if (mapOption) {
-          setClimateOption(mapOption);
-          setShowMapImage(true);
-        }
-      }
-    } else if (optionParam && optionParam !== climateOption.value) {
-      const foundOption = getClimateChangeOptionFromSearchParams(optionParam);
-      if (foundOption) {
-        setClimateOption(foundOption);
-        setShowMapImage(false);
-      }
+    if (dataIndexFailed) {
+      showError("load-failed");
+      return undefined;
     }
+    if (dataIndex === null) return undefined;
 
-    // Update season if URL changed
-    if (seasonParam && seasonParam !== selectedSeason.value) {
-      const foundSeason = seasonOptions.find((s) => s.value === seasonParam);
-      if (foundSeason) {
-        setSelectedSeason(foundSeason);
-      }
+    let isLatestView = true;
+    const isViewCurrent = () => isLatestView;
+    setErrorKind(null);
+    if (view.option.type === "observed_projected") {
+      handleObservedPredicted(view.selection, view.option, isViewCurrent);
+    } else {
+      getChartData({
+        selection: view.selection,
+        climateOption: view.option,
+        season: view.season,
+        isViewCurrent,
+      });
     }
-  }, [searchParams]);
-
-  // Reload chart data when selection or option changes (including from browser navigation)
-  useEffect(() => {
-    if (climateDataFilesJSON.length === 0 || climateDataFilesJSON[0] === "") {
-      return; // Wait for initial data load
-    }
-    setOpenError(false); // reset
-
-    if (showMapImage === true) {
-      return;
-    }
-
-    if (climateOption.type === "observed_projected") {
-      handleObservedPredicted(megaMenuSelection, climateOption);
-      return;
-    }
-    getChartData({
-      selection: megaMenuSelection,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      climateOption: climateOption,
-    });
-  }, [megaMenuSelection, climateOption, selectedSeason]);
-
-  // Resolve the precipitation map and keep the URL shareable whenever a map is
-  // being shown. Re-runs on region / century / scenario / season changes.
-  useEffect(() => {
-    if (!showMapImage) return;
-    setMapEntry(
-      lookupPrecipMap(
-        precipMapManifest,
-        megaMenuSelection.value,
-        climateOption.century,
-        climateOption.scenario,
-        selectedSeason.value,
-      ),
-    );
-    setSearchParams(
-      {
-        selection: megaMenuSelection.value,
-        option: climateOption.value,
-        century: climateOption.century ?? "",
-        scenario: climateOption.scenario ?? "",
-        season: selectedSeason.value,
-      },
-      { replace: true },
-    );
+    return () => {
+      isLatestView = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showMapImage, megaMenuSelection, climateOption, selectedSeason]);
+  }, [view, dataIndex, dataIndexFailed]);
 
   // handles plotting of observed and predicted data
-  const handleObservedPredicted = (megaMenuSelection, climateOption) => {
+  const handleObservedPredicted = (megaMenuSelection, climateOption, isViewCurrent) => {
     const hasPredictedData = checkForPredictedData(megaMenuSelection);
     if (!hasPredictedData) {
-      setChartData([]);
-      setChartLayout(layoutDefaults);
-      setChartType("plotly");
-      setOpenError(true);
+      showError("no-data");
       return;
     }
 
-    fetchObservedAndProjectedData(megaMenuSelection.value).then((data) => {
+    fetchObservedAndProjectedData(megaMenuSelection).then((data) => {
+      if (!isViewCurrent()) return;
       // Populate Recharts state
-      const title = `${megaMenuSelection.value.replace(/_/g, " ")}: ${climateOption.title}`;
+      const title = `${megaMenuSelection.label}: ${climateOption.title}`;
       setChartTitle(title);
       setRechartsData(transformObservedProjectedData(data));
       setRechartsBrackets(computeBracketData(data));
@@ -565,82 +440,37 @@ export default function SandboxControls() {
           y: data[series.key].map((item) => (item === -999 ? null : item)),
         })),
       );
+    }).catch((error) => {
+      if (!isViewCurrent()) return;
+      console.error(`SandboxControls.handleObservedPredicted() error=${error}`);
+      showError("load-failed");
     });
   };
 
-  // NEW HANDLERS JEFF
+  // Menu picks only change the URL; the load effect above draws the new view.
+  // Each pick adds a browser history entry, so Back returns to the view before.
+  const goToView = (nextView) => {
+    const currentParams = new URLSearchParams(viewToParams(view)).toString();
+    const nextParams = new URLSearchParams(viewToParams(nextView)).toString();
+    if (nextParams === currentParams) return;
+    setSearchParams(nextParams);
+  };
+
   const handleClimateOptionChange = (option) => {
-    setOpenError(false); // reset
-    setShowMapImage(false); // reset
-
-    const newOption = option;
-    setClimateOption(newOption);
     setClimateMenuOpen(false);
-
-    // Update URL parameters
-    setSearchParams({
-      selection: megaMenuSelection.value,
-      option: newOption.value,
-      ...(newOption.type === "mappy_map"
-        ? { century: newOption.century, scenario: newOption.scenario }
-        : {}),
-      season: selectedSeason.value,
-    });
-
-    // Check if this is a map option that should display an image
-    const isMapOption = newOption.type === "mappy_map";
-
-    if (isMapOption) {
-      // Just show the map image, don't generate chart data
-      setShowMapImage(true);
-      return;
-    }
-
-    if (newOption.type === "observed_projected") {
-      handleObservedPredicted(megaMenuSelection, newOption);
-      return;
-    }
-
-    getChartData({
-      selection: megaMenuSelection,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      climateOption: newOption,
-    });
+    goToView({ ...view, option });
   };
 
   const handleMegaMenuSelect = (selection) => {
-    setOpenError(false); // reset
     setMegaMenuOpen(false);
-
-    setMegaMenuSelection(selection);
-
-    // Update URL parameters
-    setSearchParams({
-      selection: selection.value,
-      option: climateOption.value,
-      ...(climateOption.type === "mappy_map"
-        ? { century: climateOption.century, scenario: climateOption.scenario }
-        : {}),
-      season: selectedSeason.value,
-    });
-
-    if (showMapImage === true) {
-      return;
-    }
-
-    if (climateOption.type === "observed_projected") {
-      handleObservedPredicted(selection, climateOption);
-      return;
-    }
-
-    getChartData({
-      selection,
-      climateDataFilesJSONFile: climateDataFilesJSON,
-      climateOption: climateOption,
-    });
+    goToView({ ...view, selection });
   };
 
-  // END NEW HANDLERS
+  // The season dropdown sits inside the open menu, so trying seasons there
+  // replaces the current history entry instead of adding Back steps.
+  const handleSeasonChange = (season) => {
+    setSearchParams(viewToParams({ ...view, season }), { replace: true });
+  };
 
   return (
     <>
@@ -803,43 +633,43 @@ export default function SandboxControls() {
                   fontWeight: 400,
                 }}
               >
-                {climateOption.seasonality && climateOption.getLabel
-                  ? climateOption.getLabel(selectedSeason.label)
-                  : climateOption.label}
+                {shownOptionLabel}
               </Typography>
               <ExpandMoreIcon sx={{ color: colors.primary }} />
             </Box>
           </Grid>
 
-          <SaveChart
-            selection={megaMenuSelection}
-            climateOption={climateOption}
-            chartTitle={chartTitle}
-            chartData={chartData}
-            chartType={chartType}
-            period={"1900-2024"}
-            renderExportChart={
-              chartType === "recharts"
-                ? (w, h) => (
-                    <Box sx={{ width: `${w}px`, height: `${h}px` }}>
-                      <ObservedProjectedChart
-                        data={rechartsData}
-                        bracketData={rechartsBrackets}
-                        yDomain={rechartsYDomain}
-                        chartTitle={chartTitle}
-                      />
-                    </Box>
-                  )
-                : undefined
-            }
-            sx={{
-              borderRadius: "4px",
-              border: `1px solid ${colors.primary}`,
-              fontWeight: 500,
-              color: colors.primary,
-              height: "48px",
-            }}
-          />
+          {isChartShowing && (
+            <SaveChart
+              selection={megaMenuSelection}
+              climateOption={climateOption}
+              chartTitle={chartTitle}
+              chartData={chartData}
+              chartType={chartType}
+              period={"1900-2024"}
+              renderExportChart={
+                chartType === "recharts"
+                  ? (w, h) => (
+                      <Box sx={{ width: `${w}px`, height: `${h}px` }}>
+                        <ObservedProjectedChart
+                          data={rechartsData}
+                          bracketData={rechartsBrackets}
+                          yDomain={rechartsYDomain}
+                          chartTitle={chartTitle}
+                        />
+                      </Box>
+                    )
+                  : undefined
+              }
+              sx={{
+                borderRadius: "4px",
+                border: `1px solid ${colors.primary}`,
+                fontWeight: 500,
+                color: colors.primary,
+                height: "48px",
+              }}
+            />
+          )}
 
         </Grid>
 
@@ -873,10 +703,8 @@ export default function SandboxControls() {
               <SandboxAlert
                 shouldOpenAlert={openError}
                 errorType={"Error"}
-                chartErrorTitle={
-                  "No data are currently available for this metric."
-                }
-                chartErrorMessage={"Please make another selection."}
+                chartErrorTitle={ERROR_TEXT[errorKind].title}
+                chartErrorMessage={ERROR_TEXT[errorKind].message}
               />
             </Box>
           )}
@@ -920,9 +748,9 @@ export default function SandboxControls() {
                   >
                     {mapEntry ? (
                       <>
-                        {`${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`}
+                        {mapHeading}
                         <Box component="span" sx={{ display: "block" }}>
-                          {mapEntry.subtitle.split(", ").slice(1).join(", ")}
+                          {mapPeriodAndScenario}
                         </Box>
                       </>
                     ) : (
@@ -941,7 +769,9 @@ export default function SandboxControls() {
                           minHeight: 320,
                         }}
                       >
+                        {/* The key starts each new map unzoomed. */}
                         <ZoomableImage
+                          key={mapEntry.src}
                           src={mapEntry.src}
                           alt={mapEntry.subtitle}
                         />
@@ -1010,8 +840,8 @@ export default function SandboxControls() {
         onClose={() => setClimateMenuOpen(false)}
         onSelect={handleClimateOptionChange}
         selectedSeason={selectedSeason}
-        setSelectedSeason={setSelectedSeason}
-        seasonOptions={seasonOptions}
+        setSelectedSeason={handleSeasonChange}
+        seasonOptions={SEASON_OPTIONS}
       />
     </>
   );
