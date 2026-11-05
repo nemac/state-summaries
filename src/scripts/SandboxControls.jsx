@@ -243,13 +243,12 @@ export default function SandboxControls() {
     }
 
     fetchFirstFileWithData(candidateFiles, locationType, selectionLabel)
-      .then((result) => {
+      .then((chartDataFromFile) => {
         if (!isViewCurrent()) return;
-        if (result === null) {
+        if (chartDataFromFile === null) {
           showError("no-data");
           return;
         }
-        const chartDataFromFile = result;
         const newChartTitle =
           climateOption.seasonality && climateOption.getLabel
             ? `${selectionLabel}: ${climateOption.getLabel(season.label)}`
