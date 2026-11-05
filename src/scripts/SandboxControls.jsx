@@ -46,6 +46,7 @@ import {
   viewToParams,
 } from "./viewFromUrl.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
+import { usePageTitle } from "./usePageTitle.js";
 import {
   transformObservedProjectedData,
   computeBracketData,
@@ -171,6 +172,23 @@ export default function SandboxControls() {
 
   // Save Chart/Data only makes sense while a loaded chart is on screen.
   const isChartShowing = !showMapImage && !openError && chartData.length > 0;
+
+  const shownOptionLabel =
+    climateOption.seasonality && climateOption.getLabel
+      ? climateOption.getLabel(selectedSeason.label)
+      : climateOption.label;
+  // A map heading is named for the region the map covers, not the selection.
+  const mapHeading = mapEntry
+    ? `${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`
+    : null;
+  const mapPeriodAndScenario = mapEntry
+    ? mapEntry.subtitle.split(", ").slice(1).join(", ")
+    : null;
+  usePageTitle(
+    mapEntry
+      ? `${mapHeading}, ${mapPeriodAndScenario}`
+      : `${megaMenuSelection.label}: ${shownOptionLabel}`,
+  );
 
   const showError = (kind) => {
     setChartData([]);
@@ -618,9 +636,7 @@ export default function SandboxControls() {
                   fontWeight: 400,
                 }}
               >
-                {climateOption.seasonality && climateOption.getLabel
-                  ? climateOption.getLabel(selectedSeason.label)
-                  : climateOption.label}
+                {shownOptionLabel}
               </Typography>
               <ExpandMoreIcon sx={{ color: colors.primary }} />
             </Box>
@@ -735,9 +751,9 @@ export default function SandboxControls() {
                   >
                     {mapEntry ? (
                       <>
-                        {`${selectionValueToRegionDisplayName(megaMenuSelection.value)} Projected Changes in Total ${selectedSeason.label} Precipitation`}
+                        {mapHeading}
                         <Box component="span" sx={{ display: "block" }}>
-                          {mapEntry.subtitle.split(", ").slice(1).join(", ")}
+                          {mapPeriodAndScenario}
                         </Box>
                       </>
                     ) : (
