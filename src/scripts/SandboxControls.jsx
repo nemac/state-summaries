@@ -47,6 +47,7 @@ import {
 } from "./viewFromUrl.js";
 import { fetchObservedAndProjectedData } from "./plotObservedAndPredicted.js";
 import { usePageTitle } from "./usePageTitle.js";
+import { tabNameForView } from "./tabTitle.js";
 import {
   transformObservedProjectedData,
   computeBracketData,
@@ -184,11 +185,7 @@ export default function SandboxControls() {
   const mapPeriodAndScenario = mapEntry
     ? mapEntry.subtitle.split(", ").slice(1).join(", ")
     : null;
-  usePageTitle(
-    mapEntry
-      ? `${mapHeading}, ${mapPeriodAndScenario}`
-      : `${megaMenuSelection.label}: ${shownOptionLabel}`,
-  );
+  usePageTitle(tabNameForView(view));
 
   const showError = (kind) => {
     setChartData([]);
