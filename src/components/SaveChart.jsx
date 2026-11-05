@@ -10,18 +10,68 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Alert,
 } from "@mui/material";
 import {
   Download as DownloadIcon,
   CropFree as CropFreeIcon,
   Monitor as MonitorIcon,
   ExpandMore as ExpandMoreIcon,
+  Check as CheckIcon,
 } from "@mui/icons-material";
 
 import SaveAsPNGButton from "./SaveAsPNGButton";
 import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 import { colors } from "../theme";
+import { hasChartData } from "../scripts/hasChartData.js";
+
+// One of the three side-by-side format choices. aria-pressed tells screen
+// readers which one is chosen, and the check mark shows it without relying
+// on color alone.
+const FormatButton = ({ isSelected, onSelect, label }) => (
+  <Button
+    aria-pressed={isSelected}
+    startIcon={isSelected ? <CheckIcon aria-hidden="true" /> : null}
+    onClick={onSelect}
+    sx={{
+      flex: 1,
+      py: 1.5,
+      px: 1,
+      // Slightly smaller text keeps each label and its check mark on one line.
+      fontSize: "0.8125rem",
+      whiteSpace: "nowrap",
+      "& .MuiButton-startIcon": { mr: 0.5 },
+      // MUI's default focus glow is faint on the blue button, so draw a ring.
+      "&.Mui-focusVisible": { outline: `3px solid ${colors.textDark}`, outlineOffset: 2 },
+      backgroundColor: isSelected ? colors.buttonBlue : colors.white,
+      color: isSelected ? colors.white : colors.buttonBlue,
+      fontWeight: isSelected ? "bold" : "normal",
+      border: `1px solid ${colors.buttonBlue}`,
+      // Stacked on phones, so each button is rounded. Side by side on wider
+      // screens, so only the outer corners are rounded.
+      borderRadius: { xs: 2, sm: 0 },
+      "&:first-of-type": { borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
+      "&:last-of-type": { borderTopRightRadius: 8, borderBottomRightRadius: 8 },
+      "&:not(:first-of-type)": { borderLeft: { sm: "none" } },
+    }}
+  >
+    {label}
+  </Button>
+);
+
+// Stands in for the real save button when the view has no chart, so a click
+// explains why nothing can be saved instead of failing.
+const NoChartSaveButton = ({ format, onClick }) => (
+  <Button
+    startIcon={<DownloadIcon sx={{ p: 0.5 }} />}
+    onClick={onClick}
+    variant="outlined"
+    sx={{ backgroundColor: colors.buttonBlue, color: colors.white }}
+  >
+    Save {format}
+  </Button>
+);
 
 const SaveChart = (props) => {
   const { chartTitle, chartData, chartType, sx, renderExportChart } = props;
@@ -30,17 +80,24 @@ const SaveChart = (props) => {
   const [width, setWidth] = useState("1600");
   const [height, setHeight] = useState("1200");
   const [isCustomDims, setCustomDims] = useState(false);
+  const [showNoChartMessage, setShowNoChartMessage] = useState(false);
+  const canSave = hasChartData(chartData);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setShowNoChartMessage(false);
+  };
 
   const modalStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500,
-    bgcolor: "background.paper",
+    // Fits a 320px-wide phone screen with a 16px gap on each side.
+    width: "min(500px, calc(100vw - 32px))",
+    // Pure white keeps the blue link and Done text above 4.5:1 contrast.
+    bgcolor: colors.white,
     border: `2px solid ${colors.buttonBlue}`,
     borderRadius: 2,
     boxShadow: 24,
@@ -54,14 +111,6 @@ const SaveChart = (props) => {
     p: 2,
     borderBottom: `1px solid ${colors.border}`,
   };
-
-  const formatButtonStyle = (format) => ({
-    flex: 1,
-    py: 1.5,
-    backgroundColor: selectedFormat === format ? colors.buttonBlue : colors.white,
-    color: selectedFormat === format ? colors.white : colors.buttonBlue,
-    border: `1px solid ${colors.buttonBlue}`,
-  });
 
   return (
     <>
@@ -104,48 +153,38 @@ const SaveChart = (props) => {
                 href="/technical-details.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Learn more about the data and methods (PDF, opens in a new tab)"
                 sx={{ color: colors.buttonBlue }}
               >
                 Learn more
               </Link>
             </Typography>
 
-            <Box sx={{ display: "flex", gap: 0, mb: 3 }}>
-              <Button
-                sx={{
-                  ...formatButtonStyle("PNG"),
-                  borderTopLeftRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
-                }}
-                onClick={() => setSelectedFormat("PNG")}
-              >
-                chart-image.PNG
-              </Button>
-              <Button
-                sx={{
-                  ...formatButtonStyle("SVG"),
-                  borderRadius: 0,
-                  borderLeft: "none",
-                  borderRight: "none",
-                }}
-                onClick={() => setSelectedFormat("SVG")}
-              >
-                chart-image.SVG
-              </Button>
-              <Button
-                sx={{
-                  ...formatButtonStyle("CSV"),
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  borderBottomRightRadius: 8,
-                }}
-                onClick={() => setSelectedFormat("CSV")}
-              >
-                Chart-data.CSV
-              </Button>
+            <Box
+              role="group"
+              aria-label="File format"
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: { xs: 1, sm: 0 },
+                mb: 3,
+              }}
+            >
+              <FormatButton
+                label="chart-image.PNG"
+                isSelected={selectedFormat === "PNG"}
+                onSelect={() => setSelectedFormat("PNG")}
+              />
+              <FormatButton
+                label="chart-image.SVG"
+                isSelected={selectedFormat === "SVG"}
+                onSelect={() => setSelectedFormat("SVG")}
+              />
+              <FormatButton
+                label="Chart-data.CSV"
+                isSelected={selectedFormat === "CSV"}
+                onSelect={() => setSelectedFormat("CSV")}
+              />
             </Box>
 
             {selectedFormat !== "CSV" && (
@@ -331,6 +370,13 @@ const SaveChart = (props) => {
               </Accordion>
             )}
 
+            {showNoChartMessage && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                There is no chart to save, because this view has no data. Close
+                this window, pick a different place or topic, then try again.
+              </Alert>
+            )}
+
             <Box
               sx={{
                 display: "flex",
@@ -339,7 +385,13 @@ const SaveChart = (props) => {
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                {selectedFormat === "PNG" && (
+                {!canSave && (
+                  <NoChartSaveButton
+                    format={selectedFormat}
+                    onClick={() => setShowNoChartMessage(true)}
+                  />
+                )}
+                {canSave && selectedFormat === "PNG" && (
                   <SaveAsPNGButton
                     chartTitle={chartTitle}
                     widthARG={width}
@@ -348,7 +400,7 @@ const SaveChart = (props) => {
                     renderExportChart={renderExportChart}
                   />
                 )}
-                {selectedFormat === "SVG" && (
+                {canSave && selectedFormat === "SVG" && (
                   <SaveAsSVGButton
                     widthARG={width}
                     heightARG={height}
@@ -357,7 +409,7 @@ const SaveChart = (props) => {
                     chartType={chartType}
                   />
                 )}
-                {selectedFormat === "CSV" && (
+                {canSave && selectedFormat === "CSV" && (
                   <SaveAsCSVButton
                     chartTitle={chartTitle}
                     chartData={chartData}

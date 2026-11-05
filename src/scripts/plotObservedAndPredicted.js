@@ -1,12 +1,20 @@
-export const fig1FileName = (megaMenuSelectionValue) =>
-  `${megaMenuSelectionValue.replace(/[\s_]+/g, '')}_FIG1_SCS2025.csv`;
+// A region that borrows a state's data (dataOverride) also uses that state's file.
+export const fig1FileName = (selection) => {
+  const areaName = selection.dataOverride
+    ? selection.dataOverride.label
+    : selection.value;
+  return `${areaName.replace(/[\s_]+/g, '')}_FIG1_SCS2025.csv`;
+};
 
-export const fetchObservedAndProjectedData = async (megaMenuSelectionValue) => {
-  const fileUrl = `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${fig1FileName(megaMenuSelectionValue)}`;
-  console.debug(`[data] ${megaMenuSelectionValue} (observed/projected): ${fileUrl}`);
+export const fetchObservedAndProjectedData = async (selection) => {
+  const fileUrl = `/sandboxdata/2025_Sandbox_Datafiles/observed_and_projected/${fig1FileName(selection)}`;
+  console.debug(`[data] ${selection.value} (observed/projected): ${fileUrl}`);
   // no-cache: revalidate against the server so a new delivery is never
   // masked by a browser's cached copy of the old file.
   const response = await fetch(fileUrl, { cache: "no-cache" });
+  if (!response.ok) {
+    throw new Error(`${fileUrl} returned ${response.status}`);
+  }
   const csvText = await response.text();
 
   // Parse CSV
