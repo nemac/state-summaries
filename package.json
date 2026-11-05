@@ -8,6 +8,7 @@
     "dev": "vite",
     "test": "node --test scripts/*.test.mjs",
     "build:precip-manifest": "node scripts/buildPrecipManifest.mjs",
+    "crop:conus-maps": "node scripts/buildPrecipManifest.mjs --crop-conus",
     "prebuild": "npm run build:precip-manifest",
     "build": "vite build",
     "lint": "eslint .",
