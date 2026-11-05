@@ -49,10 +49,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # The map manifest build uses ImageMagick to crop the CONUS maps, the same as production.
-      - name: Install ImageMagick
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
-
       - name: Run tests
         run: npm test
 

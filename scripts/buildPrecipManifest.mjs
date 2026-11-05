@@ -7,8 +7,11 @@
 // (some regions were only ever exported to PNG). The .ai/.aix source rows are
 // ignored. Run via `npm run build:precip-manifest` (also wired into `prebuild`);
 // regenerate whenever the map collection changes.
+//
+// When NOAA sends new maps, run `npm run crop:conus-maps` instead. It also
+// crops the CONUS maps, which needs ImageMagick (`brew install imagemagick`).
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,35 +30,46 @@ const ROOT = resolve(__dirname, "..");
 const DATA_DIR = resolve(ROOT, "public/Precip_Organized");
 const INDEX_CSV = resolve(DATA_DIR, "INDEX.csv");
 const OUT = resolve(ROOT, "src/data/precipMapManifest.json");
-// CONUS previews have ~40% white padding baked in, so we crop them at build
-// time into this served (gitignored) directory. Only CONUS is trimmed — the
-// Alaska/Hawaii/PR maps are left exactly as delivered.
-const CONUS_TRIM_DIR = resolve(ROOT, "public/precip/conus");
+// CONUS previews have ~40% white padding baked in. They are cropped once and
+// the results are committed here, so deploys never install ImageMagick, which
+// sometimes took over 10 minutes. Only CONUS is cropped; the Alaska, Hawaii
+// and Puerto Rico maps are served exactly as delivered.
+const CONUS_CROP_DIR = resolve(ROOT, "public/precip/conus");
+const CROP_MODE = process.argv.includes("--crop-conus");
 
 const PREVIEW_FORMATS = new Set(["JPEG preview image", "PNG preview image"]);
 
-// First available ImageMagick binary, or null (then CONUS falls back to the
-// untrimmed original — the build never fails on a missing dependency).
-function detectImageMagick() {
-  for (const bin of ["magick", "convert"]) {
-    if (spawnSync(bin, ["-version"], { stdio: "ignore" }).status === 0) return bin;
+// First available ImageMagick command, or null.
+function findImageMagick() {
+  for (const command of ["magick", "convert"]) {
+    if (spawnSync(command, ["-version"], { stdio: "ignore" }).status === 0) return command;
   }
   return null;
 }
 
-// Crop the white border off a CONUS preview into CONUS_TRIM_DIR. Returns the
-// served path, or null on failure (caller falls back to the original).
-// The 2px shave drops page-edge crop residue that would otherwise stop -trim.
-function trimConus(im, name, rel) {
-  if (!im) return null;
-  const out = resolve(CONUS_TRIM_DIR, name);
-  const r = spawnSync(
-    im,
+// Crop the white border off one CONUS preview into CONUS_CROP_DIR. A failed
+// crop leaves no file, which the missing-crop check below reports. The 2px
+// shave drops page-edge residue that would otherwise stop -trim.
+function cropConusMap(imageMagick, name, rel) {
+  spawnSync(
+    imageMagick,
     [resolve(DATA_DIR, rel), "-shave", "2x2", "-fuzz", "7%", "-trim", "+repage",
-      "-bordercolor", "white", "-border", "24", out],
+      "-bordercolor", "white", "-border", "24", resolve(CONUS_CROP_DIR, name)],
     { stdio: "ignore" },
   );
-  return r.status === 0 ? `/precip/conus/${encodeURIComponent(name)}` : null;
+}
+
+// Starts crop mode with an empty crop folder, so crops of maps NOAA has since
+// removed don't linger. Exits if ImageMagick is missing.
+function prepareCropMode() {
+  const imageMagick = findImageMagick();
+  if (!imageMagick) {
+    console.error("ImageMagick not found. Install it (brew install imagemagick), then run this again.");
+    process.exit(1);
+  }
+  rmSync(CONUS_CROP_DIR, { recursive: true, force: true });
+  mkdirSync(CONUS_CROP_DIR, { recursive: true });
+  return imageMagick;
 }
 
 // Minimal RFC-4180-ish CSV parser (quoted fields, embedded commas, "" escapes).
@@ -108,14 +122,13 @@ function main() {
   const iRegion = c("State/Region"), iCentury = c("Century"), iScenario = c("Emissions scenario");
   const iSeason = c("Season"), iFormat = c("Format"), iDate = c("Date (file modified)");
 
-  const im = detectImageMagick();
-  rmSync(CONUS_TRIM_DIR, { recursive: true, force: true });
-  mkdirSync(CONUS_TRIM_DIR, { recursive: true });
+  const imageMagick = CROP_MODE ? prepareCropMode() : null;
 
   const manifest = {};
   const meta = {}; // parallel: { format, date } for collision resolution
   let jpg = 0, png = 0, collisions = 0;
-  let conusTrimmed = 0, conusFallback = 0;
+  let conusCropped = 0;
+  const conusCropMissing = [];
   const seasonMismatches = [];
   const missingOnDisk = [];
   const usedNames = new Set();
@@ -140,9 +153,13 @@ function main() {
 
     let src = `/Precip_Organized/${encodePath(rel)}`;
     if (regionKey === "CONUS") {
-      const trimmed = trimConus(im, name, rel);
-      if (trimmed) { src = trimmed; conusTrimmed++; }
-      else conusFallback++;
+      if (CROP_MODE) cropConusMap(imageMagick, name, rel);
+      if (existsSync(resolve(CONUS_CROP_DIR, name))) {
+        src = `/precip/conus/${encodeURIComponent(name)}`;
+        conusCropped++;
+      } else {
+        conusCropMissing.push(name);
+      }
     }
     const entry = { src, subtitle: titleCaseEmissions(stripped.subtitle) };
 
@@ -177,8 +194,7 @@ function main() {
   const orphanPreviews = Object.keys(diskByName).filter((n) => !usedNames.has(n));
   console.log(`precip manifest: ${jpg + png} entries across ${regions.length} regions (${jpg} jpg, ${png} png)`);
   console.log(`  regions: ${regions.join(", ")}`);
-  if (im) console.log(`  CONUS previews trimmed with ${im}: ${conusTrimmed}${conusFallback ? `, ${conusFallback} fallback(s) to untrimmed` : ""}`);
-  else console.log(`  WARNING: ImageMagick not found; ${conusFallback} CONUS preview(s) served untrimmed (with white padding)`);
+  console.log(`  CONUS previews using a cropped copy: ${conusCropped}`);
   if (collisions) console.log(`  ${collisions} slot collision(s) resolved (png preferred, else newest)`);
   if (seasonMismatches.length) {
     console.log(`  ${seasonMismatches.length} description(s) without a trailing season clause (kept verbatim)`);
@@ -192,6 +208,14 @@ function main() {
     for (const n of orphanPreviews) console.log(`    - ${n}`);
   }
   console.log(`  wrote ${OUT}`);
+
+  // A missing crop would show a map with wide white margins, so fail the build.
+  if (conusCropMissing.length) {
+    console.error(`  ERROR: ${conusCropMissing.length} CONUS map(s) have no cropped copy in public/precip/conus:`);
+    for (const n of conusCropMissing) console.error(`    - ${n}`);
+    console.error("  Run `npm run crop:conus-maps` and commit the results.");
+    process.exitCode = 1;
+  }
 }
 
 main();

@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
 import {
   normalizeCentury,
   normalizeScenario,
@@ -114,4 +115,23 @@ test("indexRegionToKey handles the PNG-only alt region descriptions", () => {
   // PNG rows in INDEX describe the same regions; keys must match the jpg ones.
   assert.equal(indexRegionToKey("Maine"), "Maine");
   assert.equal(indexRegionToKey("West Virginia"), "West Virginia");
+});
+
+// Deploys no longer crop the CONUS maps, so every committed crop must exist.
+test("every CONUS map in the manifest has its committed cropped copy", () => {
+  const manifestUrl = new URL("../src/data/precipMapManifest.json", import.meta.url);
+  const manifest = JSON.parse(readFileSync(manifestUrl, "utf8"));
+  const conusSources = [];
+  for (const century of Object.values(manifest.CONUS)) {
+    for (const scenario of Object.values(century)) {
+      for (const entry of Object.values(scenario)) conusSources.push(entry.src);
+    }
+  }
+  assert.ok(conusSources.length > 0, "the manifest has no CONUS maps");
+  const notCropped = conusSources.filter((src) => !src.startsWith("/precip/conus/"));
+  assert.deepEqual(notCropped, [], "CONUS maps not pointing at a cropped copy");
+  const missing = conusSources.filter(
+    (src) => !existsSync(new URL(`../public${decodeURIComponent(src)}`, import.meta.url)),
+  );
+  assert.deepEqual(missing, [], "cropped CONUS maps missing from public/precip/conus");
 });
