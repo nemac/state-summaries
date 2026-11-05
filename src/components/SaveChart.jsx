@@ -10,6 +10,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Alert,
 } from "@mui/material";
 import {
   Download as DownloadIcon,
@@ -23,6 +24,7 @@ import SaveAsPNGButton from "./SaveAsPNGButton";
 import SaveAsCSVButton from "./SaveAsCSVButton";
 import SaveAsSVGButton from "./SaveAsSVGButton";
 import { colors } from "../theme";
+import { hasChartData } from "../scripts/hasChartData.js";
 
 // One of the three side-by-side format choices. aria-pressed tells screen
 // readers which one is chosen, and the check mark shows it without relying
@@ -58,6 +60,19 @@ const FormatButton = ({ isSelected, onSelect, label }) => (
   </Button>
 );
 
+// Stands in for the real save button when the view has no chart, so a click
+// explains why nothing can be saved instead of failing.
+const NoChartSaveButton = ({ format, onClick }) => (
+  <Button
+    startIcon={<DownloadIcon sx={{ p: 0.5 }} />}
+    onClick={onClick}
+    variant="outlined"
+    sx={{ backgroundColor: colors.buttonBlue, color: colors.white }}
+  >
+    Save {format}
+  </Button>
+);
+
 const SaveChart = (props) => {
   const { chartTitle, chartData, chartType, sx, renderExportChart } = props;
   const [open, setOpen] = useState(false);
@@ -65,9 +80,14 @@ const SaveChart = (props) => {
   const [width, setWidth] = useState("1600");
   const [height, setHeight] = useState("1200");
   const [isCustomDims, setCustomDims] = useState(false);
+  const [showNoChartMessage, setShowNoChartMessage] = useState(false);
+  const canSave = hasChartData(chartData);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setShowNoChartMessage(false);
+  };
 
   const modalStyle = {
     position: "absolute",
@@ -350,6 +370,13 @@ const SaveChart = (props) => {
               </Accordion>
             )}
 
+            {showNoChartMessage && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                There is no chart to save, because this view has no data. Close
+                this window, pick a different place or topic, then try again.
+              </Alert>
+            )}
+
             <Box
               sx={{
                 display: "flex",
@@ -358,7 +385,13 @@ const SaveChart = (props) => {
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                {selectedFormat === "PNG" && (
+                {!canSave && (
+                  <NoChartSaveButton
+                    format={selectedFormat}
+                    onClick={() => setShowNoChartMessage(true)}
+                  />
+                )}
+                {canSave && selectedFormat === "PNG" && (
                   <SaveAsPNGButton
                     chartTitle={chartTitle}
                     widthARG={width}
@@ -367,7 +400,7 @@ const SaveChart = (props) => {
                     renderExportChart={renderExportChart}
                   />
                 )}
-                {selectedFormat === "SVG" && (
+                {canSave && selectedFormat === "SVG" && (
                   <SaveAsSVGButton
                     widthARG={width}
                     heightARG={height}
@@ -376,7 +409,7 @@ const SaveChart = (props) => {
                     chartType={chartType}
                   />
                 )}
-                {selectedFormat === "CSV" && (
+                {canSave && selectedFormat === "CSV" && (
                   <SaveAsCSVButton
                     chartTitle={chartTitle}
                     chartData={chartData}
