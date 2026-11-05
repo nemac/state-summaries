@@ -171,9 +171,6 @@ export default function SandboxControls() {
     );
   }, [view]);
 
-  // Save Chart/Data only makes sense while a loaded chart is on screen.
-  const isChartShowing = !showMapImage && !openError && chartData.length > 0;
-
   const shownOptionLabel =
     climateOption.seasonality && climateOption.getLabel
       ? climateOption.getLabel(selectedSeason.label)
@@ -636,37 +633,35 @@ export default function SandboxControls() {
             </Box>
           </Grid>
 
-          {isChartShowing && (
-            <SaveChart
-              selection={megaMenuSelection}
-              climateOption={climateOption}
-              chartTitle={chartTitle}
-              chartData={chartData}
-              chartType={chartType}
-              period={"1900-2024"}
-              renderExportChart={
-                chartType === "recharts"
-                  ? (w, h) => (
-                      <Box sx={{ width: `${w}px`, height: `${h}px` }}>
-                        <ObservedProjectedChart
-                          data={rechartsData}
-                          bracketData={rechartsBrackets}
-                          yDomain={rechartsYDomain}
-                          chartTitle={chartTitle}
-                        />
-                      </Box>
-                    )
-                  : undefined
-              }
-              sx={{
-                borderRadius: "4px",
-                border: `1px solid ${colors.primary}`,
-                fontWeight: 500,
-                color: colors.primary,
-                height: "48px",
-              }}
-            />
-          )}
+          <SaveChart
+            selection={megaMenuSelection}
+            climateOption={climateOption}
+            chartTitle={chartTitle}
+            chartData={chartData}
+            chartType={chartType}
+            period={"1900-2024"}
+            renderExportChart={
+              chartType === "recharts"
+                ? (w, h) => (
+                    <Box sx={{ width: `${w}px`, height: `${h}px` }}>
+                      <ObservedProjectedChart
+                        data={rechartsData}
+                        bracketData={rechartsBrackets}
+                        yDomain={rechartsYDomain}
+                        chartTitle={chartTitle}
+                      />
+                    </Box>
+                  )
+                : undefined
+            }
+            sx={{
+              borderRadius: "4px",
+              border: `1px solid ${colors.primary}`,
+              fontWeight: 500,
+              color: colors.primary,
+              height: "48px",
+            }}
+          />
 
         </Grid>
 
