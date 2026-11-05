@@ -6,8 +6,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import { useNavigate } from "react-router-dom";
 import { colors } from "../theme";
+import { usePageTitle } from "../scripts/usePageTitle.js";
 
 export default function About() {
+  usePageTitle("About");
   const theme = useTheme();
   const navigate = useNavigate();
 
